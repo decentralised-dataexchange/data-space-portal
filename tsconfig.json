@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "lib": ["ESNext", "ES2015.Symbol", "ES2016","DOM"],
+      "module": "ESNext",
+      "allowJs": true,
+      "jsx": "react",
+      "outDir": "./dist",
+      "sourceMap": true,
+      "strict": false,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      "noUnusedParameters": true,
+      "noUnusedLocals": true,
+      "forceConsistentCasingInFileNames": true,
+      "noImplicitAny": false,
+      "baseUrl": "src"
+    },
+    "include": [
+      "src/**/*",
+      "custom.d.ts", 
+     ],
+    "exclude": [
+      "node_modules",
+      "dist",
+    ]
+}
