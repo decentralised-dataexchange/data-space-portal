@@ -24,21 +24,8 @@ const Login = () => {
     textAlign: "center",
   }); 
     return (
-        <Box 
-              style={{
-              display: "flex",
-              minHeight: "90dvh",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#FFFF",
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
+        <Box className='loginContainer'>
+          <Box className='d-flex-center'>
             <img className="logoImg" src={Logo} alt="Logo" />
           </Box>
           <Box
@@ -50,15 +37,7 @@ const Login = () => {
           >
             <p className='titleTxt'>CRANE dHDSI - Organisation dashboard</p>
           </Box>
-          <Box
-            style={{
-              boxSizing: "border-box",
-              padding: 5,
-              border: "1px solid #cecece",
-              borderRadius: 7,
-              width:400
-            }}
-          >
+          <Box className='text-field'>
             <TextField
               autoFocus
               name="email"
@@ -88,7 +67,7 @@ const Login = () => {
             //   source="password"
               variant="standard"
               label={false}
-              placeholder='password'
+              placeholder='Password'
               fullWidth
               InputProps={{
                 startAdornment: <LockOutlined style={{ color: "#A1A1A1" }} />,

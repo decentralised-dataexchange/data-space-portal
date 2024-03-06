@@ -1,12 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Login from './container/Login';
+import { Route, Routes } from 'react-router-dom';
+import GettingStarted from './container/GettingStarted';
+import Home from './container/Home';
 
 const AppRouter = () => {
   return (
-    <Router>
-      <Route path="/" component={Login} />
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />}/>
+      <Route path="/login" element={<Login />} />
+      <Route path="/start" element={<GettingStarted />} />
+    </Routes>
   );
 };
 

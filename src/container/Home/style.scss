@@ -1,0 +1,58 @@
+.landingPageContainer {
+    border: 1px solid rgb(167, 167, 167);
+    padding: 20px;
+
+    .cardContainer {
+        background-color: rgb(226, 226, 226);
+        border: 1px solid rgb(173, 173, 173);
+        padding: 20px;
+
+        .logo {
+            padding: 10px 0;
+            width: 50%;
+        }
+
+        .MuiCardContent-root {
+            padding: 0;
+
+            .MuiTypography-root {
+                padding: 25px 0;
+
+                .readmore {
+                    color: #9c9c9c;
+                }
+            }
+
+        }
+
+        .actionBtn {
+            .MuiButtonBase-root {
+                width: 100%;
+                text-transform: unset;
+                border: 1px solid gray;
+                background: rgb(199, 198, 198);
+                color: #000;
+                // margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+.pageContainer {
+    margin-top: 100px;
+    padding: 0 20px 20px 20px;
+}
+
+.breadCrumbContainer {
+    border: 1px solid rgb(167, 167, 167);
+    padding: 15px;
+    // margin-bottom: 5px;
+
+    .MuiTypography-root {
+        // margin-bottom: 0;
+    }
+}
+
+.dataSourceSelectionContainer {
+    padding: 5px 0;
+}
