@@ -12,6 +12,8 @@ import {
 import { PersonOutlineOutlined, ArrowCircleRightOutlined, LockOutlined }  from "@mui/icons-material";
 import Footer from '../../component/Footer';
 import { styled } from "@mui/material/styles";
+import Logo from '../../../public/img/logo.jpg';
+import './login.scss'
 
 const Login = () => {
   const FooterContainer = styled("div")({
@@ -22,24 +24,23 @@ const Login = () => {
     textAlign: "center",
   }); 
     return (
-        <Box
-            style={{
-                display: "flex",
-                minHeight: "90dvh",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#FFFF",
-            }}
-            >
-          {/* <Box
+        <Box 
+              style={{
+              display: "flex",
+              minHeight: "90dvh",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#FFFF",
+          }}>
+          <Box
             sx={{
               display: "flex",
               justifyContent: "center",
             }}
           >
-            <img src={Logo} alt="Logo1" />
-          </Box> */}
+            <img className="logoImg" src={Logo} alt="Logo" />
+          </Box>
           <Box
             sx={{
               margin: "1rem",
@@ -47,7 +48,7 @@ const Login = () => {
               alignItems: "center"
             }}
           >
-            <Typography variant="h5">CRANE dHDSI - Organisation dashboard</Typography>
+            <p className='titleTxt'>CRANE dHDSI - Organisation dashboard</p>
           </Box>
           <Box
             style={{
