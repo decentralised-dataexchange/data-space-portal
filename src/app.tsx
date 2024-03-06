@@ -5,9 +5,14 @@
 import React from 'react';
 import AppRouter from './routes';
 import './index.css';
+import Layout from './component/Layout';
 
 const App = () => {
-  return <AppRouter />
+  return (
+    <Layout>
+      <AppRouter />
+    </Layout>
+  )
 };
 
 export default App;

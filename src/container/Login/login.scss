@@ -1,16 +1,31 @@
+@use '../../../public/sass/helpers/breakpoints';
 
 .loginContainer {
-    display: "flex";
-    min-height: "90dvh";
-    flex-direction: "column";
-    align-items: "center";
-    justify-content: "center";
-    background-color: "#FFFF";
+    display: flex;
+    min-height: 90dvh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFF;
+}
+
+.d-flex-center {
+    display: flex;
+    justify-content: center;
+
 }
 
 .logoImg {
     width: 180px;
     border-radius: 50%;
+}
+
+.text-field {
+    box-sizing: border-box;
+    padding: 0.3rem;
+    border: 1px solid #cecece;
+    border-radius: 0.45rem;
+    width: 400px;
 }
 
 .titleTxt {
@@ -20,4 +35,13 @@
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     line-height: 1.5;
     letter-spacing: 0.00938em;
+}
+
+@include breakpoints.tabletAndDown {
+    .text-field {
+        width: 350px;
+    }
+    .titleTxt {
+        font-size: 1.1em;
+    }
 }
