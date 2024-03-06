@@ -1,8 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
-
+const currentDate = new Date();
+const timestamp = currentDate.getTime();
 module.exports = env => ({
     mode: "development",
     devServer: {
@@ -24,8 +26,13 @@ module.exports = env => ({
                 }
             },
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+
+                test: /\.s?[ac]ss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader',
+                ],
             },
             {
                 test: /\.json$/,
@@ -46,6 +53,9 @@ module.exports = env => ({
     plugins: [
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "/", "index.html")
+        }),
+        new MiniCssExtractPlugin({
+            filename: `[name].${timestamp}.css`,
         }),
     ]
 })
