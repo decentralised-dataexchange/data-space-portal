@@ -4,9 +4,11 @@ import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { AppBarMenu } from "./AppBarMenu";
 import Logo from "../../../public/img/logo.jpg";
 import './style.scss';
+import { useLocation } from "react-router-dom";
 
-export default function MyAppBar() {
+export default function MyAppBar({handleOpenMenu}) {
 
+  const { pathname } = useLocation();
   return (
     <Box className="appBarContainer">
       <AppBar
@@ -21,7 +23,8 @@ export default function MyAppBar() {
           <IconButton
             edge="start"
             color="inherit"
-            onClick={() => {}}
+            onClick={() => handleOpenMenu()}
+            {...pathname === '/' ? {className: 'pointerNone'} : ''}
           >
             <MenuIcon style={{ height: 60, width: 60 }} />
           </IconButton>

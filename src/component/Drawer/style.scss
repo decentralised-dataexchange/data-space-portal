@@ -1,0 +1,45 @@
+.drawerContainer {
+    .MuiDrawer-paper {
+        background: rgb(238, 238, 238);
+        border: 2px solid rgb(133, 133, 133);
+    }
+}
+
+.drawerContent {
+    width: 450px;
+    padding: 20px;
+
+    .businessInfo {
+        padding: 10px 0;
+    }
+
+    .walletContainer {
+        padding-top: 20px;
+
+        .walletInfo {
+            background-color: rgb(226, 226, 226);
+            border: 1px solid rgb(173, 173, 173);
+            height: 220px;
+            padding: 35px;
+        }
+
+        .businessJustifiation {
+            padding: 15px 0;
+        }
+    }
+
+    .actionBtn {
+        .MuiButtonBase-root {
+            width: 100%;
+            text-transform: unset;
+            border: 1px solid gray;
+            background: rgb(250, 249, 249);
+            color: #000;
+            margin-top: 40px;
+        }
+    }
+
+    .MuiGrid-container .MuiGrid-item {
+        padding-left: 0;
+    }
+}
