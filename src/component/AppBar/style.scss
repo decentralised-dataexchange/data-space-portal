@@ -4,3 +4,11 @@
         border-radius: 50%;
     }
 }
+
+.MuiDrawer-docked, .MuiDrawer-paperAnchorLeft {
+    margin-top: 100px;
+}
+
+.pointerNone {
+    pointer-events: none;
+}
