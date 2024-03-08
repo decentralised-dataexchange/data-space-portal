@@ -37,7 +37,7 @@ const TableHead =  [
     {
       field: "lawfulProcess",
       title: "Lawful basis of processing",
-      headerWidth: "15%",
+      headerWidth: "25%",
     },
     {
       field: "status",
