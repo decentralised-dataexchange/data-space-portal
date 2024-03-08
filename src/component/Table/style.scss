@@ -1,0 +1,36 @@
+
+.mui-basic-table-container {    
+        width: 100%;
+        overflow: auto;
+        border: 1px solid wheat;
+        border-radius: 12px;
+        .limus-perform-rate, .specific-gravity {
+            text-align:  right;
+        }
+}
+
+.Tablecell-Styles {
+    z-index: 1 !important;
+    border-bottom: 1px solid rgba(232, 235, 238, 1);
+}
+.basic-table {
+    background-color: white !important;
+    border-bottom: 1px solid red;
+}
+
+.mui-basic-table {
+    background-color: transparent;
+    border-collapse: collapse;
+}
+.setWidth {
+    display: inline-table !important;
+    width: 100%;
+}
+
+.MuiTableCell-head {
+    font-weight: bold;
+    background-color: rgb(229, 228, 228);
+    border: 1px solid rgb(215, 214, 214);
+    font-size: 14px;
+}
+

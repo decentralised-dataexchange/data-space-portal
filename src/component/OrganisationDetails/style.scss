@@ -1,0 +1,21 @@
+.no-verify {
+    margin: 0 10px 0 10px;
+    color: #d80606;
+    width: 1.2em !important;
+    height: 1.2em !important;
+}
+
+.verify {
+    margin: 0 10px 0 10px;
+    color: rgb(17, 170, 17);
+    width: 1.2em !important;
+    height: 1.2em !important;
+}
+
+.add-credential {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    text-decoration: underline;
+    font-size: 1.2rem;
+    color: #d80606;
+    cursor: pointer;
+}

@@ -8,7 +8,7 @@ export const menuList = [
     {
         'name': 'Data Disclosure Agreements',
         'icon': 'InsertDriveFileOutlined',
-        'link': 'login'
+        'link': 'dd-agreements'
 
     }
 ]
