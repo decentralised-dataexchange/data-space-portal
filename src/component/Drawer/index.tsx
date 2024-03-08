@@ -11,6 +11,7 @@ const DrawerComponent = (props) => {
             open={openRightSideDrawer}
             onClose={callRightSideDrawer}
             className='drawerContainer'
+            BackdropProps={{ invisible: true }}
         >
             {children}
         </Drawer>

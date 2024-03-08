@@ -4,6 +4,9 @@ import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "../../component/OrganisationDetails/OrgLogoImageUpload";
 import DrawerComponent from "../../component/Drawer";
 import AddCredentialComponent from "../../container/AddCredential";
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import './style.scss';
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -90,12 +93,14 @@ const OrganisationDetailsContainer = (props: Props) => {
           >
               <>
               <Box sx={{ display: "flex", alignItems: 'center'}}>
-              <Typography variant="h6" fontWeight="bold" mt={"-4px"}>
+              <Typography variant="h5" fontWeight="bold" mt={"-4px"}>
                   Organisation Name
                 </Typography>
-                <span onClick={callRightSideDrawer}>
+                <DoNotDisturbOnIcon className="no-verify" />
+                {/* <CheckCircleIcon className="verify"/> */}
+                <p className="add-credential" onClick={callRightSideDrawer}>
                   (Add Credentials)
-                </span>
+                </p>
               </Box>
                 <Typography variant="body2" height="23px">
                 Sector: 
@@ -110,6 +115,12 @@ const OrganisationDetailsContainer = (props: Props) => {
           </Box>
         </Grid>
       </Grid>
+      <Box>
+        <Typography variant="h5" fontWeight="bold">Overview</Typography>
+        <Box className="pt-20">
+          <Typography variant="h6" >Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters</Typography>
+        </Box>
+      </Box>
     </DetailsContainer>
   );
 };

@@ -10,10 +10,13 @@ import {
 import { CottageOutlined, InsertDriveFileOutlined } from '@mui/icons-material';
 import { menuList } from './menuList';
 import { Link } from 'react-router-dom';
+import { getDevice } from '../../utils/utils';
 import './style.scss';
+
 const drawerWidth = 240;
 
 export default function MenuBar({ open }) {
+  const { isMobile } = getDevice();
   const renderIcon = (icon) => {
     switch (icon) {
       case "CottageOutlined":
@@ -35,7 +38,10 @@ export default function MenuBar({ open }) {
           boxSizing: 'border-box',
         },
       }}
-      variant="persistent"
+      ModalProps={{
+        keepMounted: isMobile ? true : false,
+      }}
+      variant={isMobile ? 'temporary' : 'persistent'}
       anchor="left"
       open={open}
     >

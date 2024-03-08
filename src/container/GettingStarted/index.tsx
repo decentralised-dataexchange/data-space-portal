@@ -3,18 +3,14 @@ import { Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import { useNavigate } from "react-router-dom";
-
-import BreadCrumb from "../../components/Breadcrumbs";
 import OrgCoverImageUpload from "../../component/OrganisationDetails/OrgCoverImageUpload";
 
 import OrganisationDetailsContainer from "../../component/OrganisationDetails/OrgDetailsContainer";
-import DrawerComponent from '../../component/Drawer';
-import AddCredentialComponent from '../AddCredential';
 // import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
 // import { useTranslation } from "react-i18next";
 
 const Container = styled("div")(({ theme }) => ({
-  margin: "58px 15px 0px 15px",
+  margin: "0px 15px 0px 15px",
   paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
     margin: "52px 0 10px 0",
@@ -43,13 +39,6 @@ const Item = styled("div")(({ theme }) => ({
 
 const GettingStarted = () => {
   const navigate = useNavigate();
-  const [selectedValue, setSelectedValue] = useState('1')
-    const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
-
-    const handleChange = (event) => {
-        setSelectedValue(event.target.value)
-    }
-
 //   const {
 //     organisationDetails,
 //     logoImageBase64,
@@ -65,7 +54,7 @@ const GettingStarted = () => {
 
 
   return (
-      <Container>
+      <Container className='pageContainer'>
         {/* <BreadCrumb Link={t("sidebar.gettingStarted")} /> */}
         <OrgCoverImageUpload
           editMode={false}
@@ -85,7 +74,7 @@ const GettingStarted = () => {
 
         <DetailsContainer sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid item lg={3} md={6} sm={6} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate("/dataagreement")}
@@ -95,7 +84,7 @@ const GettingStarted = () => {
                 </Typography>
               </Item>
             </Grid>
-            <Grid item lg={3} md={6} sm={6} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate("/developerapi")}
@@ -105,7 +94,7 @@ const GettingStarted = () => {
                 </Typography>
               </Item>
             </Grid>
-            <Grid item lg={3} md={6} sm={6} xs={12}>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
                 onClick={() => navigate("/manageadmin")}

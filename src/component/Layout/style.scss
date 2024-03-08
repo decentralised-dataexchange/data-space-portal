@@ -1,3 +1,44 @@
 .appBar {
     margin-top: 100px;
 }
+
+.pageContainer {
+    padding: 0 15px 15px 15px;
+}
+
+.pe-none {
+    pointer-events: none;
+    text-decoration: none;
+    color: #746e6e;
+}
+
+.link {
+    text-decoration: none;
+    color: rgb(77 75 75);
+}
+
+.linkfont {
+    font-size: 0.90rem;
+    font-weight: 500;
+}
+
+.pt-20 {
+    padding-top: 20px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.titleTxt {
+    font-weight: 300;
+    font-size: 1.75rem;
+    margin: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}

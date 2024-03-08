@@ -1,0 +1,23 @@
+.credentialContainer {
+    .MuiButtonBase-root {
+        text-transform: unset;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .cancelBtn {
+        border: 1px solid gray;
+        background: rgb(250, 249, 249);
+        color: #000;
+        margin-top: 40px;
+        margin-bottom: 10px;
+    }
+
+    .nextBtn {
+        border: 1px solid gray;
+        background: #000;
+        color: #FFF;
+    }
+}
