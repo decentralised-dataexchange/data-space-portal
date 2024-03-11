@@ -24,7 +24,7 @@ const LandingPage = () => {
             id: 1,
             logoName: 'symbiome',
             url: '../../../public/img/dexcom.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
+            description: 'Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,cLorem ipsum dolor sit amet,oLorem ipsum dolor sit amet,nLorem ipsum dolor sit amet,svevctetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse'
         },
         {
             id: 2,
@@ -42,7 +42,7 @@ const LandingPage = () => {
             id: 4,
             logoName: 'glooko',
             url: '../../../public/img/dexcom.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
+            description: 'Lorem ipsum dolor sit amet, mnsbnsbvssbv bjhjhjanconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
         },
         {
             id: 5,
@@ -58,7 +58,7 @@ const LandingPage = () => {
         }
     ]
     return (
-        <Box className="pageContainer">
+        <Box className="homeContainer">
             <Box component="div" className="breadCrumbContainer">
                 <Typography gutterBottom component="div">
                     {"HOME"}

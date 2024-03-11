@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Typography,
     Button,
@@ -17,7 +17,10 @@ interface DataSourceCardProp {
 }
 
 const DataSourceCard = ({ logo, description }: DataSourceCardProp) => {
-
+    const [ moreOrLessTxt, setMoreOrLessTxt] = useState('Read More....')
+    const readMore = (txt) => {
+        setMoreOrLessTxt(txt === 'Read More....' ? 'Read Less....' : 'Read More....');
+    }
     return (
         <>
             <Card className='cardContainer'>
@@ -30,7 +33,12 @@ const DataSourceCard = ({ logo, description }: DataSourceCardProp) => {
                     />
                     <CardContent>
                         <Typography gutterBottom component="div">
-                            {description}<Typography className="readmore" component="span">(Read more.....)</Typography>
+                            {moreOrLessTxt === 'Read Less....' ? description : description.slice(0, 275)}
+                            { description?.length > 275 && 
+                            <Typography className="readmore" component="span">
+                                <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box>
+                            </Typography>
+                            }
                         </Typography>
                         <Box className="actionBtn">
                             <Button size="small" >

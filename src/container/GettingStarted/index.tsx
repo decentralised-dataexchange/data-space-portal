@@ -22,7 +22,6 @@ const DetailsContainer = styled("div")({
   width: "100%",
   borderRadius: 2,
   backgroundColor: "#FFFFF",
-  padding: 10,
 });
 
 const Item = styled("div")(({ theme }) => ({

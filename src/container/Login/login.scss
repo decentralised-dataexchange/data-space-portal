@@ -39,9 +39,9 @@
 
 @include breakpoints.tabletAndDown {
     .text-field {
-        width: 350px;
+        width: 350px !important;
     }
     .titleTxt {
-        font-size: 1.1em;
+        font-size: 1.1em !important;
     }
 }

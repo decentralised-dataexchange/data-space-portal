@@ -34,6 +34,7 @@ const OrgLogoImageUpload = (props: Props) => {
           height: "170px",
           border: "solid white 6px",
         }}
+        className='logoContainer'
       />
       {editMode && (
         <Box

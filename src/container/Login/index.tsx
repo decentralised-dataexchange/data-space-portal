@@ -14,8 +14,10 @@ import Footer from '../../component/Footer';
 import { styled } from "@mui/material/styles";
 import Logo from '../../../public/img/logo.jpg';
 import './login.scss'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate()
   const FooterContainer = styled("div")({
     position: "fixed",
     left: 0,
@@ -23,6 +25,11 @@ const Login = () => {
     width: "100%",
     textAlign: "center",
   }); 
+
+  const submit = () => {
+    navigate('/start');
+  }
+
     return (
         <Box className='loginContainer'>
           <Box className='d-flex-center'>
@@ -76,7 +83,7 @@ const Login = () => {
                 endAdornment: (
                   <ArrowCircleRightOutlined
                     style={{ color: "#A1A1A1", cursor: "pointer" }}
-                    // onClick={submit}
+                    onClick={submit}
                   />
                 ),
               }}

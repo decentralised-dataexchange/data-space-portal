@@ -116,9 +116,9 @@ const OrganisationDetailsContainer = (props: Props) => {
         </Grid>
       </Grid>
       <Box>
-        <Typography variant="h5" fontWeight="bold">Overview</Typography>
+        <Typography variant="h5" fontWeight="bold" >Overview</Typography>
         <Box className="pt-20">
-          <Typography variant="h6" >Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters</Typography>
+          <Typography className="txtOverview" >Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters</Typography>
         </Box>
       </Box>
     </DetailsContainer>
