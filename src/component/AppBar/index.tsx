@@ -5,15 +5,16 @@ import { AppBarMenu } from "./AppBarMenu";
 import Logo from "../../../public/img/logo.jpg";
 import './style.scss';
 import { useLocation } from "react-router-dom";
+import { getDevice } from '../../utils/utils'
 
 export default function MyAppBar({handleOpenMenu}) {
-
+  const { isMobile } = getDevice();
   const { pathname } = useLocation();
   return (
     <Box className="appBarContainer">
       <AppBar
         sx={{
-          backgroundColor: "#212636",
+          backgroundColor: "#00182C",
           height: 80,
           display: "flex",
           justifyContent: "center",
@@ -29,16 +30,23 @@ export default function MyAppBar({handleOpenMenu}) {
             <MenuIcon style={{ height: 60, width: 60 }} />
           </IconButton>
           <img className='logoImg' src={Logo} alt="Logo" />
-
-          <Typography
-            sx={{
-              flexGrow: 1,
-              display: { xs: "none", sm: "contents" },
-            }}
-            variant="h6"
-          >
-            CRANE d-HDSI Dataspace
-          </Typography>
+          <Box className='d-flex flex-column'>
+            <Typography
+                sx={{
+                  fontSize: isMobile ? '1rem' : '1.5rem',
+                  lineHeight: 1
+                }}
+              >
+                CRANE d-HDSI Dataspace
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: isMobile ? '0.6rem' : '1.1rem',
+                }}
+              >
+                Sweden - Region Västerbotten
+              </Typography>
+          </Box>
           <AppBarMenu firstName={""} email={""} lastVisited={""} />
         </Toolbar>
       </AppBar>

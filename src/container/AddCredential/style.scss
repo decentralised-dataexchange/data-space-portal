@@ -1,10 +1,49 @@
-.credentialContainer {
+.drawerContent {
+    position: relative;
+
     .MuiButtonBase-root {
         text-transform: unset;
     }
 
-    .btn {
-        width: 100%;
+    .btnContainer {
+        .btn {
+            width: 100%;
+        }
+    }
+
+    .titleContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .contentConatainer {
+        flex-grow: 1;
+        padding: 10px;
+        overflow-y: auto;
+        height: calc(100% - 22%);
+    }
+
+    .businessInfo {
+
+        .itemContainer {
+            li {
+                background: #e5e5e5;
+                padding: 10px;
+            }
+
+            .itemTextContainer {
+                border-radius: 30px;
+                border: 1px solid #ccc;
+                background: #FFF;
+                padding: 20px;
+                width: 100%;
+            }
+        }
+
+        .ml-2 {
+            margin-left: 20px;
+        }
     }
 
     .cancelBtn {
@@ -19,5 +58,8 @@
         border: 1px solid gray;
         background: #000;
         color: #FFF;
+        &:hover {
+            background: #000;
+        }
     }
 }

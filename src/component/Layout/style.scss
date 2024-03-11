@@ -1,10 +1,19 @@
+@use '../../../public/sass/helpers/breakpoints';
+
 .appBar {
     margin-top: 100px;
 }
 
-.pageContainer {
-    padding: 0 15px 15px 15px;
+@include breakpoints.tabletAndDown {
+    .appBar {
+        margin-left: 0px !important;
+    }   
+    .pageContainer {
+        padding: 0 15px 15px 15px !important;
+    }
 }
+
+
 
 .pe-none {
     pointer-events: none;

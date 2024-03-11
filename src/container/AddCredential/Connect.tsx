@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 const ConnectComponent = ({ callRightSideDrawer }) => {
@@ -19,8 +19,8 @@ const ConnectComponent = ({ callRightSideDrawer }) => {
                     <FormControl fullWidth variant="outlined">
                         <Select
                             labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            label="Label"
+                            // id="demo-simple-select-outlined"
+                            // label="Label"
                         >
                             <MenuItem value={10}>Sweden</MenuItem>
                             <MenuItem value={20}>Sweden 2</MenuItem>
@@ -37,8 +37,8 @@ const ConnectComponent = ({ callRightSideDrawer }) => {
                     <FormControl fullWidth variant="outlined">
                         <Select
                             labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            label="Label"
+                            // id="demo-simple-select-outlined"
+                            // label="Label"
                         >
                             <MenuItem value={10}>Bolagsverket</MenuItem>
                             <MenuItem value={20}>Bolagsverket 2</MenuItem>

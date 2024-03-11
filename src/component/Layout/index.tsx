@@ -15,7 +15,7 @@ interface AppBarProps extends MuiAppBarProps {
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
   const isLoginUrl = pathname == '/login';
-  const [ open, setOpen ] = useState<boolean>(pathname == '/' ? false : true);
+  const [ open, setOpen ] = useState<boolean>(false);
 
   useEffect(() => {
     pathname == '/' && setOpen(false);
