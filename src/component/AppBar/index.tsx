@@ -30,7 +30,7 @@ export default function MyAppBar({handleOpenMenu}) {
             <MenuIcon style={{ height: 60, width: 60 }} />
           </IconButton>
           <img className='logoImg' src={Logo} alt="Logo" />
-          <Box className='d-flex flex-column'>
+          <Box className='flex-column'>
             <Typography
                 sx={{
                   fontSize: isMobile ? '1rem' : '1.5rem',

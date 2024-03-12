@@ -38,7 +38,9 @@ const TableRows: FC<TableRowProps> = ({
             key={`Row-Cell-${index}`}
             width={tHead?.bodyWidth}
           >
-            {formatDatafield(tHead?.field, item)}
+            {tHead?.field
+              ? formatDatafield(tHead?.field, item)
+              : tHead?.cell(item, tHead?.reference ? tHead?.reference : i )}
           </TableCell>
         ))}
       </TableRow>

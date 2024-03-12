@@ -15,7 +15,7 @@ import './style.scss';
 
 const drawerWidth = 240;
 
-export default function MenuBar({ open }) {
+export default function MenuBar({ open, handleDrawerClose }) {
   const { isMobile } = getDevice();
   const renderIcon = (icon) => {
     switch (icon) {
@@ -28,6 +28,8 @@ export default function MenuBar({ open }) {
     }
   }
 
+
+
   return (
     <Drawer
       sx={{
@@ -39,10 +41,11 @@ export default function MenuBar({ open }) {
         },
       }}
       ModalProps={{
-        keepMounted: isMobile ? true : false,
+        keepMounted: true,
       }}
       variant={isMobile ? 'temporary' : 'persistent'}
       anchor="left"
+      onClose={handleDrawerClose}
       open={open}
     >
       <List>

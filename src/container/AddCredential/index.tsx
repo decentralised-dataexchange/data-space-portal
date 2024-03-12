@@ -43,7 +43,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
                     <Typography variant="h5">
                         <Box component={"span"} alignItems="center"><ArrowBackIosNewIcon /></Box> ADD CREDENTIAL - {contentArray[currentIndex].headerName}</Typography>
                 </Box>
-                <Box onClick={callRightSideDrawer}>
+                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer" }}>
                     <CloseIcon />
                 </Box>
             </Box>
