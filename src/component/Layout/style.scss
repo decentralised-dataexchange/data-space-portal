@@ -15,6 +15,9 @@ body {
     .pageContainer {
         padding: 0 15px 15px 15px !important;
     }
+    .MuiDrawer-docked, .MuiDrawer-paperAnchorLeft {
+        margin-top: 0;
+    }
 }
 
 
@@ -54,4 +57,13 @@ body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     line-height: 1.5;
     letter-spacing: 0.00938em;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.space-between {
+    align-items: center;
+    justify-content: space-between;
 }

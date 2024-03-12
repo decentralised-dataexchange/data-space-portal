@@ -7,22 +7,24 @@ import { Box, styled } from '@mui/material';
 import './style.scss';
 import Breadcrumb from '../BreadCrumbs';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { getDevice } from '../../utils/utils';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
 const Layout = ({ children }) => {
+  const { isMobile } = getDevice();
   const { pathname } = useLocation();
   const isLoginUrl = pathname == '/login';
-  const [ open, setOpen ] = useState<boolean>(false);
+  const [ open, setOpen ] = useState<boolean>(true);
 
   useEffect(() => {
-    pathname == '/' && setOpen(false);
+    pathname == '/' ? setOpen(false) : setOpen(true) ;
   }, [pathname]);
 
   const handleOpenMenu = () => {
-    setOpen(!open)
+    setOpen(!open);
   }
   const drawerWidth = 240;
   const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -59,6 +61,10 @@ const Layout = ({ children }) => {
       }),
     }),
   }));
+
+  const handleDrawerClose = () => {
+    setOpen(!open);
+  }
   
   return (
     <>
@@ -68,8 +74,8 @@ const Layout = ({ children }) => {
             <AppBar handleOpenMenu={handleOpenMenu} />
           </AppMenuBar>
          <Box sx={{ display: 'flex' }}>
-            <MenuBar open={open}/>
-          <Main className='appBar' open={open}>
+            <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
+          <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
             { pathname != "/" && <Breadcrumb /> }
             {children}
           </Main>

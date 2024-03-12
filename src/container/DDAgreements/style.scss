@@ -1,8 +1,21 @@
-.dd-titleTxt {
-    font-weight: 400;
-    font-size: 1.4rem;
-    margin: 0;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1.5;
-    letter-spacing: 0.00938em;
+
+.dd-container {
+    .dd-titleTxt {
+        font-weight: 400;
+        font-size: 1.4rem;
+        margin: 0;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        line-height: 1.5;
+        letter-spacing: 0.00938em;
+    }
+
+    th {
+        font-size: 1.2rem;
+        color: #3f3e3e;
+    }
+
+    td {
+        font-size: 1.1rem;
+        color: #3f3e3e;
+    }
 }
