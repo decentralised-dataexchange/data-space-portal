@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { gridSpacing } from '../../constants/constant';
 import DataSourceCard from './DataSource';
 import './style.scss';
+import Footer from "../../component/Footer";
 
 const LandingPage = () => {
     const [selectedValue, setSelectedValue] = useState('option 1')
@@ -58,47 +59,51 @@ const LandingPage = () => {
         }
     ]
     return (
-        <Box className="homeContainer">
-            <Box component="div" className="breadCrumbContainer">
-                <Typography gutterBottom component="div">
-                    {"HOME"}
-                </Typography>
-            </Box>
-            <Box component="div" className='dataSourceSelectionContainer'>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item lg={6} md={6} sm={6} xs={12}>
-                        <Typography gutterBottom component="div">DATA SOURCE</Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={12} container justifyContent={'flex-end'}>
-                        <Box component="div">
-                            <FormControl component="fieldset">
-                                <RadioGroup row value={selectedValue} onChange={handleChange}>
-                                    <FormControlLabel value={1} control={<Radio />} label="All" labelPlacement='end' />
-                                    <FormControlLabel value={2} control={<Radio />} label="Organisations" labelPlacement='end' />
-                                    <FormControlLabel value={3} control={<Radio />} label="Devices" labelPlacement='end' />
-                                </RadioGroup>
-                            </FormControl>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </Box>
-            <Box className="landingPageContainer">
-                <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12}>
-                        <Grid container spacing={gridSpacing}>
-                            {datasourceItems.map((dataSource) => {
-                                return (
-                                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                                        <DataSourceCard logo={dataSource.url} description={dataSource.description}/>
-                                    </Grid>
-                                )
-                            })
-                            }
+        <>
+            <Box className="homeContainer">
+                <Box component="div" className="breadCrumbContainer">
+                    <Typography gutterBottom component="div">
+                        {"HOME"}
+                    </Typography>
+                </Box>
+                <Box component="div" className='dataSourceSelectionContainer'>
+                    <Grid container spacing={gridSpacing}>
+                        <Grid item lg={6} md={6} sm={6} xs={12}>
+                            <Typography gutterBottom component="div">DATA SOURCE</Typography>
+                        </Grid>
+                        <Grid item lg={6} md={6} sm={6} xs={12} container justifyContent={'flex-end'}>
+                            <Box component="div">
+                                <FormControl component="fieldset">
+                                    <RadioGroup row value={selectedValue} onChange={handleChange}>
+                                        <FormControlLabel value={1} control={<Radio />} label="All" labelPlacement='end' />
+                                        <FormControlLabel value={2} control={<Radio />} label="Organisations" labelPlacement='end' />
+                                        <FormControlLabel value={3} control={<Radio />} label="Devices" labelPlacement='end' />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Box>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Box>
+                <Box className="landingPageContainer">
+                    <Grid container spacing={gridSpacing}>
+                        <Grid item xs={12}>
+                            <Grid container spacing={gridSpacing}>
+                                {datasourceItems.map((dataSource) => {
+                                    return (
+                                        <Grid item lg={4} md={6} sm={6} xs={12}>
+                                            <DataSourceCard logo={dataSource.url} description={dataSource.description} />
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Box>
             </Box>
-        </Box>
+            <Box className="footerContainer">
+                <Footer txt='© NordXData Foundation (CRANE - dHDSI ) -  ' direction="row"/>
+            </Box>
+    </>
     )
 }
 

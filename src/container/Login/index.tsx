@@ -119,7 +119,7 @@ const Login = () => {
               />
             </Box>
             <FooterContainer>
-              <Footer version='v2024.03.1' />
+              <Footer txt='v2024.03.1' />
             </FooterContainer>
         </Box>
     )
