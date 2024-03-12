@@ -2,15 +2,16 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 
 interface Props {
-  version: String;
+  txt: string;
+  direction?: string
 }
 const Footer = (props: Props) => {
-  const { version } = props;
+  const { txt, direction } = props;
   return (
-    <Box display={"flex"} flexDirection="column">
-      <Typography variant="caption">{version}</Typography>
+    <Box display={"flex"} flexDirection={direction ? "row" : "column"}>
+      <Typography variant="caption">{txt}</Typography>
       <Typography color="grey" variant="caption">
-        Powered by{" "}
+        &nbsp;Powered by{" "}
         <a
           href="https://igrant.io/"
           target="blank"

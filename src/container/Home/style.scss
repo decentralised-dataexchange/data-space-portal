@@ -40,7 +40,8 @@
     }
 }
 .homeContainer {
-    padding: 0 20px;
+    padding: 0 25px 25px 25px;
+    border-bottom: 2px solid #d6d6d6;
 }
 @include breakpoints.tabletAndDown {
     .homeContainer {
@@ -59,4 +60,15 @@
 
 .dataSourceSelectionContainer {
     padding: 5px 0;
+}
+
+.footerContainer {
+    padding: 1.563rem;
+    span {
+    font-size: 0.85rem;
+    color: grey;
+    }
+    a {
+        color: grey !important;
+    }
 }

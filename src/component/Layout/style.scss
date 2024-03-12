@@ -1,5 +1,9 @@
 @use '../../../public/sass/helpers/breakpoints';
 
+body {
+    margin: 0;
+}
+
 .appBar {
     margin-top: 100px;
 }
