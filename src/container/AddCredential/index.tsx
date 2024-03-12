@@ -53,7 +53,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
                     Cancel
                 </Button>
                 <Button onClick={handleAddComponent} className="btn nextBtn" size="small" >
-                    Next
+                    {currentIndex == 2 ? 'Confirm' : 'Next'}
                 </Button>
             </Box>
         </Box>

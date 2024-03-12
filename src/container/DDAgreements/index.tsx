@@ -9,7 +9,7 @@ const DDAgreements = () => {
         <Box sx={{ margin: '15px 10px'}}>
             <span className="dd-titleTxt">Data Disclosure Agreements</span>
             <Box sx={{ marginTop: '15px'}}>
-                <BasicTable tableData={TableData} tableField={TableHead} />
+                <BasicTable tableData={TableData} tableField={TableHead}/>
             </Box>
         </Box>
     )
