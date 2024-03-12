@@ -62,4 +62,37 @@
             background: #000;
         }
     }
+
+    .confirmTable {
+        th {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        height: 600px;
+    }
+
+    .mui-table-bordered th:not(:last-child), .mui-table-bordered tr td:not(:last-child) {
+        border-right: 2px solid #000;
+    }
+    .mui-table-bordered tr:not(:last-child) {
+        border-bottom: 2px solid #000;
+    }
+
+    table {
+        border: 2px solid #000;
+        td {
+            font-size: 1rem;
+            width: 50%;
+        }
+    }
+
+    .certificateTxt {
+        font-weight: 400;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        margin: 0;
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+        line-height: 1.5;
+        letter-spacing: 0.00938em;
+    }
 }

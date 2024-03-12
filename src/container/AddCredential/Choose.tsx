@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import './style.scss'
 import { CheckBox } from '@mui/icons-material';
-import CachedIcon from '@mui/icons-material/Cached';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 
 const listItemData = () => {
     return (
@@ -44,7 +44,7 @@ const ChooseComponent = ({ callRightSideDrawer }) => {
                                         <Typography fontStyle="italic">Issues by: Bolagsverket, Sweden</Typography>
                                     </Grid>
                                     <Grid item xs={1}>
-                                        <CachedIcon />
+                                        <QrCodeIcon color="success"/>
                                     </Grid>
                                 </Grid>
                             } />

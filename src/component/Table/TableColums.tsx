@@ -21,8 +21,8 @@ type TableColumnProps = {
 
 const TableColumns: FC<TableColumnProps> = ({
   tableData,
-  tableKey = 'Products',
 }: TableColumnProps) => {
+  console.log(tableData, "tableDatatableData")
   const formatDatafield = (data, item) => {
     const arr = data?.split('.');
     let a = null;
@@ -31,9 +31,8 @@ const TableColumns: FC<TableColumnProps> = ({
   };
 
   const renderTableColoumn = () =>
-    tableData?.[`${tableKey}`].map((item, i) => (
+    tableData?.map((item, i) => (
       <TableRow key={`Row-${i}`}>
-        <TableCell>{i == 0 ? tableData?.companyName : ''}</TableCell>
         {Object.keys(item)
           .filter((t) => t != 'id')
           .map((tHead, index) => (
