@@ -1,7 +1,7 @@
 .no-verify {
     margin: 0 10px 0 10px;
     color: #d80606;
-    width: 1.2em !important;
+    width: 1em !important;
     height: 1.2em !important;
 }
 
@@ -15,9 +15,18 @@
 .add-credential {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     text-decoration: underline;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #d80606;
     cursor: pointer;
+}
+
+.edit {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 1rem;
+    color: #000;
+    cursor: pointer;
+    position: absolute;
+    right: 18px;
 }
 
 .txtOverview {

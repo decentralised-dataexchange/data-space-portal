@@ -10,6 +10,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import companyLogo from '../../../public/img/dexcom.png';
+import { useTranslation } from "react-i18next";
 
 interface DataSourceCardProp {
     description: string,
@@ -17,9 +18,10 @@ interface DataSourceCardProp {
 }
 
 const DataSourceCard = ({ logo, description }: DataSourceCardProp) => {
-    const [ moreOrLessTxt, setMoreOrLessTxt] = useState('Read More....')
+    const { t } = useTranslation("translation");
+    const [ moreOrLessTxt, setMoreOrLessTxt] = useState(`${t('home.readMore')}`)
     const readMore = (txt) => {
-        setMoreOrLessTxt(txt === 'Read More....' ? 'Read Less....' : 'Read More....');
+        setMoreOrLessTxt(txt === `${t('home.readMore')}` ? `${t('home.readLess')}` : `${t('home.readMore')}`);
     }
     return (
         <>
@@ -42,10 +44,10 @@ const DataSourceCard = ({ logo, description }: DataSourceCardProp) => {
                         </Typography>
                         <Box className="actionBtn">
                             <Button size="small" >
-                                Sign Data Disclosure Agreement
+                                {t('home.btn-signData')}
                             </Button>
                             <Button size="small">
-                                View MetaData and APIs
+                                {t('home.btn-viewMetadata')}
                             </Button>
                         </Box>
                     </CardContent>

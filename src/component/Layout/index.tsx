@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import AppBar  from '../AppBar';
 import { useLocation } from 'react-router-dom';
-import MenuBar from '../MenuBar';
+import MenuBar from '../SideBar';
 import { Box, styled } from '@mui/material';
 import './style.scss';
 import Breadcrumb from '../BreadCrumbs';

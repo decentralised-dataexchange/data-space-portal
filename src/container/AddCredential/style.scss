@@ -21,7 +21,7 @@
         flex-grow: 1;
         padding: 10px;
         overflow-y: auto;
-        height: calc(100% - 22%);
+        height: calc(100% - 25%);
     }
 
     .businessInfo {
@@ -71,9 +71,11 @@
         height: 600px;
     }
 
-    .mui-table-bordered th:not(:last-child), .mui-table-bordered tr td:not(:last-child) {
+    .mui-table-bordered th:not(:last-child),
+    .mui-table-bordered tr td:not(:last-child) {
         border-right: 2px solid #000;
     }
+
     .mui-table-bordered tr:not(:last-child) {
         border-bottom: 2px solid #000;
     }

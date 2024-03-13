@@ -1,0 +1,97 @@
+{
+  "route": {
+    "login": "login",
+    "start": "start",
+    "dd-agreements": "dd-agreements"
+
+  },
+  "login": {
+    "header": "CRANE dHDSI - Organisation dashboard",
+    "userId": "User ID",
+    "password": "Lösenord",
+    "rememberMe": "Kom ihåg mig",
+    "errorMessage": "Ogiltiga inloggningsuppgifter. Dubbelkolla ditt användarnamn och lösenord och försök igen."
+  },
+  "breadcrumbs" : {
+    "home" : "Home"
+  },
+  "home": {
+    "header": "HOME",
+    "title" : "DATA SOURCE",
+    "check-box-all": "All",
+    "check-box-org": "Organisations",
+    "check-box-devices": "Devices",
+    "readMore": "Read More....",
+    "readLess": "Read Less....",
+    "btn-signData" : "Sign Data Disclosure Agreement",
+    "btn-viewMetadata": "View MetaData and APIs",
+    "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) "
+  },
+  "appBar": {
+    "header": "CRANE d-HDSI Dataspace",
+    "subHeader": "Sweden - Region Västerbotten"
+  },
+  "sideBar": {
+    "gettingStarted": "Starta",
+    "dataAgreements": "Data Disclosure Agreements"
+  },
+  "gettingStarted": {
+    "sector": "Sektor",
+    "overView": "Översikt",
+    "organisationName": "Organisation Name",
+    "addCredential": "Add Credentials",
+    "edit": "Redigera",
+    "policyUrl": "Policy URL",
+    "location": "Plats",
+    "descriptionPlaceholder": "Description of organisation with character limit of 500 characters",
+    "prepareDA": "Förbereda Dataavtal",
+    "manageAccount": "Manage Account",
+    "developerDocumentation": "Utvecklardokumentation",
+    "connectWalletTitle": "ADD CREDENTIAL",
+    "connect": "CONNECT",
+    "choose": "CHOOSE",
+    "confirm": "CONFIRM",
+    "connectDescription" : "Your business is currently unverified. Verify your business by adding credentials from the list of valid issuers. Select your issuers and continue.",
+    "country": "Country",
+    "trustedIssuers": "Trusted Issuers",
+    "walletTitle": "Select your wallet source and share",
+    "cloudWallet": "Cloud Wallet",
+    "mobileWallet": "Mobile Wallet",
+    "walletDescription": "Paste the connection invitation and share your proof of business credentials on",
+    "chooseDescription": "Your business is currently unverified. Add credentials from the connected wallet to verify your business.",
+    "chooseWalletTitle": "CONNECTED WALLET: BYGG AB, SWEDEN",
+    "chooseWalletTwo": "North Health Innovation AB",
+    "chooseWalletThree": "Issues by: Bolagsverket, Sweden",
+    "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business."
+  },
+
+
+  "common": {
+    "certificateOfRegistration": "CERTIFICATION OF REGISTRATION",
+    "language": "Språk",
+    "poweredby": "Powered by",
+    "home": "Hem",
+    "edit": "Redigera",
+    "overView": "Översikt",
+    "policyUrl": "Policy URL",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "all": "Alla",
+    "noResultsFound": "Inga resultat hittades",
+    "description": "Beskrivning",
+    "true": "Sant",
+    "false": "FALSKT",
+    "delete": "RADERA",
+    "close": "STÄNG",
+    "viewAll": "Visa alla",
+    "timestamp": "Tidsstämpel",
+    "status": "Status",
+    "name": "Namn"
+  },
+
+  "dataAgreements": {
+    "title": "Data Disclosure Agreements",
+    "all": "All",
+    "list": "List"
+  }
+}
