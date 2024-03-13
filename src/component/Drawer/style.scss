@@ -2,12 +2,14 @@
     .MuiDrawer-paper {
         background: rgb(238, 238, 238);
         border: 2px solid rgb(133, 133, 133);
+        padding: 20px;
+        overflow: hidden;
     }
 }
 
 .drawerContent {
-    width: 450px;
-    padding: 20px;
+    max-width: 450px;
+    height: 100%;
 
     .businessInfo {
         padding: 10px 0;

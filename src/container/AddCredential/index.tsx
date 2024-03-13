@@ -7,20 +7,21 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import '../../../public/sass/style.scss'
 import './style.scss'
+import { useTranslation } from 'react-i18next';
 
 const AddCredentialComponent = ({ callRightSideDrawer }) => {
-
+    const { t } = useTranslation('translation');
     const contentArray = [
         {
-            headerName: 'CONNECT',
+            headerName: `${t('gettingStarted.connect')}`,
             component: <ConnectComponent callRightSideDrawer={callRightSideDrawer} />,
         },
         {
-            headerName: 'CHOOSE',
+            headerName: `${t('gettingStarted.choose')}`,
             component: <ChooseComponent callRightSideDrawer={callRightSideDrawer} />,
         },
         {
-            headerName: 'CONFIRM',
+            headerName: `${t('gettingStarted.confirm')}`,
             component: <ConfirmComponent callRightSideDrawer={callRightSideDrawer} />,
         }
 
@@ -39,10 +40,8 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
             className="drawerContent"
         >
             <Box className="titleContainer">
-                <Box>
-                    <Typography variant="h5">
-                        <Box component={"span"} alignItems="center"><ArrowBackIosNewIcon /></Box> ADD CREDENTIAL - {contentArray[currentIndex].headerName}</Typography>
-                </Box>
+                <Box component={"span"} alignItems="center"><ArrowBackIosNewIcon /></Box>
+                <Typography variant="h5">{t('gettingStarted.connectWalletTitle')} - {contentArray[currentIndex].headerName}</Typography>
                 <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer" }}>
                     <CloseIcon />
                 </Box>
@@ -50,10 +49,10 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
             <Box className="contentConatainer">{contentArray[currentIndex].component}</Box>
             <Box className="btnContainer">
                 <Button className="btn cancelBtn" size="small" >
-                    Cancel
+                    {t('common.cancel')}
                 </Button>
                 <Button onClick={handleAddComponent} className="btn nextBtn" size="small" >
-                    {currentIndex == 2 ? 'Confirm' : 'Next'}
+                    {currentIndex == 2 ? `${t('common.confirm')}` : `${t('common.next')}`}
                 </Button>
             </Box>
         </Box>
@@ -61,6 +60,3 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
 }
 
 export default AddCredentialComponent;
-
-
-

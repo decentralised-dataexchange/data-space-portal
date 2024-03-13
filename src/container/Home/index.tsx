@@ -13,8 +13,10 @@ import { gridSpacing } from '../../constants/constant';
 import DataSourceCard from './DataSource';
 import './style.scss';
 import Footer from "../../component/Footer";
+import { useTranslation } from "react-i18next";
 
 const LandingPage = () => {
+    const { t } = useTranslation("translation");
     const [selectedValue, setSelectedValue] = useState('option 1')
 
     const handleChange = (event) => {
@@ -63,21 +65,21 @@ const LandingPage = () => {
             <Box className="homeContainer">
                 <Box component="div" className="breadCrumbContainer">
                     <Typography gutterBottom component="div">
-                        {"HOME"}
+                        {t('home.header')}
                     </Typography>
                 </Box>
                 <Box component="div" className='dataSourceSelectionContainer'>
                     <Grid container spacing={gridSpacing}>
-                        <Grid item lg={6} md={6} sm={6} xs={12}>
-                            <Typography gutterBottom component="div">DATA SOURCE</Typography>
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <Box className="title"><Typography gutterBottom component="div">{t('home.title')}</Typography></Box>
                         </Grid>
-                        <Grid item lg={6} md={6} sm={6} xs={12} container justifyContent={'flex-end'}>
+                        <Grid className='pt-0' item lg={6} md={6} sm={12} xs={12} container justifyContent={'flex-end'}>
                             <Box component="div">
                                 <FormControl component="fieldset">
                                     <RadioGroup row value={selectedValue} onChange={handleChange}>
-                                        <FormControlLabel value={1} control={<Radio />} label="All" labelPlacement='end' />
-                                        <FormControlLabel value={2} control={<Radio />} label="Organisations" labelPlacement='end' />
-                                        <FormControlLabel value={3} control={<Radio />} label="Devices" labelPlacement='end' />
+                                        <FormControlLabel value={1} control={<Radio />} label={t('home.check-box-all')} labelPlacement='end' />
+                                        <FormControlLabel value={2} control={<Radio />} label={t('home.check-box-org')} labelPlacement='end' />
+                                        <FormControlLabel value={3} control={<Radio />} label={t('home.check-box-devices')} labelPlacement='end' />
                                     </RadioGroup>
                                 </FormControl>
                             </Box>
@@ -101,7 +103,7 @@ const LandingPage = () => {
                 </Box>
             </Box>
             <Box className="footerContainer">
-                <Footer txt='© NordXData Foundation (CRANE - dHDSI ) -  ' direction="row"/>
+                <Footer txt={t('home.footerTxt')} direction="row"/>
             </Box>
     </>
     )

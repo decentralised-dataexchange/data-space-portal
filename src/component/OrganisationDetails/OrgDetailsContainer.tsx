@@ -5,8 +5,8 @@ import OrgLogoImageUpload from "../../component/OrganisationDetails/OrgLogoImage
 import DrawerComponent from "../../component/Drawer";
 import AddCredentialComponent from "../../container/AddCredential";
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import './style.scss';
+import { useTranslation } from "react-i18next";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -40,6 +40,7 @@ type Props = {
 };
 
 const OrganisationDetailsContainer = (props: Props) => {
+  const { t } = useTranslation('translation');
   const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
   const {
     editMode,
@@ -93,32 +94,34 @@ const OrganisationDetailsContainer = (props: Props) => {
           >
               <>
               <Box sx={{ display: "flex", alignItems: 'center'}}>
-              <Typography variant="h5" fontWeight="bold" mt={"-4px"}>
-                  Organisation Name
-                </Typography>
-                <DoNotDisturbOnIcon className="no-verify" />
-                {/* <CheckCircleIcon className="verify"/> */}
-                <p className="add-credential" onClick={callRightSideDrawer}>
-                  (Add Credentials)
-                </p>
+                  <Typography variant="h6" fontWeight="bold" mt={"-4px"}>
+                    {t('gettingStarted.organisationName')}
+                  </Typography>
+                  <DoNotDisturbOnIcon className="no-verify" />
+                  <p className="add-credential" onClick={callRightSideDrawer}>
+                  {(t('gettingStarted.addCredential'))}
+                  </p>
+                  <p className="edit" onClick={() => {}}>
+                    {(t('gettingStarted.edit'))}
+                  </p>
               </Box>
                 <Typography variant="body2" height="23px">
-                Sector: 
+                {(t('gettingStarted.sector'))}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                  Location
+                {(t('gettingStarted.location'))}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                  Policy URL:
+                {(t('gettingStarted.policyUrl'))}
                 </Typography>
               </>
           </Box>
         </Grid>
       </Grid>
       <Box>
-        <Typography variant="h5" fontWeight="bold" >Overview</Typography>
+        <Typography variant="h6" fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
         <Box className="pt-20">
-          <Typography className="txtOverview" >Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters, Description of the organisation with character limit of 500 characters</Typography>
+          <Typography className="txtOverview" >{(t('gettingStarted.descriptionPlaceholder'))}</Typography>
         </Box>
       </Box>
     </DetailsContainer>

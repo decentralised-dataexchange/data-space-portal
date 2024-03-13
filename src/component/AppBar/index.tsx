@@ -6,8 +6,10 @@ import Logo from "../../../public/img/logo.jpg";
 import './style.scss';
 import { useLocation } from "react-router-dom";
 import { getDevice } from '../../utils/utils'
+import { useTranslation } from "react-i18next";
 
 export default function MyAppBar({handleOpenMenu}) {
+  const { t } = useTranslation('translation');
   const { isMobile } = getDevice();
   const { pathname } = useLocation();
   return (
@@ -37,14 +39,14 @@ export default function MyAppBar({handleOpenMenu}) {
                   lineHeight: 1
                 }}
               >
-                CRANE d-HDSI Dataspace
+                {t('appBar.header')}
               </Typography>
               <Typography
                 sx={{
                   fontSize: isMobile ? '0.6rem' : '1.1rem',
                 }}
               >
-                Sweden - Region Västerbotten
+                {t('appBar.subHeader')}
               </Typography>
           </Box>
           <AppBarMenu firstName={""} email={""} lastVisited={""} />

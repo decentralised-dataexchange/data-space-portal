@@ -2,8 +2,8 @@
 /* eslint-disable import/no-unresolved */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import  { menuList }  from "../MenuBar/menuList";
-import { Box, Breadcrumbs, Typography } from "@mui/material";
+import { Breadcrumbs, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type BreadCrumb = {
   readonly link: string;
@@ -29,17 +29,32 @@ const customStyles: Object = {
 
 const Breadcrumb: React.FC<BreadCrumbProps> = ({
   primaryRoute = "Home",
-  BreadCrumbTitle = menuList,
   sxStyles = customStyles,
   classNames = "breadCrumb",
 }: BreadCrumbProps) => {
+  const { t } = useTranslation('translation');
   const location = useLocation();
   const { pathname } = location;
   const routesPath = pathname.split("/").splice(1, 3);
+
+  const menuList = [
+    {
+        'name': `${t('sideBar.gettingStarted')}`,
+        'icon': 'CottageOutlined',
+        'link': 'start'
+
+    },
+    {
+        'name': `${t('sideBar.dataAgreements')}`,
+        'icon': 'InsertDriveFileOutlined',
+        'link': 'dd-agreements'
+
+    }
+]
   
   // logic for render the breadcrumb names based on route path
   const renderRouteName = (name) => {
-    const filterBreadCrumb = BreadCrumbTitle.filter(
+    const filterBreadCrumb = menuList.filter(
       (breadCrumb) => breadCrumb.link == name
     );
     switch (name) {
@@ -55,15 +70,14 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
       aria-label="breadcrumb"
       sx={sxStyles}
       className={classNames}
-    >
-      
-        <Typography variant="caption" color="text.primary">
-            <Link
-                to="/"
-                id="dashboard"
-                className='link linkfont'>
-                    {primaryRoute}
-            </Link>
+    > 
+      <Typography variant="caption" color="text.primary">
+          <Link
+              to="/"
+              id="dashboard"
+              className='link linkfont'>
+                  {primaryRoute}
+          </Link>
       </Typography>
       {routesPath[0] != "" &&
         routesPath.map((route, i) => (

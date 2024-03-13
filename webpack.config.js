@@ -35,10 +35,6 @@ module.exports = env => ({
                 ],
             },
             {
-                test: /\.json$/,
-                loader: "json-loader"
-            },
-            {
                 test: /\.(ico|jpg|jpeg|png|gif|svg)(\?.*)?$/,
                 exclude:/icons/,
                 use:[

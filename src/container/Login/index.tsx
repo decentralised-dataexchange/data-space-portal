@@ -15,8 +15,11 @@ import { styled } from "@mui/material/styles";
 import Logo from '../../../public/img/logo.jpg';
 import './login.scss'
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+
+  const { t } = useTranslation('translation');
   const navigate = useNavigate()
   const FooterContainer = styled("div")({
     position: "fixed",
@@ -42,7 +45,7 @@ const Login = () => {
               alignItems: "center"
             }}
           >
-            <p className='titleTxt'>CRANE dHDSI - Organisation dashboard</p>
+            <p className='titleTxt'>{t('login.header')}</p>
           </Box>
           <Box className='text-field'>
             <TextField
@@ -55,7 +58,7 @@ const Login = () => {
             //   source="username"
               variant="standard"
               label={false}
-              placeholder='User ID'
+              placeholder={t('login.userId')}
               fullWidth
               InputProps={{
                 startAdornment: (
@@ -74,7 +77,7 @@ const Login = () => {
             //   source="password"
               variant="standard"
               label={false}
-              placeholder='Password'
+              placeholder={t('login.password')}
               fullWidth
               InputProps={{
                 startAdornment: <LockOutlined style={{ color: "#A1A1A1" }} />,
@@ -112,7 +115,7 @@ const Login = () => {
                 }
                 label={
                   <Typography variant="body2">
-                    Remember me
+                    {t('login.rememberMe')}
                   </Typography>
                 }
                 style={{ color: "#A1A1A1" }}

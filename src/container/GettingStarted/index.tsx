@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
 import { useNavigate } from "react-router-dom";
 import OrgCoverImageUpload from "../../component/OrganisationDetails/OrgCoverImageUpload";
-
 import OrganisationDetailsContainer from "../../component/OrganisationDetails/OrgDetailsContainer";
-// import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -37,20 +34,8 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const GettingStarted = () => {
+  const { t } = useTranslation('translation');
   const navigate = useNavigate();
-//   const {
-//     organisationDetails,
-//     logoImageBase64,
-//     coverImageBase64,
-//     setOrganisationDetails,
-//     setCoverImageBase64,
-//     setLogoImageBase64,
-//   } = useContext(OrganizationDetailsCRUDContext);
-
-//   const handleEdit = () => {
-//     setEditMode(!editMode);
-//   };
-
 
   return (
       <Container className='pageContainer'>
@@ -71,7 +56,7 @@ const GettingStarted = () => {
               setLogoImageBase64={() => { } } 
          />
 
-        <DetailsContainer sx={{ flexGrow: 1 }}>
+        <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>
           <Grid container spacing={2}>
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
@@ -79,7 +64,7 @@ const GettingStarted = () => {
                 onClick={() => navigate("/dataagreement")}
               >
                 <Typography variant="body1" color="grey">
-                Prepare DataDisclosure Agreements
+                  {t('gettingStarted.prepareDA')}
                 </Typography>
               </Item>
             </Grid>
@@ -89,7 +74,7 @@ const GettingStarted = () => {
                 onClick={() => navigate("/developerapi")}
               >
                 <Typography variant="body1" color="grey">
-                Manage Accounts
+                {t('gettingStarted.manageAccount')}
                 </Typography>
               </Item>
             </Grid>
@@ -99,7 +84,7 @@ const GettingStarted = () => {
                 onClick={() => navigate("/manageadmin")}
               >
                 <Typography variant="body1" color="grey">
-                Developer Documentations 
+                  {t('gettingStarted.developerDocumentation')} 
                 </Typography>
               </Item>
             </Grid>

@@ -60,6 +60,12 @@
 
 .dataSourceSelectionContainer {
     padding: 5px 0;
+    
+    .title {
+        display: flex;
+        height: 100%;
+        align-items: center;
+    }
 }
 
 .footerContainer {
