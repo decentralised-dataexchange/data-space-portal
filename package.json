@@ -4,8 +4,8 @@
   "description": "An App for Data Space Portal",
   "main": "index.js",
   "scripts": {
-    "api": "json-server --watch  src/mocks/index.js --host  localhost --inline --port 3000",
-    "start": "webpack-dev-server --env development --mode development --hot --host localhost --port 4204 --open",
+    "api": "json-server --watch  src/mocks/index.js --host  localhost --inline --port 3002",
+    "start": "webpack-dev-server --env development --mode development --hot --host localhost --port 3000 --open",
     "build": "webpack --env production --mode=production --profile",
     "lint": "tsc --noEmit && eslint --ext .js,.jsx,.ts,.tsx src/*",
     "lint:fix": "eslint src/* --fix",
