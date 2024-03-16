@@ -2,7 +2,8 @@
   "route": {
     "login": "login",
     "start": "start",
-    "dd-agreements": "dd-agreements"
+    "dd-agreements": "dd-agreements",
+    "account": "account"
 
   },
   "login": {
@@ -33,7 +34,11 @@
   },
   "sideBar": {
     "gettingStarted": "Getting Started",
-    "dataAgreements": "Data Disclosure Agreements"
+    "dataAgreements": "Data Disclosure Agreements",
+    "account": "Account",
+    "manageAdmin": "Manage Admin",
+    "developerApis": "Developer APIs",
+    "dispConnections": "DISP Connections"
   },
   "gettingStarted": {
     "sector": "Sector:",

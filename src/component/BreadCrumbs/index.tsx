@@ -49,6 +49,12 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
         'icon': 'InsertDriveFileOutlined',
         'link': 'dd-agreements'
 
+    },
+    {
+      'name': `${t('sideBar.account')}`,
+      'icon': 'LockOutlined',
+      'link': 'account'
+
     }
 ]
   
