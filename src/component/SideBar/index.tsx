@@ -1,31 +1,37 @@
-import * as React from 'react';
-import { 
-    List,
+import React, { useState } from 'react';
+import {
     Drawer, 
-    ListItemButton, 
     ListItemIcon, 
-    ListItemText, 
-    ListItem
+    ListItemText,
+    MenuItem,
+    Typography,
+    Box
 } from '@mui/material';
-import { CottageOutlined, InsertDriveFileOutlined } from '@mui/icons-material';
+import { CottageOutlined, InsertDriveFileOutlined, LockOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { getDevice } from '../../utils/utils';
 import './style.scss';
 import { useTranslation } from 'react-i18next';
+import SubMenu from './SubMenu';
+import Footer from '../../component/Footer';
+import LanguageSelector from '../../component/LanguageSelector';
 
-const drawerWidth = 240;
-
+const drawerWidth = 270;
 export default function MenuBar({ open, handleDrawerClose }) {
   const { t } = useTranslation('translation');
+  const [ isSubMenuOpen, setSubMenuOpen ] = useState(false);
   const { isMobile } = getDevice();
+
   const renderIcon = (icon) => {
     switch (icon) {
       case "CottageOutlined":
         return <CottageOutlined />
       case "InsertDriveFileOutlined":
         return <InsertDriveFileOutlined />
+      case "LockOutlined":
+        return <LockOutlined />
       default:
-        return "";
+        return <></>;
     }
   }
 
@@ -33,17 +39,41 @@ export default function MenuBar({ open, handleDrawerClose }) {
     {
         'name': `${t('sideBar.gettingStarted')}`,
         'icon': 'CottageOutlined',
-        'link': 'start'
+        'link': 'start',
+        'subMenu': []
 
     },
     {
         'name': `${t('sideBar.dataAgreements')}`,
         'icon': 'InsertDriveFileOutlined',
-        'link': 'dd-agreements'
+        'link': 'dd-agreements',
+        'subMenu': []
 
+    },
+    {
+      'name': `${t('sideBar.account')}`,
+      'icon': 'LockOutlined',
+      'link': 'account',
+      'subMenu': [
+        {
+          'name': `${t('sideBar.manageAdmin')}`,
+          'link': 'manage-admin',
+        },
+        {
+          'name': `${t('sideBar.developerApis')}`,
+          'link': 'developer-apis',
+        },
+        {
+          'name': `${t('sideBar.dispConnections')}`,
+          'link': 'disp-connections',
+        }
+      ]
     }
-]
+  ]
 
+  const handleToggle = () => {
+    setSubMenuOpen(!isSubMenuOpen);
+  }
   return (
     <Drawer
       sx={{
@@ -62,20 +92,51 @@ export default function MenuBar({ open, handleDrawerClose }) {
       onClose={handleDrawerClose}
       open={open}
     >
-      <List>
-        {menuList.map((list) => (
-          <ListItem key={list?.name} disablePadding>
-            <Link className="link" to={list?.link}>
-            <ListItemButton>
-              <ListItemIcon>
-               {renderIcon(list?.icon)}
-              </ListItemIcon>
-              <ListItemText primary={list?.name} />
-            </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
+      {menuList.map((list) => {
+        return(
+          <> 
+            {!list?.subMenu.length ? 
+              <MenuItem className='p-15' key={list?.name}>
+                <Link className="link d-flex" to={list?.link} key={list?.name}>
+                    <ListItemIcon>
+                      {renderIcon(list?.icon)}
+                    </ListItemIcon>
+                    <Typography variant="inherit" ml={.5} color="textSecondary" >
+                      {list?.name}
+                    </Typography>
+                </Link>
+              </MenuItem> 
+              : 
+              <SubMenu
+                handleToggle={() => handleToggle()}
+                isOpen={isSubMenuOpen}
+                name={t('sideBar.account')}
+                icon={renderIcon(list?.icon)}
+                dense={true}
+              >
+                {list.subMenu.map((menu) => (
+                  <MenuItem key={menu?.name} className='p-15'>
+                    <Link className="link" to={menu?.link} key={menu?.name}>
+                      <ListItemText primary={menu?.name} />
+                    </Link>
+                  </MenuItem> 
+                ))
+                }
+              </SubMenu>
+            }
+          </>
+        )
+      })}
+      <Box
+          sx={{
+            marginTop: "auto",
+            paddingBottom: 15,
+            textAlign: "center",
+          }}
+        >
+          <LanguageSelector />
+          <Footer txt='2023.11.4' />
+        </Box>
     </Drawer>
   );
 }

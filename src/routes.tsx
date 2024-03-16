@@ -14,6 +14,7 @@ const AppRouter = () => {
       <Route path={`/${t("route.login")}`} element={<Login />} />
       <Route path={`/${t("route.start")}`} element={<GettingStarted />} />
       <Route path={`/${t("route.dd-agreements")}`} element={<DDAgreements />} />
+      <Route path={`/${t("route.account")}`} element={<DDAgreements />} />
     </Routes>
   );
 };

@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
   const handleOpenMenu = () => {
     setOpen(!open);
   }
-  const drawerWidth = 240;
+  const drawerWidth = 270;
   const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
   }>(({ theme, open }) => ({
