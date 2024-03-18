@@ -1,6 +1,5 @@
 .drawerContainer {
     .MuiDrawer-paper {
-        background: rgb(238, 238, 238);
         border: 2px solid rgb(133, 133, 133);
         padding: 20px;
         overflow: hidden;
@@ -8,7 +7,7 @@
 }
 
 .drawerContent {
-    max-width: 450px;
+    max-width: 500px;
     height: 100%;
 
     .businessInfo {
@@ -19,7 +18,7 @@
         padding-top: 20px;
 
         .walletInfo {
-            background-color: rgb(226, 226, 226);
+            background-color: rgb(247 247 247);
             border: 1px solid rgb(173, 173, 173);
             height: 220px;
             padding: 35px;

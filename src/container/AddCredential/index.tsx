@@ -15,6 +15,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
         {
             headerName: `${t('gettingStarted.connect')}`,
             component: <ConnectComponent callRightSideDrawer={callRightSideDrawer} />,
+
         },
         {
             headerName: `${t('gettingStarted.choose')}`,
@@ -28,11 +29,19 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
 
     ]
     const [currentIndex, setCurrentIndex] = useState(0);
-    const handleAddComponent = () => {
+    const handleAddComponent = (index) => {
         if (currentIndex < contentArray.length - 1) {
             setCurrentIndex(currentIndex + 1);
+        } else if(index == 2) {
+            setCurrentIndex(0);
+            callRightSideDrawer();
+            sessionStorage.setItem('isVerify', 'true');
         }
     };
+
+    const handleBack = (index) => {
+        setCurrentIndex(currentIndex - 1);
+    }
 
     return (
         <Box
@@ -40,8 +49,8 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
             className="drawerContent"
         >
             <Box className="titleContainer">
-                <Box component={"span"} alignItems="center"><ArrowBackIosNewIcon /></Box>
-                <Typography variant="h5">{t('gettingStarted.connectWalletTitle')} - {contentArray[currentIndex].headerName}</Typography>
+                <Box component={"span"} alignItems="center">{currentIndex ? <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} onClick={() => handleBack(currentIndex)} /> :'' }</Box>
+                <Typography className='walletHeader'>{t('gettingStarted.connectWalletTitle')} - {contentArray[currentIndex].headerName}</Typography>
                 <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer" }}>
                     <CloseIcon />
                 </Box>
@@ -51,7 +60,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
                 <Button className="btn cancelBtn" size="small" >
                     {t('common.cancel')}
                 </Button>
-                <Button onClick={handleAddComponent} className="btn nextBtn" size="small" >
+                <Button onClick={() => handleAddComponent(currentIndex)} className="btn nextBtn" size="small" >
                     {currentIndex == 2 ? `${t('common.confirm')}` : `${t('common.next')}`}
                 </Button>
             </Box>

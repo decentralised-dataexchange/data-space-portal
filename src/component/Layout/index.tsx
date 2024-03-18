@@ -8,6 +8,7 @@ import './style.scss';
 import Breadcrumb from '../BreadCrumbs';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { getDevice } from '../../utils/utils';
+import Footer from '../Footer';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -78,6 +79,9 @@ const Layout = ({ children }) => {
           <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
             { pathname != "/" && <Breadcrumb /> }
             {children}
+            <Box className="footerContainer d-flex-center">
+              <Footer txt={'v2024.03.1'} />
+            </Box>
           </Main>
           </Box>
           </>

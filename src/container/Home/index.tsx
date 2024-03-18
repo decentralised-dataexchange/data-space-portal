@@ -101,9 +101,6 @@ const LandingPage = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box className="footerContainer d-flex-center">
-                <Footer txt={'v2024.03.1'} />
-            </Box>
     </>
     )
 }
