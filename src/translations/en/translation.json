@@ -18,7 +18,7 @@
   },
   "home": {
     "header": "HOME",
-    "title" : "DATA SOURCE",
+    "title" : "Data Sources",
     "check-box-all": "All",
     "check-box-org": "Organisations",
     "check-box-devices": "Devices",

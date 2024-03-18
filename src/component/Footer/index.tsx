@@ -1,24 +1,24 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-// import LanguageSelector from "../LanguageSelector";
+import LanguageSelector from "../LanguageSelector";
 
 interface Props {
   txt: string;
-  direction?: string
 }
 const Footer = (props: Props) => {
-  const { txt, direction } = props;
+  const { txt } = props;
   return (
-    <Box display={"flex"} flexDirection={direction ? "row" : "column"}>
-      <Typography variant="caption">{txt}</Typography>
-      <Typography color="grey" variant="caption">
+    <Box className=".d-flex-center">
+      <LanguageSelector /> |&nbsp;
+      <Typography variant="caption" color="grey" className="pr-2">{txt}</Typography> |
+      <Typography color="grey" className="pr-2" variant="caption">
         &nbsp;Powered by{" "}
         <a
           href="https://igrant.io/"
           target="blank"
           style={{
             textDecoration: "none",
-            color: "#1890ff",
+            color: "#808080",
           }}
         >
           iGrant.io

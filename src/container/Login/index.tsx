@@ -14,7 +14,7 @@ import Footer from '../../component/Footer';
 import { styled } from "@mui/material/styles";
 import Logo from '../../../public/img/logo.jpg';
 import './login.scss'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const Login = () => {
@@ -36,7 +36,9 @@ const Login = () => {
     return (
         <Box className='loginContainer'>
           <Box className='d-flex-center'>
-            <img className="logoImg" src={Logo} alt="Logo" />
+            <Link to="/">
+              <img className="logoImg" src={Logo} alt="Logo" />
+            </Link>
           </Box>
           <Box
             sx={{

@@ -26,30 +26,29 @@ const LandingPage = () => {
         {
             id: 1,
             logoName: 'symbiome',
-            url: '../../../public/img/dexcom.png',
+            url: 'symbiome',
             description: 'Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,cLorem ipsum dolor sit amet,oLorem ipsum dolor sit amet,nLorem ipsum dolor sit amet,svevctetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse'
         },
         {
             id: 2,
             logoName: 'dexcom',
-            url: '../../../public/img/dexcom.png',
+            url: 'dexcom',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
         },
         {
             id: 3,
             logoName: 'medtronic',
-            url: '../../../public/img/dexcom.png',
+            url: 'medtronic',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
         },
         {
             id: 4,
             logoName: 'glooko',
-            url: '../../../public/img/dexcom.png',
             description: 'Lorem ipsum dolor sit amet, mnsbnsbvssbv bjhjhjanconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
         },
         {
             id: 5,
-            logoName: 'onetwoDiabetes',
+            logoName: 'oneTwo',
             url: '../../../public/img/dexcom.png',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
         },
@@ -63,23 +62,23 @@ const LandingPage = () => {
     return (
         <>
             <Box className="homeContainer">
-                <Box component="div" className="breadCrumbContainer">
+                {/* <Box component="div" className="breadCrumbContainer">
                     <Typography gutterBottom component="div">
                         {t('home.header')}
                     </Typography>
-                </Box>
+                </Box> */}
                 <Box component="div" className='dataSourceSelectionContainer'>
                     <Grid container spacing={gridSpacing}>
                         <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <Box className="title"><Typography gutterBottom component="div">{t('home.title')}</Typography></Box>
+                            <Typography gutterBottom component="div" className="title">{t('home.title')}</Typography>
                         </Grid>
                         <Grid className='pt-0' item lg={6} md={6} sm={12} xs={12} container justifyContent={'flex-end'}>
                             <Box component="div">
                                 <FormControl component="fieldset">
                                     <RadioGroup row value={selectedValue} onChange={handleChange}>
-                                        <FormControlLabel value={1} control={<Radio />} label={t('home.check-box-all')} labelPlacement='end' />
-                                        <FormControlLabel value={2} control={<Radio />} label={t('home.check-box-org')} labelPlacement='end' />
-                                        <FormControlLabel value={3} control={<Radio />} label={t('home.check-box-devices')} labelPlacement='end' />
+                                        <FormControlLabel value={selectedValue} control={<Radio />} label={t('home.check-box-all')} labelPlacement='end' />
+                                        <FormControlLabel value={2} control={<Radio />} disabled label={t('home.check-box-org')} labelPlacement='end' />
+                                        <FormControlLabel value={3} control={<Radio />} disabled label={t('home.check-box-devices')} labelPlacement='end' />
                                     </RadioGroup>
                                 </FormControl>
                             </Box>
@@ -93,7 +92,7 @@ const LandingPage = () => {
                                 {datasourceItems.map((dataSource) => {
                                     return (
                                         <Grid item lg={4} md={6} sm={6} xs={12}>
-                                            <DataSourceCard logo={dataSource.url} description={dataSource.description} />
+                                            <DataSourceCard logoName={dataSource.logoName} description={dataSource.description} />
                                         </Grid>
                                     );
                                 })}
@@ -102,8 +101,8 @@ const LandingPage = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box className="footerContainer">
-                <Footer txt={t('home.footerTxt')} direction="row"/>
+            <Box className="footerContainer d-flex-center">
+                <Footer txt={'v2024.03.1'} />
             </Box>
     </>
     )
