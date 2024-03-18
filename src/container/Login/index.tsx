@@ -31,6 +31,7 @@ const Login = () => {
 
   const submit = () => {
     navigate('/start');
+    sessionStorage.removeItem('isVerify');
   }
 
     return (

@@ -5,6 +5,7 @@ import OrgLogoImageUpload from "../../component/OrganisationDetails/OrgLogoImage
 import DrawerComponent from "../../component/Drawer";
 import AddCredentialComponent from "../../container/AddCredential";
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import './style.scss';
 import { useTranslation } from "react-i18next";
 
@@ -55,7 +56,7 @@ const OrganisationDetailsContainer = (props: Props) => {
     setOpenRightSideDrawer(!openRightSideDrawer)
 }
   
-
+const isVerify = sessionStorage.getItem('isVerify');
   return (
     <DetailsContainer sx={{ flexGrow: 1 }}>
       <DrawerComponent
@@ -94,10 +95,10 @@ const OrganisationDetailsContainer = (props: Props) => {
           >
               <>
               <Box sx={{ display: "flex", alignItems: 'center'}}>
-                  <Typography variant="h6" fontWeight="bold" mt={"-4px"}>
+                  <Typography variant="h6" fontWeight="bold">
                     {t('gettingStarted.organisationName')}
                   </Typography>
-                  <DoNotDisturbOnIcon className="no-verify" />
+                  {isVerify ? <CheckCircleOutlineOutlinedIcon className="verify" /> : <DoNotDisturbOnIcon className="no-verify" /> }
                   <p className="add-credential" onClick={callRightSideDrawer}>
                   {(t('gettingStarted.addCredential'))}
                   </p>
