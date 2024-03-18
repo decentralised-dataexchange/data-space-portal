@@ -21,13 +21,13 @@ const LanguageSelector: React.FC = () => {
   };
 
   return (
-    <div>
+    <>
       <Button
         ref={anchorRef}
         aria-controls={open ? "dropdown-menu" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        sx={{ textTransform: "none", padding: 0, color: "#1890ff", fontSize:"12px" }}
+        sx={{ textTransform: "none", padding: 0, color: "#808080", fontSize:"12px" }}
       >
         {t("common.language")}
       </Button>
@@ -64,7 +64,7 @@ const LanguageSelector: React.FC = () => {
           </ClickAwayListener>
         )}
       </Popper>
-    </div>
+    </>
   );
 };
 

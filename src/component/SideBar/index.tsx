@@ -134,7 +134,6 @@ export default function MenuBar({ open, handleDrawerClose }) {
             textAlign: "center",
           }}
         >
-          <LanguageSelector />
           <Footer txt='2023.11.4' />
         </Box>
     </Drawer>

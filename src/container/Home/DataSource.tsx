@@ -9,27 +9,52 @@ import {
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import companyLogo from '../../../public/img/dexcom.png';
+import dexcom from '../../../public/img/dexcom.png';
+import symbiome from '../../../public/img/symbiome.png';
+import medtronic from '../../../public/img/medtronic.png';
+import glooko from '../../../public/img/glooko.png';
+import oneTwo from '../../../public/img/oneTwo.svg';
+import appleHealth from '../../../public/img/appleHealth.png';
 import { useTranslation } from "react-i18next";
 
 interface DataSourceCardProp {
     description: string,
-    logo: string
+    logoName: string
 }
 
-const DataSourceCard = ({ logo, description }: DataSourceCardProp) => {
+const DataSourceCard = ({ logoName, description }: DataSourceCardProp) => {
     const { t } = useTranslation("translation");
     const [ moreOrLessTxt, setMoreOrLessTxt] = useState(`${t('home.readMore')}`)
     const readMore = (txt) => {
         setMoreOrLessTxt(txt === `${t('home.readMore')}` ? `${t('home.readLess')}` : `${t('home.readMore')}`);
     }
+    console.log(logoName, "logo");
+
+    const renderImage = (img) => {
+        console.log(img)
+        switch (img) {
+          case "dexcom":
+            return dexcom
+          case "medtronic":
+            return medtronic
+          case "symbiome":
+            return symbiome;
+            case "glooko":
+            return glooko;
+            case "oneTwo":
+            return oneTwo;
+            case "appleHealth":
+            return appleHealth;
+        }
+    }
+
     return (
         <>
             <Card className='cardContainer'>
                 <CardActionArea>
                     <CardMedia
                         component="img"
-                        image={companyLogo}
+                        image={renderImage(logoName)}
                         alt="symbiome"
                         className='logo'
                     />
