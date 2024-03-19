@@ -58,7 +58,7 @@ const OrganisationDetailsContainer = (props: Props) => {
   
 const isVerify = sessionStorage.getItem('isVerify');
   return (
-    <DetailsContainer sx={{ flexGrow: 1 }}>
+    <DetailsContainer sx={{ flexGrow: 1, padding: 0 }}>
       <DrawerComponent
             openRightSideDrawer={openRightSideDrawer}
             callRightSideDrawer={callRightSideDrawer}>

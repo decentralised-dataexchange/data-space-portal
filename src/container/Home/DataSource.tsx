@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import {
     Typography,
     Button,
-    Box,
-    CardActionArea,
-    CardActions
+    Box
 } from "@mui/material";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -33,50 +31,50 @@ const DataSourceCard = ({ logoName, description }: DataSourceCardProp) => {
     const renderImage = (img) => {
         console.log(img)
         switch (img) {
-          case "dexcom":
-            return dexcom
-          case "medtronic":
-            return medtronic
-          case "symbiome":
-            return symbiome;
+            case "dexcom":
+                return dexcom
+            case "medtronic":
+                return medtronic
+            case "symbiome":
+                return symbiome;
             case "glooko":
-            return glooko;
+                return glooko;
             case "oneTwo":
-            return oneTwo;
+                return oneTwo;
             case "appleHealth":
-            return appleHealth;
+                return appleHealth;
         }
     }
 
     return (
         <>
             <Card className='cardContainer'>
-                <CardActionArea>
+                <Box component="div" className='card-header'>
                     <CardMedia
                         component="img"
                         image={renderImage(logoName)}
                         alt="symbiome"
                         className='logo'
                     />
-                    <CardContent>
-                        <Typography gutterBottom component="div" sx={{fontSize: "14px"}}>
-                            {moreOrLessTxt === 'Read Less....' ? description : description.slice(0, 275)}
-                            { description?.length > 275 && 
-                            <Typography className="readmore" component="span" sx={{fontSize: "14px"}}>
-                                <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box>
+                </Box>
+                <CardContent>
+                    <Typography gutterBottom component="div" className="card-body" sx={{ fontSize: "14px" }}>
+                        {moreOrLessTxt === 'Read Less....' ? description : description.slice(0, 275)}
+                        {description?.length > 275 &&
+                            <Typography className="readmore" component="span" sx={{ fontSize: "14px" }}>
+                                {/* <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box> */}
                             </Typography>
-                            }
-                        </Typography>
-                        <Box className="actionBtn">
-                            <Button size="small" sx={{fontSize: "14px"}} >
-                                {t('home.btn-signData')}
-                            </Button>
-                            <Button size="small"  sx={{fontSize: "14px"}}>
-                                {t('home.btn-viewMetadata')}
-                            </Button>
-                        </Box>
-                    </CardContent>
-                </CardActionArea>
+                        }
+                    </Typography>
+                    <Box className="actionBtn">
+                        <Button size="small" sx={{fontSize: "14px"}} >
+                            {t('home.btn-signData')}
+                        </Button>
+                        <Button size="small"  sx={{fontSize: "14px"}}>
+                            {t('home.btn-viewMetadata')}
+                        </Button>
+                    </Box>
+                </CardContent>
             </Card>
         </>
     )
