@@ -13,7 +13,7 @@ const DDAgreements = () => {
                 <span className="dd-titleTxt">{t('dataAgreements.title')}</span>
                 <Box component="div">
                     <FormControl component="fieldset">
-                        <RadioGroup row value=''>
+                        <RadioGroup row>
                             <FormControlLabel value={1} control={<Radio />} label={t('dataAgreements.all')} labelPlacement='end' />
                             <FormControlLabel value={2} control={<Radio />} label={t('dataAgreements.list')} labelPlacement='end' />
                         </RadioGroup>

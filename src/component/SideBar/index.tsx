@@ -20,7 +20,7 @@ const drawerWidth = 270;
 export default function MenuBar({ open, handleDrawerClose }) {
   const { t } = useTranslation('translation');
   const [ isSubMenuOpen, setSubMenuOpen ] = useState(false);
-  const { isMobile } = getDevice();
+  const { isMobile, isTablet } = getDevice();
 
   const renderIcon = (icon) => {
     switch (icon) {
@@ -87,7 +87,7 @@ export default function MenuBar({ open, handleDrawerClose }) {
       ModalProps={{
         keepMounted: true,
       }}
-      variant={isMobile ? 'temporary' : 'persistent'}
+      variant={isMobile || isTablet ? 'temporary' : 'persistent'}
       anchor="left"
       onClose={handleDrawerClose}
       open={open}
