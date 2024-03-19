@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -34,22 +35,27 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const GettingStarted = () => {
+  const [editMode, setEditMode] = useState(false);
   const { t } = useTranslation('translation');
   const navigate = useNavigate();
+
+  const handleEdit = () => {
+    setEditMode(!editMode);
+  };
 
   return (
       <Container className='pageContainer'>
         {/* <BreadCrumb Link={t("sidebar.gettingStarted")} /> */}
         <OrgCoverImageUpload
-          editMode={false}
+          editMode={editMode}
           coverImageBase64={'logoImageBase64'}
           setCoverImageBase64={'logoImageBase64'}
         />
         <OrganisationDetailsContainer
-              editMode={false}
+              editMode={editMode}
               logoImageBase64={'logoImageBase64'}
               organisationDetails={'organisationDetails'}
-              handleEdit={() => { } }
+              handleEdit={() => { handleEdit() } }
               organisationDetails={'setOrganisationDetails'}
               logoImageBase64={'setOrganisationDetails'}
               setOganisationDetails={() => { } } 

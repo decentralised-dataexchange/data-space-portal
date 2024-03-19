@@ -1,5 +1,6 @@
 import React from 'react';
 import { Avatar, Box } from "@mui/material";
+import BannerCamera from "../../../public/img/camera_photo1.png";
 
 
 type Props = {
@@ -21,13 +22,12 @@ const OrgLogoImageUpload = (props: Props) => {
     <Box>
       <Avatar
         src={
-          logoImageBase64
+          !editMode
             ? `data:image/jpeg;charset=utf-8;base64,${logoImageBase64}`
-            : ''
+            : BannerCamera
         }
         alt="logo"
         style={{
-          // position: "absolute",
           opacity: editMode ? 0.75 : 1,
           marginTop: "-100px",
           width: "170px",
@@ -37,31 +37,25 @@ const OrgLogoImageUpload = (props: Props) => {
         className='logoContainer'
       />
       {editMode && (
-        <Box
-          style={{
-            position: "relative",
-            top: "-160px",
-            marginLeft: "10px",
-          }}
-        >
+        <Box style={{ position: "absolute", right: 20, top: 165 }}>
           <div>
             <form>
-              <label className="uptext" htmlFor="uploadLogoImage">
+              <label className="uptext" htmlFor="uploadCoverImage">
                 <img
                   style={{
                     opacity: 0.45,
                   }}
-                  src={''}
-                  alt="img"
+                  src={BannerCamera}
+                  alt="editcover"
                 />
               </label>
               <input
                 type="file"
+                id="uploadCoverImage"
+                name="uploadCoverImage"
                 accept="image/jpeg,image/jpg"
-                id="uploadLogoImage"
-                name="uploadLogoImage"
                 hidden={true}
-                onChange={() => {}}
+                // onChange={handleFile}
               />
             </form>
           </div>
