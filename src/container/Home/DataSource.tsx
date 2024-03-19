@@ -59,19 +59,19 @@ const DataSourceCard = ({ logoName, description }: DataSourceCardProp) => {
                         className='logo'
                     />
                     <CardContent>
-                        <Typography gutterBottom component="div">
+                        <Typography gutterBottom component="div" sx={{fontSize: "14px"}}>
                             {moreOrLessTxt === 'Read Less....' ? description : description.slice(0, 275)}
                             { description?.length > 275 && 
-                            <Typography className="readmore" component="span">
+                            <Typography className="readmore" component="span" sx={{fontSize: "14px"}}>
                                 <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box>
                             </Typography>
                             }
                         </Typography>
                         <Box className="actionBtn">
-                            <Button size="small" >
+                            <Button size="small" sx={{fontSize: "14px"}} >
                                 {t('home.btn-signData')}
                             </Button>
-                            <Button size="small">
+                            <Button size="small"  sx={{fontSize: "14px"}}>
                                 {t('home.btn-viewMetadata')}
                             </Button>
                         </Box>
