@@ -8,18 +8,29 @@
         background-color: rgb(244 244 244);
         border: 1px solid rgb(173, 173, 173);
         padding: 20px;
+
         // min-height: 300px;
 
         .logo {
             width: 50%;
-            height: 100%;
+            height: auto;
         }
+
+        .card-header {
+            height: 40px;
+        }
+
+        .card-body {
+            overflow: hidden;
+            height: 11em;
+        }
+
 
         .MuiCardContent-root {
             padding: 0;
 
             .MuiTypography-root {
-                padding: 25px 0;
+                padding: 15px 0;
 
                 .readmore {
                     color: #9c9c9c;
@@ -40,15 +51,18 @@
         }
     }
 }
+
 .homeContainer {
     padding: 0 25px 25px 25px;
     border-bottom: 2px solid #d6d6d6;
 }
+
 @include breakpoints.tabletAndDown {
     .homeContainer {
         padding: 0 10px !important;
     }
 }
+
 .breadCrumbContainer {
     border: 1px solid rgb(167, 167, 167);
     padding: 15px;
@@ -61,9 +75,10 @@
 
 .dataSourceSelectionContainer {
     padding: 5px 0;
+
     .title {
         color: #716f6f;
-        font-size:1.25rem;
+        font-size: 1.25rem;
         display: flex;
         height: 100%;
         align-items: center;
@@ -73,10 +88,12 @@
 .footerContainer {
     margin-top: 60px;
     padding: 1.563rem;
+
     span {
-    font-size: 0.85rem;
-    color: grey;
+        font-size: 0.85rem;
+        color: grey;
     }
+
     a {
         color: grey !important;
     }

@@ -66,7 +66,7 @@ const handleChange = (e) => {
   
 const isVerify = sessionStorage.getItem('isVerify');
   return (
-    <DetailsContainer sx={{ flexGrow: 1 }} className="gettingStarted">
+    <DetailsContainer sx={{ flexGrow: 1, padding: 0 }} className="gettingStarted">
       <DrawerComponent
             openRightSideDrawer={openRightSideDrawer}
             callRightSideDrawer={callRightSideDrawer}>
