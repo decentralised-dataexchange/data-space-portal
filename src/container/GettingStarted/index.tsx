@@ -67,7 +67,7 @@ const GettingStarted = () => {
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate("/dataagreement")}
+                onClick={() => navigate(`/${t("route.manageAdmin")}`)}
               >
                 <Typography variant="body1" color="grey">
                   {t('gettingStarted.prepareDA')}
@@ -77,7 +77,7 @@ const GettingStarted = () => {
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate("/developerapi")}
+                onClick={() => navigate(`/${t("route.developerApis")}`)}
               >
                 <Typography variant="body1" color="grey">
                 {t('gettingStarted.manageAccount')}
@@ -87,7 +87,7 @@ const GettingStarted = () => {
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate("/manageadmin")}
+                onClick={() => navigate(`/${t("route.dispConnections")}`)}
               >
                 <Typography variant="body1" color="grey">
                   {t('gettingStarted.developerDocumentation')} 

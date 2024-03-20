@@ -57,15 +57,15 @@ export default function MenuBar({ open, handleDrawerClose }) {
       'subMenu': [
         {
           'name': `${t('sideBar.manageAdmin')}`,
-          'link': 'manage-admin',
+          'link': `${t("route.manageAdmin")}`,
         },
         {
           'name': `${t('sideBar.developerApis')}`,
-          'link': 'developer-apis',
+          'link': `${t("route.developerApis")}`,
         },
         {
           'name': `${t('sideBar.dispConnections')}`,
-          'link': 'disp-connections',
+          'link': `${t("route.dispConnections")}`,
         }
       ]
     }
