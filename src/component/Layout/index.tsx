@@ -15,13 +15,14 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const Layout = ({ children }) => {
-  const { isMobile } = getDevice();
+  const { isMobile, isTablet } = getDevice();
   const { pathname } = useLocation();
   const isLoginUrl = pathname == '/login';
   const [ open, setOpen ] = useState<boolean>(true);
+  const isDeskTop = (!isMobile && !isTablet)
 
   useEffect(() => {
-    pathname == '/' ? setOpen(false) : setOpen(true) ;
+    pathname == '/' ? setOpen(false) : setOpen(isDeskTop ? true : false) ;
   }, [pathname]);
 
   const handleOpenMenu = () => {

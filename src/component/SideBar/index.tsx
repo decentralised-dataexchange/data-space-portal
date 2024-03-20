@@ -74,6 +74,7 @@ export default function MenuBar({ open, handleDrawerClose }) {
   const handleToggle = () => {
     setSubMenuOpen(!isSubMenuOpen);
   }
+  const isDesktop = (!isMobile && !isTablet);
   return (
     <Drawer
       sx={{
@@ -92,12 +93,12 @@ export default function MenuBar({ open, handleDrawerClose }) {
       onClose={handleDrawerClose}
       open={open}
     >
-      {menuList.map((list) => {
+      {menuList.map((list, i) => {
         return(
           <> 
             {!list?.subMenu.length ? 
-              <MenuItem className='p-15' key={list?.name}>
-                <Link className="link d-flex" to={list?.link} key={list?.name}>
+              <MenuItem className={`p-15 ${!isDesktop && i==0 ? "smTabOpen" : ''}`} key={list?.name}>
+                <Link className='link d-flex' to={list?.link} key={list?.name}>
                     <ListItemIcon>
                       {renderIcon(list?.icon)}
                     </ListItemIcon>
@@ -115,7 +116,7 @@ export default function MenuBar({ open, handleDrawerClose }) {
                 dense={true}
               >
                 {list.subMenu.map((menu) => (
-                  <MenuItem key={menu?.name} className='p-15'>
+                  <MenuItem key={menu?.name} className='p-15' >
                     <Link className="link" to={menu?.link} key={menu?.name}>
                       <ListItemText primary={menu?.name} />
                     </Link>
