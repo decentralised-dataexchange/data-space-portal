@@ -55,13 +55,27 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
       'icon': 'LockOutlined',
       'link': 'account'
 
-    }
+    },
+    {
+      'name': `${t('sideBar.manageAdmin')}`,
+      'link': `${t("common.manageAdmin")}`,
+    },
+
+    {
+      'name': `${t('sideBar.developerApis')}`,
+      'link': `${t("common.developerApis")}`,
+    },
+
+    {
+      'name': `${t('sideBar.dispConnections')}`,
+      'link': `${t("common.disp-connections")}`,
+    },
 ]
   
   // logic for render the breadcrumb names based on route path
   const renderRouteName = (name) => {
     const filterBreadCrumb = menuList.filter(
-      (breadCrumb) => breadCrumb.link == name
+      (breadCrumb) => (breadCrumb.link) == name
     );
     switch (name) {
       case `${filterBreadCrumb?.length && filterBreadCrumb[0].link}`:
@@ -91,7 +105,7 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
             <Link
               key={`${route}-${i}`}
               className={`${
-                i == routesPath.length - 1 ? "pe-none linkfont" : "linkfont"
+                (i == routesPath.length - 1 || route == 'account') ? "pe-none linkfont" : "linkfont"
               }`}
               to={i > 0 ? `${routesPath[i - 1]}/${route}` : route}
             >

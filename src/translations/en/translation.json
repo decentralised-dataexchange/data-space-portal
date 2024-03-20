@@ -3,7 +3,10 @@
     "login": "login",
     "start": "start",
     "dd-agreements": "dd-agreements",
-    "account": "account"
+    "account": "account",
+    "manageAdmin" : "account/manage-admin",
+    "developerApis": "account/developer-apis",
+    "dispConnections": "account/disp-connections"
 
   },
   "login": {
@@ -93,7 +96,10 @@
     "viewAll": "View All",
     "timestamp": "Timestamp",
     "status": "Status",
-    "name": "Name"
+    "name": "Name",
+    "manageAdmin" : "manage-admin",
+    "developerApis" : "developer-apis",
+    "disp-connections" : "disp-connections"
   },
 
   "dataAgreements": {

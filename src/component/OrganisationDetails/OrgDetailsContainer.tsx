@@ -231,8 +231,8 @@ const isVerify = sessionStorage.getItem('isVerify');
           )}
           </Grid>
       </Grid>
-      <Box>
-        <Typography variant="h6" sx={{ marginTop: "70px"}} fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
+      <Box sx={{ marginTop: "50px"}}>
+        <Typography variant="h6" fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
         <Box className="pt-20">
           <Typography className="txtOverview" >{(t('gettingStarted.descriptionPlaceholder'))}</Typography>
         </Box>
