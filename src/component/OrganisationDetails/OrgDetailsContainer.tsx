@@ -18,9 +18,10 @@ const DetailsContainer = styled("div")({
 });
 
 const editStyleEnable: React.CSSProperties = {
-  borderWidth: 1.5,
+  borderWidth: 1,
   borderBottomStyle: "solid",
   borderBottomColor: "#DFE0E1",
+  height: 23,
 };
 
 const buttonStyle = {
@@ -40,8 +41,8 @@ type Props = {
 };
 
 const OrganisationDetailsContainer = (props: Props) => {
-  const [ formValue, setFormValue ] = useState({'orgName': 'Organization', 'location': 'Sweden', 'policyUrl': 'www.sample-url.com'})
   const { t } = useTranslation('translation');
+  const [ formValue, setFormValue ] = useState({'orgName': 'Organisation Name', 'location': 'Sweden', 'policyUrl': 'https://igrant.io/policy.html', 'description': `${(t('gettingStarted.descriptionPlaceholder'))}`})
   const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
   const {
     editMode,
@@ -66,7 +67,7 @@ const handleChange = (e) => {
   
 const isVerify = sessionStorage.getItem('isVerify');
   return (
-    <DetailsContainer sx={{ flexGrow: 1, padding: 0 }} className="gettingStarted">
+    <DetailsContainer sx={{ flexGrow: 1 }} className="gettingStarted">
       <DrawerComponent
             openRightSideDrawer={openRightSideDrawer}
             callRightSideDrawer={callRightSideDrawer}>
@@ -103,25 +104,27 @@ const isVerify = sessionStorage.getItem('isVerify');
           >
             {editMode ? (
             <>
+            <Box sx={{ display: "flex", alignItems: 'center'}} mb={"18px"} mt={"6px"}>
               <TextField
                 autoFocus
                 value={formValue.orgName}
                 defaultValue={organisationDetails.name}
                 onChange={(e) => handleChange(e)}
                 variant="standard"
-                label={false}
+                // label={false}
                 placeholder={t("gettingStarted.organisationName")}
                 fullWidth
                 name='orgName'
                 style={{
                   ...editStyleEnable,
-                  height: "26px"
+                  marginTop: "0.9px",
                 }}
                 InputProps={{
                   disableUnderline: true,
                   style: { fontSize: 20, fontWeight: "bold", marginTop:"-4px" },
                 }}
               />
+            </Box>
               <Typography
                 color="#9F9F9F"
                 variant="body2"
@@ -132,13 +135,13 @@ const isVerify = sessionStorage.getItem('isVerify');
               </Typography>
               <TextField
                 variant="standard"
-                label={false}
+                // label={false}
                 value={formValue.location}
                 name='location'
                 onChange={(e) => handleChange(e)}
                 placeholder={t("gettingStarted.location")}
                 fullWidth
-                style={{ ...editStyleEnable, marginTop: "-1px" }}
+                style={{ ...editStyleEnable, marginTop: "-4px" }}
                 InputProps={{
                   disableUnderline: true,
                   style: { fontSize: 14 },
@@ -146,7 +149,7 @@ const isVerify = sessionStorage.getItem('isVerify');
               />
               <TextField
                 variant="standard"
-                label={false}
+                // label={false}
                 // value={organisationPolicyURL}
                 onChange={(e) => handleChange(e)}
                 placeholder={t("common.policyUrl")}
@@ -154,15 +157,15 @@ const isVerify = sessionStorage.getItem('isVerify');
                 fullWidth
                 name='policyUrl'
                 style={{ ...editStyleEnable }}
-                InputProps={{
-                  disableUnderline: true,
-                  style: { fontSize: 14 },
-                }}
+                  InputProps={{
+                    disableUnderline: true,
+                    style: { fontSize: 14 },
+                  }}
               />
             </>
           ) : 
               <>
-              <Box sx={{ display: "flex", alignItems: 'center'}}>
+              <Box sx={{ display: "flex", alignItems: 'center'}}  mt={"-6px"} >
                   <Typography variant="h6" fontWeight="bold">
                     {t('gettingStarted.organisationName')}
                   </Typography>
@@ -170,18 +173,15 @@ const isVerify = sessionStorage.getItem('isVerify');
                   <p className="add-credential" onClick={callRightSideDrawer}>
                   {(t('gettingStarted.addCredential'))}
                   </p>
-                  {/* <p className="edit" onClick={() => { handleEdit() }}>
-                    {(t('gettingStarted.edit'))}
-                  </p> */}
               </Box>
                 <Typography variant="body2" height="23px">
                 {(t('gettingStarted.sector'))} Public
                 </Typography>
                 <Typography variant="body2" height="23px">
-                {(t('gettingStarted.location'))} Sweden
+                Sweden
                 </Typography>
                 <Typography variant="body2" height="23px">
-                {(t('gettingStarted.policyUrl'))} www.sampleUrl.com
+                  https://igrant.io/policy.html
                 </Typography>
               </>
             }
@@ -193,6 +193,7 @@ const isVerify = sessionStorage.getItem('isVerify');
               sx={{
                 textAlign: { xs: "left", sm: "right" },
                 marginTop: { xs: "-40px", sm: "0px" },
+                paddingTop: "8px"
               }}
             >
               <Button
@@ -224,19 +225,45 @@ const isVerify = sessionStorage.getItem('isVerify');
                 {t("common.save")}
               </Button>
             </Box>
-          ) : (
-            <p className="edit" onClick={() => { handleEdit() }}>
-              {(t('gettingStarted.edit'))}
-            </p>
-          )}
+          ) : <Typography
+                onClick={handleEdit}
+                sx={{
+                  cursor: "pointer",
+                  textAlign: { xs: "left", sm: "right" },
+                  marginTop: { xs: "14px", sm: "0px" },
+                  padding: "10px"
+                }}
+              >
+                {t("common.edit")}
+              </Typography>}
           </Grid>
       </Grid>
-      <Box sx={{ marginTop: "50px"}}>
-        <Typography variant="h6" fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
-        <Box className="pt-20">
-          <Typography className="txtOverview" >{(t('gettingStarted.descriptionPlaceholder'))}</Typography>
+       <Box sx={{ minHeight: 100, maxHeight: 160, overflow: "auto", marginTop: "50px"}}>
+       <Typography variant="h6" fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
+          {editMode ? (
+            <TextField
+              variant="standard"
+              value={(t('gettingStarted.descriptionPlaceholder'))}
+              // onChange={(e) => setOrganisationOverView(e.target.value)}
+              multiline={true}
+              // defaultValue={organisationDetails.description}
+              label={false}
+              placeholder={(t('gettingStarted.descriptionPlaceholder'))}
+              fullWidth
+              style={{ marginTop: "-4px" }}
+              InputProps={{
+                disableUnderline: true,
+                style: { fontSize: 14 },
+              }}
+            />
+          ) : (
+            <>
+              <Box>
+                <p className="txtOverview" >{(t('gettingStarted.descriptionPlaceholder'))}</p>
+              </Box>
+            </>
+          )}
         </Box>
-      </Box>
     </DetailsContainer>
   );
 };
