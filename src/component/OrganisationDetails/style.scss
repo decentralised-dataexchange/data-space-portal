@@ -2,21 +2,28 @@
     margin: 0 10px 0 10px;
     color: #d80606;
     width: 1em !important;
-    height: 1.2em !important;
+    height: 1em !important;
 }
 
 .verify {
     margin: 0 10px 0 10px;
     color: rgb(17, 170, 17);
-    width: 1.2em !important;
-    height: 1.2em !important;
+    width: 1em !important;
+    height: 1em !important;
 }
 
 .add-credential {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     text-decoration: underline;
-    font-size: 1.1rem;
+    font-size: 0.825rem;
     color: #d80606;
+    cursor: pointer;
+}
+
+.view-credential {
+    text-decoration: underline;
+    font-size: 0.825rem;
+    color: #000;
     cursor: pointer;
 }
 
