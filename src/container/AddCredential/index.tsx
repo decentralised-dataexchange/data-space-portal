@@ -8,8 +8,10 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import '../../../public/sass/style.scss'
 import './style.scss'
 import { useTranslation } from 'react-i18next';
+import { getDevice } from '../../utils/utils'
 
 const AddCredentialComponent = ({ callRightSideDrawer }) => {
+    const { isMobile } = getDevice();
     const { t } = useTranslation('translation');
     const contentArray = [
         {
@@ -51,13 +53,13 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
             <Box className="titleContainer">
                 <Box component={"span"} alignItems="center">{currentIndex ? <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} onClick={() => handleBack(currentIndex)} /> :'' }</Box>
                 <Typography className='walletHeader'>{t('gettingStarted.connectWalletTitle')} - {contentArray[currentIndex].headerName}</Typography>
-                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer" }}>
+                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer", paddingLeft: isMobile ? '0' : currentIndex ? '125px' : '140px' }}>
                     <CloseIcon />
                 </Box>
             </Box>
             <Box className="contentConatainer">{contentArray[currentIndex].component}</Box>
             <Box className="btnContainer">
-                <Button className="btn cancelBtn" size="small" >
+                <Button className="btn cancelBtn" size="small"onClick={callRightSideDrawer}>
                     {t('common.cancel')}
                 </Button>
                 <Button onClick={() => handleAddComponent(currentIndex)} className="btn nextBtn" size="small" >

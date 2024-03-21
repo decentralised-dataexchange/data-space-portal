@@ -13,8 +13,8 @@
 
     .titleContainer {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        padding: 0 10px;
     }
 
     .contentConatainer {
@@ -100,7 +100,7 @@ font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 
     .walletHeader {
         margin: 0px;
-font-family: Roboto, Helvetica, Arial, sans-serif;
+        font-family: Roboto, Helvetica, Arial, sans-serif;
         font-weight: 400;
         font-size: 1.25rem;
         line-height: 1.43;

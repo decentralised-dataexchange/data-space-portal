@@ -5,7 +5,7 @@ import OrgLogoImageUpload from "../../component/OrganisationDetails/OrgLogoImage
 import DrawerComponent from "../../component/Drawer";
 import AddCredentialComponent from "../../container/AddCredential";
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import './style.scss';
 import { useTranslation } from "react-i18next";
 
@@ -104,7 +104,7 @@ const isVerify = sessionStorage.getItem('isVerify');
           >
             {editMode ? (
             <>
-            <Box sx={{ display: "flex", alignItems: 'center'}} mb={"18px"} mt={"6px"}>
+            <Box sx={{ display: "flex", alignItems: 'center'}} mb={"11px"} mt={"-2px"}>
               <TextField
                 autoFocus
                 value={formValue.orgName}
@@ -169,9 +169,9 @@ const isVerify = sessionStorage.getItem('isVerify');
                   <Typography variant="h6" fontWeight="bold">
                     {t('gettingStarted.organisationName')}
                   </Typography>
-                  {isVerify ? <CheckCircleOutlineOutlinedIcon className="verify" /> : <DoNotDisturbOnIcon className="no-verify" /> }
-                  <p className="add-credential" onClick={callRightSideDrawer}>
-                  {(t('gettingStarted.addCredential'))}
+                  {isVerify ? <CheckCircleIcon className="verify" /> : <DoNotDisturbOnIcon className="no-verify" /> }
+                  <p className={isVerify ? 'view-credential' : 'add-credential'} onClick={callRightSideDrawer}>
+                  {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential')) }
                   </p>
               </Box>
                 <Typography variant="body2" height="23px">
