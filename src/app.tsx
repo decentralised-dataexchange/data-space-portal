@@ -6,12 +6,21 @@ import React from 'react';
 import AppRouter from './routes';
 import './index.css';
 import Layout from './component/Layout';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
+const theme = createTheme({
+  typography: {
+    fontSize: 14,
+  },
+});
 
 const App = () => {
   return (
-    <Layout>
-      <AppRouter />
-    </Layout>
+    <ThemeProvider theme={theme}>
+      <Layout>
+        <AppRouter />
+      </Layout>
+    </ThemeProvider>
   )
 };
 

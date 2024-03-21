@@ -7,14 +7,12 @@ import {
     Typography,
     Box
 } from '@mui/material';
-import { CottageOutlined, InsertDriveFileOutlined, LockOutlined } from '@mui/icons-material';
+import { HouseOutlined, InsertDriveFileOutlined, LockOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { getDevice } from '../../utils/utils';
 import './style.scss';
 import { useTranslation } from 'react-i18next';
 import SubMenu from './SubMenu';
-import Footer from '../../component/Footer';
-import LanguageSelector from '../../component/LanguageSelector';
 
 const drawerWidth = 270;
 export default function MenuBar({ open, handleDrawerClose }) {
@@ -24,8 +22,8 @@ export default function MenuBar({ open, handleDrawerClose }) {
 
   const renderIcon = (icon) => {
     switch (icon) {
-      case "CottageOutlined":
-        return <CottageOutlined />
+      case "HouseOutlined":
+        return <HouseOutlined />
       case "InsertDriveFileOutlined":
         return <InsertDriveFileOutlined />
       case "LockOutlined":
@@ -38,7 +36,7 @@ export default function MenuBar({ open, handleDrawerClose }) {
   const menuList = [
     {
         'name': `${t('sideBar.gettingStarted')}`,
-        'icon': 'CottageOutlined',
+        'icon': 'HouseOutlined',
         'link': 'start',
         'subMenu': []
 
@@ -96,6 +94,7 @@ export default function MenuBar({ open, handleDrawerClose }) {
       {menuList.map((list, i) => {
         return(
           <> 
+          <Box className="sideBarContainer">
             {!list?.subMenu.length ? 
               <MenuItem className={`p-15 ${!isDesktop && i==0 ? "smTabOpen" : ''}`} key={list?.name}>
                 <Link className='link d-flex' to={list?.link} key={list?.name}>
@@ -125,6 +124,7 @@ export default function MenuBar({ open, handleDrawerClose }) {
                 }
               </SubMenu>
             }
+            </Box>
           </>
         )
       })}

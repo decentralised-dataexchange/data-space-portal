@@ -8,6 +8,7 @@ import i18next from "i18next";
 import translationEN from "./translations/en/translation.json";
 import translationSV from "./translations/sv/translation.json";
 import translationFI from "./translations/fi/translation.json";
+import "./index.css";
 
 i18next.init({
       resources: {

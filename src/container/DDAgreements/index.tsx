@@ -2,7 +2,7 @@ import React from 'react';
 import BasicTable from '../../component/Table';
 import { TableData, TableHead } from './tableUtils'
 import { Box, FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
-import './style.scss';
+// import './style.scss';
 import { useTranslation } from 'react-i18next';
 
 const DDAgreements = () => {

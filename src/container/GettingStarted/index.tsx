@@ -67,7 +67,7 @@ const GettingStarted = () => {
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/${t("route.manageAdmin")}`)}
+                onClick={() => navigate(`/${t("route.dd-agreements")}`)}
               >
                 <Typography variant="body1" color="grey">
                   {t('gettingStarted.prepareDA')}
