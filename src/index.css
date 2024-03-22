@@ -72,3 +72,18 @@ body {
 .pl-2 {
     padding-left: 2px;
 }
+
+.MuiRadio-root.Mui-checked {
+    color: #000 !important;
+}
+
+.MuiTypography-root {
+    font-size: 0.875rem;
+}
+
+.mui-basic-table-container {
+    width: 100%;
+    overflow: auto;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}

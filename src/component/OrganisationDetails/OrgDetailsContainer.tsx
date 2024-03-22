@@ -165,7 +165,7 @@ const isVerify = sessionStorage.getItem('isVerify');
             </>
           ) : 
               <>
-              <Box sx={{ display: "flex", alignItems: 'center'}}  mt={"-6px"} >
+              <Box sx={{ display: "flex", alignItems: 'center'}}  mt={"-7px"} >
                   <Typography variant="h6" fontWeight="bold">
                     {t('gettingStarted.organisationName')}
                   </Typography>

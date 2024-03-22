@@ -1,71 +1,43 @@
 import React from 'react';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+// import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+// import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
+// import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+// import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { VisibilityOutlined, UploadOutlined, DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material'
+import { Box, Tooltip } from '@mui/material';
+import './style.scss';
+import VersionDropdown from '../../component/VersionDropDown';
+import { useTranslation } from 'react-i18next';
 
-const visibleIcon = () => {
+const actionIcons = () => {
+  const { t } = useTranslation('translation');
   return (
-    <VisibilityOutlinedIcon sx={{ color: '#696868'}}/>
-  )
-}
-
-const publishIcon = () => {
-  return (
-    <PublishOutlinedIcon sx={{ color: '#b2b2b2'}}/>
-  )
-}
-
-const deleteIcon = () => {
-  return (
-    <DeleteOutlineOutlinedIcon sx={{ color: '#b2b2b2'}}/>
+    <>
+      <Box className="actionBtnContainer pointer d-flex-center" sx={{ cursor: "pointer" }}>
+        <Tooltip title={t("dataAgreements.tooltipPublished")} placement="top">
+          <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem' }} />
+        </Tooltip>
+        <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
+          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem' }} />
+        </Tooltip>
+        <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
+          <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem' }} />
+        </Tooltip>
+        <Tooltip title={t("dataAgreements.tooltipDelete")} placement="top">
+          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem'}} />
+        </Tooltip>
+    </Box>
+    </>
   )
 }
 
 const TableData =  [
   {
     purpose: "Registration data",
-    version: "1.0",
+    version: <VersionDropdown key={undefined} record={undefined} selectedValue={undefined} setSelectedValue={undefined} setSelectedDropdownDataAgreementValue={undefined} />,
     lawfulProcess: "Contractual purpose",
     status: "Listed",
-  },
-  {
-    purpose: "Covid-19 test results",
-    version: "1.0",
-    lawfulProcess: "Contractual purpose",
-    status: "UnListed",
-  },
-  {
-    purpose: "Third-party data sharing",
-    version: "1.0",
-    lawfulProcess: "consent",
-    status: "Under Review",
-  },
-  {
-    purpose: "Marketing and campaign",
-    version: "1.0",
-    lawfulProcess: "consent",
-    status: "Rejected",
-  },
-
-  {
-    purpose: "Marketing and campaign",
-    version: "1.0",
-    lawfulProcess: "consent",
-    status: "Rejected",
-  },
-
-  {
-    purpose: "Marketing and campaign",
-    version: "1.0",
-    lawfulProcess: "consent",
-    status: "Rejected",
-  },
-
-  {
-    purpose: "Marketing and campaign",
-    version: "1.0",
-    lawfulProcess: "consent",
-    status: "Rejected",
+    ddexchange: "Data exchange"
   },
 ]
 
@@ -73,30 +45,27 @@ const TableHead =  [
     {
       title: "Usage purpose",
       field: "purpose",
+      headerWidth: "25%",
     },
     {
       field: "version",
       title: "Version",
     },
     {
-      field: "lawfulProcess",
-      title: "Lawful basis of processing",
-      headerWidth: "25%",
+      field: "ddexchange",
+      title: "Data Exchange",
     },
     {
       field: "status",
       title: "Status",
     },
     {
-      cell: publishIcon,
-      title: "",
+      field: "lawfulProcess",
+      title: "Lawful Basis of Processing",
+      headerWidth: "20%",
     },
     {
-      cell: visibleIcon,
-      title: "",
-    },
-    {
-      cell: deleteIcon,
+      cell: actionIcons,
       title: "",
     }
   ];

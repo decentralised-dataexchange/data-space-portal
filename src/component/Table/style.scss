@@ -1,10 +1,4 @@
 
-.mui-basic-table-container {    
-        width: 100%;
-        overflow: auto;
-        border: 1px solid wheat;
-}
-
 .Tablecell-Styles {
     z-index: 1 !important;
     border-bottom: 1px solid rgba(232, 235, 238, 1);
@@ -17,7 +11,12 @@
 .mui-basic-table {
     background-color: transparent;
     border-collapse: collapse;
+
+    .MuiTableRow-root .MuiTableCell-root {
+        border: 1px solid #d7d6d6;
+    }
 }
+
 .setWidth {
     display: inline-table !important;
     width: 100%;
@@ -29,4 +28,5 @@
     border: 1px solid rgb(215, 214, 214);
     font-size: 14px;
 }
+
 

@@ -57,7 +57,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
                     <CloseIcon />
                 </Box>
             </Box>
-            <Box className="contentConatainer">{contentArray[currentIndex].component}</Box>
+            <Box className="contentContainer">{contentArray[currentIndex].component}</Box>
             <Box className="btnContainer">
                 <Button className="btn cancelBtn" size="small"onClick={callRightSideDrawer}>
                     {t('common.cancel')}

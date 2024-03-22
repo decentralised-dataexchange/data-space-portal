@@ -28,6 +28,10 @@
     width: 400px;
 }
 
+.MuiInputBase-input {
+    font-size: 0.875rem;
+}
+
 @include breakpoints.tabletAndDown {
     .text-field {
         width: 350px !important;

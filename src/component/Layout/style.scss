@@ -2,13 +2,16 @@
 
 .appBar {
     margin-top: 100px;
+    padding: 8px;
 }
 
 @include breakpoints.tabletAndDown {
     .appBar {
+        padding: 0;
         margin-left: 0px !important;
     }   
     .pageContainer {
+        margin-top: 0 !important;
         padding: 0 15px 15px 15px !important;
     }
     .MuiDrawer-docked, .MuiDrawer-paperAnchorLeft {
@@ -70,4 +73,13 @@
 
 .smTabOpen {
     padding-top: 4rem !important;
+}
+
+.leftNavigationContainer {
+    .MuiDrawer-root {
+        .MuiPaper-root {
+            background-color: rgb(247, 246, 246);
+            border-right: 0;
+        }
+    }
 }
