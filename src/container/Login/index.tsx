@@ -9,7 +9,7 @@ import {
   } from "@mui/material";
 
   // icons
-import { PersonOutlineOutlined, ArrowCircleRightOutlined, LockOutlined }  from "@mui/icons-material";
+import { PersonOutlineOutlined, ArrowCircleRightOutlined, LockOpenOutlined }  from "@mui/icons-material";
 import Footer from '../../component/Footer';
 import { styled } from "@mui/material/styles";
 import Logo from '../../../public/img/logo.jpg';
@@ -83,7 +83,7 @@ const Login = () => {
               placeholder={t('login.password')}
               fullWidth
               InputProps={{
-                startAdornment: <LockOutlined style={{ color: "#A1A1A1" }} />,
+                startAdornment: <LockOpenOutlined style={{ color: "#A1A1A1" }} />,
                 disableUnderline: true,
                 onKeyPress: () => {},
                 endAdornment: (

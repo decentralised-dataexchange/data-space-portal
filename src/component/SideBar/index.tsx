@@ -14,7 +14,7 @@ import './style.scss';
 import { useTranslation } from 'react-i18next';
 import SubMenu from './SubMenu';
 
-const drawerWidth = 270;
+const drawerWidth = 260;
 export default function MenuBar({ open, handleDrawerClose }) {
   const { t } = useTranslation('translation');
   const [ isSubMenuOpen, setSubMenuOpen ] = useState(false);

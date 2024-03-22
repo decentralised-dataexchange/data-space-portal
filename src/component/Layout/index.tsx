@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
   const handleOpenMenu = () => {
     setOpen(!open);
   }
-  const drawerWidth = 270;
+  const drawerWidth = 260;
   const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
   }>(({ theme, open }) => ({
@@ -75,7 +75,7 @@ const Layout = ({ children }) => {
           <AppMenuBar position="fixed" open={open}>
             <AppBar handleOpenMenu={handleOpenMenu} />
           </AppMenuBar>
-         <Box sx={{ display: 'flex' }}>
+         <Box sx={{ display: 'flex' }} className="leftNavigationContainer">
             <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
           <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
             { pathname != "/" && <Breadcrumb /> }
