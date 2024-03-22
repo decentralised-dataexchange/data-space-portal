@@ -73,8 +73,6 @@
     "chooseWalletThree": "Issues by: Bolagsverket, Sweden",
     "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business."
   },
-
-
   "common": {
     "certificateOfRegistration": "CERTIFICATION OF REGISTRATION",
     "language": "Language",
@@ -112,5 +110,20 @@
     "tooltipEdit": "Edit Data Agreement",
     "tooltipDelete": "Delete Data Agreement",
     "pageDescription": "Manage Data Disclosure Agreements for your organisation."
+  },
+  "manageAdmin": {
+    "adminUser": "Admin User",
+    "pageDescription": "Manage admin user configurations.",
+    "userSettings": "User Settings",
+    "email": "Email",
+    "userCredentials": "User Credentials",
+    "currentPassword": "Current Password",
+    "enterCurrentPassword": "Enter Current Password",
+    "newPassword": "New Password",
+    "enterNewPassword": "Enter New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "changePassword": "Change Password",
+    "samePassword": "New password and confirm new password should be same",
+    "passwordChanged": "Password Changed"
   }
 }
