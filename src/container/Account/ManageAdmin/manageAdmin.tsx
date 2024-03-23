@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Grid, Typography, Box, Button, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import ManageAdminProfilePicUpload from "../../component/manageProfileAdmin";
-import SnackbarComponent from "../../component/notification";
+import ManageAdminProfilePicUpload from "../../../component/manageProfileAdmin";
+import SnackbarComponent from "../../../component/notification";
 import { useTranslation } from "react-i18next";
 
 const Container = styled("div")(({ theme }) => ({

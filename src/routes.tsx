@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import GettingStarted from './container/GettingStarted';
 import Home from './container/Home';
 import DDAgreements from './container/DDAgreements';
-import ManageAdmin from './container/Account/manageAdmin';
-import DeveloperApis from './container/Account/developerApis';
-import DispConnections from './container/Account/dispConnection';
+import ManageAdmin from './container/Account/ManageAdmin/manageAdmin';
+import DeveloperApis from './container/Account/DeveloperApis/developerApis';
+import DispConnections from './container/Account/DISPconnections/dispConnection';
 import { useTranslation } from 'react-i18next';
 
 const AppRouter = () => {

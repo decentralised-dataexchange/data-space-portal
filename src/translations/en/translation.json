@@ -125,5 +125,27 @@
     "changePassword": "Change Password",
     "samePassword": "New password and confirm new password should be same",
     "passwordChanged": "Password Changed"
+  },
+  "developerAPIs": {
+    "copy": "COPY",
+    "apiKeyCopyMessage": "Here is your new key. Copy it now! This is the only time we will show it you.",
+    "headerText": "Developer APIs and Credentials",
+    "pageDescription": "All API requests require you to authenticate using the credentials below",
+    "organizationID": "Organization ID",
+    "yourUserID": "Your User ID",
+    "configuredBaseURL": "Configured Base URL",
+    "apiKey": "API Key",
+    "createApiKey": "Create API Key",
+    "scope": "Scope",
+    "scopes": "Scopes",
+    "expiry": "Expiry",
+    "deleteAPIKey": "Delete API Key",
+    "keyNamePlaceholder": "Please type name of api key...",
+    "expiryDate": "Expiry in Day (s)",
+    "expiryDatePlaceholder": "Please type the expiry in days...",
+    "allScopes": "All Scopes",
+    "selectedScopes": "Selected Scopes",
+    "deleteDescription1": "You are about to delete an existing api key. Please type ",
+    "deleteDescription2": " to confirm and click DELETE. This action is not reversible."
   }
 }
