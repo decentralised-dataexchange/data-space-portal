@@ -71,7 +71,7 @@ const isVerify = sessionStorage.getItem('isVerify');
       <DrawerComponent
             openRightSideDrawer={openRightSideDrawer}
             callRightSideDrawer={callRightSideDrawer}>
-            <AddCredentialComponent callRightSideDrawer={callRightSideDrawer} />
+            <AddCredentialComponent isVerify={isVerify} callRightSideDrawer={callRightSideDrawer} />
         </DrawerComponent>
       <Grid
         sx={{

@@ -7,7 +7,7 @@
 }
 
 .drawerContent {
-    max-width: 500px;
+    max-width: 600px;
     height: 100%;
 
     .businessInfo {
@@ -18,6 +18,7 @@
         padding-top: 20px;
 
         .walletInfo {
+            margin-top: 20px;
             background-color: rgb(247 247 247);
             border: 1px solid rgb(173, 173, 173);
             padding: 35px;

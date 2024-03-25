@@ -73,6 +73,14 @@ body {
     padding-left: 2px;
 }
 
+.prl-30 {
+    padding: 0 30px !important;
+}
+
+.pb-10 {
+    padding-bottom: 10px;
+}
+
 .MuiRadio-root.Mui-checked {
     color: #000 !important;
 }
@@ -86,4 +94,16 @@ body {
     overflow: auto;
     border-radius: 0 !important;
     box-shadow: none !important;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
+    color: rgb(134 134 134 / 24%) !important;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root {
+    color: rgb(198 198 198) !important;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root:hover {
+    background-color: rgb(255 255 255 / 4%) !important;
 }
