@@ -10,7 +10,7 @@ import './style.scss'
 import { useTranslation } from 'react-i18next';
 import { getDevice } from '../../utils/utils'
 
-const AddCredentialComponent = ({ callRightSideDrawer }) => {
+const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
     const { isMobile } = getDevice();
     const { t } = useTranslation('translation');
     const contentArray = [
@@ -30,7 +30,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
 
 
     ]
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(isVerify ? 2 : 0);
     const handleAddComponent = (index) => {
         if (currentIndex < contentArray.length - 1) {
             setCurrentIndex(currentIndex + 1);
@@ -53,7 +53,7 @@ const AddCredentialComponent = ({ callRightSideDrawer }) => {
             <Box className="titleContainer">
                 <Box component={"span"} alignItems="center">{currentIndex ? <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} onClick={() => handleBack(currentIndex)} /> :'' }</Box>
                 <Typography className='walletHeader'>{t('gettingStarted.connectWalletTitle')} - {contentArray[currentIndex].headerName}</Typography>
-                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer", paddingLeft: isMobile ? '0' : currentIndex ? '125px' : '140px' }}>
+                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer", paddingLeft: isMobile ? '0' : currentIndex ? '210px' : '240px' }}>
                     <CloseIcon />
                 </Box>
             </Box>

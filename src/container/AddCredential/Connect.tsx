@@ -13,12 +13,12 @@ const ConnectComponent = ({ callRightSideDrawer }) => {
                 <Typography gutterBottom component="div">{t('gettingStarted.connectDescription')}</Typography>
             </Box>
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-outlined-label">{t('gettingStarted.country')}</InputLabel>
                     </FormControl>
-                </Grid>
-                <Grid item xs={8}>
+                </Grid> */}
+                {/* <Grid item xs={8}>
                     <FormControl fullWidth variant="outlined">
                         <Select
                             labelId="demo-simple-select-outlined-label"
@@ -28,8 +28,8 @@ const ConnectComponent = ({ callRightSideDrawer }) => {
                             <MenuItem value={30}>Sweden 3</MenuItem>
                         </Select>
                     </FormControl>
-                </Grid>
-                <Grid item xs={4}>
+                </Grid> */}
+                {/* <Grid item xs={4}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-outlined-label">{t('gettingStarted.trustedIssuers')}</InputLabel>
                     </FormControl>
@@ -44,17 +44,17 @@ const ConnectComponent = ({ callRightSideDrawer }) => {
                             <MenuItem value={30}>Bolagsverket 3</MenuItem>
                         </Select>
                     </FormControl>
-                </Grid>
+                </Grid> */}
             </Grid>
             <Box className="walletContainer">
-                <Typography gutterBottom variant="h6">{t('gettingStarted.walletTitle')}</Typography>
+                <Typography gutterBottom>{t('gettingStarted.walletTitle')}</Typography>
                 <Box className="walletInfo">
-                    <FormControl component="fieldset">
+                    {/* <FormControl component="fieldset">
                         <RadioGroup row value={1}   >
                             <FormControlLabel value={1} control={<Radio />} label={t('gettingStarted.cloudWallet')} labelPlacement='end' />
                             <FormControlLabel value={2} control={<Radio />} label={t('gettingStarted.mobileWallet')} labelPlacement='end' />
                         </RadioGroup>
-                    </FormControl>
+                    </FormControl> */}
                     <Box component="div">
                         <Typography gutterBottom component="div">{t('gettingStarted.walletDescription')}</Typography>
                         <TextField

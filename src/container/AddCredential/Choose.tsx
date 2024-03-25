@@ -23,15 +23,17 @@ const ChooseComponent = ({ callRightSideDrawer }) => {
                 <Box className="itemContainer">
                     <ListItem>
                         <Checkbox
+                            className='prl-30'
                             color="primary"
+                            checked
                         />
                         <Box className="itemTextContainer">
                             <ListItemText primary={
                                 <Grid container alignItems="center">
                                     <Grid item xs={11}>
-                                        <Typography>{t('common.certificateOfRegistration')}</Typography>
-                                        <Typography fontWeight="bold">{t('gettingStarted.chooseWalletTitle')}</Typography>
-                                        <Typography fontStyle="italic">{t('gettingStarted.chooseWalletThree')}</Typography>
+                                        <Typography className='title-font pb-10'>{t('common.certificateOfRegistration')}</Typography>
+                                        <Typography className='title-font' fontWeight="bold">{t('gettingStarted.chooseWalletTitle')}</Typography>
+                                        <Typography className='title-font' fontStyle="italic">{t('gettingStarted.chooseWalletThree')}</Typography>
                                     </Grid>
                                     <Grid item xs={1}>
                                         <QrCodeIcon color="success"/>
