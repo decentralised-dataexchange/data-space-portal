@@ -15,8 +15,8 @@ const DDAgreements = () => {
                 <Box component="div">
                     <FormControl component="fieldset">
                         <RadioGroup row value={selectedValue}>
-                            <FormControlLabel value={selectedValue} control={<Radio />} label={t('dataAgreements.all')} labelPlacement='end' />
-                            <FormControlLabel value={2} control={<Radio />} label={t('dataAgreements.list')} labelPlacement='end' />
+                            <FormControlLabel value={selectedValue} control={<Radio size='small' />} label={t('dataAgreements.all')} labelPlacement='end' />
+                            <FormControlLabel value={2} control={<Radio size='small' />} label={t('dataAgreements.list')} labelPlacement='end' />
                         </RadioGroup>
                     </FormControl>
                 </Box>

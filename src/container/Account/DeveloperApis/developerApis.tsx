@@ -1,26 +1,19 @@
-import React, { useContext, useState } from "react";
 import {
-  Grid,
-  Typography,
-  Box,
-  Tooltip,
-  Alert,
-  Button,
-  Snackbar,
-} from "@mui/material";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { styled } from "@mui/material/styles";
+  ContentCopyOutlined,
+  VisibilityOffOutlined
+} from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Alert, Box, Button, Grid, Snackbar, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { WidthWideTwoTone } from "@mui/icons-material";
-import { VisibilityOffOutlined, ContentCopyOutlined } from '@mui/icons-material';
+import "../style.scss";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0 15px 0px 15px",
   paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+    margin: "10px",
   },
 }));
 
@@ -172,7 +165,7 @@ const DeveloperAPIs = () => {
           {t("developerAPIs.headerText")}
         </Typography>
       </HeaderContainer>
-      <DetailsContainer sx={{ flexGrow: 1 }}>
+      <DetailsContainer>
         <Typography variant="body2" mt={1.25} mb={1}>
           {t("developerAPIs.pageDescription")}
         </Typography>
@@ -188,7 +181,7 @@ const DeveloperAPIs = () => {
                 {t("developerAPIs.organizationID")}
               </Typography>
               <Typography color="grey" variant="body2">
-              652657969380f35fa1c30245
+                652657969380f35fa1c30245
               </Typography>
             </Item>
           </Grid>
@@ -218,40 +211,44 @@ const DeveloperAPIs = () => {
                 {t("developerAPIs.configuredBaseURL")}
               </Typography>
               <Typography color="grey" variant="body2">
-              https://staging-consent-bb-api.igrant.io/v2
+                https://staging-consent-bb-api.igrant.io/v2
               </Typography>
             </Item>
           </Grid>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <Item>
-            <Typography
-                  color="black"
-                  variant="subtitle1"
-                  fontWeight="bold"
-                  mb={0.5}
-                >
-                  {t("developerAPIs.apiKey")}
-                </Typography>
-                <Grid container>
-                  <Grid lg={11} md={12} sm={12} xs={12}>
-                    <Typography color="grey" variant="body2">
-                    eyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdnsafndffvdsnbfvsdfnbdvsfghdsvfbdsvfbsdvfghsdvfnbsdfv
-                    eyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdnsafndffvdsnbfvsdfnbdvsfghdsvfbdsvfbsdvfghsdvfnbsdfv
-                    eyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdns
-                    </Typography>
-                      
-                  </Grid>
-                    <Grid lg={1} md={12} sm={12} xs={12}>
-                    <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
-                        <VisibilityOffOutlined sx={{ color: 'black', fontSize: '1.25rem' }} />
-                        <ContentCopyOutlined sx={{ color: 'black', fontSize: '1.25rem' }} />
-                  </Box>
-                  </Grid>
-                  </Grid>
-              </Item>
-          </Grid>
         </Grid>
       </DetailsContainer>
+      <Box className="apiKey">
+        <Grid container spacing={1}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Typography
+              color="black"
+              variant="subtitle1"
+              fontWeight="bold"
+              mb={0.5}
+            >
+              {t("developerAPIs.apiKey")}
+            </Typography>
+          </Grid>
+          <Grid item lg={11} md={11} sm={12} xs={12}>
+            <Typography color="grey" variant="body1" className="description">
+              eyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdnsafndffvdsnbfvsdfnbdvsfghdsvfbdsvfbsdvfghsdvfnbsdfveyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdnsafndffvdsnbfvsdfnbdvsfghdsvfbdsvfbsdvfghsdvfnbsdfvajsgdhjgsgdjhgasdghjasdghjsagdgsajgdjhasjhdjgasjhdghjgsdhgsahjgdjgasjdgjhasdjhsjadjhsdhjgjhsagdhjgasjhdgjsdg
+            </Typography>
+          </Grid>
+          <Grid item lg={1} md={1} sm={12} xs={12}>
+            <Box
+              className="actionBtnContainer pointer d-flex-evenly"
+              sx={{ cursor: "pointer" }}
+            >
+              <VisibilityOffOutlined
+                sx={{ color: "black", fontSize: "1.25rem" }}
+              />
+              <ContentCopyOutlined
+                sx={{ color: "black", fontSize: "1.25rem" }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </Container>
   );
 };

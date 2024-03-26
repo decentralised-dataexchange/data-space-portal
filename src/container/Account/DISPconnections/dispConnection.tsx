@@ -8,21 +8,25 @@ import {
   Alert,
   Button,
   Snackbar,
+  TextField,
+  FormControl,
+  InputAdornment,
 } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import SearchIcon from '@mui/icons-material/Search';
+import InfoIcon from '@mui/icons-material/Info';
 import { styled } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import BasicTable from '../../../component/Table';
 import { TableData, TableHead } from './tableUtils'
+import './style.scss';
 
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
   paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+    margin: "10px",
   },
 }));
 
@@ -89,18 +93,13 @@ const DeveloperAPIs = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <Typography variant="h6" fontWeight="bold">
-          Data Intermediation Service Provider Connections
-        </Typography>
-      </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
             <Box style={{ display: "flex", alignItems: "center" }} mt={1}>
               <Typography color="black" variant="subtitle1" fontWeight="bold">
-                Connections
+              Data Intermediation Service Provider Connections
               </Typography>
-              <Tooltip title={t("developerAPIs.createApiKey")} placement="top">
+              <Tooltip title={t("developerAPIs.createConnection")} placement="top">
                 <AddCircleOutlineOutlinedIcon
                   onClick={() => {
                     setOpenEditPersonalDataModal(true);
@@ -114,9 +113,34 @@ const DeveloperAPIs = () => {
               </Tooltip>
             </Box>
         </Grid>
+        <Box className="d-flex-between">
         <Typography variant="body2" mt={2.25} mb={1}>
           Manages connections towards your organisations
-        </Typography>   
+        </Typography>  
+          <FormControl>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item lg={11} md={12} sm={12} xs={12}>
+                <TextField
+                  size="small"
+                  className='searchField'
+                  variant="outlined"
+                  placeholder="search..."
+                  // onChange={handleChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Grid>
+              <Grid item lg={1} md={12} sm={12} xs={12}>
+                <InfoIcon  sx={{ cursor: 'pointer'}}/>
+              </Grid>
+            </Grid>
+          </FormControl>
+        </Box> 
         <Box sx={{ marginTop: '16px'}}>
             <BasicTable tableData={TableData} tableField={TableHead}/>
         </Box>

@@ -38,12 +38,14 @@ const Layout = ({ children }) => {
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: `-${drawerWidth}px`,
+    width: '100%',
     ...(open && {
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
       marginLeft: 0,
+      width: 'calc(100% - 260px)'
     }),
   }));
 
@@ -80,10 +82,10 @@ const Layout = ({ children }) => {
           <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
             { pathname != "/" && <Breadcrumb /> }
             {children}
-            <Box className="footerContainer d-flex-center">
+          </Main>
+          <Box className="footerContainer d-flex-center">
               <Footer txt={'v2024.03.1'} />
             </Box>
-          </Main>
           </Box>
           </>
         }

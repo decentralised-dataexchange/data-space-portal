@@ -1,8 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 import LogoCamera from "../../public/img/camera_photo2.png";
-
 import { Dispatch, SetStateAction } from "react";
+import { getDevice  } from "../utils/utils";
 
 
 type Props = {
@@ -48,6 +48,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
     }
   };
 
+  const { isMobile } = getDevice()
+
   return (
     <>
       {previewImage && (
@@ -56,8 +58,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           style={{
             position: "absolute",
             opacity: props.editMode ? 1 : 0,
-            width: "130px",
-            height: "130px",
+            width: isMobile ? '110px' : '130px',
+            height: isMobile ? '110px' : '130px',
             border: "solid white 6px",
             borderRadius:"50%"
           }}
@@ -70,8 +72,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
         style={{
           position: "absolute",
           opacity: props.editMode ? 0.75 : 1,
-          width: "130px",
-          height: "130px",
+          width: isMobile ? '110px' : '130px',
+            height: isMobile ? '110px' : '130px',
           border: "solid white 6px",
           borderRadius:"50%"
         }}

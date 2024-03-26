@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MenuItem, Select } from "@mui/material";
 
 
@@ -25,9 +25,9 @@ interface Props {
 const VersionDropdown = (props: Props) => {
   const {
     record,
-    selectedValue,
-    setSelectedValue,
   } = props;
+
+  const [ selectedValue, setSelectedValue ] = useState('1.0.1');
 
 const dataAgreementFromRevision = [
     {
@@ -70,9 +70,7 @@ const dataAgreementFromRevision = [
 //       : "";
 
   const handleChange = (event: any) => {
-    setSelectedValue((selectedValue: any) => {
-      return { ...selectedValue, [record.id]: event.target.value };
-    });
+    setSelectedValue(event.target.value);
   }
 
 //     const selectedRevision = dataAgreementFromRevision?.find(
@@ -90,7 +88,7 @@ const dataAgreementFromRevision = [
       <Select
         onChange={(e) => handleChange(e)}
         variant="outlined"
-        value="1.0.1"
+        value={selectedValue}
         fullWidth
         style={{
           ...dropDownStyle,

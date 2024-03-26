@@ -13,18 +13,18 @@ const actionIcons = () => {
   const { t } = useTranslation('translation');
   return (
     <>
-      <Box className="actionBtnContainer pointer d-flex-center" sx={{ cursor: "pointer" }}>
+      <Box className="actionBtnContainer pointer d-flex-center">
         <Tooltip title={t("dataAgreements.tooltipPublished")} placement="top">
-          <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem' }} />
+          <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "no-drop" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
-          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem' }} />
+          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
-          <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem' }} />
+          <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipDelete")} placement="top">
-          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem'}} />
+          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} />
         </Tooltip>
     </Box>
     </>
