@@ -17,7 +17,7 @@ const Container = styled("div")(({ theme }) => ({
 
 const DetailsContainer = styled("div")({
   height: "auto",
-  width: "100%",
+  width: 'auto',
   borderRadius: 2,
   backgroundColor: "#FFFFF",
 });
@@ -77,7 +77,7 @@ const GettingStarted = () => {
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/${t("route.developerApis")}`)}
+                onClick={() => navigate(`/${t("route.manageAdmin")}`)}
               >
                 <Typography variant="body1" color="grey">
                 {t('gettingStarted.manageAccount')}
@@ -87,7 +87,7 @@ const GettingStarted = () => {
             <Grid item lg={4} md={6} sm={6} xs={12}>
               <Item
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/${t("route.dispConnections")}`)}
+                onClick={() => navigate(`/${t("route.developerApis")}`)}
               >
                 <Typography variant="body1" color="grey">
                   {t('gettingStarted.developerDocumentation')} 

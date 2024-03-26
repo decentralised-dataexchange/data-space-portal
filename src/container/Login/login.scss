@@ -1,5 +1,10 @@
 @use '../../../public/sass/helpers/breakpoints';
 
+.loginWrpper {
+    display: flex;
+    justify-content: center;
+}
+
 .loginContainer {
     display: flex;
     min-height: 90dvh;
@@ -25,18 +30,14 @@
     padding: 0.3rem;
     border: 1px solid #cecece;
     border-radius: 0.45rem;
-    width: 400px;
+    width: 350px;
 }
-
 .MuiInputBase-input {
     font-size: 0.875rem;
 }
 
 @include breakpoints.tabletAndDown {
-    .text-field {
-        width: 350px !important;
-    }
     .titleTxt {
-        font-size: 1.1em !important;
+        font-size: 1rem !important;
     }
 }

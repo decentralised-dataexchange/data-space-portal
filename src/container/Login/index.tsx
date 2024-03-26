@@ -35,6 +35,7 @@ const Login = () => {
   }
 
     return (
+      <Box className="loginWrpper">
         <Box className='loginContainer'>
           <Box className='d-flex-center'>
             <Link to="/">
@@ -127,6 +128,7 @@ const Login = () => {
             <FooterContainer>
               <Footer txt='v2024.03.1' />
             </FooterContainer>
+        </Box>
         </Box>
     )
 }

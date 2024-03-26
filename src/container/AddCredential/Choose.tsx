@@ -1,5 +1,5 @@
 import { Box, Checkbox, Grid, ListItem, ListItemText, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import './style.scss'
 import QrCodeIcon from '@mui/icons-material/QrCode';
@@ -7,7 +7,13 @@ import { useTranslation } from 'react-i18next';
 
 
 const ChooseComponent = ({ callRightSideDrawer }) => {
+    const [ isChecked, setIsChecked ] = useState<boolean>(true);
     const { t } = useTranslation('translation');
+
+    const handleChange = () => {
+        setIsChecked(!isChecked)
+    }
+
     return (
         <>
             <Box component="div" className='businessInfo'>
@@ -17,7 +23,7 @@ const ChooseComponent = ({ callRightSideDrawer }) => {
                         <AccountBalanceWalletOutlinedIcon fontSize='large' />
                     </Grid>
                     <Grid item>
-                        <Typography className="ml-2" variant="body1">{t('gettingStarted.chooseWalletTitle')}</Typography>
+                        <Typography className="ml-1" variant="body1">{t('gettingStarted.chooseWalletTitle')}</Typography>
                     </Grid>
                 </Grid>
                 <Box className="itemContainer">
@@ -25,7 +31,8 @@ const ChooseComponent = ({ callRightSideDrawer }) => {
                         <Checkbox
                             className='prl-30'
                             color="primary"
-                            checked
+                            onChange={() => handleChange()}
+                            checked={isChecked}
                         />
                         <Box className="itemTextContainer">
                             <ListItemText primary={

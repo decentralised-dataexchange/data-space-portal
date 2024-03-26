@@ -24,7 +24,7 @@ export default function MyAppBar({handleOpenMenu}) {
       >
         <Toolbar>
           <IconButton
-            sx={{cursor: pathname == '/' ? 'text' : 'pointer'}}
+            sx={{cursor: pathname == '/' ? 'no-drop' : 'pointer'}}
             edge="start"
             color="inherit"
             onClick={() => pathname == '/' ? '' : handleOpenMenu()}

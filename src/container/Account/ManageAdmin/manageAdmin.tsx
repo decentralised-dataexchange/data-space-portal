@@ -5,12 +5,13 @@ import { styled } from "@mui/material/styles";
 import ManageAdminProfilePicUpload from "../../../component/manageProfileAdmin";
 import SnackbarComponent from "../../../component/notification";
 import { useTranslation } from "react-i18next";
+import '../style.scss'
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
   paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
-    margin: "52px 0 10px 0",
+    margin: "10px",
   },
 }));
 
@@ -59,6 +60,7 @@ const ManageAdmin = () => {
   const [adminDetails, setAdminDetails] = useState<any>();
   const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
   const [adminName, setAdminName] = useState(adminDetails?.name);
+  const [emailName, setEmailName] = useState('admin@igrant.io');
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -82,7 +84,7 @@ const ManageAdmin = () => {
   };
 
   return (
-    <Container>
+    <Container className="manageAdmin-container">
       <SnackbarComponent
         open={openSnackBar}
         setOpen={setOpenSnackBar}
@@ -110,7 +112,7 @@ const ManageAdmin = () => {
               >
                 {t("manageAdmin.userSettings")}
               </Typography>
-              <Grid container>
+              <Grid container spacing={2}>
                 <Grid
                   item
                   lg={3}
@@ -162,11 +164,11 @@ const ManageAdmin = () => {
                           variant="standard"
                           autoComplete="off"
                           placeholder={t("common.name")}
-                          sx={{ marginTop: -0.1 }}
+                          sx={{ marginTop: -0.5 }}
                           style={{
                             ...editStyleEnable,
                           }}
-                          value={adminName}
+                          value={adminName ? adminName : 'Admin'}
                           onChange={(e) => setAdminName(e.target.value)}
                           InputProps={{
                             disableUnderline: true,
@@ -178,7 +180,7 @@ const ManageAdmin = () => {
                           variant="body2"
                           sx={{ wordWrap: "break-word" }}
                         >
-                          {adminDetails?.name}
+                          Admin
                         </Typography>
                       )}
                     </Grid>
@@ -190,18 +192,36 @@ const ManageAdmin = () => {
                       </Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
-                      <Typography
+                    {editMode ? (
+                        <TextField
+                          variant="standard"
+                          autoComplete="off"
+                          placeholder={t("common.name")}
+                          sx={{ marginTop: -0.5 }}
+                          style={{
+                            ...editStyleEnable,
+                          }}
+                          value={emailName}
+                          onChange={(e) => setEmailName(e.target.value)}
+                          InputProps={{
+                            disableUnderline: true,
+                            style: { fontSize: 14 },
+                          }}
+                        />
+                      ) : (
+                        <Typography
                         variant="body2"
                         sx={{ wordWrap: "break-word" }}
                       >
-                        {adminDetails?.email}
+                        admin@igrant.io
                       </Typography>
+                      )}
                     </Grid>
                   </Grid>
                   <Grid container height={"20px"}>
                     <Grid item lg={3} md={6} sm={6} xs={6}>
                       <Typography variant="body2">
-                        {t("login.userid")}:
+                        {t("login.userId")}:
                       </Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
@@ -209,7 +229,7 @@ const ManageAdmin = () => {
                         variant="body2"
                         sx={{ wordWrap: "break-word" }}
                       >
-                        {adminDetails?.id}
+                       adminID9876tjghj9
                       </Typography>
                     </Grid>
                   </Grid>
@@ -285,13 +305,13 @@ const ManageAdmin = () => {
                   {t("manageAdmin.currentPassword")}:
                 </Typography>
                 <TextField
+                className="manageAdmin-txt"
                   variant="standard"
                   inputProps={{
                     autoComplete: "new-password",
                   }}
                   placeholder={t("manageAdmin.enterCurrentPassword")}
                   type="password"
-                  sx={{ width: "50%", marginRight: "20px" }}
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                 />
@@ -308,10 +328,10 @@ const ManageAdmin = () => {
                   {t("manageAdmin.newPassword")}:
                 </Typography>
                 <TextField
+                  className="manageAdmin-txt"
                   variant="standard"
                   placeholder={t("manageAdmin.enterNewPassword")}
                   type="password"
-                  sx={{ width: "50%", marginRight: "20px" }}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
@@ -326,10 +346,10 @@ const ManageAdmin = () => {
               >
                 <Typography variant="body2">{t("manageAdmin.confirmNewPassword")}:</Typography>
                 <TextField
+                  className="manageAdmin-txt"
                   variant="standard"
                   placeholder={t("manageAdmin.confirmNewPassword")}
                   type="password"
-                  sx={{ width: "50%", marginRight: "20px" }}
                   value={confirmNewPassword}
                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />

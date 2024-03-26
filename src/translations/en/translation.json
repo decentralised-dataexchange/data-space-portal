@@ -68,7 +68,7 @@
     "mobileWallet": "Mobile Wallet",
     "walletDescription": "Paste the connected url",
     "chooseDescription": "Your business is currently unverified. Add credentials from the connected wallet to verify your business.",
-    "chooseWalletTitle": "Bygg AB, Sweden",
+    "chooseWalletTitle": "CONNECTED WALLET, Bygg AB, Sweden",
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Issues by: Bolagsverket, Sweden",
     "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business."
@@ -105,10 +105,10 @@
     "title": "Data Disclosure Agreements",
     "all": "All",
     "list": "Listed",
-    "tooltipPublished": "Data Agreement is Published",
-    "tooltipView": "View Data Agreement",
-    "tooltipEdit": "Edit Data Agreement",
-    "tooltipDelete": "Delete Data Agreement",
+    "tooltipPublished": "Data Disclosure Agreement is Published",
+    "tooltipView": "View Data Disclosure Agreement",
+    "tooltipEdit": "Edit Data Disclosure Agreement",
+    "tooltipDelete": "Delete Data Disclosure Agreement",
     "pageDescription": "Manage Data Disclosure Agreements for your organisation."
   },
   "manageAdmin": {
@@ -135,7 +135,7 @@
     "yourUserID": "Your User ID",
     "configuredBaseURL": "Configured Base URL",
     "apiKey": "API Key",
-    "createApiKey": "Create API Key",
+    "createConnection": "Create Connection",
     "scope": "Scope",
     "scopes": "Scopes",
     "expiry": "Expiry",
@@ -146,6 +146,7 @@
     "allScopes": "All Scopes",
     "selectedScopes": "Selected Scopes",
     "deleteDescription1": "You are about to delete an existing api key. Please type ",
-    "deleteDescription2": " to confirm and click DELETE. This action is not reversible."
+    "deleteDescription2": " to confirm and click DELETE. This action is not reversible.",
+    "tooltipDelete": "Delete Connection"
   }
 }

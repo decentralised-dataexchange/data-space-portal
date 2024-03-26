@@ -1,18 +1,22 @@
 @use '../../../public/sass/helpers/breakpoints';
 
 .appBar {
-    margin-top: 100px;
-    padding: 8px;
+    position: relative;
+    height:auto;
+    width: calc(100% - 260px);
+    left: 260px;
 }
 
 @include breakpoints.tabletAndDown {
     .appBar {
+        margin-top: 100px;
         padding: 0;
         margin-left: 0px !important;
+        left: 0;
     }   
     .pageContainer {
         margin-top: 0 !important;
-        padding: 0 15px 15px 15px !important;
+        padding: 0 10px 10px 10px !important;
     }
     .MuiDrawer-docked, .MuiDrawer-paperAnchorLeft {
         margin-top: 0;
@@ -76,10 +80,23 @@
 }
 
 .leftNavigationContainer {
+    display:flex;
+    flex-direction: column;
+    height: 100vh;
     .MuiDrawer-root {
         .MuiPaper-root {
             background-color: rgb(247, 246, 246);
             border-right: 0;
         }
     }
+}
+
+.footerContainer {
+    // position: fixed;
+    background: white;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    height:auto;
 }

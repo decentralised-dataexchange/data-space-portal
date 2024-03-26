@@ -88,9 +88,9 @@ const LandingPage = () => {
                             <Box component="div">
                                 <FormControl component="fieldset">
                                     <RadioGroup row value={selectedValue} onChange={handleChange}>
-                                        <FormControlLabel value={selectedValue} control={<Radio />} label={t('home.check-box-all')} labelPlacement='end' />
-                                        <FormControlLabel value={2} control={<Radio />} disabled label={t('home.check-box-org')} labelPlacement='end' />
-                                        <FormControlLabel value={3} control={<Radio />} disabled label={t('home.check-box-devices')} labelPlacement='end' />
+                                        <FormControlLabel value={selectedValue} control={<Radio  size='small' />} label={t('home.check-box-all')} labelPlacement='end' />
+                                        <FormControlLabel value={2} control={<Radio size='small'  />} disabled label={t('home.check-box-org')} labelPlacement='end' />
+                                        <FormControlLabel value={3} control={<Radio size='small'  />} disabled label={t('home.check-box-devices')} labelPlacement='end' />
                                     </RadioGroup>
                                 </FormControl>
                             </Box>

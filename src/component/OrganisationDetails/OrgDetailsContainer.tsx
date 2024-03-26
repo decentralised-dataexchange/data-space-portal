@@ -118,6 +118,7 @@ const isVerify = sessionStorage.getItem('isVerify');
                 style={{
                   ...editStyleEnable,
                   marginTop: "0.9px",
+                  fontSize: "0.875rem !important"
                 }}
                 InputProps={{
                   disableUnderline: true,
