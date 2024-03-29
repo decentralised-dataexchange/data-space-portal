@@ -12,6 +12,7 @@ export default function MyAppBar({handleOpenMenu}) {
   const { t } = useTranslation('translation');
   const { isMobile } = getDevice();
   const { pathname } = useLocation();
+  const isAuthenticated = localStorage.getItem('Token');
   return (
     <Box className="appBarContainer">
       <AppBar
@@ -24,7 +25,7 @@ export default function MyAppBar({handleOpenMenu}) {
       >
         <Toolbar>
           <IconButton
-            sx={{cursor: pathname == '/' ? 'no-drop' : 'pointer'}}
+            sx={{cursor: pathname == '/' ? 'not-allowed' : 'pointer'}}
             edge="start"
             color="inherit"
             onClick={() => pathname == '/' ? '' : handleOpenMenu()}
@@ -49,7 +50,13 @@ export default function MyAppBar({handleOpenMenu}) {
                 {t('appBar.subHeader')}
               </Typography>
           </Box>
-          <AppBarMenu firstName={""} email={""} lastVisited={""} />
+          {/* {isAuthenticated && */}
+            <AppBarMenu
+            firstName={'admin'}
+            lastVisited={'march 29'}
+            email={'admin@example.com'}
+          />
+          {/* } */}
         </Toolbar>
       </AppBar>
     </Box>

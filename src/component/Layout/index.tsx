@@ -69,10 +69,14 @@ const Layout = ({ children }) => {
   const handleDrawerClose = () => {
     setOpen(!open);
   }
+
+  const isAuthenticated = localStorage.getItem('Token');
+
+  const privateRoutes = ((!isLoginUrl && isAuthenticated) || pathname == "/")
   
   return (
     <>
-      {!isLoginUrl && 
+      {privateRoutes ? 
           <>
           <AppMenuBar position="fixed" open={open}>
             <AppBar handleOpenMenu={handleOpenMenu} />
@@ -88,8 +92,8 @@ const Layout = ({ children }) => {
             </Box>
           </Box>
           </>
+          : <>{children}</>
         }
-        {isLoginUrl && children}
     </>
   );
 }
