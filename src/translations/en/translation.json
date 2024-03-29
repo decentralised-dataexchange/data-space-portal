@@ -33,7 +33,10 @@
   },
   "appBar": {
     "header": "CRANE d-HDSI Dataspace",
-    "subHeader": "Sweden - Region Västerbotten"
+    "subHeader": "Sweden - Region Västerbotten",
+    "lastVisit": "Last visit",
+    "settings": "Settings",
+    "signout": "Signout"
   },
   "sideBar": {
     "gettingStarted": "Getting Started",
