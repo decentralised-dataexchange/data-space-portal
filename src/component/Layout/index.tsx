@@ -20,9 +20,12 @@ const Layout = ({ children }) => {
   const isLoginUrl = pathname == '/login';
   const [ open, setOpen ] = useState<boolean>(true);
   const isDeskTop = (!isMobile && !isTablet)
+  const publicRoutes = () => {
+    return pathname == "/" || pathname == "/data-source-list"
+  }
 
   useEffect(() => {
-    pathname == '/' ? setOpen(false) : setOpen(isDeskTop ? true : false) ;
+    publicRoutes() ? setOpen(false) : setOpen(isDeskTop ? true : false) ;
   }, [pathname]);
 
   const handleOpenMenu = () => {
@@ -72,7 +75,7 @@ const Layout = ({ children }) => {
 
   const isAuthenticated = localStorage.getItem('Token');
 
-  const privateRoutes = ((!isLoginUrl && isAuthenticated) || pathname == "/")
+  const privateRoutes = ((!isLoginUrl && isAuthenticated) || publicRoutes())
   
   return (
     <>
@@ -84,7 +87,7 @@ const Layout = ({ children }) => {
          <Box sx={{ display: 'flex' }} className="leftNavigationContainer">
             <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
           <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
-            { pathname != "/" && <Breadcrumb /> }
+            { !publicRoutes() && <Breadcrumb /> }
             {children}
           </Main>
           <Box className="footerContainer d-flex-center">

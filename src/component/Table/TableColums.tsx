@@ -22,7 +22,6 @@ type TableColumnProps = {
 const TableColumns: FC<TableColumnProps> = ({
   tableData,
 }: TableColumnProps) => {
-  console.log(tableData, "tableDatatableData")
   const formatDatafield = (data, item) => {
     const arr = data?.split('.');
     let a = null;

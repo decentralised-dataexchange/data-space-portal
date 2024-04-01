@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { AppBarMenu } from "./AppBarMenu";
@@ -7,12 +7,24 @@ import './style.scss';
 import { useLocation } from "react-router-dom";
 import { getDevice } from '../../utils/utils'
 import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../customHooks";
+import { adminAction } from "../../redux/actionCreators/login";
 
 export default function MyAppBar({handleOpenMenu}) {
   const { t } = useTranslation('translation');
+  const dispatch = useAppDispatch();
   const { isMobile } = getDevice();
   const { pathname } = useLocation();
   const isAuthenticated = localStorage.getItem('Token');
+
+  const adminData = useAppSelector(
+    (state) => state?.user?.data
+  );
+
+  useEffect(() => {
+    !adminData?.name && dispatch(adminAction());
+  }, [])
+
   return (
     <Box className="appBarContainer">
       <AppBar
@@ -52,9 +64,9 @@ export default function MyAppBar({handleOpenMenu}) {
           </Box>
           {/* {isAuthenticated && */}
             <AppBarMenu
-            firstName={'admin'}
-            lastVisited={'march 29'}
-            email={'admin@example.com'}
+            firstName={adminData?.name}
+            // lastVisited={'march 29'}
+            email={adminData?.email}
           />
           {/* } */}
         </Toolbar>

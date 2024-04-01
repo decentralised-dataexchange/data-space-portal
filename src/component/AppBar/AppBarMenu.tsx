@@ -7,11 +7,12 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import defaultAvatar from "../../../public/img/avatar.png";
 import { useTranslation } from "react-i18next";
+import { defaultLogoImg } from "../../utils/defalultImages";
 
 type Props = {
   firstName: string;
   email: string;
-  lastVisited: string;
+  // lastVisited: string;
 };
 
 export const AppBarMenu = (props: Props) => {
@@ -94,7 +95,7 @@ export const AppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={`data:image/jpeg;charset=utf-8;base64,${userAvatar}`}
+            src={defaultLogoImg}
             alt="img"
           />
           <Typography
@@ -105,10 +106,6 @@ export const AppBarMenu = (props: Props) => {
           </Typography>
           <Typography variant="caption" style={{ marginBottom: "6px" }}>
             {props.email}
-          </Typography>
-          <Typography variant="caption" style={{ marginBottom: "3px" }}>
-            {t("appBar.lastVisit")}:{" "}
-            {/* {formatISODateToLocalString(props.lastVisited)} */}
           </Typography>
         </Box>
         <Box style={{ color: "black", borderTop: "1px solid #BDBDBD" }}>

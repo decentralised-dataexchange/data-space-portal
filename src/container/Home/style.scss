@@ -52,6 +52,62 @@
     }
 }
 
+.dataListContainer {
+    padding: 20px;
+    .leftSection {
+        background: rgb(230 230 230);
+        height: 80vh;
+    }
+    .policyUrl {
+        padding: 10px 0;
+        cursor: pointer;
+        text-decoration: underline;
+        color: #1793ca;
+        font-size: 0.875rem;
+    }
+    .rightContainer {
+        height: 84vh;
+        overflow: scroll;
+        margin-top: 24px;
+        padding-top: 0 !important;
+    }
+    .cardContainerList {
+        border: 1px solid #000;
+        padding: 20px;
+        margin-bottom: 15px;
+    
+        .logo {
+            width: 50%;
+            height: auto;
+            margin-left: -8px;
+        }
+    
+        .actionListingBtn {
+            .MuiButtonBase-root {
+                text-transform: unset;
+                border: 1.5px solid black;
+                background: rgb(230 230 230);
+                color: #000;
+                margin-top: 80px;
+                margin-left: 20px;
+                padding: 5px 30px;
+            }
+        }
+    
+        .card-body {
+            overflow: hidden;
+            height: 11em;
+        }
+    
+    
+        .MuiCardContent-root {
+            padding: 0 !important;
+        }
+    }
+}
+
+
+
 .homeContainer {
     padding: 0 25px 25px 25px;
 }
