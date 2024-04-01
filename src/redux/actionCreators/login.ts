@@ -22,3 +22,19 @@ export const loginFailure = createAction(
     payload: error,
   }),
 );
+
+export const adminAction = createAction(ActionTypes.ADMIN_ACTION);
+
+export const adminSuccess = createAction(
+  ActionTypes.ADMIN_ACTION_SUCCESS,
+  (data) => ({
+    payload: data,
+  }),
+);
+  
+export const adminFailure = createAction(
+  ActionTypes.ADMIN_ACTION_FAILURE,
+  (error) => ({
+    payload: error,
+  }),
+);

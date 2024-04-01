@@ -2,18 +2,15 @@
 /* eslint-disable import/default */
 const baseUrl = 'http://localhost:8000'
 const TIMEOUT = 300000;
-const getAccessToken = () => localStorage.getItem('react_token');
+const getAccessToken = () => localStorage.getItem('Token');
 
 const headers = (id?) => {
-  const  accessToken = getAccessToken();
-  // const  reactCookie = getCookie('myfarm_user');
-  // const accessToken = JSON.parse(reactCookie).accessToken;
+  const  accessToken =JSON.parse(getAccessToken());
   const header = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${accessToken}`,
   };
-  return id ? { ...header, 'session-id' : id } : header;
+  return accessToken ? { ...header, 'Authorization' : `Bearer ${accessToken}` } : header;
 };
 
 /**
@@ -68,7 +65,7 @@ export const statusCheckBlob = (data) => {
  * @param {string} urlPrefix
  * @returns {Promise}
  */
-export const fetchURL = (url, id?) => timeoutPromise(fetch(`${baseUrl}${url}`,
+export const fetchURL = (url, id?) => timeoutPromise(fetch(url,
   Object.assign({}, {
     headers: headers(id),
   }),

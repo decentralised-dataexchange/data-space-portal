@@ -8,6 +8,18 @@ export const ENDPOINTS = {
 
     refreshToken: () => {
       return "/onboard/token/refresh";
+    },
+
+    getAdminDetails: () => {
+      return "/config/admin/";
+    },
+
+    dataSourceList: () => {
+      return "/service/data-disclosure-agreements/"
+    },
+
+    gettingStart: () => {
+      return "/config/data-source/"
     }
   };
   

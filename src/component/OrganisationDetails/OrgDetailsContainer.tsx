@@ -168,7 +168,7 @@ const isVerify = sessionStorage.getItem('isVerify');
               <>
               <Box sx={{ display: "flex", alignItems: 'center'}}  mt={"-7px"} >
                   <Typography variant="h6" fontWeight="bold">
-                    {t('gettingStarted.organisationName')}
+                    {organisationDetails?.name}
                   </Typography>
                   {isVerify ? <CheckCircleIcon className="verify" /> : <DoNotDisturbOnIcon className="no-verify" /> }
                   <p className={isVerify ? 'view-credential' : 'add-credential'} onClick={callRightSideDrawer}>
@@ -179,10 +179,10 @@ const isVerify = sessionStorage.getItem('isVerify');
                 {(t('gettingStarted.sector'))} Public
                 </Typography>
                 <Typography variant="body2" height="23px">
-                Sweden
+                 {organisationDetails?.sector}
                 </Typography>
                 <Typography variant="body2" height="23px">
-                  https://igrant.io/policy.html
+                  {organisationDetails?.policyUrl}
                 </Typography>
               </>
             }
@@ -260,7 +260,7 @@ const isVerify = sessionStorage.getItem('isVerify');
           ) : (
             <>
               <Box>
-                <p className="txtOverview" >{(t('gettingStarted.descriptionPlaceholder'))}</p>
+                <p className="txtOverview" >{organisationDetails?.description}</p>
               </Box>
             </>
           )}

@@ -26,10 +26,8 @@ const DataSourceCard = ({ logoName, description }: DataSourceCardProp) => {
     const readMore = (txt) => {
         setMoreOrLessTxt(txt === `${t('home.readMore')}` ? `${t('home.readLess')}` : `${t('home.readMore')}`);
     }
-    console.log(logoName, "logo");
 
     const renderImage = (img) => {
-        console.log(img)
         switch (img) {
             case "dexcom":
                 return dexcom

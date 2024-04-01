@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import OrgCoverImageUpload from "../../component/OrganisationDetails/OrgCoverImageUpload";
 import OrganisationDetailsContainer from "../../component/OrganisationDetails/OrgDetailsContainer";
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from "../../customHooks";
+import { gettingStartAction } from '../../redux/actionCreators/gettingStart';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -36,8 +38,17 @@ const Item = styled("div")(({ theme }) => ({
 
 const GettingStarted = () => {
   const [editMode, setEditMode] = useState(false);
+  const dispatch = useAppDispatch();
   const { t } = useTranslation('translation');
   const navigate = useNavigate();
+
+  const gettingStartData = useAppSelector(
+    (state) => state?.gettingStart
+  );
+
+  useEffect(() => {
+    dispatch(gettingStartAction());
+  }, []);
 
   const handleEdit = () => {
     setEditMode(!editMode);
@@ -56,7 +67,7 @@ const GettingStarted = () => {
               logoImageBase64={'logoImageBase64'}
               organisationDetails={'organisationDetails'}
               handleEdit={() => { handleEdit() } }
-              organisationDetails={'setOrganisationDetails'}
+              organisationDetails={gettingStartData?.data?.dataSource}
               logoImageBase64={'setOrganisationDetails'}
               setOganisationDetails={() => { } } 
               setLogoImageBase64={() => { } } 

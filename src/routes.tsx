@@ -8,6 +8,7 @@ import ManageAdmin from './container/Account/ManageAdmin/manageAdmin';
 import DeveloperApis from './container/Account/DeveloperApis/developerApis';
 import DispConnections from './container/Account/DISPconnections/dispConnection';
 import { useTranslation } from 'react-i18next';
+import DataSourceListing from './container/Home/DataSourceListing';
 
 const AppRouter = () => {
   const { t } = useTranslation("translation");
@@ -24,7 +25,8 @@ const AppRouter = () => {
         </>
       }
         <>
-            <Route path="/" element={<Home />}/>
+            <Route path="/" element={<Home />} />
+            <Route path="/data-source-list" element={<DataSourceListing />} />
             <Route path={`/${t("route.login")}`} element={<Login />} />
           </>
     </Routes>
