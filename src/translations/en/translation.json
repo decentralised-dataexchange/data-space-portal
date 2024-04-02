@@ -112,7 +112,18 @@
     "tooltipView": "View Data Disclosure Agreement",
     "tooltipEdit": "Edit Data Disclosure Agreement",
     "tooltipDelete": "Delete Data Disclosure Agreement",
-    "pageDescription": "Manage Data Disclosure Agreements for your organisation."
+    "pageDescription": "Manage Data Disclosure Agreements for your organisation.",
+    "usagePurpose": "Usage Purpose",
+    "version": "Version",
+    "dataExchange": "Data Exchange",
+    "lawfulBasisOfProcessing": "Lawful Basis Of Processing",
+    "usagePurposePlaceholder": "E.g. Marketing and campaign (minimum 3 characters)",
+    "none": "None",
+    "dataSource": "Data Source",
+    "dataUsingService": "Data Using Service",
+    "descritptionInputPlaceholder": "Brief description about the usage of data (3-500 characters)",
+    "connectedData": "Connected Data Disclosure Agreement",
+    "legalID": "Data Controller Legal ID"
   },
   "manageAdmin": {
     "adminUser": "Admin User",

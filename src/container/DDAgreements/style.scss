@@ -1,3 +1,4 @@
+@import '../../../public/sass/helpers/breakpoints.scss';
 
 .dd-container {
     .dd-titleTxt {
@@ -26,4 +27,58 @@
         align-items: center;
         justify-content: space-evenly;
     }
+}
+
+.dd-modal-container {
+    height: 100vh;
+    background-color: #FFFF;
+    margin-top: 0;
+    width: 540px;
+    @include tabletAndDown {
+        margin-top: 0;
+        width: 380px;
+    }
+}
+
+.dd-modal-header {
+    font-size: 16px;
+    background-color: #0A065E;
+    display: flex;
+    align-items: center;
+    height: 80px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.dd-modal-banner-container {
+    height: 150;
+    width: 100%;
+    background-color: #E6E6E6;
+    margin-top: 0px;
+    @include tabletAndDown {
+        margin-top: 0;
+        width: 380px;
+    }
+}
+
+.dd-modal-details {
+    width: 480px;
+    border-radius: 2;
+    background-color: #FFFF;
+    @include tabletAndDown {
+        margin-top: 0;
+        width: 380px;
+    }
+}
+
+.input-connected-data {
+    width: 100%;
+    border: 1;
+    outline: none;
+    font-size: 0.875rem;
+    color: #495057;
+    border-width: 0;
+    border-radius: 0;
+    background-color: #FFFF;
+    border-bottom: 2px solid #DFE0E1;
 }

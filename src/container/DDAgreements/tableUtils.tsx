@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 // import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 // import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 // import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { VisibilityOutlined, UploadOutlined, DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material'
+import { VisibilityOutlined, UploadOutlined, DeleteOutlineOutlined } from '@mui/icons-material'
 import { Box, Tooltip } from '@mui/material';
 import './style.scss';
 import VersionDropdown from '../../component/VersionDropDown';
 import { useTranslation } from 'react-i18next';
+import ViewDataAgreementModal from './ViewDDAgreementModal';
+import DeleteModal from './DeleteModal';
 
 const actionIcons = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const handleClick = (isDelete) => {
+    isDelete ? setIsOpenDelete(!isOpenDelete) : setIsOpen(!isOpen);
+}
   const { t } = useTranslation('translation');
   return (
     <>
@@ -18,15 +25,29 @@ const actionIcons = () => {
           <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "no-drop" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
-          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
+          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={handleClick}/>
         </Tooltip>
-        <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
+        {/* <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
           <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title={t("dataAgreements.tooltipDelete")} placement="top">
-          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} />
+          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} onClick={() => handleClick('delete')}/>
         </Tooltip>
     </Box>
+
+    <ViewDataAgreementModal 
+        open={isOpen}
+        handleClick={handleClick}
+        mode={''} 
+    />
+    <DeleteModal 
+        open={isOpenDelete} 
+        setOpen={handleClick} 
+        confirmText={''} 
+        headerText={''} 
+        modalDescriptionText={undefined} 
+        resourceName={''} confirmButtonText={''} 
+    />
     </>
   )
 }
