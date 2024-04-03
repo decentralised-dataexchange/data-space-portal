@@ -68,8 +68,12 @@ export default function DeleteModal(props: Props) {
               />
             </Box>
             <Box>
-              <Box p={1.5}>
-                You are about to delete an existing data agreement and ALL its revisions. Please type DELETE to confirm and click DELETE. This action is not reversible.
+              <Box p={1.5} sx={{
+                fontSize: '1rem',
+                lineHeight: '1.5',
+                letterSpacing: '0.00938em'
+              }}>
+                You are about to delete an existing data agreement and ALL its revisions. Please type <b>DELETE</b> to confirm and click DELETE. This action is not reversible.
                 <TextField
                   autoFocus
                   variant="outlined"
@@ -79,12 +83,13 @@ export default function DeleteModal(props: Props) {
                 />
               </Box>
             </Box>
+            <Box className="modal-footer">
               <Button
                 onClick={() => {
                   setOpen(false);
                   setIsOk(false);
                 }}
-                // style={buttonStyle}
+                className="delete-btn"
                 sx={{
                   marginRight: "10px",
                   color: "black",
@@ -98,6 +103,7 @@ export default function DeleteModal(props: Props) {
                 {t("common.cancel")}
               </Button>
               <Button
+              className="delete-btn"
                 // onClick={onSubmit}
                 // style={!isOk ? disabledButtonstyle : buttonStyle}
                 variant="outlined"
@@ -113,6 +119,7 @@ export default function DeleteModal(props: Props) {
               >{t("common.delete")}
                 
               </Button>
+              </Box>
         </Box>
       </Drawer>
     </React.Fragment>

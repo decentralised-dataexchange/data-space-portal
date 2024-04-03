@@ -82,3 +82,33 @@
     background-color: #FFFF;
     border-bottom: 2px solid #DFE0E1;
 }
+
+.modal-footer {
+    position: fixed;
+    bottom: 0px;
+    width: 480px;
+    border-top: 1px solid #E9ECEF;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    background-color: white;
+    z-index: 1;
+    @include tabletAndDown {
+        width: 380px;
+    }
+}
+
+.delete-btn {
+    height: 30px !important;
+    width: 150px !important;
+    border-radius: 0 !important;
+    border: 1px solid #DFDFDF !important;
+}
+
+.disable-btn {
+    height: 30px !important;
+    width: 150px !important;
+    border-radius: 0 !important;
+    border: 1px solid #EAEAEA !important;
+}
