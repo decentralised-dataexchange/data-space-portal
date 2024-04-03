@@ -15,8 +15,12 @@ const actionIcons = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const handleClick = (isDelete) => {
-    isDelete ? setIsOpenDelete(!isOpenDelete) : setIsOpen(!isOpen);
-}
+    isDelete ? setIsOpenDelete(true) : setIsOpen(true);
+  }
+  const handleClose = () => {
+    setIsOpenDelete(false);
+    setIsOpen(false);
+  }
   const { t } = useTranslation('translation');
   return (
     <>
@@ -25,7 +29,7 @@ const actionIcons = () => {
           <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "no-drop" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
-          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={handleClick}/>
+          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={() => handleClick()}/>
         </Tooltip>
         {/* <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
           <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
@@ -37,12 +41,12 @@ const actionIcons = () => {
 
     <ViewDataAgreementModal 
         open={isOpen}
-        handleClick={handleClick}
+        handleClose={handleClose}
         mode={''} 
     />
     <DeleteModal 
         open={isOpenDelete} 
-        setOpen={handleClick} 
+        setOpen={handleClose} 
         confirmText={''} 
         headerText={''} 
         modalDescriptionText={undefined} 

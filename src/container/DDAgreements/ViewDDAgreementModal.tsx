@@ -35,7 +35,7 @@ import DataSharingRestriction from "./DataSharingRestriction";
   
   interface Props {
     open: boolean;
-    handleClick: Dispatch<SetStateAction<boolean>>;
+    handleClose: Dispatch<SetStateAction<boolean>>;
     mode: string;
     successCallback?: any;
     resourceName?: string;
@@ -65,7 +65,7 @@ import DataSharingRestriction from "./DataSharingRestriction";
   export default function ViewDataAgreementModal(props: Props) {
     const {
       open,
-      handleClick,
+      handleClose,
       mode,
       successCallback,
       resourceName,
@@ -93,7 +93,7 @@ import DataSharingRestriction from "./DataSharingRestriction";
                     )}
                   </Box>
                   <CloseIcon
-                    onClick={handleClick}
+                    onClick={handleClose}
                     sx={{
                       paddingRight: 2,
                       cursor: "pointer",
