@@ -73,19 +73,21 @@ const Layout = ({ children }) => {
     setOpen(!open);
   }
 
-  const isAuthenticated = localStorage.getItem('Token');
-
-  const privateRoutes = ((!isLoginUrl && isAuthenticated) || publicRoutes())
+  // const isAuthenticated = localStorage.getItem('Token');
+  // const isNotLoginPage = (( && isAuthenticated) || publicRoutes());
   
   return (
     <>
-      {privateRoutes ? 
+      {!isLoginUrl ? 
           <>
           <AppMenuBar position="fixed" open={open}>
             <AppBar handleOpenMenu={handleOpenMenu} />
           </AppMenuBar>
          <Box sx={{ display: 'flex' }} className="leftNavigationContainer">
-            <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
+          {
+            !publicRoutes() && <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
+          }
+            
           <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
             { !publicRoutes() && <Breadcrumb /> }
             {children}
