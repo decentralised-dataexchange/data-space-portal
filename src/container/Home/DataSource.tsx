@@ -2,46 +2,41 @@ import React, { useState } from 'react';
 import {
     Typography,
     Button,
-    Box
+    Box,
 } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import dexcom from '../../../public/img/dexcom.png';
-import symbiome from '../../../public/img/symbiome.png';
-import medtronic from '../../../public/img/medtronic.png';
-import glooko from '../../../public/img/glooko.png';
-import oneTwo from '../../../public/img/oneTwo.svg';
-import appleHealth from '../../../public/img/appleHealth.png';
 import { useTranslation } from "react-i18next";
+import { dataSourceEachList } from '../../redux/actionCreators/dataSource'
+import { useAppDispatch, useAppSelector } from "../../customHooks";
 
 interface DataSourceCardProp {
-    description: string,
-    logoName: string
+    dataSource: {
+        description: string,
+        logoUrl: string,
+        id: string
+        coverImageUrl: string,
+        name: string,
+        sector: string,
+        location: string,
+        policyUrl: string,
+    }
 }
 
-const DataSourceCard = ({ logoName, description }: DataSourceCardProp) => {
+const DataSourceCard = ({ dataSource }: DataSourceCardProp) => {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const { t } = useTranslation("translation");
     const [ moreOrLessTxt, setMoreOrLessTxt] = useState(`${t('home.readMore')}`)
     const readMore = (txt) => {
         setMoreOrLessTxt(txt === `${t('home.readMore')}` ? `${t('home.readLess')}` : `${t('home.readMore')}`);
     }
 
-    const renderImage = (img) => {
-        switch (img) {
-            case "dexcom":
-                return dexcom
-            case "medtronic":
-                return medtronic
-            case "symbiome":
-                return symbiome;
-            case "glooko":
-                return glooko;
-            case "oneTwo":
-                return oneTwo;
-            case "appleHealth":
-                return appleHealth;
-        }
+    const handleClick = (obj: DataSourceCardProp) => {
+        dispatch(dataSourceEachList(obj));
+        navigate('/data-source-list');
     }
 
     return (
@@ -50,27 +45,27 @@ const DataSourceCard = ({ logoName, description }: DataSourceCardProp) => {
                 <Box component="div" className='card-header'>
                     <CardMedia
                         component="img"
-                        image={renderImage(logoName)}
+                        image={dataSource?.logoUrl}
                         alt="symbiome"
                         className='logo'
                     />
                 </Box>
                 <CardContent>
                     <Typography gutterBottom component="div" className="card-body" sx={{ fontSize: "14px" }}>
-                        {moreOrLessTxt === 'Read Less....' ? description : description.slice(0, 275)}
-                        {description?.length > 275 &&
+                        {moreOrLessTxt === 'Read Less....' ? dataSource?.description : dataSource?.description.slice(0, 275)}
+                        {dataSource?.description?.length > 275 &&
                             <Typography className="readmore" component="span" sx={{ fontSize: "14px" }}>
                                 {/* <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box> */}
                             </Typography>
                         }
                     </Typography>
                     <Box className="actionBtn">
-                        <Button size="small" sx={{fontSize: "14px"}} >
+                        <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick(dataSource)}>
                             {t('home.btn-signData')}
                         </Button>
-                        <Button size="small"  sx={{fontSize: "14px"}}>
+                        {/* <Button size="small"  sx={{fontSize: "14px"}}>
                             {t('home.btn-viewMetadata')}
-                        </Button>
+                        </Button> */}
                     </Box>
                 </CardContent>
             </Card>

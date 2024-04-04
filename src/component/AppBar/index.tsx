@@ -8,11 +8,9 @@ import { useLocation } from "react-router-dom";
 import { getDevice, publicRoutes } from '../../utils/utils'
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../customHooks";
-import { adminAction } from "../../redux/actionCreators/login";
 
 export default function MyAppBar({handleOpenMenu}) {
   const { t } = useTranslation('translation');
-  const dispatch = useAppDispatch();
   const { isMobile } = getDevice();
   const { pathname } = useLocation();
   const isAuthenticated = localStorage.getItem('Token');
@@ -20,10 +18,6 @@ export default function MyAppBar({handleOpenMenu}) {
   const adminData = useAppSelector(
     (state) => state?.user?.data
   );
-
-  useEffect(() => {
-    !adminData?.name && dispatch(adminAction());
-  }, [])
 
   return (
     <Box className="appBarContainer">

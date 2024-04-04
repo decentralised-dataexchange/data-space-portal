@@ -12,71 +12,21 @@ import React, { useEffect, useState } from 'react';
 import { gridSpacing } from '../../constants/constant';
 import DataSourceCard from './DataSource';
 import './style.scss';
-import { useAppDispatch } from "../../customHooks";
+import { useAppSelector } from "../../customHooks";
 import { useTranslation } from "react-i18next";
-import { dataSourceAction  } from "../../redux/actionCreators/dataSource";
 
 const LandingPage = () => {
     const { t } = useTranslation("translation");
-    const dispatch = useAppDispatch();
     const [selectedValue, setSelectedValue] = useState('option 1')
 
-    // useEffect(() => {
-    //     dispatch(dataSourceAction());
-    // }, [])
+    const dataSourceItems = useAppSelector(
+        (state) => state?.dataSourceList?.data?.dataSources
+      );
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value)
     }
-    const datasourceItems = [
-        {
-            id: 1,
-            logoName: 'symbiome',
-            url: 'symbiome',
-            description: 'Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,cLorem ipsum dolor sit amet,oLorem ipsum dolor sit amet,nLorem ipsum dolor sit amet,svevctetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse'
-        },
-        {
-            id: 2,
-            logoName: 'dexcom',
-            url: 'dexcom',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        },
-        {
-            id: 3,
-            logoName: 'medtronic',
-            url: 'medtronic',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        },
-        {
-            id: 4,
-            logoName: 'glooko',
-            description: 'Lorem ipsum dolor sit amet, mnsbnsbvssbv bjhjhjanconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        },
-        {
-            id: 5,
-            logoName: 'oneTwo',
-            url: '../../../public/img/dexcom.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        },
-        {
-            id: 6,
-            logoName: 'appleHealth',
-            url: '../../../public/img/dexcom.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        },
-        {
-            id: 6,
-            logoName: 'appleHealth',
-            url: '../../../public/img/dexcom.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        },
-        {
-            id: 6,
-            logoName: 'appleHealth',
-            url: '../../../public/img/dexcom.png',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-        }
-    ]
+  console.log(dataSourceItems, "dataSourceItems")
     return (
         <>
             <Box className="homeContainer">
@@ -107,10 +57,14 @@ const LandingPage = () => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
                             <Grid container spacing={gridSpacing}>
-                                {datasourceItems.map((dataSource) => {
+                                {dataSourceItems?.map(( { dataSource }) => {
                                     return (
                                         <Grid item lg={3} md={6} sm={6} xs={12}>
-                                            <DataSourceCard logoName={dataSource.logoName} description={dataSource.description} />
+                                            <DataSourceCard
+                                                dataSource={dataSource}
+                                                logoUrl={dataSource.logoUrl}
+                                                description={dataSource.description} 
+                                            />
                                         </Grid>
                                     );
                                 })}
