@@ -5,7 +5,7 @@ import { AppBarMenu } from "./AppBarMenu";
 import Logo from "../../../public/img/logo.jpg";
 import './style.scss';
 import { useLocation } from "react-router-dom";
-import { getDevice } from '../../utils/utils'
+import { getDevice, publicRoutes } from '../../utils/utils'
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../customHooks";
 import { adminAction } from "../../redux/actionCreators/login";
@@ -37,10 +37,10 @@ export default function MyAppBar({handleOpenMenu}) {
       >
         <Toolbar>
           <IconButton
-            sx={{cursor: pathname == '/' ? 'not-allowed' : 'pointer'}}
+            sx={{cursor: publicRoutes(pathname) ? 'not-allowed' : 'pointer'}}
             edge="start"
             color="inherit"
-            onClick={() => pathname == '/' ? '' : handleOpenMenu()}
+            onClick={() => publicRoutes(pathname) ? '' : handleOpenMenu()}
           >
             <MenuIcon style={{ height: 60, width: 60 }} />
           </IconButton>

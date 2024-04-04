@@ -8,5 +8,9 @@ const getDevice = () => {
   return { isMobile, isTablet };
 };
 
+const publicRoutes = (pathname: string) => {
+  return pathname == "/" || pathname == "/data-source-list"
+}
 
-export { getDevice };
+
+export { getDevice, publicRoutes };
