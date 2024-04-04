@@ -24,11 +24,10 @@ const App = () => {
   const encodeToken = isAuthenticated && jwtDecode(isAuthenticated);
   const currentTime = new Date();
   const expiryTime = new Date(encodeToken?.exp * 1000);
-  console.log(currentTime, expiryTime, "expiryTime")
-  // if(currentTime > expiryTime) {
-  //   LocalStorageService.clear();
-  //   navigate('/login')
-  // }
+  if(currentTime > expiryTime) {
+    LocalStorageService.clear();
+    navigate('/login')
+  }
 
 
   const renderPublicRoutes = (path: string) => {

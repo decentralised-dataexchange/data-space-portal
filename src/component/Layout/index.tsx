@@ -9,6 +9,9 @@ import Breadcrumb from '../BreadCrumbs';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { getDevice, publicRoutes } from '../../utils/utils';
 import Footer from '../Footer';
+import { useAppDispatch, useAppSelector } from "../../customHooks";
+import { adminAction } from "../../redux/actionCreators/login";
+import { dataSourceAction  } from "../../redux/actionCreators/dataSource";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -19,11 +22,25 @@ const Layout = ({ children }) => {
   const { pathname } = useLocation();
   const isLoginUrl = pathname == '/login';
   const [ open, setOpen ] = useState<boolean>(true);
-  const isDeskTop = (!isMobile && !isTablet)
+  const isDeskTop = (!isMobile && !isTablet);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     publicRoutes(pathname) ? setOpen(false) : setOpen(isDeskTop ? true : false) ;
   }, [pathname]);
+
+  const adminData = useAppSelector(
+    (state) => state?.user?.data
+  );
+
+  const dataSource = useAppSelector(
+    (state) => state?.dataSourceList?.data
+  );
+
+  useEffect(() => {
+    !adminData?.name && dispatch(adminAction());
+    !dataSource && dispatch(dataSourceAction());
+  }, [])
 
   const handleOpenMenu = () => {
     if(!publicRoutes(pathname)) {

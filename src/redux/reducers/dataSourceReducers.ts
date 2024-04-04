@@ -1,9 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { dataSourceAction, dataSourceSuccess, dataSourceFailure } from '../actionCreators/dataSource';
+import { dataSourceAction, dataSourceSuccess, dataSourceFailure, dataSourceEachList } from '../actionCreators/dataSource';
 
 const initialState = {
   isLoading: false,
   data: null,
+  list: null
 };
 
 export default {
@@ -21,6 +22,11 @@ export default {
       .addCase(dataSourceFailure, (state, action) => {
         state.isLoading = false;
         state.data = action.payload;
+      });
+      builder
+      .addCase(dataSourceEachList, (state, action) => {
+        state.isLoading = false;
+        state.list = action.payload;
       });
   }),
 };

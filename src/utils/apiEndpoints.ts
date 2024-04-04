@@ -15,7 +15,7 @@ export const ENDPOINTS = {
     },
 
     dataSourceList: () => {
-      return "/service/data-disclosure-agreements/"
+      return "/service/data-sources/"
     },
 
     gettingStart: () => {
