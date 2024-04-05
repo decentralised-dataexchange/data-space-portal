@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Box, Grid, Typography, TextField, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "../../component/OrganisationDetails/OrgLogoImageUpload";
@@ -8,6 +8,8 @@ import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import './style.scss';
 import { useTranslation } from "react-i18next";
+import { useAppSelector , useAppDispatch} from "../../customHooks";
+import { updateDataSource } from "../../redux/actionCreators/gettingStart";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -38,11 +40,11 @@ type Props = {
   handleEdit: () => void;
   setOganisationDetails: React.Dispatch<React.SetStateAction<any>>;
   setLogoImageBase64: React.Dispatch<React.SetStateAction<any>>;
+  isEnableAddCredential: boolean
 };
 
 const OrganisationDetailsContainer = (props: Props) => {
   const { t } = useTranslation('translation');
-  const [ formValue, setFormValue ] = useState({'orgName': 'Organisation Name', 'location': 'Sweden', 'policyUrl': 'https://igrant.io/policy.html', 'description': `${(t('gettingStarted.descriptionPlaceholder'))}`})
   const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
   const {
     editMode,
@@ -51,11 +53,35 @@ const OrganisationDetailsContainer = (props: Props) => {
     handleEdit,
     setOganisationDetails,
     setLogoImageBase64,
+    isEnableAddCredential
   } = props;
+  const dispatch = useAppDispatch();
+  const [ formValue, setFormValue ] = useState(
+    {
+      'orgName': '', 
+      'location': '', 
+      'policyUrl': '', 
+      'description': ''
+    })
+
+    useEffect(() => {
+      setFormValue({
+        'orgName': organisationDetails?.name, 
+        'location': organisationDetails?.location, 
+        'policyUrl': organisationDetails?.policyUrl, 
+        'description': organisationDetails?.description
+      })
+    }, [organisationDetails])
 
   const callRightSideDrawer = () => {
-    setOpenRightSideDrawer(!openRightSideDrawer)
+    isEnableAddCredential && setOpenRightSideDrawer(!openRightSideDrawer)
 }
+
+const verifyConnectionObj = useAppSelector(
+  (state) => state?.gettingStart?.verifyConnection.data
+);
+
+const isVerify = verifyConnectionObj?.verification?.presentationState == 'verified';
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -64,8 +90,16 @@ const handleChange = (e) => {
     [name]: value,
   });
 }
-  
-const isVerify = sessionStorage.getItem('isVerify');
+
+
+const handleSave = () => {
+  const obj = { 
+    ...formValue, "required": {}
+  }
+  dispatch(updateDataSource(obj))
+}
+
+const addCredentialClass = isVerify ? 'view-credential' : !isEnableAddCredential ? 'add-credential cursorNotAllowed' : 'add-credential';
   return (
     <DetailsContainer sx={{ flexGrow: 1 }} className="gettingStarted">
       <DrawerComponent
@@ -108,10 +142,8 @@ const isVerify = sessionStorage.getItem('isVerify');
               <TextField
                 autoFocus
                 value={formValue.orgName}
-                defaultValue={organisationDetails.name}
                 onChange={(e) => handleChange(e)}
                 variant="standard"
-                // label={false}
                 placeholder={t("gettingStarted.organisationName")}
                 fullWidth
                 name='orgName'
@@ -136,7 +168,6 @@ const isVerify = sessionStorage.getItem('isVerify');
               </Typography>
               <TextField
                 variant="standard"
-                // label={false}
                 value={formValue.location}
                 name='location'
                 onChange={(e) => handleChange(e)}
@@ -150,8 +181,6 @@ const isVerify = sessionStorage.getItem('isVerify');
               />
               <TextField
                 variant="standard"
-                // label={false}
-                // value={organisationPolicyURL}
                 onChange={(e) => handleChange(e)}
                 placeholder={t("common.policyUrl")}
                 value={formValue.policyUrl}
@@ -171,7 +200,7 @@ const isVerify = sessionStorage.getItem('isVerify');
                     {organisationDetails?.name}
                   </Typography>
                   {isVerify ? <CheckCircleIcon className="verify" /> : <DoNotDisturbOnIcon className="no-verify" /> }
-                  <p className={isVerify ? 'view-credential' : 'add-credential'} onClick={callRightSideDrawer}>
+                  <p className={addCredentialClass} onClick={callRightSideDrawer}>
                   {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential')) }
                   </p>
               </Box>
@@ -198,7 +227,7 @@ const isVerify = sessionStorage.getItem('isVerify');
               }}
             >
               <Button
-                onClick={handleEdit}
+                onClick={() => handleEdit()}
                 style={buttonStyle}
                 variant="outlined"
                 sx={{
@@ -212,7 +241,7 @@ const isVerify = sessionStorage.getItem('isVerify');
                 {t("common.cancel")}
               </Button>
               <Button
-                // onClick={handleSave}
+                onClick={() => handleSave()}
                 style={buttonStyle}
                 variant="outlined"
                 sx={{
@@ -227,7 +256,7 @@ const isVerify = sessionStorage.getItem('isVerify');
               </Button>
             </Box>
           ) : <Typography
-                onClick={handleEdit}
+                onClick={() => handleEdit()}
                 sx={{
                   cursor: "pointer",
                   textAlign: { xs: "left", sm: "right" },
@@ -244,10 +273,10 @@ const isVerify = sessionStorage.getItem('isVerify');
           {editMode ? (
             <TextField
               variant="standard"
-              value={(t('gettingStarted.descriptionPlaceholder'))}
-              // onChange={(e) => setOrganisationOverView(e.target.value)}
+              value={formValue?.description}
               multiline={true}
-              // defaultValue={organisationDetails.description}
+              onChange={(e) => handleChange(e)}
+              name='description'
               label={false}
               placeholder={(t('gettingStarted.descriptionPlaceholder'))}
               fullWidth

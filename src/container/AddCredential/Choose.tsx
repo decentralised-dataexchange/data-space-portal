@@ -4,15 +4,26 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import './style.scss'
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../customHooks';
+
+interface ChooseProps {
+    callRightSideDrawer: () => void
+}
 
 
-const ChooseComponent = ({ callRightSideDrawer }) => {
+const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
     const [ isChecked, setIsChecked ] = useState<boolean>(true);
     const { t } = useTranslation('translation');
 
     const handleChange = () => {
         setIsChecked(!isChecked)
     }
+
+    const verificationTemplateObj = useAppSelector(
+        (state) => state?.gettingStart?.verificationTemplate?.data
+      );
+
+    const { verificationTemplates } = verificationTemplateObj;
 
     return (
         <>
@@ -23,32 +34,42 @@ const ChooseComponent = ({ callRightSideDrawer }) => {
                         <AccountBalanceWalletOutlinedIcon fontSize='large' />
                     </Grid>
                     <Grid item>
-                        <Typography className="ml-1" variant="body1">{t('gettingStarted.chooseWalletTitle')}</Typography>
+                        <Typography className="ml-1" variant="body1">{`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates[0]?.walletName}, ${verificationTemplates[0]?.walletLocation}`}</Typography>
                     </Grid>
                 </Grid>
                 <Box className="itemContainer">
-                    <ListItem>
-                        <Checkbox
-                            className='prl-30'
-                            color="primary"
-                            onChange={() => handleChange()}
-                            checked={isChecked}
-                        />
-                        <Box className="itemTextContainer">
-                            <ListItemText primary={
-                                <Grid container alignItems="center">
-                                    <Grid item xs={11}>
-                                        <Typography className='title-font pb-10'>{t('common.certificateOfRegistration')}</Typography>
-                                        <Typography className='title-font' fontWeight="bold">{t('gettingStarted.chooseWalletTitle')}</Typography>
-                                        <Typography className='title-font' fontStyle="italic">{t('gettingStarted.chooseWalletThree')}</Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <QrCodeIcon color="success"/>
-                                    </Grid>
-                                </Grid>
-                            } />
-                        </Box>
-                    </ListItem>
+                    {
+                        verificationTemplates?.map((obj) => {
+                            return (
+                                <ListItem key={obj?.id}>
+                                    <Checkbox
+                                        disabled
+                                        className='prl-30'
+                                        color="primary"
+                                        onChange={() => handleChange()}
+                                        checked={isChecked}
+                                    />
+                                    <Box className="itemTextContainer">
+                                        <ListItemText primary={
+                                            <Grid container alignItems="center">
+                                                <Grid item xs={10}>
+                                                    <Typography className='title-font pb-10'>{obj?.verificationTemplateName}</Typography>
+                                                    <Typography className='title-font' fontWeight="bold">{`${obj?.walletName}, ${obj?.walletLocation}`}</Typography>
+                                                    <Typography className='title-font' fontStyle="italic">{`${t('gettingStarted.chooseWalletThree')} ${obj?.issuerName}, ${obj?.issuerLocation}`}</Typography>
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <img 
+                                                        style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                                                        src={obj?.issuerLogoUrl}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        } />
+                                    </Box>
+                                </ListItem>
+                            )
+                        })
+                    }
                 </Box>
             </Box>
         </>

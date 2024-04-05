@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import * as actionTypes from '../actionTypes/datsSource';
+import * as actionTypes from '../actionTypes/dataSource';
 import * as dataSourceAction from '../actionCreators/dataSource';
 import { doApiGet, doApiPost } from '../../utils/fetchWrapper';
 import { ENDPOINTS } from '../../utils/apiEndpoints';

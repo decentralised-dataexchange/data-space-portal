@@ -24,9 +24,7 @@ const DataSourceListing = () => {
 
     useEffect(() => {
         !dataSourceItems && navigate('/')
-    }, [])
-    
-      console.log(dataSourceItems)
+    }, []);
     return (
         <Box className="dataListContainer">
             <Grid container spacing={gridSpacing}>

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { createAction } from '@reduxjs/toolkit';
-import * as ActionTypes from '../actionTypes/datsSource'
+import * as ActionTypes from '../actionTypes/dataSource'
 
 export const dataSourceAction = createAction(
   ActionTypes.DATA_SOURCE_ACTION

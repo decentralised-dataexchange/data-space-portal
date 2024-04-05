@@ -112,6 +112,6 @@ body {
     border-bottom: 2px solid #000 !important;
 }
 
-.MuiInputBase-input {
-    
+.cursorNotAllowed {
+    cursor: not-allowed;
 }

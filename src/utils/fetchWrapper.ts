@@ -1,6 +1,6 @@
 // import { getCookie, sessionId } from './utils';
 /* eslint-disable import/default */
-const baseUrl = 'http://localhost:8000'
+const baseUrl = 'https://api.nxd.foundation'
 const TIMEOUT = 300000;
 const getAccessToken = () => localStorage.getItem('Token');
 
@@ -106,7 +106,7 @@ export const doApiGetBlob = (url, sessionId, header?) => {
  * @param {object} body
  * @returns {Promise}
  */
-export const doApiPost = (url: string, body) => {
+export const doApiPost = (url: string, body?) => {
   return timeoutPromise(fetch(`${baseUrl}${url}`,
     Object.assign({}, {
       method: 'post',
@@ -142,14 +142,14 @@ export const doApiPostBlob = (url, body) => {
  * @param {object} body
  * @returns {Promise}
  */
-export const doApiPut = (url, body, sessionId) => {
+export const doApiPut = (url, body?) => {
   const reqBody = { ...body };
   
 
   return timeoutPromise(fetch(`${baseUrl}${url}`,
     Object.assign({}, {
       method: 'put',
-      headers: headers(sessionId),
+      headers: headers(),
       credentials: 'include' as RequestCredentials,
       body: JSON.stringify(reqBody),
     }),
