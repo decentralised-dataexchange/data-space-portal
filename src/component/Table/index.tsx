@@ -27,6 +27,7 @@ const renderTableHead = (tableField) => {
 };
 
 const renderTableBody = (tableData, tableField, isColumnWise?) => {
+
   return (
     <TableBody>
       {isColumnWise ? 

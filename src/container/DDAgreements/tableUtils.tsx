@@ -9,18 +9,12 @@ import './style.scss';
 import VersionDropdown from '../../component/VersionDropDown';
 import { useTranslation } from 'react-i18next';
 import ViewDataAgreementModal from './ViewDDAgreementModal';
-import DeleteModal from './DeleteModal';
+import DeleteModal from './generalModal';
 
-const actionIcons = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const actionIcons = (selectedData) => {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const handleClick = (isDelete) => {
-    isDelete ? setIsOpenDelete(true) : setIsOpen(true);
-  }
-  const handleClose = () => {
-    setIsOpenDelete(false);
-    setIsOpen(false);
-  }
+  const [isOpenViewDDA, setIsOpenViewDDA] = useState(false);
+
   const { t } = useTranslation('translation');
   return (
     <>
@@ -29,24 +23,22 @@ const actionIcons = () => {
           <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "no-drop" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
-          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={() => handleClick()}/>
+          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={() => setIsOpenViewDDA(true)}/>
         </Tooltip>
-        {/* <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
-          <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
-        </Tooltip> */}
         <Tooltip title={t("dataAgreements.tooltipDelete")} placement="top">
-          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} onClick={() => handleClick('delete')}/>
+          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} onClick={() => setIsOpenDelete(true)}/>
         </Tooltip>
     </Box>
 
     <ViewDataAgreementModal 
-        open={isOpen}
-        handleClose={handleClose}
+        open={isOpenViewDDA}
+        setOpen={setIsOpenViewDDA} 
         mode={''} 
+        selectedData={selectedData}
     />
     <DeleteModal 
         open={isOpenDelete} 
-        setOpen={handleClose} 
+        setOpen={setIsOpenDelete} 
         confirmText={''} 
         headerText={''} 
         modalDescriptionText={undefined} 
@@ -56,17 +48,19 @@ const actionIcons = () => {
   )
 }
 
-const TableData =  [
-  {
-    purpose: "Registration data",
-    version: <VersionDropdown key={undefined} record={undefined} selectedValue={undefined} setSelectedValue={undefined} setSelectedDropdownDataAgreementValue={undefined} />,
-    lawfulProcess: "Contractual purpose",
-    status: "Listed",
-    ddexchange: "Data exchange"
-  },
-]
+const TableData = (data) => {
+  return data?.map((agreement) => ({
+    purpose: agreement.purpose,
+    version: <VersionDropdown key={agreement.id} record={agreement} />,
+    lawfulBasis: agreement.lawfulBasis,
+    status: agreement.status,
+    actions: (agreement) => actionIcons(agreement) 
+  }));
+};
 
-const TableHead =  [
+
+
+const TableHead  =  [
     {
       title: "Usage purpose",
       field: "purpose",
@@ -77,15 +71,11 @@ const TableHead =  [
       title: "Version",
     },
     {
-      field: "ddexchange",
-      title: "Data Exchange",
-    },
-    {
       field: "status",
       title: "Status",
     },
     {
-      field: "lawfulProcess",
+      field: "lawfulBasis",
       title: "Lawful Basis of Processing",
       headerWidth: "20%",
     },

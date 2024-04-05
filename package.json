@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
+    "axios": "^1.6.8",
     "jwt-decode": "^4.0.0",
     "mui-image": "^1.0.7",
     "react": "^18.2.0",

@@ -1,80 +1,34 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-} from "react";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
-import { Drawer, Typography, Button, Box, Avatar } from "@mui/material";
+import { Drawer, Typography, Box, Avatar, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Purpose } from "./Purpose";
-import { Version } from "./Version";
-import { DataExchangeModeFormControl } from "./DataExchangeMode";
-import { PurposeDescription } from "./PurposeDescription";
 
-
-import DefaultBanner from "../../assets/OrganisationDefaultBanner.jpg";
-import DefaultLogo from "../../assets/OrganisationDefaultLogo.png";
-
-import DataAgreementPersonalDataTable from "../dataAgreements/DataAgreementPersonalDataTable";
-import DataAgreementPolicy from "../dataAgreements/DataAgreementPolicy";
-import DPIAConfigurations from "../dataAgreements/DPIAConfiguration";
-import DataSchemaModal from "./dataSchemaModal";
-
-import { DataAgreementPayload } from "../dataAgreements/DataAgreementActions";
-import { HttpService } from "../../service/HTTPService";
-
-
-import { LawfullBasisOfProcessingFormControll } from "../dataAgreements/LawfullBasisOfProcessing";
-import { OrganizationDetailsCRUDContext } from "../../contexts/organizationDetailsCrud";
-import SnackbarComponent from "../notification";
-import { isFormDataChanged } from "../../utils/isFormDataChanged";
 import { useTranslation } from "react-i18next";
 import { defaultCoverImage, defaultLogoImg } from "../../utils/defalultImages";
-import { ConnectedAgreement } from "./ConnectedAgreement";
-import DataSharingRestriction from "./DataSharingRestriction";
+import { DataAttributeCardForDDA } from "./dataAttributeCardForDDA";
+import { DDAPolicyCard } from "./dataPolicyCard";
+import { useAppDispatch, useAppSelector } from "../../customHooks";
+import { gettingStartAction } from "../../redux/actionCreators/gettingStart";
 
 interface Props {
   open: boolean;
-  handleClose: Dispatch<SetStateAction<boolean>>;
+  setOpen: Dispatch<SetStateAction<boolean>>;
   mode: string;
-  successCallback?: any;
-  resourceName?: string;
-  selectededDataAgreementFromDataAgreement?: any;
-  dataAgrreementRevisionIdForSelectedRecord?: string | undefined;
-  setSelectedDropdownValue?: any;
+  selectedData: any;
 }
 
-let defaultValue = {
-  Name: "",
-  Description: "",
-  Version: "1.0.0",
-  AttributeType: "null",
-  LawfulBasisOfProcessing: "consent",
-  PolicyURL: "https://igrant.io/policy.html",
-  Jurisdiction: "London, GB",
-  IndustryScope: "Retail",
-  StorageLocation: "Europe",
-  dataRetentionPeriodDays: 0,
-  Restriction: "Europe",
-  Shared3PP: false,
-  DpiaDate: new Date().toISOString().slice(0, 16),
-  DpiaSummaryURL: "https://privacyant.se/dpia_results.html",
-  dataAttributes: [{ attributeName: "", attributeDescription: "" }],
-};
-
 export default function ViewDataAgreementModal(props: Props) {
-  const {
-    open,
-    handleClose,
-    mode,
-    successCallback,
-    resourceName,
-    selectededDataAgreementFromDataAgreement,
-    dataAgrreementRevisionIdForSelectedRecord,
-    setSelectedDropdownValue,
-  } = props;
+  const { open, setOpen, mode, selectedData } = props;
   const { t } = useTranslation("translation");
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(gettingStartAction());
+  }, []);
+
+  const gettingStartData = useAppSelector(
+    (state) => state?.gettingStart?.data?.dataSource
+  );
 
   return (
     <>
@@ -84,16 +38,16 @@ export default function ViewDataAgreementModal(props: Props) {
             <Box className="dd-modal-header">
               <Box pl={2}>
                 <Typography color="#F3F3F6">
-                  View Data Disclosure Agreement: User Data for Third Parties
+                  View Data Disclosure Agreement: {selectedData?.purpose}
                 </Typography>
                 {mode !== "Create" && (
                   <Typography color="#F3F3F6">
-                    654cf0db9684ed907ce07c5f
+                    {selectedData?.templateId}
                   </Typography>
                 )}
               </Box>
               <CloseIcon
-                onClick={handleClose}
+                onClick={() => setOpen(false)}
                 sx={{
                   paddingRight: 2,
                   cursor: "pointer",
@@ -101,7 +55,7 @@ export default function ViewDataAgreementModal(props: Props) {
                 }}
               />
             </Box>
-            <Box className='dd-modal-banner-container'>
+            <Box className="dd-modal-banner-container">
               <Box
                 style={{ height: "150px", width: "100%" }}
                 component="img"
@@ -123,13 +77,13 @@ export default function ViewDataAgreementModal(props: Props) {
               />
             </Box>
 
-            <Box className='dd-modal-details'>
+            <Box className="dd-modal-details" style={{ paddingBottom: "80px" }}>
               <Box p={1.5}>
                 <Typography variant="h6" fontWeight="bold">
-                  National ID
+                  {gettingStartData?.name}
                 </Typography>
-                <Typography>
-                  Sweden
+                <Typography color="#9F9F9F">
+                  {gettingStartData?.location}
                 </Typography>
                 <Typography variant="subtitle1" mt={3}>
                   {t("common.overView")}
@@ -140,93 +94,39 @@ export default function ViewDataAgreementModal(props: Props) {
                   mt={1}
                   sx={{ wordWrap: "breakWord" }}
                 >
-                  For Queries about how we are managing your data please contact the Data Protection Officer.
+                  {gettingStartData?.description}
                 </Typography>
 
-                <ConnectedAgreement open={true} mode={""} />
-                <Typography
-                  style={{
-                    fontSize: "14px",
-                    textDecoration: "underline",
-                    color: "grey",
-                    marginTop: "5px",
-                    cursor: "not-allowed",
-                  }}
-                >
-                  (View Data Disclosure Agreement)
+                <Typography color="grey" mt={3} variant="subtitle1">
+                  {selectedData?.purpose.toUpperCase()}
                 </Typography>
 
-                <DataExchangeModeFormControl
-                  open={props.open}
-                  mode={props.mode}
-                  selectededDataAgreementFromDataAgreement={
-                    selectededDataAgreementFromDataAgreement
-                  }
+                <DataAttributeCardForDDA selectedData={selectedData} />
+
+                <DDAPolicyCard
+                  selectedData={selectedData}
+                  handleCloseViewDDAModal={setOpen}
                 />
+              </Box>
 
-                <Purpose open={props.open} mode={props.mode} />
-
-                <Version />
-
-                <DataSharingRestriction />
-
-                {/* <LawfullBasisOfProcessingFormControll
-                      open={props.open}
-                      mode={props.mode}
-                    /> */}
-
-                {/* <Box mt={2}> */}
-                {/* <Purpose open={props.open} mode={props.mode} /> */}
-
-                {/* <Version /> */}
-
-                {/* <DataExchangeModeFormControl
-                      open={props.open}
-                      mode={props.mode}
-                      selectededDataAgreementFromDataAgreement={
-                        selectededDataAgreementFromDataAgreement
-                      }
-                    /> */}
-
-                {/* Required for future purpose in enterprise dashboard */}
-                {/* <Typography
-                        style={{
-                          fontSize: "14px",
-                          textDecoration: "underline",
-                          color: "grey",
-                          marginTop: "-7px",
-                          cursor: "not-allowed",
-                        }}
-                      >
-                        (Choose existing schemas)
-                      </Typography> */}
-
-                {/* <PurposeDescription open={props.open} mode={props.mode} />
-
-                    <LawfullBasisOfProcessingFormControll
-                      open={props.open}
-                      mode={props.mode}
-                    />
-
-                    <Typography variant="subtitle1">
-                      {t("dataAgreements.dataPolicyConfigurations")}
-                      <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
-                    </Typography>
-                    <DataAgreementPolicy mode={mode} />
-
-                    <Typography variant="subtitle1">
-                      {t("dataAgreements.DPIAConfigurations")}
-                    </Typography>
-                    <DPIAConfigurations mode={mode} />
-                  </Box>
-
-                  <DataAgreementPersonalDataTable
-                    mode={mode}
-                    append={append}
-                    fields={fields}
-                    remove={remove}
-                    formController={control}
-                  /> */}
+              <Box className="modal-footer ">
+                <Button
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                  className="delete-btn"
+                  sx={{
+                    marginRight: "15px",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
+                  variant="outlined"
+                >
+                  {t("common.close")}
+                </Button>
               </Box>
             </Box>
           </form>
