@@ -59,76 +59,87 @@ const DDAtable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {tabledata?.dataDisclosureAgreements?.map((row, index) => (
-            <StyledTableRow key={index}>
-              <StyledTableCell>{row.purpose}</StyledTableCell>
-              <StyledTableCell>
-                <VersionDropdown record={row} />
-              </StyledTableCell>
-              <StyledTableCell>{row.status}</StyledTableCell>
-              <StyledTableCell>{row.lawfulBasis}</StyledTableCell>
-              <StyledTableCell
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  border: "none",
-                }}
-              >
-                <Tooltip
-                  title={"Publish Data Disclosure Agreement"}
-                  placement="top"
+          {tabledata?.dataDisclosureAgreements?.length > 0 ? (
+            tabledata.dataDisclosureAgreements.map((row, index) => (
+              <StyledTableRow key={index}>
+                <StyledTableCell>{row.purpose}</StyledTableCell>
+                <StyledTableCell>
+                  <VersionDropdown record={row} />
+                </StyledTableCell>
+                <StyledTableCell>{row.status}</StyledTableCell>
+                <StyledTableCell>{row.lawfulBasis}</StyledTableCell>
+                <StyledTableCell
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    border: "none",
+                  }}
                 >
-                  <IconButton aria-label="delete">
-                    <UploadOutlined
-                      fontSize="small"
-                      onClick={() => {
-                        setIsOpenPublish(true), setSelectedDDA(row);
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
+                  <Tooltip
+                    title={"Publish Data Disclosure Agreement"}
+                    placement="top"
+                  >
+                    <IconButton aria-label="delete">
+                      <UploadOutlined
+                        fontSize="small"
+                        onClick={() => {
+                          setIsOpenPublish(true), setSelectedDDA(row);
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
 
-                <Tooltip
-                  title={t("dataAgreements.tooltipView")}
-                  placement="top"
-                >
-                  <IconButton aria-label="edit">
-                    <VisibilityOutlined
-                      fontSize="small"
-                      onClick={() => {
-                        setIsOpenViewDDA(true), setSelectedDDA(row);
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
+                  <Tooltip
+                    title={t("dataAgreements.tooltipView")}
+                    placement="top"
+                  >
+                    <IconButton aria-label="edit">
+                      <VisibilityOutlined
+                        fontSize="small"
+                        onClick={() => {
+                          setIsOpenViewDDA(true), setSelectedDDA(row);
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
 
-                <Tooltip
-                  title={t("dataAgreements.tooltipDelete")}
-                  placement="top"
-                >
-                  <IconButton aria-label="delete">
-                    <DeleteOutlineOutlined
-                      fontSize="small"
-                      onClick={() => {
-                        setIsOpenDelete(true), setSelectedDDA(row);
-                      }}
-                    />
-                  </IconButton>
-                </Tooltip>
+                  <Tooltip
+                    title={t("dataAgreements.tooltipDelete")}
+                    placement="top"
+                  >
+                    <IconButton aria-label="delete">
+                      <DeleteOutlineOutlined
+                        fontSize="small"
+                        onClick={() => {
+                          setIsOpenDelete(true), setSelectedDDA(row);
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))
+          ) : (
+            <TableRow>
+              <StyledTableCell colSpan={5} align="center">
+                No datas to display
               </StyledTableCell>
-            </StyledTableRow>
-          ))}
+            </TableRow>
+          )}
         </TableBody>
       </Table>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={tabledata?.pagination?.totalItems}
-        rowsPerPage={limit}
-        page={Math.floor(offset / limit)}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-      />
+
+      {tabledata?.dataDisclosureAgreements?.length > 0 && (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={tabledata?.pagination?.totalItems}
+          rowsPerPage={limit}
+          page={Math.floor(offset / limit)}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerPageChange}
+        />
+      )}
     </RootTableContainer>
   );
 };
