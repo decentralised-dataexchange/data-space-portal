@@ -1,17 +1,19 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material'; // Assuming Material-UI components are used
-
-const DataControllerCard = () => {
+import React from "react";
+import { Box, Typography } from "@mui/material"; 
+const DataControllerCard = ({ selectedData }) => {
   return (
-    < >
-      <InfoRow label="Name" value="Hospital AB" />
-      <InfoRow label="DID" value="did:sov:5FrPfLA8iLtMA3rJqwM7Qg" />
-      <InfoRow label="Legal ID" value="did:sov:5FrPfLA8iLtMA3rJqwM7Qg"/>
-      <InfoRow label="URL" value="https://igrant.io/policy.html" />
-      <InfoRow label="Industry Sector" value="Healthcare" />
+    <>
+      <InfoRow label="Name" value={selectedData.dataController.name} />
+      <InfoRow label="DID" value={selectedData.dataController.did} />
+      <InfoRow label="Legal ID" value={selectedData.dataController.legalId} />
+      <InfoRow label="URL" value={selectedData.dataController.url} />
+      <InfoRow
+        label="Industry Sector"
+        value={selectedData.dataController.industrySector}
+      />
     </>
   );
-}
+};
 
 const InfoRow = ({ label, value }) => {
   return (
@@ -24,9 +26,11 @@ const InfoRow = ({ label, value }) => {
       }}
     >
       <Typography variant="subtitle2">{label}</Typography>
-      <Typography color="grey" variant="subtitle2">{value}</Typography>
+      <Typography color="grey" variant="subtitle2">
+        {value}
+      </Typography>
     </Box>
   );
-}
+};
 
 export default DataControllerCard;

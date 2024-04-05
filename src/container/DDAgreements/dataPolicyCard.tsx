@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import {  useState } from "react";
+import { useState } from "react";
 import DataAgreementPolicyCardModal from "./dataPolicyCardModal";
 
 const titleAttrRestrictionStyle = {
@@ -37,7 +37,7 @@ export const DDAPolicyCard = (props: Props) => {
     <>
       <Box style={titleAttrRestrictionStyle} onClick={handleCardClick}>
         <Typography color="grey" variant="subtitle2">
-        Data Disclosure Agreement Policy
+          Data Disclosure Agreement Policy
         </Typography>
         <KeyboardArrowRightIcon style={{ color: "grey" }} />
       </Box>

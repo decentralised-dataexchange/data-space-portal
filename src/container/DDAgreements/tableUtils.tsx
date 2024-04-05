@@ -9,9 +9,9 @@ import './style.scss';
 import VersionDropdown from '../../component/VersionDropDown';
 import { useTranslation } from 'react-i18next';
 import ViewDataAgreementModal from './ViewDDAgreementModal';
-import DeleteModal from './DeleteModal';
+import DeleteModal from './generalModal';
 
-const actionIcons = () => {
+const actionIcons = (selectedData) => {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenViewDDA, setIsOpenViewDDA] = useState(false);
 
@@ -25,9 +25,6 @@ const actionIcons = () => {
         <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
           <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={() => setIsOpenViewDDA(true)}/>
         </Tooltip>
-        {/* <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
-          <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
-        </Tooltip> */}
         <Tooltip title={t("dataAgreements.tooltipDelete")} placement="top">
           <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} onClick={() => setIsOpenDelete(true)}/>
         </Tooltip>
@@ -37,6 +34,7 @@ const actionIcons = () => {
         open={isOpenViewDDA}
         setOpen={setIsOpenViewDDA} 
         mode={''} 
+        selectedData={selectedData}
     />
     <DeleteModal 
         open={isOpenDelete} 
@@ -50,17 +48,19 @@ const actionIcons = () => {
   )
 }
 
-const TableData =  [
-  {
-    purpose: "Registration data",
-    version: <VersionDropdown key={undefined} record={undefined} selectedValue={undefined} setSelectedValue={undefined} setSelectedDropdownDataAgreementValue={undefined} />,
-    lawfulProcess: "Contractual purpose",
-    status: "Listed",
-    ddexchange: "Data exchange"
-  },
-]
+const TableData = (data) => {
+  return data?.map((agreement) => ({
+    purpose: agreement.purpose,
+    version: <VersionDropdown key={agreement.id} record={agreement} />,
+    lawfulBasis: agreement.lawfulBasis,
+    status: agreement.status,
+    actions: (agreement) => actionIcons(agreement) 
+  }));
+};
 
-const TableHead =  [
+
+
+const TableHead  =  [
     {
       title: "Usage purpose",
       field: "purpose",
@@ -71,15 +71,11 @@ const TableHead =  [
       title: "Version",
     },
     {
-      field: "ddexchange",
-      title: "Data Exchange",
-    },
-    {
       field: "status",
       title: "Status",
     },
     {
-      field: "lawfulProcess",
+      field: "lawfulBasis",
       title: "Lawful Basis of Processing",
       headerWidth: "20%",
     },
