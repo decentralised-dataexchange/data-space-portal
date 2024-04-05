@@ -71,9 +71,9 @@
     "mobileWallet": "Mobile Wallet",
     "walletDescription": "Paste the connected url",
     "chooseDescription": "Your business is currently unverified. Add credentials from the connected wallet to verify your business.",
-    "chooseWalletTitle": "CONNECTED WALLET, Bygg AB, Sweden",
+    "chooseWalletTitle": "CONNECTED WALLET, ",
     "chooseWalletTwo": "North Health Innovation AB",
-    "chooseWalletThree": "Issues by: Bolagsverket, Sweden",
+    "chooseWalletThree": "Issues by:",
     "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business."
   },
   "common": {

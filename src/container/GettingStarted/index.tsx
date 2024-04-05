@@ -7,7 +7,7 @@ import OrgCoverImageUpload from "../../component/OrganisationDetails/OrgCoverIma
 import OrganisationDetailsContainer from "../../component/OrganisationDetails/OrgDetailsContainer";
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from "../../customHooks";
-import { gettingStartAction } from '../../redux/actionCreators/gettingStart';
+import { gettingStartAction, listConnectionAction } from '../../redux/actionCreators/gettingStart';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -43,11 +43,18 @@ const GettingStarted = () => {
   const navigate = useNavigate();
 
   const gettingStartData = useAppSelector(
-    (state) => state?.gettingStart
+    (state) => state?.gettingStart?.data
   );
 
+  const listConnections = useAppSelector(
+    (state) => state?.gettingStart?.listConnection?.data
+  );
+
+  const isEnableAddCredential = listConnections?.connections?.length > 0 && listConnections?.connections[0]?.connectionState == 'active';
+
   useEffect(() => {
-    dispatch(gettingStartAction());
+    !gettingStartData && dispatch(gettingStartAction());
+    !listConnections && dispatch(listConnectionAction());
   }, []);
 
   const handleEdit = () => {
@@ -56,7 +63,6 @@ const GettingStarted = () => {
 
   return (
       <Container className='pageContainer'>
-        {/* <BreadCrumb Link={t("sidebar.gettingStarted")} /> */}
         <OrgCoverImageUpload
           editMode={editMode}
           coverImageBase64={'logoImageBase64'}
@@ -65,10 +71,9 @@ const GettingStarted = () => {
         <OrganisationDetailsContainer
               editMode={editMode}
               logoImageBase64={'logoImageBase64'}
-              organisationDetails={'organisationDetails'}
               handleEdit={() => { handleEdit() } }
-              organisationDetails={gettingStartData?.data?.dataSource}
-              logoImageBase64={'setOrganisationDetails'}
+              isEnableAddCredential={isEnableAddCredential}
+              organisationDetails={gettingStartData?.dataSource}
               setOganisationDetails={() => { } } 
               setLogoImageBase64={() => { } } 
          />

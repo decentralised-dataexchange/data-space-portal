@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import ConnectComponent from './Connect';
+// import ConnectComponent from './Connect';
 import ChooseComponent from './Choose';
 import ConfirmComponent from './Confirm';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,16 +9,21 @@ import '../../../public/sass/style.scss'
 import './style.scss'
 import { useTranslation } from 'react-i18next';
 import { getDevice } from '../../utils/utils'
+import { useAppDispatch, useAppSelector  } from '../../customHooks';
+import { createVerificationAction, readVerificationAction } from '../../redux/actionCreators/gettingStart'
+import loader from '../../../public/img/loader.svg';
 
 const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
     const { isMobile } = getDevice();
     const { t } = useTranslation('translation');
+    const dispatch = useAppDispatch();
+    const [isLoader, setLoader] = useState(false);
     const contentArray = [
-        {
-            headerName: `${t('gettingStarted.connect')}`,
-            component: <ConnectComponent callRightSideDrawer={callRightSideDrawer} />,
+        // {
+        //     headerName: `${t('gettingStarted.connect')}`,
+        //     component: <ConnectComponent callRightSideDrawer={callRightSideDrawer} />,
 
-        },
+        // },
         {
             headerName: `${t('gettingStarted.choose')}`,
             component: <ChooseComponent callRightSideDrawer={callRightSideDrawer} />,
@@ -30,15 +35,24 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
 
 
     ]
-    const [currentIndex, setCurrentIndex] = useState(isVerify ? 2 : 0);
-    const handleAddComponent = (index) => {
-        if (currentIndex < contentArray.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-        } else if(index == 2) {
+    const [currentIndex, setCurrentIndex] = useState(isVerify ? 1 : 0);
+
+    const startPoll = (obj) => {
+        const isVerified = obj.verification?.presentationState;
+        if(isVerified != 'verified') {
+            setTimeout(() => {
+                dispatch(readVerificationAction(startPoll))
+            }, 5000);
+        } else if(isVerified == 'verified') {
+            setLoader(false)
             setCurrentIndex(0);
             callRightSideDrawer();
-            sessionStorage.setItem('isVerify', 'true');
         }
+    }
+
+    const handleAddComponent = (index) => {
+        dispatch(createVerificationAction(startPoll));
+        setLoader(true);
     };
 
     const handleBack = (index) => {
@@ -62,9 +76,10 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
                 <Button className="btn cancelBtn" size="small"onClick={callRightSideDrawer}>
                     {t('common.cancel')}
                 </Button>
-                <Button onClick={() => handleAddComponent(currentIndex)} className="btn nextBtn" size="small" >
-                    {currentIndex == 2 ? `${t('common.confirm')}` : `${t('common.next')}`}
-                </Button>
+                {currentIndex ==0 ? <Button onClick={() => handleAddComponent(currentIndex)} className="btn nextBtn" size="small" >
+                    {isLoader ? 'loading...' : `${t('common.confirm')}`}
+                </Button> : ''
+                }   
             </Box>
         </Box>
     );
