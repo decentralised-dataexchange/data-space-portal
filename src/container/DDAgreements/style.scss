@@ -33,10 +33,10 @@
     height: 100vh;
     background-color: #FFFF;
     margin-top: 0;
-    // width: 540px;
+    width: 480px;
     @include tabletAndDown {
         margin-top: 0;
-        // width: 380px;
+        width: 380px;
     }
 }
 
