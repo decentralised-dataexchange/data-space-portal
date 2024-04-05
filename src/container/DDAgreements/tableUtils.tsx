@@ -12,15 +12,9 @@ import ViewDataAgreementModal from './ViewDDAgreementModal';
 import DeleteModal from './DeleteModal';
 
 const actionIcons = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
-  const handleClick = (isDelete) => {
-    isDelete ? setIsOpenDelete(true) : setIsOpen(true);
-  }
-  const handleClose = () => {
-    setIsOpenDelete(false);
-    setIsOpen(false);
-  }
+  const [isOpenViewDDA, setIsOpenViewDDA] = useState(false);
+
   const { t } = useTranslation('translation');
   return (
     <>
@@ -29,24 +23,24 @@ const actionIcons = () => {
           <UploadOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "no-drop" }} />
         </Tooltip>
         <Tooltip title={t("dataAgreements.tooltipView")} placement="top">
-          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={() => handleClick()}/>
+          <VisibilityOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} onClick={() => setIsOpenViewDDA(true)}/>
         </Tooltip>
         {/* <Tooltip title={t("dataAgreements.tooltipEdit")} placement="top">
           <EditOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer" }} />
         </Tooltip> */}
         <Tooltip title={t("dataAgreements.tooltipDelete")} placement="top">
-          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} onClick={() => handleClick('delete')}/>
+          <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem', cursor: "pointer"}} onClick={() => setIsOpenDelete(true)}/>
         </Tooltip>
     </Box>
 
     <ViewDataAgreementModal 
-        open={isOpen}
-        handleClose={handleClose}
+        open={isOpenViewDDA}
+        setOpen={setIsOpenViewDDA} 
         mode={''} 
     />
     <DeleteModal 
         open={isOpenDelete} 
-        setOpen={handleClose} 
+        setOpen={setIsOpenDelete} 
         confirmText={''} 
         headerText={''} 
         modalDescriptionText={undefined} 
