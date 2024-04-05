@@ -1,6 +1,6 @@
 // import { getCookie, sessionId } from './utils';
 /* eslint-disable import/default */
-const baseUrl = 'http://localhost:8000'
+const baseUrl = 'https://api.nxd.foundation'
 const TIMEOUT = 300000;
 const getAccessToken = () => localStorage.getItem('Token');
 

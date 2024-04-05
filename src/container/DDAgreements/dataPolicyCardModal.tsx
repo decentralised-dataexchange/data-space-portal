@@ -9,12 +9,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 import PolicyDetailsBox from "./PolicyDetailBox";
 import DataControllerCard from "./dataControllerCard";
-import VerfiedDABoxForDDA from "./verifiedDABox";
-import IndividualDecentralisedIdentifierBoxForDDA from "./individuaDecentralisedId";
 
-// import VerifiedDABox from "../issuanceHistory/verfiedDABox";
-// import IndividualDecentralisedIdentifierBox from "../issuanceHistory/individualDecentralisedIdentifierBox";
-// import { getLawfulBasisOfProcessing } from "../../service/adapter";
 
 interface Props {
   open: boolean;
@@ -40,54 +35,50 @@ export default function DataAgreementPolicyCardModal(props: Props) {
   const { t, i18n } = useTranslation("translation");
   const { open, setOpen, headerText, selectedData, handleCloseViewDDAModal } =
     props;
+  
+  const SSIpolicyDetailsForContainer = [
+    {
+      name: "Lawful basis of processing",
+      value: selectedData?.lawfulBasis,
+    },
+    {
+      name: "Data retention period",
+      value: selectedData.dataSharingRestrictions.dataRetentionPeriod,
+    },
+    {
+      name: "Policy URL",
+      value: selectedData.dataSharingRestrictions.policyUrl,
+    },
+    {
+      name: "Jurisdiction",
+      value: selectedData.dataSharingRestrictions.jurisdiction,
+    },
+    {
+      name: "Industry sector",
+      value: selectedData.dataSharingRestrictions.industrySector,
+    },
 
-    const SSIpolicyDetailsForContainer = [
-      {
-        name: "Lawful basis of processing",
-        // value: getLawfulBasisOfProcessing(
-        //   selectedData.dataAgreement?.lawfulBasis,
-        //   i18n.t
-        // ),
-        value: "Consent",
-      },
-      {
-        name: "Data retention period",
-        value: "365",
-      },
-      {
-        name:"Policy URL",
-        value: "https://igrant.io/policy.html",
-      },
-      {
-        name: "Jurisdiction",
-        value: "Sweden",
-      },
-      {
-        name: "Industry sector",
-        value: "Healthcare",
-      },
-
-      {
-        name: "Geographic restriction",
-        value: "Sweden",
-      },
-      {
-        name: "Storage location",
-        value: "Sweden",
-      },
-      {
-        name: "Agreement Period",
-        value: "",
-      },
-      {
-        name: "Blink",
-        value: "",
-      },
-      {
-        name: "did:mydata",
-        value: "",
-      },
-    ];
+    {
+      name: "Geographic restriction",
+      value: selectedData.dataSharingRestrictions.geographicRestriction,
+    },
+    {
+      name: "Storage location",
+      value: selectedData.dataSharingRestrictions.storageLocation,
+    },
+    {
+      name: "Agreement Period",
+      value:selectedData.agreementPeriod,
+    },
+    {
+      name: "Blink",
+      value: "",
+    },
+    {
+      name: "did:mydata",
+      value: "",
+    },
+  ];
 
   return (
     <React.Fragment>
@@ -96,7 +87,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
           <Box className="dd-modal-header">
             <Box pl={2} display={"flex"} alignItems={"center"}>
               <ArrowBackIosIcon
-              fontSize="small"
+                fontSize="small"
                 style={{ color: "white", cursor: "pointer" }}
                 onClick={() => {
                   setOpen(false);
@@ -113,12 +104,10 @@ export default function DataAgreementPolicyCardModal(props: Props) {
             />
           </Box>
 
-
-          <Box className="dd-modal-details" style={{paddingBottom:"70px"}}>
-          <Box m={1.5} style={titleAttrRestrictionStyle}>
-
-          <DataControllerCard />
-          </Box>
+          <Box className="dd-modal-details" style={{ paddingBottom: "70px" }}>
+            <Box m={1.5} style={titleAttrRestrictionStyle}>
+              <DataControllerCard selectedData={selectedData} />
+            </Box>
             <Box m={1.5} style={titleAttrRestrictionStyle}>
               {SSIpolicyDetailsForContainer?.map((policyDetail, index) => (
                 <PolicyDetailsBox
@@ -133,24 +122,6 @@ export default function DataAgreementPolicyCardModal(props: Props) {
               ))}
             </Box>
 
-            {/* {selectedData.data_disclosure_agreement.proofChain &&
-            selectedData.data_disclosure_agreement?.proofChain[0] ? (
-              <> */}
-                <Box m={1.5} style={titleAttrRestrictionStyle}>
-                  <VerfiedDABoxForDDA selectedData={selectedData} />
-                </Box>
-                <Box m={1.5} style={titleAttrRestrictionStyle}>
-                  <IndividualDecentralisedIdentifierBoxForDDA
-                    selectedData={selectedData}
-                  />
-                </Box>
-              {/* </>
-            ) : (
-              <Box m={1.5} style={titleAttrRestrictionStyle}>
-                <VerfiedDABoxForDDA selectedData={selectedData} />
-              </Box>
-            )} */}
-
         
           </Box>
           <Box className="modal-footer ">
@@ -159,7 +130,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                 setOpen(false);
                 handleCloseViewDDAModal(false);
               }}
-            className="delete-btn"
+              className="delete-btn"
               sx={{
                 marginRight: "15px",
                 color: "black",
