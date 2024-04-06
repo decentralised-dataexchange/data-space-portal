@@ -1,13 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import BannerCamera from "../../../public/img/camera_photo1.png";
 import DefaultBanner from "../../../public/img/OrganisationDefaultLogo.png";
 import { defaultCoverImage } from '../../utils/defalultImages';
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "mui-image";
-import { useAppSelector } from "../../customHooks";
+import { useAppDispatch, useAppSelector } from "../../customHooks";
 import { doApiPutImage } from "../../utils/fetchWrapper";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
+import { HttpService } from "../../service/HttpService";
+import { adminAction } from "../../redux/actionCreators/login";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -27,8 +29,18 @@ type Props = {
 };
 
 const OrgCoverImageUpload = (props: Props) => {
-  let coverImageBase64;
+  const dispatch = useAppDispatch();
   const { editMode, setCoverImageBase64 } = props;
+
+  const [ imageBase64, setImageBase64] = useState('')
+
+  const imagesSet = useAppSelector(
+    (state) => state?.gettingStart?.imageSet
+  )
+
+  useEffect(() => {
+    setImageBase64(imagesSet?.cover)
+  }, [imagesSet]);
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -50,14 +62,17 @@ const OrgCoverImageUpload = (props: Props) => {
       const formData = new FormData();
       file && formData.append('orgimage', file);
       const url = ENDPOINTS.getCoverImage();
-      doApiPutImage(url, formData).then((res) => {
-        console.log(res, "res");
-      })
+      HttpService.updateOrganisationCoverImage(formData)
+        .then((res) => {
+          HttpService.getCoverImage().then((imageBase64) => {
+            console.log(imageBase64, "imageBase64")
+            setImageBase64(imageBase64);
+          });
+        })
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        });
   };
-
-  const imagesSet = useAppSelector(
-    (state) => state?.gettingStart?.imageSet
-  )
 
   return (
     <BannerContainer>
@@ -69,9 +84,9 @@ const OrgCoverImageUpload = (props: Props) => {
         duration={0}
         style={{ opacity: editMode ? 0.25 : 1, transitionDuration: "0ms" }}
         src={
-          !imagesSet?.cover
+          !imageBase64
             ? defaultCoverImage
-            : imagesSet?.cover
+            : imageBase64
         }
       />
 

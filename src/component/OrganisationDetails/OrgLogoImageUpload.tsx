@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Box } from "@mui/material";
 import LogoCammera from "../../../public/img/camera_photo2.png";
 import DefaultLogo from "../../../public/img/OrganisationDefaultLogo.png";
@@ -6,6 +6,7 @@ import { defaultLogoImg } from "../../utils/defalultImages";
 import { useAppSelector } from "../../customHooks";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { doApiPutImage } from "../../utils/fetchWrapper";
+import { HttpService } from "../../service/HttpService";
 
 
 type Props = {
@@ -15,11 +16,16 @@ type Props = {
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const {editMode, setLogoImageBase64 } = props;
+  const {editMode } = props;
+  const [ imageBase64, setLogoImageBase64] = useState('')
 
   const imagesSet = useAppSelector(
     (state) => state?.gettingStart?.imageSet
   )
+
+  useEffect(() => {
+    setLogoImageBase64(imagesSet?.logo)
+  }, [imagesSet]);
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -34,24 +40,32 @@ const OrgLogoImageUpload = (props: Props) => {
       myFile.file = file;
       myFile.imagePreviewUrl = reader.result;
     };
-
-    // if (file.type.match(image)) {
       reader.readAsDataURL(file);
 
       const formData = new FormData();
       file && formData.append('orgimage', file);
-      const url = ENDPOINTS.getLogoImage();
-      doApiPutImage(url, formData);
-    // }
+      HttpService.updateOrganisationLogoImage(formData)
+        .then((res) => {
+          console.log(res, "res")
+          // Get the newly uploaded image from the server
+          HttpService.getLogoImage().then((imageBase64) => {
+            localStorage.getItem('cachedLogoImage');
+            setLogoImageBase64(imageBase64);
+            localStorage.getItem('cachedLogoImage');
+          });
+        })
+        .catch((error) => {
+          console.log(`Error: ${error}`);
+        });
   };
 
   return (
     <Box>
       <Avatar
         src={
-          !imagesSet?.logo
+          !imageBase64
             ? defaultLogoImg
-            : imagesSet?.logo
+            : imageBase64
         }
         alt="logo"
         style={{

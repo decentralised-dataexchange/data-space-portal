@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ENDPOINTS } from "../utils/apiEndpoints";
+import { imageBlobToBase64 } from "../utils/ImageUtils";
 
 export const httpClient = axios.create({
   baseURL: "https://api.nxd.foundation",
@@ -59,5 +60,50 @@ export const HttpService = {
       headers: { ...getAuthenticatedHeaders() },
     };
     return httpClient.put(ENDPOINTS.updateOpenApiUrl(), payload, config);
+  },
+  updateOrganisationLogoImage: async (formData: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    const payload = formData;
+    return httpClient
+      .put(ENDPOINTS.getLogoImage(), payload, config)
+      .then((res) => {
+        return res.data.Organization;
+      });
+  },
+  getCoverImage: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+      responseType: "arraybuffer",
+    };
+    return httpClient.get(ENDPOINTS.getCoverImage(), config).then((res) => {
+      console.log(res, "RES")
+      return imageBlobToBase64(res.data);
+    });
+  },
+  getLogoImage: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+      responseType: "arraybuffer",
+    };
+    return httpClient.get(ENDPOINTS.getLogoImage(), config).then((res) => {
+      console.log(res, "RES")
+      localStorage.setItem('cachedCoverImage', imageBlobToBase64(res.data));
+      return imageBlobToBase64(res.data);
+    });
+  },
+  updateOrganisationCoverImage: async (
+    formData: any
+  ): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    const payload = formData;
+    return httpClient
+      .put(ENDPOINTS.getCoverImage(), payload, config)
+      .then((res) => {
+        return res.data.Organization;
+      });
   },
 };

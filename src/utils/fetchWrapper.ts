@@ -109,7 +109,7 @@ export const doApiPutImage = (url, data) => {
   let _header = headers({
     "content-type": "multipart/form-data",
 });
-  fetch(url, 
+  fetch(`${baseUrl}${url}`, 
     Object.assign({}, {
       method: 'put',
       headers: _header,
