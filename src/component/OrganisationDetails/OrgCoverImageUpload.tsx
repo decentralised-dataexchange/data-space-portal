@@ -55,7 +55,7 @@ const OrgCoverImageUpload = (props: Props) => {
         src={
           !coverImageBase64
             ? defaultCoverImage
-            : DefaultBanner
+            : coverImageBase64
         }
       />
 

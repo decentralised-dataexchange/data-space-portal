@@ -86,7 +86,7 @@ export const doApiGet = (url, id?) => {
  * @param {string} url
  * @returns {Promise}
  */
-export const doApiGetBlob = (url, sessionId, header?) => {
+export const doApiGetBlob = (url, header?) => {
     let _header = headers({
         'Content-Disposition': 'inline',
         responseType: 'arraybuffer',

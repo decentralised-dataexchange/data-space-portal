@@ -17,8 +17,25 @@ export const ENDPOINTS = {
     gettingStart: () => {
       return "/config/data-source/"
     },
-    listConnections: () => {
-      return "/config/connections/"
+
+    getLogoImage: () => {
+      return "/config/data-source/logoimage/"
+    },
+
+    getCoverImage: () => {
+      return "/config/data-source/coverimage/"
+    },
+
+    listConnections: (limit:number, offsetValue:number) => {
+      return `/config/connections/?limit=${limit}&offset=${offsetValue}`
+    },
+
+    createConnection: () => {
+      return "/config/connection/"
+    },
+
+    deleteConnection: (connectionId: string) => {
+      return `/config/connection/${connectionId}/`
     },
 
     verificationTemplate: () => {

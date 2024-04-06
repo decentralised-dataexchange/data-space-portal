@@ -162,5 +162,12 @@
     "deleteDescription1": "You are about to delete an existing api key. Please type ",
     "deleteDescription2": " to confirm and click DELETE. This action is not reversible.",
     "tooltipDelete": "Delete Connection"
+  },
+  "dispConnection": {
+    "copy": "COPY",
+    "delete": "DELETE",
+    "apiKeyCopyMessage": "Here is your new key. Copy it now! This is the only time we will show it you.",
+    "headerText": "Data Intermediation Service Provider Connections",
+    "titleText": " Manages connections towards your organisations"
   }
 }
