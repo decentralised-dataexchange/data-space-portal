@@ -42,16 +42,25 @@ const DataSourceCard = ({ dataSource }: DataSourceCardProp) => {
     return (
         <>
             <Card className='cardContainer'>
-                <Box component="div" className='card-header'>
+                <CardMedia component="div" className='card-header' image={dataSource?.coverImageUrl}>
                     <CardMedia
                         component="img"
                         image={dataSource?.logoUrl}
                         alt="symbiome"
                         className='logo'
                     />
-                </Box>
-                <CardContent>
-                    <Typography gutterBottom component="div" className="card-body" sx={{ fontSize: "14px" }}>
+                </CardMedia>
+                <CardContent sx={{padding: "20px"}}>
+                    <Typography variant="h6" fontWeight="bold">
+                        {dataSource?.name}
+                    </Typography>
+                    <Typography color="#9F9F9F" className='datasource-location'>
+                        {dataSource?.location}
+                    </Typography>
+                    <Typography variant="subtitle1" className='datasource-overview-label'>
+                        {t("common.overView")}
+                    </Typography>
+                    <Typography gutterBottom component="div" className="card-body datasource-overview" sx={{ fontSize: "14px" }}>
                         {moreOrLessTxt === 'Read Less....' ? dataSource?.description : dataSource?.description.slice(0, 275)}
                         {dataSource?.description?.length > 275 &&
                             <Typography className="readmore" component="span" sx={{ fontSize: "14px" }}>
@@ -59,6 +68,7 @@ const DataSourceCard = ({ dataSource }: DataSourceCardProp) => {
                             </Typography>
                         }
                     </Typography>
+                    
                     <Box className="actionBtn">
                         <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick(dataSource)}>
                             {t('home.btn-signData')}
