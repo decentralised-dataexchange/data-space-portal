@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BannerCamera from "../../../public/img/camera_photo1.png";
 import DefaultBanner from "../../../public/img/OrganisationDefaultLogo.png";
 import { defaultCoverImage } from '../../utils/defalultImages';
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "mui-image";
+import { useAppSelector } from "../../customHooks";
+import { doApiPutImage } from "../../utils/fetchWrapper";
+import { ENDPOINTS } from "../../utils/apiEndpoints";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -24,9 +27,9 @@ type Props = {
 };
 
 const OrgCoverImageUpload = (props: Props) => {
+  let coverImageBase64;
   const { editMode, setCoverImageBase64 } = props;
 
-  let coverImageBase64 = localStorage.getItem('cachedCoverImage')
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
     imagePreviewUrl: "",
@@ -36,12 +39,25 @@ const OrgCoverImageUpload = (props: Props) => {
     let reader = new FileReader();
     let file = e.target.files[0];
     let image = /image.jpeg/;
-
     reader.onloadend = () => {
       myFile.file = file;
       myFile.imagePreviewUrl = reader.result;
     };
+
+    // if (file.type.match(image)) {
+      reader.readAsDataURL(file);
+
+      const formData = new FormData();
+      file && formData.append('orgimage', file);
+      const url = ENDPOINTS.getCoverImage();
+      doApiPutImage(url, formData).then((res) => {
+        console.log(res, "res");
+      })
   };
+
+  const imagesSet = useAppSelector(
+    (state) => state?.gettingStart?.imageSet
+  )
 
   return (
     <BannerContainer>
@@ -53,9 +69,9 @@ const OrgCoverImageUpload = (props: Props) => {
         duration={0}
         style={{ opacity: editMode ? 0.25 : 1, transitionDuration: "0ms" }}
         src={
-          !coverImageBase64
+          !imagesSet?.cover
             ? defaultCoverImage
-            : coverImageBase64
+            : imagesSet?.cover
         }
       />
 

@@ -10,6 +10,7 @@ export const ENDPOINTS = {
     getAdminDetails: () => {
       return "/config/admin/";
     },
+
     dataSourceList: () => {
       return "/service/data-sources/"
     },
@@ -59,5 +60,8 @@ export const ENDPOINTS = {
     updateOpenApiUrl: () => {
       return "/config/open-api/url";
     }, 
+    passwordReset: () => {
+      return "/config/admin/reset-password/"
+    }
   };
   

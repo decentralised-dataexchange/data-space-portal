@@ -78,34 +78,6 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           borderRadius:"50%"
         }}
       />
-      {props.editMode && (
-        <Box style={{ position: "relative" }}>
-          <div>
-            <form>
-              <label className="uptext" htmlFor="uploadProfileImage">
-                <img
-                  style={{
-                    opacity: 0.45,
-                    height: "120px",
-                    width: "120px",
-                    cursor: "pointer",
-                  }}
-                  src={LogoCamera}
-                  alt="img"
-                />
-              </label>
-              <input
-                type="file"
-                accept="image/jpeg,image/jpg,image/png"
-                id="uploadProfileImage"
-                name="uploadProfileImage"
-                hidden={true}
-                onChange={handleChangeImage}
-              />
-            </form>
-          </div>
-        </Box>
-      )}
     </>
   );
 };

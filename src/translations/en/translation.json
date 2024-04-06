@@ -138,7 +138,8 @@
     "confirmNewPassword": "Confirm New Password",
     "changePassword": "Change Password",
     "samePassword": "New password and confirm new password should be same",
-    "passwordChanged": "Password Changed"
+    "passwordChanged": "Password Changed",
+    "error": "Something went wrong please try again with valid password"
   },
   "developerAPIs": {
     "copy": "COPY",

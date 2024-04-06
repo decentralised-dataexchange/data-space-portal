@@ -6,6 +6,10 @@ import ManageAdminProfilePicUpload from "../../../component/manageProfileAdmin";
 import SnackbarComponent from "../../../component/notification";
 import { useTranslation } from "react-i18next";
 import '../style.scss'
+import { useAppDispatch, useAppSelector } from "../../../customHooks";
+import { ENDPOINTS } from "../../../utils/apiEndpoints";
+import { doApiPost, doApiPut } from "../../../utils/fetchWrapper";
+import { adminAction } from "../../../redux/actionCreators/login";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -56,14 +60,21 @@ const editStyleEnable: React.CSSProperties = {
 };
 
 const ManageAdmin = () => {
+  const dispatch = useAppDispatch();
+  const adminData = useAppSelector(
+    (state) => state?.user?.data
+  );
   const [editMode, setEditMode] = useState(false);
-  const [adminDetails, setAdminDetails] = useState<any>();
   const [logoImageBase64, setLogoImageBase64] = useState<any>(null);
-  const [adminName, setAdminName] = useState(adminDetails?.name);
+  const [adminName, setAdminName] = useState(adminData?.name);
   const [emailName, setEmailName] = useState('admin@igrant.io');
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordValue, setPasswordValue] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+
+  });
+  const { currentPassword, newPassword, confirmPassword } = passwordValue
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -72,15 +83,78 @@ const ManageAdmin = () => {
   const { t } = useTranslation("translation");
 
   useEffect(() => {
-    if (adminDetails?.name) {
-      setAdminName(adminDetails.name);
+    if (adminData?.name) {
+      setAdminName(adminData.name);
     }
-  }, [adminDetails]);
+    setEditMode(false);
+  }, [adminData]);
 
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
     setFormDataForImageUpload("");
     setPreviewImage("");
+  };
+
+  const onClickSave = () => {
+    const url = ENDPOINTS.getAdminDetails();
+    let payload = {
+        name: adminName ? adminName : adminData.name,
+    };
+    doApiPut(url, payload).then((res) => {
+      if(res.status == 200) {
+        dispatch(adminAction());
+      }
+    })
+  };
+
+  const onChangePassword = (e) => {
+    const { name, value } = e.target;
+    setPasswordValue({
+      ...passwordValue,
+      [name]: value
+    })
+  }
+
+  const onClickRestPassWord = () => {
+    setSuccess("");
+    setError("");
+    if (newPassword !== confirmPassword) {
+      setError(t("manageAdmin.samePassword"));
+      setOpenSnackBar(true);
+    } 
+    else if (
+      currentPassword.length > 7 &&
+      newPassword.length > 7 &&
+      confirmPassword.length > 7 &&
+      newPassword === confirmPassword
+    ) {
+      const payload = {
+        "old_password": currentPassword,
+        "new_password1": newPassword,
+        "new_password2": confirmPassword
+      };
+      const url = ENDPOINTS.passwordReset();
+        doApiPost(url, payload).then((obj) => {
+          if(obj.status == 200) {
+            setPasswordValue({
+              currentPassword: '',
+              newPassword: '',
+              confirmPassword: ''
+            })
+  
+            setSuccess(t("manageAdmin.passwordChanged"));
+            setOpenSnackBar(true);
+          } else {
+            setError(t("manageAdmin.error"));
+            setOpenSnackBar(true);
+          }
+          
+        })
+        .catch((error) => {
+          setError(error.message);
+          setOpenSnackBar(true);
+        });
+    }
   };
 
   return (
@@ -168,7 +242,7 @@ const ManageAdmin = () => {
                           style={{
                             ...editStyleEnable,
                           }}
-                          value={adminName ? adminName : 'Admin'}
+                          value={adminName}
                           onChange={(e) => setAdminName(e.target.value)}
                           InputProps={{
                             disableUnderline: true,
@@ -180,7 +254,7 @@ const ManageAdmin = () => {
                           variant="body2"
                           sx={{ wordWrap: "break-word" }}
                         >
-                          Admin
+                          {adminData?.name}
                         </Typography>
                       )}
                     </Grid>
@@ -192,30 +266,13 @@ const ManageAdmin = () => {
                       </Typography>
                     </Grid>
                     <Grid item lg={9} md={5} sm={5} xs={5}>
-                    {editMode ? (
-                        <TextField
-                          variant="standard"
-                          autoComplete="off"
-                          placeholder={t("common.name")}
-                          sx={{ marginTop: -0.5 }}
-                          style={{
-                            ...editStyleEnable,
-                          }}
-                          value={emailName}
-                          onChange={(e) => setEmailName(e.target.value)}
-                          InputProps={{
-                            disableUnderline: true,
-                            style: { fontSize: 14 },
-                          }}
-                        />
-                      ) : (
                         <Typography
                         variant="body2"
                         sx={{ wordWrap: "break-word" }}
                       >
-                        admin@igrant.io
+                        {adminData?.email}
                       </Typography>
-                      )}
+                      {/* )} */}
                     </Grid>
                   </Grid>
                   <Grid container height={"20px"}>
@@ -229,7 +286,7 @@ const ManageAdmin = () => {
                         variant="body2"
                         sx={{ wordWrap: "break-word" }}
                       >
-                       adminID9876tjghj9
+                       {adminData?.id}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -253,7 +310,7 @@ const ManageAdmin = () => {
                     <Button
                       style={buttonStyle}
                       variant="outlined"
-                    //   onClick={onClickSave}
+                      onClick={onClickSave}
                       sx={{
                         color: "black",
                         "&:hover": {
@@ -313,7 +370,8 @@ const ManageAdmin = () => {
                   placeholder={t("manageAdmin.enterCurrentPassword")}
                   type="password"
                   value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  name={'currentPassword'}
+                  onChange={(e) => onChangePassword(e)}
                 />
               </Box>
               <Box
@@ -333,7 +391,8 @@ const ManageAdmin = () => {
                   placeholder={t("manageAdmin.enterNewPassword")}
                   type="password"
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  name="newPassword"
+                  onChange={(e) => onChangePassword(e)}
                 />
               </Box>
               <Box
@@ -350,14 +409,15 @@ const ManageAdmin = () => {
                   variant="standard"
                   placeholder={t("manageAdmin.confirmNewPassword")}
                   type="password"
-                  value={confirmNewPassword}
-                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  value={confirmPassword}
+                  name='confirmPassword'
+                  onChange={(e) => onChangePassword(e)}
                 />
               </Box>
 
               <Box sx={{ height: "30px", marginRight: "20px" }}>
                 <Typography
-                //   onClick={onClickRestPassWord}
+                  onClick={onClickRestPassWord}
                   variant="body2"
                   style={{
                     cursor: "pointer",

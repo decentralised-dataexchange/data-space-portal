@@ -100,3 +100,10 @@ export const updateDataSourceFailure = createAction(
     payload: error,
   }),
 );
+
+export const setImages = createAction(
+  ActionTypes.SET_IMAGE,
+  (logo, cover) => ({
+    payload: { logo, cover },
+  })
+)

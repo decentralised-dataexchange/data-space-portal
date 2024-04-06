@@ -101,6 +101,26 @@ export const doApiGetBlob = (url, header?) => {
         .then(statusCheckBlob);
 };
 
+/** @description Sending a GET request to Blob.
+ * @param {string} url
+ * @returns {Promise}
+ */
+export const doApiPutImage = (url, data) => {
+  let _header = headers({
+    "content-type": "multipart/form-data",
+});
+  fetch(url, 
+    Object.assign({}, {
+      method: 'put',
+      headers: _header,
+      body: data,
+    }),
+  ).then(res => res.json())
+    .then(
+        json => console.log(json)
+      )
+};
+
 /** @description Sending a POST request.
  * @param {string} url
  * @param {object} body
