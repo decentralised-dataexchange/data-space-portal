@@ -1,13 +1,15 @@
 import {
   ContentCopyOutlined,
-  VisibilityOffOutlined
+  VisibilityOffOutlined,
+  VisibilityOutlined,
 } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
-import { Alert, Box, Button, Grid, Snackbar, Typography } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../style.scss";
+import { HttpService } from "../../../service/HttpService";
+import SnackbarComponent from "../../../component/notification";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0 15px 0px 15px",
@@ -42,125 +44,70 @@ const Item = styled("div")(({ theme }) => ({
 
 const DeveloperAPIs = () => {
   const [showAPI, setShowAPI] = useState(false);
-  const [apiKeyValue, setApiKeyValue] = useState<any>();
   const { t } = useTranslation("translation");
-
-  // const refresh = useRefresh();
-  const onRefetch = () => {
-    refresh();
-  };
+  const token = "Bearer " + JSON.parse(localStorage.getItem("Token"));
+  const [openApiUrl, setOpenApiUrl] = useState("");
+  const [isOk, setIsOk] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [orgDetails, setOrgDetails] = useState<any>();
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleCopy = () => {
-    if (showAPI) {
-      navigator.clipboard.writeText(apiKeyValue);
-    }
+    navigator.clipboard.writeText(token);
   };
 
-  // const DeleteButtonField = (props: any) => {
-  //   const record = useRecordContext(props);
-  //   if (!record || !props.source) {
-  //     return null;
-  //   }
-  //   return (
-  //     record[props.source] && (
-  //       <Box
-  //         onClick={() => {
-  //           setOpenDeleteApiKey(true);
-  //           setDeveloperApiDeleteID(record.id);
-  //         }}
-  //         sx={{
-  //           cursor: "pointer",
-  //         }}
-  //       >
-  //         <DeleteOutlineOutlinedIcon color="disabled" />
-  //       </Box>
-  //     )
-  //   );
-  // };
+  useEffect(() => {
+    HttpService.getAdminDetails().then((res) => {
+      setUserId(res.data.id);
+    });
+  }, []);
 
-  const ExpiryField = (props: any) => {
-    // const record = useRecordContext(props);
-    if (!record || !props.source) {
-      return null;
-    }
-    return (
-      record[props.source] && (
-        <Typography variant="body2">
-          {/* {formatISODateToLocalString(record[props.source])} */}
-        </Typography>
-      )
-    );
+  useEffect(() => {
+    HttpService.getOrganisationsDetails().then((res) => {
+      setOrgDetails(res.data.dataSource);
+      setOpenApiUrl(res.data.dataSource.openApiUrl);
+    });
+  }, []);
+
+  const handleUpdateUrl = (event: any) => {
+    setOpenApiUrl(event.target.value);
+    event.target.value !== orgDetails?.openApiUrl
+      ? setIsOk(true)
+      : setIsOk(false);
   };
 
-  const ScopeField = (props: any) => {
-    // const record = useRecordContext(props);
-    if (!record || !props.source) {
-      return null;
+  const udateOpenApiUrls = () => {
+    if (isOk) {
+      const payload = {
+        dataSource: {
+          openApiUrl: openApiUrl,
+        },
+      };
+      HttpService.updateOpenApiUrl(payload)
+        .then(() => {
+          setOpenSnackBar(true);
+          setSuccess("Successfully updated open api specifiaction url");
+          setIsOk(false);
+        })
+        .catch(() => {
+          setOpenSnackBar(true);
+          setError("Updating open api specification url failed");
+        });
     }
-    let scopes = record[props.source];
-    return (
-      <Box style={{ display: "flex" }}>
-        {scopes.map((scope: any, i: number) => {
-          if (i + 1 === scopes.length) {
-            return (
-              <Typography variant="body2">
-                {/* {capitalizeFirstLetter(scope)}{" "} */}
-              </Typography>
-            );
-          } else {
-            return (
-              <Typography variant="body2" style={{ marginRight: 7 }}>
-                {/* {capitalizeFirstLetter(scope)},{" "} */}
-              </Typography>
-            );
-          }
-        })}
-      </Box>
-    );
   };
 
   return (
     <Container>
-      <Snackbar
-        open={showAPI}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        style={{ top: 100 }}
-      >
-        <Alert
-          icon={<></>}
-          sx={{
-            width: "100%",
-            background: "#E5E4E4",
-            color: "black",
-            display: "flex",
-            alignItems: "center",
-          }}
-          onClose={() => setShowAPI(false)}
-          action={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Button
-                color="inherit"
-                size="small"
-                style={{ fontWeight: "bold" }}
-                onClick={handleCopy}
-              >
-                {t("developerAPIs.copy")}
-              </Button>
-              <Button
-                color="inherit"
-                style={{ fontWeight: "bold", cursor: "pointer" }}
-                onClick={() => setShowAPI(false)}
-              >
-                <CloseIcon />
-              </Button>
-            </Box>
-          }
-        >
-          {t("developerAPIs.apiKeyCopyMessage")}
-        </Alert>
-      </Snackbar>
-
       <HeaderContainer>
+        <SnackbarComponent
+          open={openSnackBar}
+          setOpen={setOpenSnackBar}
+          message={error}
+          topStyle={100}
+          successMessage={success}
+        />
         <Typography variant="h6" fontWeight="bold">
           {t("developerAPIs.headerText")}
         </Typography>
@@ -181,7 +128,7 @@ const DeveloperAPIs = () => {
                 {t("developerAPIs.organizationID")}
               </Typography>
               <Typography color="grey" variant="body2">
-                652657969380f35fa1c30245
+                {orgDetails?.id}
               </Typography>
             </Item>
           </Grid>
@@ -196,7 +143,7 @@ const DeveloperAPIs = () => {
                 {t("developerAPIs.yourUserID")}
               </Typography>
               <Typography color="grey" variant="body2">
-                652657969380f35fa1c30243
+                {userId}
               </Typography>
             </Item>
           </Grid>
@@ -211,7 +158,7 @@ const DeveloperAPIs = () => {
                 {t("developerAPIs.configuredBaseURL")}
               </Typography>
               <Typography color="grey" variant="body2">
-                https://staging-consent-bb-api.igrant.io/v2
+                https://api.nxd.foundation{" "}
               </Typography>
             </Item>
           </Grid>
@@ -231,7 +178,9 @@ const DeveloperAPIs = () => {
           </Grid>
           <Grid item lg={11} md={11} sm={12} xs={12}>
             <Typography color="grey" variant="body1" className="description">
-              eyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdnsafndffvdsnbfvsdfnbdvsfghdsvfbdsvfbsdvfghsdvfnbsdfveyjdfhdjdsjnfdsjhfdfmnbsdmnfbnf87jfdy7fdn652657969380f35fa1c3024587647564754856jhgjhdgjghgdhjfghsagfehfvbdnsafndffvdsnbfvsdfnbdvsfghdsvfbdsvfbsdvfghsdvfnbsdfvajsgdhjgsgdjhgasdghjasdghjsagdgsajgdjhasjhdjgasjhdghjgsdhgsahjgdjgasjdgjhasdjhsjadjhsdhjgjhsagdhjgasjhdgjsdg
+              {showAPI
+                ? token
+                : "************************************************************************************************************************************************************************************"}
             </Typography>
           </Grid>
           <Grid item lg={1} md={1} sm={12} xs={12}>
@@ -239,13 +188,74 @@ const DeveloperAPIs = () => {
               className="actionBtnContainer pointer d-flex-evenly"
               sx={{ cursor: "pointer" }}
             >
-              <VisibilityOffOutlined
-                sx={{ color: "black", fontSize: "1.25rem" }}
-              />
+              {showAPI ? (
+                <VisibilityOffOutlined
+                  onClick={() => setShowAPI(false)}
+                  sx={{ color: "black", fontSize: "1.25rem" }}
+                />
+              ) : (
+                <VisibilityOutlined
+                  onClick={() => setShowAPI(true)}
+                  sx={{ color: "black", fontSize: "1.25rem" }}
+                />
+              )}
+
               <ContentCopyOutlined
+                onClick={handleCopy}
                 sx={{ color: "black", fontSize: "1.25rem" }}
               />
             </Box>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box className="apiKey">
+        <Grid container spacing={1} alignItems={"center"}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Typography
+              color="black"
+              variant="subtitle1"
+              fontWeight="bold"
+              mb={0.5}
+            >
+              Configure Open Api Specifications
+            </Typography>
+          </Grid>
+          <Grid item lg={2} md={2} sm={12} xs={12}>
+            <Typography color="grey" variant="body1" className="description">
+              API URL
+            </Typography>
+          </Grid>
+          <Grid item lg={6} md={2} sm={12} xs={12}>
+            <TextField
+              autoFocus
+              variant="outlined"
+              fullWidth
+              value={openApiUrl}
+              onChange={handleUpdateUrl}
+              size="small"
+              sx={{ marginTop: "5px" }}
+            />
+          </Grid>
+          <Grid item lg={3} md={3} sm={12} xs={12}>
+            <Button
+              variant="outlined"
+              onClick={udateOpenApiUrls}
+              sx={{
+                width: "auto",
+                marginRight: "20px",
+                cursor: !isOk ? "not-allowed" : "pointer",
+                color: !isOk ? "#6D7676" : "black",
+                height: "40px",
+                border: "1px solid #DFDFDF",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+            >
+              Upload Open Api Spec
+            </Button>
           </Grid>
         </Grid>
       </Box>

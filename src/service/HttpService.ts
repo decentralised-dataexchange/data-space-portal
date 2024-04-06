@@ -42,4 +42,22 @@ export const HttpService = {
     };
     return httpClient.delete(ENDPOINTS.deleteDDA(dataAgreementId), config);
   },
+  getAdminDetails: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(ENDPOINTS.getAdminDetails(), config);
+  },
+  getOrganisationsDetails: async (): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.get(ENDPOINTS.getOrganisationsDetails(), config);
+  },
+  updateOpenApiUrl: async (payload: any): Promise<any> => {
+    const config: object = {
+      headers: { ...getAuthenticatedHeaders() },
+    };
+    return httpClient.put(ENDPOINTS.updateOpenApiUrl(), payload, config);
+  },
 };

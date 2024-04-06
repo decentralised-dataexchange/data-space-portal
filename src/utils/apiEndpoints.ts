@@ -52,6 +52,12 @@ export const ENDPOINTS = {
     },
     deleteDDA:  (id: any) => {
       return `config/data-disclosure-agreement/${id}`
-    }
+    },
+    getOrganisationsDetails: () => {
+      return "/config/data-source/";
+    },
+    updateOpenApiUrl: () => {
+      return "/config/open-api/url";
+    }, 
   };
   
