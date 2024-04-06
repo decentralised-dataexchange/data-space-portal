@@ -31,16 +31,6 @@ export const AppBarMenu = (props: Props) => {
     navigate('/login')
   };
 
-  // useEffect(() => {
-  //   setUserAvatar(LocalStorageService.getUserProfilePic());
-  // }, [changeAvatar]);
-
-  // useEffect(() => {
-  //   HttpService.getOrganisationAdminDetails().then((res) => {
-  //     setUserName(res.data.name);
-  //   });
-  // }, [changeAdminName]);
-
   const handleClose = () => {
     setAnchorEl(null);
   };

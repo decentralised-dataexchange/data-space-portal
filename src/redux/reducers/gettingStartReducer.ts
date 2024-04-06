@@ -6,11 +6,16 @@ import { gettingStartAction,
          listConnectionActionSuccess,
          listConnectionActionFailure,
          verificationTemplateSuccess,
-         createVerificationSuccess
+         createVerificationSuccess,
+         setImages
 } from '../actionCreators/gettingStart';
 
 const initialState = {
   isLoading: false,
+  imageSet: {
+    logo: null,
+    cover: null
+  },
   data: null,
   listConnection: {
     isLoading: false,
@@ -65,6 +70,11 @@ export default {
       .addCase(createVerificationSuccess, (state, action) => {
         state.isLoading = false;
         state.verifyConnection.data = action.payload;
+      });
+    builder
+      .addCase(setImages, (state, action) => {
+        state.imageSet.logo = action.payload.logo;
+        state.imageSet.cover = action.payload.cover;
       });
   }),
 };

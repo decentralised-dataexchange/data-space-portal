@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Box } from "@mui/material";
 import LogoCammera from "../../../public/img/camera_photo2.png";
 import DefaultLogo from "../../../public/img/OrganisationDefaultLogo.png";
 import { defaultLogoImg } from "../../utils/defalultImages";
+import { useAppSelector } from "../../customHooks";
+import { ENDPOINTS } from "../../utils/apiEndpoints";
+import { doApiPutImage } from "../../utils/fetchWrapper";
 
 
 type Props = {
@@ -12,8 +15,11 @@ type Props = {
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const {editMode, setLogoImageBase64 } = props
-  let logoImageBase64 = localStorage.getItem('cachedLogoImage')
+  const {editMode, setLogoImageBase64 } = props;
+
+  const imagesSet = useAppSelector(
+    (state) => state?.gettingStart?.imageSet
+  )
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -24,20 +30,28 @@ const OrgLogoImageUpload = (props: Props) => {
     let reader = new FileReader();
     let file = e.target.files[0];
     let image = /image.jpeg/;
-
     reader.onloadend = () => {
       myFile.file = file;
       myFile.imagePreviewUrl = reader.result;
     };
+
+    // if (file.type.match(image)) {
+      reader.readAsDataURL(file);
+
+      const formData = new FormData();
+      file && formData.append('orgimage', file);
+      const url = ENDPOINTS.getLogoImage();
+      doApiPutImage(url, formData);
+    // }
   };
 
   return (
     <Box>
       <Avatar
         src={
-          !logoImageBase64
-            ? DefaultLogo
-            : logoImageBase64
+          !imagesSet?.logo
+            ? defaultLogoImg
+            : imagesSet?.logo
         }
         alt="logo"
         style={{

@@ -1,9 +1,11 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { all, put, takeLatest } from 'redux-saga/effects';
 import * as actionTypes from '../actionTypes/login';
 import * as loginAction from '../actionCreators/login';
-import { doApiGet, doApiPost } from '../../utils/fetchWrapper';
+import { doApiGet, doApiPost, doApiGetBlob } from '../../utils/fetchWrapper';
 import { ENDPOINTS } from '../../utils/apiEndpoints';
 import { LocalStorageService } from '../../utils/localStorageService';
+import { imageBlobToBase64 } from '../../utils/utils';
+import * as gettingStartAction from '../actionCreators/gettingStart';
 
 export function* login(action) {
   const { email, password, callback } = action.payload;
@@ -25,6 +27,20 @@ export function* admin() {
     const adminUrl = ENDPOINTS.getAdminDetails();
     const adminRes = yield doApiGet(adminUrl);
     yield put(loginAction.loginSuccess(adminRes));
+    const coverImageUrl = ENDPOINTS.getCoverImage();
+    const logoImageUrl = ENDPOINTS.getLogoImage();
+    const [logo, cover] = yield all([
+      yield doApiGetBlob(logoImageUrl),
+      yield doApiGetBlob(coverImageUrl)
+    ]);
+    yield imageBlobToBase64(logo, 'logo');
+    yield imageBlobToBase64(cover, 'cover');
+
+    localStorage.getItem('cachedLogoImage');
+    localStorage.getItem('cachedCoverImage');
+    yield put(gettingStartAction.setImages(
+      localStorage.getItem('cachedLogoImage'), localStorage.getItem('cachedCoverImage')
+    ))
   } catch(err) {
     yield put(loginAction.loginFailure(err));
   }
