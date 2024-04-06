@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import React, { FC } from "react";
-import { Paper } from "@mui/material";
+import { Paper, TableCell, TableRow } from "@mui/material";
 import Table from "@material-ui/core/Table";
 import TableBody from '@material-ui/core/TableBody';
 import TableHeading from "./TableHeading";
@@ -16,6 +16,7 @@ type BasicTableProps = {
   readonly isColumnWise?: boolean,
   readonly customTableHeadClass?: string,
   readonly customTableBodyClass?: string,
+  readonly pagination?: any[],
 };
 
 const renderTableHead = (tableField) => {
@@ -30,12 +31,20 @@ const renderTableBody = (tableData, tableField, isColumnWise?) => {
 
   return (
     <TableBody>
-      {isColumnWise ? 
-        <TableColumns tableHead={tableField} tableData={tableData} /> 
-        :
-        <TableRows tableHead={tableField} tableData={tableData} />
-      }
-        
+      {tableData?.length > 0 ?
+        <>
+          {isColumnWise ? 
+          <TableColumns tableHead={tableField} tableData={tableData} /> 
+          :
+          <TableRows tableHead={tableField} tableData={tableData} />
+        }
+        </> : 
+        <TableRow>
+          <TableCell colSpan={5} align="center">
+            No data to display
+          </TableCell>
+        </TableRow>
+      }   
     </TableBody>
   );
 };
@@ -45,7 +54,7 @@ const BasicTable: FC<BasicTableProps> = ({
   tableField,
   isColumnWise = false,
   customTableHeadClass,
-  customTableBodyClass,
+  customTableBodyClass
 }: BasicTableProps) => {
   return (
     <>

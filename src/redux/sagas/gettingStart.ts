@@ -1,25 +1,36 @@
-import { put, takeLatest, delay, call } from 'redux-saga/effects';
+import { put, takeLatest, all, call } from 'redux-saga/effects';
 import * as actionTypes from '../actionTypes/getingStart';
 import * as gettingStartAction from '../actionCreators/gettingStart';
-import { doApiGet, doApiPost, doApiPut } from '../../utils/fetchWrapper';
+import { doApiGet, doApiPost, doApiPut, doApiGetBlob } from '../../utils/fetchWrapper';
 import { ENDPOINTS } from '../../utils/apiEndpoints';
+import { imageBlobToBase64 } from '../../utils/utils';
 
 export function* gettingStart() {
   try {
     const url = ENDPOINTS.gettingStart();
+    const coverImageUrl = ENDPOINTS.getCoverImage();
+    const logoImageUrl = ENDPOINTS.getLogoImage();
     const res = yield doApiGet(url);
     yield put(gettingStartAction.gettingStartActionSuccess(res));
+    const [logo, cover] = yield all([
+      yield doApiGetBlob(logoImageUrl),
+      yield doApiGetBlob(coverImageUrl)
+    ]);
+    yield imageBlobToBase64(logo, 'logo');
+    yield imageBlobToBase64(cover, 'cover');
+
   } catch (error) {
     yield put(gettingStartAction.gettingStartActionFailure(error));
   }
 }
 
-export function* listConnection() {
+export function* listConnection(action) {
   try {
-    const url = ENDPOINTS.listConnections();
+    const { limit, offset, restrictTemplate } = action.payload;
+    const url = ENDPOINTS.listConnections(limit, offset);
     const res = yield doApiGet(url);
     yield put(gettingStartAction.listConnectionActionSuccess(res));
-    if(res?.connections?.length > 0) {
+    if(res?.connections?.length > 0 && !restrictTemplate) {
       const uri = ENDPOINTS.verificationTemplate();
       const resObj = yield doApiGet(uri);
       yield put(gettingStartAction.verificationTemplateSuccess(resObj));

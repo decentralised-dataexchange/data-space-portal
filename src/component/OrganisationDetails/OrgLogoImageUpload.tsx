@@ -36,8 +36,8 @@ const OrgLogoImageUpload = (props: Props) => {
       <Avatar
         src={
           !logoImageBase64
-            ? defaultLogoImg
-            : DefaultLogo
+            ? DefaultLogo
+            : logoImageBase64
         }
         alt="logo"
         style={{

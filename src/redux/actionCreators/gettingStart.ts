@@ -22,7 +22,10 @@ export const gettingStartActionFailure = createAction(
 
 
 export const listConnectionAction = createAction(
-  ActionTypes.LIST_CONNECTION_ACTION
+  ActionTypes.LIST_CONNECTION_ACTION,
+  (limit, offset, restrictTemplate) => ({
+    payload: { limit, offset, restrictTemplate },
+  }),
 );
 
 export const listConnectionActionSuccess = createAction(

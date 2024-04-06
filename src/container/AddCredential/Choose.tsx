@@ -23,7 +23,7 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
         (state) => state?.gettingStart?.verificationTemplate?.data
       );
 
-    const { verificationTemplates } = verificationTemplateObj;
+    const { verificationTemplates } = verificationTemplateObj || [];
 
     return (
         <>
@@ -39,7 +39,7 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
                 </Grid>
                 <Box className="itemContainer">
                     {
-                        verificationTemplates?.map((obj) => {
+                        verificationTemplates?.length > 0 && verificationTemplates?.map((obj) => {
                             return (
                                 <ListItem key={obj?.id}>
                                     <Checkbox

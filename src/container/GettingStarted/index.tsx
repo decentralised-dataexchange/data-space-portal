@@ -54,7 +54,7 @@ const GettingStarted = () => {
 
   useEffect(() => {
     !gettingStartData && dispatch(gettingStartAction());
-    !listConnections && dispatch(listConnectionAction());
+    !listConnections && dispatch(listConnectionAction(10, 0, false));
   }, []);
 
   const handleEdit = () => {
