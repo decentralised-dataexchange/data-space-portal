@@ -13,6 +13,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import { HttpService } from "../../service/HttpService";
+import SnackbarComponent from "../../component/notification";
 
 interface Props {
   open: boolean;
@@ -37,8 +38,10 @@ export default function ListDDAModal(props: Props) {
     confirmButtonText,
   } = props;
   const [isOk, setIsOk] = useState(false);
-  const [status, setStatus] = useState(""); 
+  const [status, setStatus] = useState("");
   const { t } = useTranslation("translation");
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (selectedData && selectedData.status) {
@@ -59,14 +62,18 @@ export default function ListDDAModal(props: Props) {
         status: status,
       };
 
-      HttpService.updateDDAStatus(selectedData?.templateId, payload).then(
-        () => {
+      HttpService.updateDDAStatus(selectedData?.templateId, payload)
+        .then(() => {
           setOpen(false);
           setIsOk(false);
           setStatus("");
           setRefetchTable(!refetchTable);
-        }
-      );
+        })
+        .catch((error) => {
+          console.log("error", error.response.data.error);
+          setError(error.response.data.error);
+          setOpenSnackBar(true);
+        });
     }
   };
 
@@ -75,8 +82,14 @@ export default function ListDDAModal(props: Props) {
       <Drawer anchor="right" open={open}>
         <Box className="dd-modal-container">
           <Box className="dd-modal-header">
-            <Box pl={2}>
-              <Typography color="#F3F3F6">
+            <SnackbarComponent
+              open={openSnackBar}
+              setOpen={setOpenSnackBar}
+              message={error}
+              topStyle={100}
+            />
+            <Box pl={2} style={{ width: "90%" }}>
+              <Typography className="dd-modal-header-text ">
                 {headerText}: {selectedData?.purpose}
               </Typography>
               <Typography color="#F3F3F6">
@@ -112,12 +125,17 @@ export default function ListDDAModal(props: Props) {
                 variant="outlined"
                 sx={{ marginTop: "5px" }}
                 size="small"
+                defaultValue=""
               >
                 <MenuItem value="unlisted">Unlisted</MenuItem>
-                <MenuItem value="awaitingForApproval">
-                  Awaiting for Approval
-                </MenuItem>
+                <MenuItem value="awaitingForApproval">In Review</MenuItem>
                 <MenuItem value="listed">Listed</MenuItem>
+                <MenuItem value="approved" disabled>
+                  Approved
+                </MenuItem>
+                <MenuItem value="rejected" disabled>
+                  Rejected
+                </MenuItem>
               </Select>
             </Box>
           </Box>

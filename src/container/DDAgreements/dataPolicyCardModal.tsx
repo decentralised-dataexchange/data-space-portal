@@ -70,14 +70,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
       name: "Agreement Period",
       value:selectedData.agreementPeriod,
     },
-    {
-      name: "Blink",
-      value: "",
-    },
-    {
-      name: "did:mydata",
-      value: "",
-    },
+  
   ];
 
   return (
