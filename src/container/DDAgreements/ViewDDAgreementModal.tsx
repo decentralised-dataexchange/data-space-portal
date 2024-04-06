@@ -36,8 +36,8 @@ export default function ViewDataAgreementModal(props: Props) {
         <Box className="dd-modal-container">
           <form>
             <Box className="dd-modal-header">
-              <Box pl={2}>
-                <Typography color="#F3F3F6">
+              <Box pl={2} style={{ width: "90%" }}>
+                <Typography className="dd-modal-header-text ">
                   View Data Disclosure Agreement: {selectedData?.purpose}
                 </Typography>
                 {mode !== "Create" && (

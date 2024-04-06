@@ -112,3 +112,10 @@
     border-radius: 0 !important;
     border: 1px solid #EAEAEA !important;
 }
+
+.dd-modal-header-text {
+    color: #F3F3F6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}

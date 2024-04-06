@@ -26,7 +26,6 @@ const StyledTableCell = styled(TableCell)({
   fontWeight: "lighter !important",
   fontSize: "14px !important",
   border: "1px solid #D7D6D6",
-  textTransform: "capitalize",
 });
 
 const StyledTableRow = styled(TableRow)({
@@ -46,6 +45,20 @@ const DDAtable = ({
 }) => {
   const { t } = useTranslation("translation");
 
+  const getStatus = (status) => {
+    if (status === "unlisted") {
+      return "Unlisted";
+    } else if (status === "awaitingForApproval") {
+      return "In Review";
+    } else if (status === "approved") {
+      return "Approved";
+    } else if (status === "rejected") {
+      return "Rejected";
+    } else if (status === "listed") {
+      return "Listed";
+    }
+  };
+
   return (
     <RootTableContainer>
       <Table aria-label="simple table">
@@ -61,12 +74,12 @@ const DDAtable = ({
         <TableBody>
           {tabledata?.dataDisclosureAgreements?.length > 0 ? (
             tabledata.dataDisclosureAgreements.map((row, index) => (
-              <StyledTableRow key={index}>
+              <StyledTableRow key={row.templateId}>
                 <StyledTableCell>{row.purpose}</StyledTableCell>
                 <StyledTableCell>
                   <VersionDropdown record={row} />
                 </StyledTableCell>
-                <StyledTableCell>{row.status}</StyledTableCell>
+                <StyledTableCell>{getStatus(row.status)}</StyledTableCell>
                 <StyledTableCell>{row.lawfulBasis}</StyledTableCell>
                 <StyledTableCell
                   style={{

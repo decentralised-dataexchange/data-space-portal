@@ -60,8 +60,8 @@ export default function GeneralModal(props: Props) {
       <Drawer anchor="right" open={open}>
         <Box className="dd-modal-container">
           <Box className="dd-modal-header">
-            <Box pl={2}>
-              <Typography color="#F3F3F6">
+            <Box pl={2} style={{ width: "90%" }}>
+              <Typography className="dd-modal-header-text ">
                 {headerText}: {selectedData?.purpose}
               </Typography>
               <Typography color="#F3F3F6">
@@ -93,7 +93,7 @@ export default function GeneralModal(props: Props) {
                 value={confirmationTextInput}
                 onChange={handleCancelConfirmationText}
                 size="small"
-                sx={{marginTop:"5px"}}
+                sx={{ marginTop: "5px" }}
               />
             </Box>
           </Box>
