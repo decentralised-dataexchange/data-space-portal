@@ -58,7 +58,7 @@ const OrganisationDetailsContainer = (props: Props) => {
   const dispatch = useAppDispatch();
   const [ formValue, setFormValue ] = useState(
     {
-      'orgName': '', 
+      'name': '', 
       'location': '', 
       'policyUrl': '', 
       'description': ''
@@ -66,7 +66,7 @@ const OrganisationDetailsContainer = (props: Props) => {
 
     useEffect(() => {
       setFormValue({
-        'orgName': organisationDetails?.name, 
+        'name': organisationDetails?.name, 
         'location': organisationDetails?.location, 
         'policyUrl': organisationDetails?.policyUrl, 
         'description': organisationDetails?.description
@@ -94,7 +94,9 @@ const handleChange = (e) => {
 
 const handleSave = () => {
   const obj = { 
-    ...formValue, "required": {}
+    "dataSource": {
+      ...formValue
+    }
   }
   dispatch(updateDataSource(obj))
 }
@@ -141,12 +143,12 @@ const addCredentialClass = isVerify ? 'view-credential' : !isEnableAddCredential
             <Box sx={{ display: "flex", alignItems: 'center'}} mb={"11px"} mt={"-2px"}>
               <TextField
                 autoFocus
-                value={formValue.orgName}
+                value={formValue.name}
                 onChange={(e) => handleChange(e)}
                 variant="standard"
                 placeholder={t("gettingStarted.organisationName")}
                 fullWidth
-                name='orgName'
+                name='name'
                 style={{
                   ...editStyleEnable,
                   marginTop: "0.9px",
