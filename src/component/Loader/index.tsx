@@ -1,21 +1,19 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/extensions */
 import React from 'react';
-import './style.scss';
-import spinner from '../../../public/img/loader.gif';
+import { CircularProgress, Stack } from '@mui/material';
+import './style.scss'
+
+type LoaderProps = {
+  isBtnLoader?: boolean;
+}
+
 const Loader = ({
-  styleClass = '',
-}) => (
-  <div
-    className='d-flex align-items-center justify-content-center'
-  >
-    <div className={styleClass ? styleClass : 'loader'}>
-      <img
-        src={spinner}
-        className={`spinner`}
-      />
-    </div>
-  </div>
+  isBtnLoader
+}: LoaderProps) => (
+      <Stack alignItems="center" className={isBtnLoader ? '' : 'loader'}>
+        <CircularProgress color="inherit" size={isBtnLoader ? '25px' : '40px'}/>
+      </Stack>
 );
 
 export default Loader;
