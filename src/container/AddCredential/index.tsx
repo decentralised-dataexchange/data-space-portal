@@ -104,7 +104,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
                 },
               }}
             >
-              {isLoader ? <Loader styleClass='btn-loader' /> : `${t('common.confirm')}`}
+              {isLoader ? <Loader isBtnLoader={true} /> : `${t('common.confirm')}`}
             </Button> : ''
             }
           </Box>
