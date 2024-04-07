@@ -4,8 +4,9 @@ import { gridSpacing } from '../../constants/constant';
 import { useTranslation } from "react-i18next";
 import dexcom from '../../../public/img/dexcom.png';
 import { useAppSelector } from "../../customHooks";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ViewDataAgreementModalInner from '../../container/DDAgreements/ViewDDAgreementModalInner';
+import "rapidoc";
 
 const datasourceItems = [
     {
@@ -35,8 +36,11 @@ const DataSourceListing = () => {
       };
 
     useEffect(() => {
-        !dataSourceItems?.dataSource && navigate('/')
+        !dataSourceItems?.dataSource && navigate('/');
     }, []);
+
+    const { openApiUrl } = dataSourceItems && dataSourceItems?.dataSource || '';
+
     return (
         <Box className="dataListContainer">
             <ViewDataAgreementModalInner
@@ -100,9 +104,11 @@ const DataSourceListing = () => {
                                                         {dataDisclosureAgreement?.purposeDescription}
                                                     </Typography>
                                                     <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                                        <Button size="small"  sx={{fontSize: "14px"}}>
-                                                            {t('home.btn-viewMetadata')}
-                                                        </Button>
+                                                        <Link to={t('route.apiDoc')}  state={openApiUrl}>
+                                                            <Button size="small"  sx={{fontSize: "14px"}} disabled={!openApiUrl}>
+                                                                {t('home.btn-viewMetadata')}
+                                                            </Button>
+                                                        </Link>
                                                         <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick(dataDisclosureAgreement)} >
                                                             {t('home.btn-signData')}
                                                         </Button>

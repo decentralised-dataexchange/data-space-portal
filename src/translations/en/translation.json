@@ -6,7 +6,8 @@
     "account": "account",
     "manageAdmin" : "account/manage-admin",
     "developerApis": "account/developer-apis",
-    "dispConnections": "account/disp-connections"
+    "dispConnections": "account/disp-connections",
+    "apiDoc": "/data-source/meta-api"
 
   },
   "login": {
@@ -59,10 +60,10 @@
     "prepareDA": "View Data Disclosure Agreement",
     "manageAccount": "Manage Account",
     "developerDocumentation": "Developer Documentation",
-    "connectWalletTitle": "ADD CREDENTIALS",
-    "connect": "CONNECT",
-    "choose": "CHOOSE",
-    "confirm": "CONFIRM",
+    "connectWalletTitle": "Add Credentials - ",
+    "connect": "Connect",
+    "choose": "Choose",
+    "confirm": "Confirm",
     "connectDescription" : "Your business is currently unverified. Connect to your company wallet and click next.",
     "country": "Country",
     "trustedIssuers": "Trusted Issuers",

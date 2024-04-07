@@ -4,10 +4,10 @@ import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { AppBarMenu } from "./AppBarMenu";
 import Logo from "../../../public/img/logo.jpg";
 import './style.scss';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getDevice, publicRoutes } from '../../utils/utils'
 import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../../customHooks";
+import { useAppSelector } from "../../customHooks";
 
 export default function MyAppBar({handleOpenMenu}) {
   const { t } = useTranslation('translation');
@@ -31,14 +31,16 @@ export default function MyAppBar({handleOpenMenu}) {
       >
         <Toolbar>
           <IconButton
-            sx={{cursor: publicRoutes(pathname) ? 'not-allowed' : 'pointer'}}
+            sx={{cursor: publicRoutes(pathname) && !isAuthenticated ? 'not-allowed' : 'pointer'}}
             edge="start"
             color="inherit"
-            onClick={() => publicRoutes(pathname) ? '' : handleOpenMenu()}
+            onClick={() => isAuthenticated ? handleOpenMenu() : ''}
           >
             <MenuIcon style={{ height: 60, width: 60 }} />
           </IconButton>
-          <img className='logoImg' src={Logo} alt="Logo" />
+           <Link to="/">
+             <img className='logoImg' src={Logo} alt="Logo" />
+           </Link>
           <Box className='flex-column'>
             <Typography
                 sx={{

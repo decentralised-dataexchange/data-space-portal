@@ -74,11 +74,12 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
             <Box className="contentContainer">{contentArray[currentIndex].component}</Box>
             <Box className="modal-footer">
             <Button
-              onClick={callRightSideDrawer}
+              onClick={!isLoader && callRightSideDrawer}
               className="delete-btn"
               sx={{
                 marginRight: "10px",
-                color: "black",
+                cursor: isLoader ? "not-allowed" : "pointer",
+                color: isLoader ? "#6D7676" : "black",
                 "&:hover": {
                   backgroundColor: "black",
                   color: "white",
@@ -90,7 +91,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
             </Button>
             {currentIndex ==0 ? <Button
               className="delete-btn"
-              onClick={() => handleAddComponent(currentIndex)}
+              onClick={() => !isLoader && handleAddComponent(currentIndex)}
               variant="outlined"
               sx={{
                 marginRight: "20px",
