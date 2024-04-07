@@ -34,7 +34,7 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
                         <AccountBalanceWalletOutlinedIcon fontSize='large' />
                     </Grid>
                     <Grid item>
-                        <Typography className="ml-1" variant="body1">{`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates[0]?.walletName}, ${verificationTemplates[0]?.walletLocation}`}</Typography>
+                        <Typography className="ml-1" variant="body1">{`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletName}, ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletLocation}`}</Typography>
                     </Grid>
                 </Grid>
                 <Box className="itemContainer">

@@ -24,6 +24,7 @@ const Layout = ({ children }) => {
   const [ open, setOpen ] = useState<boolean>(true);
   const isDeskTop = (!isMobile && !isTablet);
   const dispatch = useAppDispatch();
+  const isAuthenticated = localStorage.getItem('Token');
 
   useEffect(() => {
     publicRoutes(pathname) ? setOpen(false) : setOpen(isDeskTop ? true : false) ;
@@ -43,7 +44,7 @@ const Layout = ({ children }) => {
   }, [])
 
   const handleOpenMenu = () => {
-    if(!publicRoutes(pathname)) {
+    if(!publicRoutes(pathname) || isAuthenticated) {
       setOpen(!open);
     }
   }
@@ -56,6 +57,7 @@ const Layout = ({ children }) => {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    marginTop: pathname == '/data-source/meta-api' ? '80px' : '100px',
     marginLeft: `-${drawerWidth}px`,
     width: '100%',
     ...(open && {
@@ -88,8 +90,6 @@ const Layout = ({ children }) => {
   const handleDrawerClose = () => {
     setOpen(!open);
   }
-
-  // const isAuthenticated = localStorage.getItem('Token');
   // const isNotLoginPage = (( && isAuthenticated) || publicRoutes());
   
   return (
@@ -101,10 +101,10 @@ const Layout = ({ children }) => {
           </AppMenuBar>
          <Box className="leftNavigationContainer">
           {
-            !publicRoutes(pathname) && <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
+            isAuthenticated && <MenuBar open={open} handleDrawerClose={handleDrawerClose} />
           }
             
-          <Main className={`${isMobile ? 'appBar' : 'appBar'}`} open={open}>
+          <Main className='appBar' open={open}>
             { !publicRoutes(pathname) && <Breadcrumb /> }
             {children}
           </Main>
