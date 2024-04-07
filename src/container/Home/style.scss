@@ -88,8 +88,64 @@
 .dataListContainer {
     padding: 20px;
     .leftSection {
-        background: rgb(230 230 230);
-        height: 80vh;
+        border: 1px solid rgb(223, 223, 223);
+        padding: 0px;
+        margin-bottom: 15px;
+        box-shadow: none;
+
+        .logo {
+            width: 100px;
+            height: auto;
+            border-radius: 100%;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            border: 5px solid white;
+        }
+
+        .card-header {
+            // height: 40px;
+            display: flex;
+            justify-content: flex-start;
+            height: 100px;
+            position: relative;
+        }
+
+
+        .MuiCardContent-root {
+            padding: 15px;
+
+            .MuiTypography-root {
+                padding: 35px 0 0 0;
+
+                .readmore {
+                    color: #9c9c9c;
+                }
+            }
+
+            .card-body {
+                overflow: hidden;
+                // height: 6em;
+                padding: 20px 0 0 0;
+            }
+
+            .datasource-location {
+                padding-top: 0px;
+            }
+
+            .datasource-overview-label {
+                padding-top: 0px;
+            }
+
+            .datasource-overview-label {
+                padding-top: 10px;
+            }
+
+            .datasource-overview {
+                padding-top: 10px;
+            }
+
+        }
     }
     .policyUrl {
         padding: 10px 0;
@@ -105,25 +161,26 @@
         padding-top: 0 !important;
     }
     .cardContainerList {
-        border: 1px solid #000;
+        border: 1px solid rgb(223, 223, 223);
         padding: 20px;
         margin-bottom: 15px;
-    
-        .logo {
-            width: 50%;
-            height: auto;
-            margin-left: -8px;
-        }
+        box-shadow: none;
     
         .actionListingBtn {
             .MuiButtonBase-root {
                 text-transform: unset;
-                border: 1.5px solid black;
-                background: rgb(230 230 230);
+                border: 1px solid rgb(223, 223, 223);
+                background: white;
+                border-radius: 0px;
                 color: #000;
-                margin-top: 80px;
+                margin-top: 8px;
                 margin-left: 20px;
                 padding: 5px 30px;
+            }
+
+            .MuiButtonBase-root:hover {
+                background: black;
+                color: white;
             }
         }
     

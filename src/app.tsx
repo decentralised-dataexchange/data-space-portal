@@ -34,8 +34,8 @@ const App = () => {
     if(path === '/') {
       navigate('/');
       return;
-    } else if (path === '/data-source-list') {
-      navigate('/data-source-list');
+    } else if (path === '/data-source/read') {
+      navigate('/data-source/read');
     } else {
       navigate('/login');
       return;

@@ -44,8 +44,8 @@ const LandingPage = () => {
                                 <FormControl component="fieldset">
                                     <RadioGroup row value={selectedValue} onChange={handleChange}>
                                         <FormControlLabel value={selectedValue} control={<Radio  size='small' />} label={t('home.check-box-all')} labelPlacement='end' />
-                                        <FormControlLabel value={2} control={<Radio size='small'  />} disabled label={t('home.check-box-org')} labelPlacement='end' />
-                                        <FormControlLabel value={3} control={<Radio size='small'  />} disabled label={t('home.check-box-devices')} labelPlacement='end' />
+                                        <FormControlLabel value={2} className="data-source-filter" control={<Radio size='small'  />} disabled label={t('home.check-box-org')} labelPlacement='end' />
+                                        <FormControlLabel value={3} className="data-source-filter" control={<Radio size='small'  />} disabled label={t('home.check-box-devices')} labelPlacement='end' />
                                     </RadioGroup>
                                 </FormControl>
                             </Box>
@@ -56,13 +56,14 @@ const LandingPage = () => {
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
                             <Grid container spacing={gridSpacing}>
-                                {dataSourceItems?.map(( { dataSource }) => {
+                                {dataSourceItems?.map((dataSourceItem, index) => {
                                     return (
-                                        <Grid item lg={3} md={6} sm={6} xs={12}>
+                                        <Grid item lg={3} md={6} sm={6} xs={12} key={index}>
                                             <DataSourceCard
-                                                dataSource={dataSource}
-                                                logoUrl={dataSource.logoUrl}
-                                                description={dataSource.description} 
+                                                dataSource={dataSourceItem.dataSource}
+                                                logoUrl={dataSourceItem.dataSource.logoUrl}
+                                                description={dataSourceItem.dataSource.description}
+                                                dataDisclosureAgreements={dataSourceItem.dataDisclosureAgreements}
                                             />
                                         </Grid>
                                     );

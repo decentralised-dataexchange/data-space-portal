@@ -12,6 +12,50 @@ import { useTranslation } from "react-i18next";
 import { dataSourceEachList } from '../../redux/actionCreators/dataSource'
 import { useAppDispatch, useAppSelector } from "../../customHooks";
 
+interface DataDisclosureAgreement {
+    purpose: string
+    version: string
+    language: string
+    connection: Connection
+    templateId: string
+    lawfulBasis: string
+    personalData: PersonalDaum[]
+    codeOfConduct: string
+    dataController: DataController
+    agreementPeriod: number
+    purposeDescription: string
+    dataSharingRestrictions: DataSharingRestrictions
+    status: string
+    isLatestVersion: boolean
+}
+
+interface Connection {
+    invitationUrl: string
+}
+
+interface PersonalDaum {
+    attributeId: string
+    attributeName: string
+    attributeDescription: string
+}
+
+interface DataController {
+    did: string
+    url: string
+    name: string
+    legalId: string
+    industrySector: string
+}
+
+interface DataSharingRestrictions {
+    policyUrl: string
+    jurisdiction: string
+    industrySector: string
+    storageLocation: string
+    dataRetentionPeriod: number
+    geographicRestriction: string
+}
+
 interface DataSourceCardProp {
     dataSource: {
         description: string,
@@ -22,10 +66,11 @@ interface DataSourceCardProp {
         sector: string,
         location: string,
         policyUrl: string,
-    }
+    },
+    dataDisclosureAgreements: DataDisclosureAgreement[]
 }
 
-const DataSourceCard = ({ dataSource }: DataSourceCardProp) => {
+const DataSourceCard = ({ dataSource, dataDisclosureAgreements }: DataSourceCardProp) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { t } = useTranslation("translation");
@@ -36,7 +81,7 @@ const DataSourceCard = ({ dataSource }: DataSourceCardProp) => {
 
     const handleClick = (obj: DataSourceCardProp) => {
         dispatch(dataSourceEachList(obj));
-        navigate('/data-source-list');
+        navigate('/data-source/read');
     }
 
     return (
@@ -70,7 +115,7 @@ const DataSourceCard = ({ dataSource }: DataSourceCardProp) => {
                     </Typography>
                     
                     <Box className="actionBtn">
-                        <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick(dataSource)}>
+                        <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick({dataSource, dataDisclosureAgreements})}>
                             {t('home.btn-signData')}
                         </Button>
                         {/* <Button size="small"  sx={{fontSize: "14px"}}>

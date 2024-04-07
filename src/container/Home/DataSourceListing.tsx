@@ -1,10 +1,11 @@
 import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { gridSpacing } from '../../constants/constant';
 import { useTranslation } from "react-i18next";
 import dexcom from '../../../public/img/dexcom.png';
 import { useAppSelector } from "../../customHooks";
 import { useNavigate } from 'react-router-dom';
+import ViewDataAgreementModalInner from '../../container/DDAgreements/ViewDDAgreementModalInner';
 
 const datasourceItems = [
     {
@@ -21,126 +22,96 @@ const DataSourceListing = () => {
     const dataSourceItems = useAppSelector(
         (state) => state?.dataSourceList?.list
     );
+    const [isOpenViewDDA, setIsOpenViewDDA] = useState(false);
+    const [selectedDDA, setSelectedDDA] = useState<any>();
+    const [ moreOrLessTxt, setMoreOrLessTxt] = useState(`${t('home.readMore')}`)
+    const readMore = (txt) => {
+        setMoreOrLessTxt(txt === `${t('home.readMore')}` ? `${t('home.readLess')}` : `${t('home.readMore')}`);
+    }
+
+    const handleClick = (item) => {
+        setSelectedDDA(item);
+        setIsOpenViewDDA(true);
+      };
 
     useEffect(() => {
-        !dataSourceItems && navigate('/')
+        !dataSourceItems?.dataSource && navigate('/')
     }, []);
     return (
         <Box className="dataListContainer">
+            <ViewDataAgreementModalInner
+                open={isOpenViewDDA}
+                setOpen={setIsOpenViewDDA}
+                mode={""}
+                selectedData={selectedDDA}
+                dataSourceName={dataSourceItems?.dataSource?.name}
+                dataSourceLocation={dataSourceItems?.dataSource?.location}
+                dataSourceDescription={dataSourceItems?.dataSource?.description}
+                coverImage={dataSourceItems?.dataSource?.coverImageUrl}
+                logoImage={dataSourceItems?.dataSource?.logoUrl}
+            />
+
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item lg={4} md={12} sm={12} xs={12} className='leftContainer'>
-                            <Card className='cardContainerList leftSection'>
-                                <Box component="div" className='card-header'>
+                            <Card className='leftSection'>
+                                <CardMedia component="div" className='card-header'  image={dataSourceItems?.dataSource?.coverImageUrl}>
                                     <CardMedia
                                         component="img"
-                                        image={dataSourceItems?.logoUrl}
+                                        image={dataSourceItems?.dataSource?.logoUrl}
                                         alt="symbiome"
                                         className='logo'
                                     />
-                                </Box>
-                                <Box className='policyUrl'>
+                                </CardMedia>
+                                {/* <Box className='policyUrl'>
                                     {dataSourceItems?.policyUrl}
-                                </Box>
+                                </Box> */}
                                 <CardContent>
-                                    <Typography gutterBottom component="div" className="card-body" sx={{ fontSize: "14px" }}>
-                                        {dataSourceItems?.description}
-                                    </Typography>
+                                <Typography variant="h6" fontWeight="bold">
+                                    {dataSourceItems?.dataSource?.name}
+                                </Typography>
+                                <Typography color="#9F9F9F" className='datasource-location'>
+                                    {dataSourceItems?.dataSource?.location}
+                                </Typography>
+                                <Typography variant="subtitle1" className='datasource-overview-label'>
+                                    {t("common.overView")}
+                                </Typography>
+                                <Typography gutterBottom component="div" className="card-body datasource-overview" sx={{ fontSize: "14px" }}>
+                                    {moreOrLessTxt === 'Read Less....' ? dataSourceItems?.dataSource?.description : dataSourceItems?.dataSource?.description.slice(0, 275)}
+                                    {dataSourceItems?.dataSource?.description?.length > 275 &&
+                                        <Typography className="readmore" component="span" sx={{ fontSize: "14px" }}>
+                                            {/* <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box> */}
+                                        </Typography>
+                                    }
+                                </Typography>
                                 </CardContent>
                             </Card>
                         </Grid>
                         <Grid item lg={8} md={12} sm={12} xs={12} className='rightContainer'>
-                            <Card className='cardContainerList'>
-                                <CardContent>
-                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
-                                            Data Disclosure Agreement: Diabetes Patient Data Summary and Stastics
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                            Data Disclosure Agreement Description
-                                        </Typography>
-                                    <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                        <Button size="small"  sx={{fontSize: "14px"}}>
-                                            {t('home.btn-viewMetadata')}
-                                        </Button>
-                                        <Button size="small" sx={{fontSize: "14px"}} >
-                                            {t('home.btn-signData')}
-                                        </Button>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                            <Card className='cardContainerList'>
-                                <CardContent>
-                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
-                                            Data Disclosure Agreement: Diabetes Patient Data Summary and Stastics
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                            Data Disclosure Agreement Description
-                                        </Typography>
-                                    <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                        <Button size="small"  sx={{fontSize: "14px"}}>
-                                            {t('home.btn-viewMetadata')}
-                                        </Button>
-                                        <Button size="small" sx={{fontSize: "14px"}} >
-                                            {t('home.btn-signData')}
-                                        </Button>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                            <Card className='cardContainerList'>
-                                <CardContent>
-                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
-                                            Data Disclosure Agreement: Diabetes Patient Data Summary and Stastics
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                            Data Disclosure Agreement Description
-                                        </Typography>
-                                    <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                        <Button size="small"  sx={{fontSize: "14px"}}>
-                                            {t('home.btn-viewMetadata')}
-                                        </Button>
-                                        <Button size="small" sx={{fontSize: "14px"}} >
-                                            {t('home.btn-signData')}
-                                        </Button>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                            <Card className='cardContainerList'>
-                                <CardContent>
-                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
-                                            Data Disclosure Agreement: Diabetes Patient Data Summary and Stastics
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                            Data Disclosure Agreement Description
-                                        </Typography>
-                                    <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                        <Button size="small"  sx={{fontSize: "14px"}}>
-                                            {t('home.btn-viewMetadata')}
-                                        </Button>
-                                        <Button size="small" sx={{fontSize: "14px"}} >
-                                            {t('home.btn-signData')}
-                                        </Button>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                            <Card className='cardContainerList'>
-                                <CardContent>
-                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
-                                            Data Disclosure Agreement: Diabetes Patient Data Summary and Stastics
-                                    </Typography>
-                                    <Typography sx={{ fontSize: "14px" }}>
-                                            Data Disclosure Agreement Description
-                                        </Typography>
-                                    <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                        <Button size="small"  sx={{fontSize: "14px"}}>
-                                            {t('home.btn-viewMetadata')}
-                                        </Button>
-                                        <Button size="small" sx={{fontSize: "14px"}} >
-                                            {t('home.btn-signData')}
-                                        </Button>
-                                    </Box>
-                                </CardContent>
-                            </Card>
+                            {dataSourceItems?.dataDisclosureAgreements?.map((dataDisclosureAgreement, index) => {
+                                        return (
+                                            <Card key={index} className='cardContainerList'>
+                                                <CardContent>
+                                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
+                                                        {dataDisclosureAgreement?.purpose}
+                                                    </Typography>
+                                                    <Typography sx={{ fontSize: "14px" }}>
+                                                        {dataDisclosureAgreement?.purposeDescription}
+                                                    </Typography>
+                                                    <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
+                                                        <Button size="small"  sx={{fontSize: "14px"}}>
+                                                            {t('home.btn-viewMetadata')}
+                                                        </Button>
+                                                        <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick(dataDisclosureAgreement)} >
+                                                            {t('home.btn-signData')}
+                                                        </Button>
+                                                    </Box>
+                                                </CardContent>
+                                            </Card>
+                                        );
+                                    })
+                            }
                         </Grid>
                     </Grid>
                 </Grid>

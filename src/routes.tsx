@@ -26,7 +26,7 @@ const AppRouter = () => {
       }
         <>
             <Route path="/" element={<Home />} />
-            <Route path="/data-source-list" element={<DataSourceListing />} />
+            <Route path="/data-source/read" element={<DataSourceListing />} />
             <Route path={`/${t("route.login")}`} element={<Login />} />
           </>
     </Routes>

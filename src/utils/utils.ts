@@ -9,7 +9,7 @@ const getDevice = () => {
 };
 
 const publicRoutes = (pathname: string) => {
-  return pathname == "/" || pathname == "/data-source-list"
+  return pathname == "/" || pathname == "/data-source/read"
 }
 
 const formatISODateToLocalString = (isoDateTime: string) => {
