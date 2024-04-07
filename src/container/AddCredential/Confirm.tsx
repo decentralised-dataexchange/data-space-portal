@@ -12,13 +12,13 @@ const ConfirmComponent = ({ callRightSideDrawer }) => {
     const verifyConnectionObj = useAppSelector(
         (state) => state?.gettingStart?.verifyConnection.data?.verification?.presentationRecord
     );
-    const values = verifyConnectionObj.presentation.requested_proof.revealed_attrs;
+    const values = verifyConnectionObj?.presentation?.requested_proof?.revealed_attrs;
 
-    const keys = Object.keys(verifyConnectionObj.presentation_request.requested_attributes)
+    const keys = Object.keys(verifyConnectionObj?.presentation_request?.requested_attributes)
     let tableObj = {};
 
     keys.map((i) => {
-        tableObj[verifyConnectionObj.presentation_request.requested_attributes[i].name] = values[i].raw  
+        tableObj[verifyConnectionObj?.presentation_request?.requested_attributes[i]?.name] = values[i]?.raw  
     });
 
     const tableData = []
