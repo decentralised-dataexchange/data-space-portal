@@ -42,14 +42,20 @@
         .itemContainer {
             li {
                 background: #e5e5e5;
-                padding: 18px;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #ccc;
+
+                .prl-30 {
+                    padding: 0px 10px 0px 0px !important;
+                }
             }
 
             .itemTextContainer {
-                border-radius: 30px;
-                border: 2px solid #ccc;
+                border-radius: 10px;
+                border: 1px solid #ccc;
                 background: #FFF;
-                padding: 20px;
+                padding: 10px;
                 width: 100%;
             }
         }

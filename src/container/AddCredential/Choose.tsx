@@ -30,11 +30,8 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
             <Box component="div" className='businessInfo'>
                 <Typography className='mdc-typography--body2' gutterBottom component="div">{t('gettingStarted.chooseDescription')} </Typography>
                 <Grid container alignItems="center" className='mt-4'>
-                    <Grid item >
-                        <AccountBalanceWalletOutlinedIcon fontSize='large' />
-                    </Grid>
                     <Grid item>
-                        <Typography className="ml-1" variant="body1">{`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletName}, ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletLocation}`}</Typography>
+                        <Typography className="ml-1" variant="body1" style={{display: "flex"}}><AccountBalanceWalletOutlinedIcon fontSize='small' style={{marginRight: "5px"}} />{`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletName}, ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletLocation}`}</Typography>
                     </Grid>
                 </Grid>
                 <Box className="itemContainer">

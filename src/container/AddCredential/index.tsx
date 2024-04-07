@@ -87,7 +87,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
               }}
               variant="outlined"
             >
-              {t("common.cancel")}
+              {"Close"}
             </Button>
             {currentIndex ==0 ? <Button
               className="delete-btn"
