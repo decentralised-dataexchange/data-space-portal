@@ -26,21 +26,13 @@ type Props = {
   editMode: boolean;
   coverImageBase64: string | undefined;
   setCoverImageBase64: React.Dispatch<React.SetStateAction<any>>;
+  handleEdit: () => void
 };
 
 const OrgCoverImageUpload = (props: Props) => {
-  const dispatch = useAppDispatch();
-  const { editMode, setCoverImageBase64 } = props;
+  const { editMode, handleEdit } = props;
+  let coverImageBase64 = localStorage.getItem('cachedCoverImage')
 
-  const [ imageBase64, setImageBase64] = useState('')
-
-  const imagesSet = useAppSelector(
-    (state) => state?.gettingStart?.imageSet
-  )
-
-  useEffect(() => {
-    setImageBase64(imagesSet?.cover)
-  }, [imagesSet]);
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -65,8 +57,8 @@ const OrgCoverImageUpload = (props: Props) => {
       HttpService.updateOrganisationCoverImage(formData)
         .then((res) => {
           HttpService.getCoverImage().then((imageBase64) => {
-            console.log(imageBase64, "imageBase64")
-            setImageBase64(imageBase64);
+            handleEdit();
+            localStorage.setItem('cachedCoverImage', imageBase64)
           });
         })
         .catch((error) => {
@@ -84,9 +76,9 @@ const OrgCoverImageUpload = (props: Props) => {
         duration={0}
         style={{ opacity: editMode ? 0.25 : 1, transitionDuration: "0ms" }}
         src={
-          !imageBase64
+          !coverImageBase64
             ? defaultCoverImage
-            : imageBase64
+            : coverImageBase64
         }
       />
 

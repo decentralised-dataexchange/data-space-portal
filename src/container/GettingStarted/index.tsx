@@ -67,6 +67,7 @@ const GettingStarted = () => {
           editMode={editMode}
           coverImageBase64={'logoImageBase64'}
           setCoverImageBase64={'logoImageBase64'}
+          handleEdit={handleEdit}
         />
         <OrganisationDetailsContainer
               editMode={editMode}

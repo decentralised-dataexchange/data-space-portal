@@ -16,16 +16,8 @@ type Props = {
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const {editMode } = props;
-  const [ imageBase64, setLogoImageBase64] = useState('')
-
-  const imagesSet = useAppSelector(
-    (state) => state?.gettingStart?.imageSet
-  )
-
-  useEffect(() => {
-    setLogoImageBase64(imagesSet?.logo)
-  }, [imagesSet]);
+  const {editMode, handleEdit, setLogoImageBase64 } = props;
+  const logoImageBase64 = localStorage.getItem('cachedLogoImage');
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -46,12 +38,11 @@ const OrgLogoImageUpload = (props: Props) => {
       file && formData.append('orgimage', file);
       HttpService.updateOrganisationLogoImage(formData)
         .then((res) => {
-          console.log(res, "res")
           // Get the newly uploaded image from the server
           HttpService.getLogoImage().then((imageBase64) => {
-            localStorage.getItem('cachedLogoImage');
-            setLogoImageBase64(imageBase64);
-            localStorage.getItem('cachedLogoImage');
+            handleEdit();
+            setLogoImageBase64(imageBase64)
+            localStorage.setItem('cachedLogoImage', imageBase64);
           });
         })
         .catch((error) => {
@@ -63,9 +54,9 @@ const OrgLogoImageUpload = (props: Props) => {
     <Box>
       <Avatar
         src={
-          !imageBase64
+          !logoImageBase64
             ? defaultLogoImg
-            : imageBase64
+            : logoImageBase64
         }
         alt="logo"
         style={{
