@@ -4,7 +4,7 @@ import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { AppBarMenu } from "./AppBarMenu";
 import Logo from "../../../public/img/logo.jpg";
 import './style.scss';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getDevice, publicRoutes } from '../../utils/utils'
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../customHooks";
@@ -13,6 +13,7 @@ export default function MyAppBar({handleOpenMenu}) {
   const { t } = useTranslation('translation');
   const { isMobile } = getDevice();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isAuthenticated = localStorage.getItem('Token');
 
   const adminData = useAppSelector(
@@ -41,7 +42,7 @@ export default function MyAppBar({handleOpenMenu}) {
            <Link to="/">
              <img className='logoImg' src={Logo} alt="Logo" />
            </Link>
-          <Box className='flex-column'>
+          <Box className='flex-column' onClick={() => navigate('/')} sx={{cursor: 'pointer'}}>
             <Typography
                 sx={{
                   fontSize: isMobile ? '1rem' : '1.5rem',
