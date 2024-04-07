@@ -218,12 +218,12 @@ const DeveloperAPIs = () => {
               fontWeight="bold"
               mb={0.5}
             >
-              Configure Open Api Specifications
+              Configure OpenAPI Specification
             </Typography>
           </Grid>
           <Grid item lg={2} md={2} sm={12} xs={12}>
             <Typography color="grey" variant="body1" className="description">
-              API URL
+              OpenAPI Specification URL: 
             </Typography>
           </Grid>
           <Grid item lg={6} md={2} sm={12} xs={12}>
@@ -234,7 +234,7 @@ const DeveloperAPIs = () => {
               value={openApiUrl}
               onChange={handleUpdateUrl}
               size="small"
-              sx={{ marginTop: "5px" }}
+              sx={{ marginTop: "5px", borderRadius: '0px' }}
             />
           </Grid>
           <Grid item lg={3} md={3} sm={12} xs={12}>
@@ -248,13 +248,14 @@ const DeveloperAPIs = () => {
                 color: !isOk ? "#6D7676" : "black",
                 height: "40px",
                 border: "1px solid #DFDFDF",
+                borderRadius: "0px",
                 "&:hover": {
                   backgroundColor: "black",
                   color: "white",
                 },
               }}
             >
-              Upload Open Api Spec
+              Upload
             </Button>
           </Grid>
         </Grid>
