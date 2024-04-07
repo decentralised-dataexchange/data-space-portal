@@ -78,7 +78,6 @@ export const HttpService = {
       responseType: "arraybuffer",
     };
     return httpClient.get(ENDPOINTS.getCoverImage(), config).then((res) => {
-      console.log(res, "RES")
       return imageBlobToBase64(res.data);
     });
   },
@@ -88,8 +87,6 @@ export const HttpService = {
       responseType: "arraybuffer",
     };
     return httpClient.get(ENDPOINTS.getLogoImage(), config).then((res) => {
-      console.log(res, "RES")
-      localStorage.setItem('cachedCoverImage', imageBlobToBase64(res.data));
       return imageBlobToBase64(res.data);
     });
   },

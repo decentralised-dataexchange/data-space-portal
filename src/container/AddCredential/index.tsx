@@ -65,22 +65,47 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
             className="drawerContent"
         >
             <Box className="titleContainer">
-                <Box component={"span"} alignItems="center">{currentIndex ? <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} onClick={() => handleBack(currentIndex)} /> :'' }</Box>
-                <Typography className='walletHeader'>{t('gettingStarted.connectWalletTitle')} - {contentArray[currentIndex].headerName}</Typography>
-                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer", paddingLeft: isMobile ? '0' : currentIndex ? '210px' : '240px' }}>
+                {/* <Box component={"span"} alignItems="center">{currentIndex ? <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} onClick={() => handleBack(currentIndex)} /> :'' }</Box> */}
+                <Typography className='walletHeader'>{currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : t('gettingStarted.connectWalletTitle') + contentArray[currentIndex].headerName}</Typography>
+                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer", padding: '20px' }}>
                     <CloseIcon />
                 </Box>
             </Box>
             <Box className="contentContainer">{contentArray[currentIndex].component}</Box>
-            <Box className="btnContainer">
-                <Button className="btn cancelBtn" size="small"onClick={callRightSideDrawer}>
-                    {t('common.cancel')}
-                </Button>
-                {currentIndex ==0 ? <Button onClick={() => handleAddComponent(currentIndex)} className="btn nextBtn" size="small" >
-                    {isLoader ? 'loading...' : `${t('common.confirm')}`}
-                </Button> : ''
-                }   
-            </Box>
+            <Box className="modal-footer">
+            <Button
+              onClick={callRightSideDrawer}
+              className="delete-btn"
+              sx={{
+                marginRight: "10px",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+              variant="outlined"
+            >
+              {t("common.cancel")}
+            </Button>
+            {currentIndex ==0 ? <Button
+              className="delete-btn"
+              onClick={() => handleAddComponent(currentIndex)}
+              variant="outlined"
+              sx={{
+                marginRight: "20px",
+                cursor: isLoader ? "not-allowed" : "pointer",
+                color: isLoader ? "#6D7676" : "black",
+                "&:hover": {
+                  backgroundColor: isLoader ? "#6D7676" : "black",
+                  color: "white",
+                },
+              }}
+            >
+              {isLoader ? 'loading...' : `${t('common.confirm')}`}
+            </Button> : ''
+            }
+          </Box>
         </Box>
     );
 }

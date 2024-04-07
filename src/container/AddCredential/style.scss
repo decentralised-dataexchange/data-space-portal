@@ -18,11 +18,19 @@
         display: flex;
         align-items: center;
         padding: 0 10px;
+        font-size: 16px;
+        background-color: #03182b;
+        display: flex;
+        align-items: center;
+        height: 80px;
+        width: 100%;
+        justify-content: space-between;
+        color: white;
     }
 
     .contentContainer {
         flex-grow: 1;
-        padding: 0 10px;
+        padding: 10px 20px;
         overflow-y: auto;
         height: calc(100% - 20%);
     }
@@ -113,5 +121,9 @@
 
     .title-font {
         font-size: 0.875rem;
+    }
+
+    .modal-footer {
+        width: 600px;
     }
 }

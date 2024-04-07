@@ -10,6 +10,8 @@ import './style.scss';
 import { useTranslation } from "react-i18next";
 import { useAppSelector , useAppDispatch} from "../../customHooks";
 import { updateDataSource } from "../../redux/actionCreators/gettingStart";
+import { HttpService } from "../../service/HttpService";
+import GeneralModal from "../../component/Modals/generalModal";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -48,13 +50,12 @@ const OrganisationDetailsContainer = (props: Props) => {
   const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
   const {
     editMode,
-    logoImageBase64,
     organisationDetails,
     handleEdit,
-    setOganisationDetails,
-    setLogoImageBase64,
     isEnableAddCredential
   } = props;
+  const [coverImageBase64, setCoverImageBase64] = useState();
+  const [logoImageBase64, setLogoImageBase64] = useState();
   const dispatch = useAppDispatch();
   const [ formValue, setFormValue ] = useState(
     {
@@ -71,6 +72,14 @@ const OrganisationDetailsContainer = (props: Props) => {
         'policyUrl': organisationDetails?.policyUrl, 
         'description': organisationDetails?.description
       })
+      HttpService.getCoverImage().then((coverImage) => {
+        setCoverImageBase64(coverImage);
+        localStorage.setItem('cachedCoverImage', coverImage)
+      });
+      HttpService.getLogoImage().then((logoImage) => {
+        setLogoImageBase64(logoImage);
+        localStorage.setItem('cachedLogoImage', logoImage)
+      });
     }, [organisationDetails])
 
   const callRightSideDrawer = () => {
@@ -127,6 +136,7 @@ const addCredentialClass = isVerify ? 'view-credential' : !isEnableAddCredential
             editMode={editMode}
             logoImageBase64={logoImageBase64}
             setLogoImageBase64={setLogoImageBase64}
+            handleEdit={handleEdit}
           />
 
           <Box
