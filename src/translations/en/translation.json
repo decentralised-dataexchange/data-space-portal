@@ -7,7 +7,7 @@
     "manageAdmin" : "account/manage-admin",
     "developerApis": "account/developer-apis",
     "dispConnections": "account/disp-connections",
-    "apiDoc": "/data-source/meta-api"
+    "apiDoc": "/data-source/open-api"
 
   },
   "login": {

@@ -57,7 +57,7 @@ const Layout = ({ children }) => {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginTop: pathname == '/data-source/meta-api' ? '80px' : '100px',
+    marginTop: pathname == '/data-source/open-api' ? '80px' : '100px',
     marginLeft: `-${drawerWidth}px`,
     width: '100%',
     ...(open && {

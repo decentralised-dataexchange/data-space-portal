@@ -36,8 +36,8 @@ const App = () => {
       return;
     } else if (path === '/data-source/read') {
       navigate('/data-source/read');
-    } else if (path === '/data-source/meta-api') {
-      navigate('/data-source/meta-api');
+    } else if (path === '/data-source/open-api') {
+      navigate('/data-source/open-api');
     } 
     else {
       navigate('/login');
