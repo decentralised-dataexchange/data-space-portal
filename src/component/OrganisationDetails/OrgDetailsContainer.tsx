@@ -87,10 +87,11 @@ const OrganisationDetailsContainer = (props: Props) => {
 }
 
 const verifyConnectionObj = useAppSelector(
-  (state) => state?.gettingStart?.verifyConnection.data
+  (state) => state?.gettingStart?.data
 );
 
 const isVerify = verifyConnectionObj?.verification?.presentationState == 'verified';
+
 
 const handleChange = (e) => {
   const { name, value } = e.target;
