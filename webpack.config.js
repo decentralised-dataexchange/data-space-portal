@@ -48,7 +48,8 @@ module.exports = env => ({
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "/", "index.html")
+            template: path.join(__dirname, "/", "index.html"),
+            favicon: "./public/favicon.ico"
         }),
         new MiniCssExtractPlugin({
             filename: `[name].${timestamp}.css`,

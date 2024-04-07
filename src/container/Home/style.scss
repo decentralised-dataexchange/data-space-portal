@@ -167,7 +167,14 @@
         box-shadow: none;
     
         .actionListingBtn {
+            @include breakpoints.tabletAndDown {
+                flex-direction: column;
+            }
             .MuiButtonBase-root {
+                @include breakpoints.tabletAndDown {
+                    margin-left: 0px;
+                    width: 310px;
+                }
                 text-transform: unset;
                 border: 1px solid rgb(223, 223, 223);
                 background: white;

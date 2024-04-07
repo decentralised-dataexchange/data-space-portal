@@ -60,7 +60,7 @@ export const createVerificationAction = createAction(
 
 export const readVerificationAction = createAction(
   ActionTypes.READ_VERIFICATION_ACTION,
-  (startPoll) => ({
+  (startPoll?) => ({
     payload: startPoll
   }),
 );

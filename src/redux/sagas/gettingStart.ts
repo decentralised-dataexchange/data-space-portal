@@ -1,15 +1,15 @@
-import { put, takeLatest, all, call } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import * as actionTypes from '../actionTypes/getingStart';
 import * as gettingStartAction from '../actionCreators/gettingStart';
-import { doApiGet, doApiPost, doApiPut, doApiGetBlob } from '../../utils/fetchWrapper';
+import { doApiGet, doApiPost, doApiPut } from '../../utils/fetchWrapper';
 import { ENDPOINTS } from '../../utils/apiEndpoints';
-import { imageBlobToBase64 } from '../../utils/utils';
 
 export function* gettingStart() {
   try {
     const url = ENDPOINTS.gettingStart();
     const res = yield doApiGet(url);
     yield put(gettingStartAction.gettingStartActionSuccess(res));
+    yield put(gettingStartAction.readVerificationAction());
   } catch (error) {
     yield put(gettingStartAction.gettingStartActionFailure(error));
   }
@@ -50,7 +50,7 @@ export function* readVerification(action) {
     const startPoll = action.payload;
     const url = ENDPOINTS.verification();
     const res = yield doApiGet(url);
-    startPoll(res);
+    startPoll && startPoll(res);
     yield put(gettingStartAction.createVerificationSuccess(res));
   } catch(err) {
     yield put(gettingStartAction.createVerificationFailure(err));

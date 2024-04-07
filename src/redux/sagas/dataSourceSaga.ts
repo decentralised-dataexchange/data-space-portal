@@ -1,12 +1,10 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import * as actionTypes from '../actionTypes/dataSource';
 import * as dataSourceAction from '../actionCreators/dataSource';
-import { doApiGet, doApiPost } from '../../utils/fetchWrapper';
+import { doApiGet } from '../../utils/fetchWrapper';
 import { ENDPOINTS } from '../../utils/apiEndpoints';
 
 export function* login(action) {
-//   const { email, password, callback } = action.payload;
-
   try {
     const listUrl = ENDPOINTS.dataSourceList();
     const res = yield doApiGet(listUrl);
