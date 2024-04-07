@@ -4,14 +4,15 @@ import React, { useState } from 'react';
 import ChooseComponent from './Choose';
 import ConfirmComponent from './Confirm';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+// import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import '../../../public/sass/style.scss'
 import './style.scss'
 import { useTranslation } from 'react-i18next';
 import { getDevice } from '../../utils/utils'
-import { useAppDispatch, useAppSelector  } from '../../customHooks';
+import { useAppDispatch  } from '../../customHooks';
 import { createVerificationAction, readVerificationAction } from '../../redux/actionCreators/gettingStart'
 import loader from '../../../public/img/loader.svg';
+import Loader from '../../component/Loader';
 
 const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
     const { isMobile } = getDevice();
@@ -103,7 +104,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
                 },
               }}
             >
-              {isLoader ? 'loading...' : `${t('common.confirm')}`}
+              {isLoader ? <Loader styleClass='btn-loader' /> : `${t('common.confirm')}`}
             </Button> : ''
             }
           </Box>

@@ -7,13 +7,13 @@ import {
     Typography,
     FormControl
 } from "@mui/material";
-import React, { useEffect, useState } from 'react';
-// icons
+import React, { useState } from 'react';
 import { gridSpacing } from '../../constants/constant';
 import DataSourceCard from './DataSource';
 import './style.scss';
 import { useAppSelector } from "../../customHooks";
 import { useTranslation } from "react-i18next";
+import Loader from "../../component/Loader";
 
 const LandingPage = () => {
     const { t } = useTranslation("translation");
@@ -28,12 +28,15 @@ const LandingPage = () => {
     }
     return (
         <>
+         {
+            dataSourceItems?.length > 0 ? 
             <Box className="homeContainer">
                 {/* <Box component="div" className="breadCrumbContainer">
                     <Typography gutterBottom component="div">
                         {t('home.header')}
                     </Typography>
                 </Box> */}
+                
                 <Box component="div" className='dataSourceSelectionContainer'>
                     <Grid container spacing={gridSpacing}>
                         <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -73,6 +76,9 @@ const LandingPage = () => {
                     </Grid>
                 </Box>
             </Box>
+            : 
+            <Loader />
+         }
     </>
     )
 }

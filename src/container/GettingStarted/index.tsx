@@ -8,6 +8,7 @@ import OrganisationDetailsContainer from "../../component/OrganisationDetails/Or
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from "../../customHooks";
 import { gettingStartAction, listConnectionAction } from '../../redux/actionCreators/gettingStart';
+import Loader from "../../component/Loader";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -62,58 +63,61 @@ const GettingStarted = () => {
   };
 
   return (
-      <Container className='pageContainer'>
-        <OrgCoverImageUpload
+    gettingStartData?.status == 200 ? 
+    <Container className='pageContainer'>
+    <OrgCoverImageUpload
+      editMode={editMode}
+      coverImageBase64={'logoImageBase64'}
+      setCoverImageBase64={'logoImageBase64'}
+      handleEdit={handleEdit}
+    />
+    <OrganisationDetailsContainer
           editMode={editMode}
-          coverImageBase64={'logoImageBase64'}
-          setCoverImageBase64={'logoImageBase64'}
-          handleEdit={handleEdit}
-        />
-        <OrganisationDetailsContainer
-              editMode={editMode}
-              logoImageBase64={'logoImageBase64'}
-              handleEdit={() => { handleEdit() } }
-              isEnableAddCredential={isEnableAddCredential}
-              organisationDetails={gettingStartData?.dataSource}
-              setOganisationDetails={() => { } } 
-              setLogoImageBase64={() => { } } 
-         />
+          logoImageBase64={'logoImageBase64'}
+          handleEdit={() => { handleEdit() } }
+          isEnableAddCredential={isEnableAddCredential}
+          organisationDetails={gettingStartData?.dataSource}
+          setOganisationDetails={() => { } } 
+          setLogoImageBase64={() => { } } 
+     />
 
-        <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>
-          <Grid container spacing={2}>
-            <Grid item lg={4} md={6} sm={6} xs={12}>
-              <Item
-                sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/${t("route.dd-agreements")}`)}
-              >
-                <Typography variant="body1" color="grey">
-                  {t('gettingStarted.prepareDA')}
-                </Typography>
-              </Item>
-            </Grid>
-            <Grid item lg={4} md={6} sm={6} xs={12}>
-              <Item
-                sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/${t("route.manageAdmin")}`)}
-              >
-                <Typography variant="body1" color="grey">
-                {t('gettingStarted.manageAccount')}
-                </Typography>
-              </Item>
-            </Grid>
-            <Grid item lg={4} md={6} sm={6} xs={12}>
-              <Item
-                sx={{ cursor: "pointer" }}
-                onClick={() => navigate(`/${t("route.developerApis")}`)}
-              >
-                <Typography variant="body1" color="grey">
-                  {t('gettingStarted.developerDocumentation')} 
-                </Typography>
-              </Item>
-            </Grid>
-          </Grid>
-        </DetailsContainer>
-      </Container>
+    <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>
+      <Grid container spacing={2}>
+        <Grid item lg={4} md={6} sm={6} xs={12}>
+          <Item
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate(`/${t("route.dd-agreements")}`)}
+          >
+            <Typography variant="body1" color="grey">
+              {t('gettingStarted.prepareDA')}
+            </Typography>
+          </Item>
+        </Grid>
+        <Grid item lg={4} md={6} sm={6} xs={12}>
+          <Item
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate(`/${t("route.manageAdmin")}`)}
+          >
+            <Typography variant="body1" color="grey">
+            {t('gettingStarted.manageAccount')}
+            </Typography>
+          </Item>
+        </Grid>
+        <Grid item lg={4} md={6} sm={6} xs={12}>
+          <Item
+            sx={{ cursor: "pointer" }}
+            onClick={() => navigate(`/${t("route.developerApis")}`)}
+          >
+            <Typography variant="body1" color="grey">
+              {t('gettingStarted.developerDocumentation')} 
+            </Typography>
+          </Item>
+        </Grid>
+      </Grid>
+    </DetailsContainer>
+  </Container>
+   : 
+      <Loader />
   );
 };
 
