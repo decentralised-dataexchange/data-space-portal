@@ -33,7 +33,7 @@ const actionIcons = (selectedData) => {
     <ViewDataAgreementModal 
         open={isOpenViewDDA}
         setOpen={setIsOpenViewDDA} 
-        mode={''} 
+        mode={'private'} 
         selectedData={selectedData}
     />
     <DeleteModal 

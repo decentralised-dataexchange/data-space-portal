@@ -42,7 +42,7 @@ const DataSourceListing = () => {
             <ViewDataAgreementModalInner
                 open={isOpenViewDDA}
                 setOpen={setIsOpenViewDDA}
-                mode={""}
+                mode={"public"}
                 selectedData={selectedDDA}
                 dataSourceName={dataSourceItems?.dataSource?.name}
                 dataSourceLocation={dataSourceItems?.dataSource?.location}

@@ -104,7 +104,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
               </Box>
 
               <Box className="modal-footer ">
-              <Button
+              {mode === "public" && <Button
                   onClick={() => {
                     navigator.clipboard.writeText(selectedData?.connection?.invitationUrl);
                   }}
@@ -121,7 +121,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
                   variant="outlined"
                 >
                   {"Copy Connection URL"}
-                </Button>
+                </Button>}
                 <Button
                   onClick={() => {
                     setOpen(false);

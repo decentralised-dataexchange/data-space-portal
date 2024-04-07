@@ -117,7 +117,7 @@ const DDAgreements = () => {
         <ViewDataAgreementModal
           open={isOpenViewDDA}
           setOpen={setIsOpenViewDDA}
-          mode={""}
+          mode={"private"}
           selectedData={selectedDDA}
         />
         <GeneralModal
