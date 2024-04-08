@@ -30,9 +30,8 @@ type Props = {
 };
 
 const OrgCoverImageUpload = (props: Props) => {
-  const { editMode, handleEdit } = props;
-  let coverImageBase64 = localStorage.getItem('cachedCoverImage')
-
+  const { editMode, handleEdit, setCoverImageBase64, coverImageBase64 } = props;
+  let coverImage = coverImageBase64 ? coverImageBase64 : localStorage.getItem('cachedCoverImage')
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
@@ -58,6 +57,7 @@ const OrgCoverImageUpload = (props: Props) => {
         .then((res) => {
           HttpService.getCoverImage().then((imageBase64) => {
             handleEdit();
+            setCoverImageBase64(imageBase64);
             localStorage.setItem('cachedCoverImage', imageBase64)
           });
         })
@@ -76,9 +76,9 @@ const OrgCoverImageUpload = (props: Props) => {
         duration={0}
         style={{ opacity: editMode ? 0.25 : 1, transitionDuration: "0ms" }}
         src={
-          !coverImageBase64
+          !coverImage
             ? defaultCoverImage
-            : coverImageBase64
+            : coverImage
         }
       />
 

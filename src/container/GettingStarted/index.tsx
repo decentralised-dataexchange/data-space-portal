@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from "../../customHooks";
 import { gettingStartAction, listConnectionAction } from '../../redux/actionCreators/gettingStart';
 import Loader from "../../component/Loader";
+import { HttpService } from '../../service/HttpService';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -39,6 +40,7 @@ const Item = styled("div")(({ theme }) => ({
 
 const GettingStarted = () => {
   const [editMode, setEditMode] = useState(false);
+  const [coverImageBase64, setCoverImageBase64] = useState();
   const dispatch = useAppDispatch();
   const { t } = useTranslation('translation');
   const navigate = useNavigate();
@@ -56,6 +58,10 @@ const GettingStarted = () => {
   useEffect(() => {
     !gettingStartData && dispatch(gettingStartAction());
     !listConnections && dispatch(listConnectionAction(10, 0, false));
+    HttpService.getCoverImage().then((coverImage) => {
+      setCoverImageBase64(coverImage);
+      localStorage.setItem('cachedCoverImage', coverImage)
+    });
   }, []);
 
   const handleEdit = () => {
@@ -67,8 +73,8 @@ const GettingStarted = () => {
     <Container className='pageContainer'>
     <OrgCoverImageUpload
       editMode={editMode}
-      coverImageBase64={'logoImageBase64'}
-      setCoverImageBase64={'logoImageBase64'}
+      coverImageBase64={coverImageBase64}
+      setCoverImageBase64={setCoverImageBase64}
       handleEdit={handleEdit}
     />
     <OrganisationDetailsContainer
