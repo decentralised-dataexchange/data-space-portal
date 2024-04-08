@@ -33,7 +33,7 @@
   },
   "sideBar": {
     "gettingStarted": "Getting Started",
-    "dataAgreements": "Data Disclosure Agreements"
+    "dataAgreements": "Data Source Listing"
   },
   "gettingStarted": {
     "sector": "Sector:",
@@ -92,7 +92,7 @@
   },
 
   "dataAgreements": {
-    "title": "Data Disclosure Agreements",
+    "title": "Manage Listing",
     "all": "All",
     "list": "List"
   }
