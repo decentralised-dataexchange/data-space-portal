@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../customHooks';
 import { defaultCoverImage, defaultLogoImg } from '../../utils/defalultImages';
+import { DataAttributeCardForDDA } from './dataAttributeCardCredentials';
 
 
 const ConfirmComponent = ({ callRightSideDrawer }) => {
@@ -78,13 +79,15 @@ const ConfirmComponent = ({ callRightSideDrawer }) => {
                                 {t('common.certificateOfRegistration')}
                             </Typography>
 
+                            <DataAttributeCardForDDA  selectedData={tableData}/>
+
                             <Box className='confirmTable'>
-                                <BasicTable 
+                                {/* <BasicTable 
                                     isColumnWise={true} 
                                     tableData={tableData}
                                     customTableHeadClass={"mui-table-bordered"}
                                     customTableBodyClass={"mui-table-bordered"}
-                                />
+                                /> */}
                             </Box>
                         </Box>
                     </Box>

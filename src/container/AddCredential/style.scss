@@ -1,5 +1,6 @@
 .drawerContent {
     position: relative;
+    overflow: auto;
     .MuiFormLabel-root, .MuiTypography-root {
         font-size: 14px;
     }
@@ -117,6 +118,6 @@
     }
 
     .modal-footer {
-        width: 480px;
+        // width: 480px;
     }
 }
