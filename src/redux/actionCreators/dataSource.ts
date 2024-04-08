@@ -26,3 +26,10 @@ export const dataSourceEachList = createAction(
     payload: data,
   }),
 );
+
+export const openApiUrlAction = createAction(
+  ActionTypes.OPEN_API_URL,
+  (data) => ({
+    payload: data,
+  }),
+);

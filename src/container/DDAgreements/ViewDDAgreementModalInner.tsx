@@ -120,7 +120,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
                   }}
                   variant="outlined"
                 >
-                  {"Copy Connection URL"}
+                  {"Copy Connection"}
                 </Button>}
                 <Button
                   onClick={() => {

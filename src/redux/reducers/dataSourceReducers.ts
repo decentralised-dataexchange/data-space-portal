@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { dataSourceAction, dataSourceSuccess, dataSourceFailure, dataSourceEachList } from '../actionCreators/dataSource';
+import { dataSourceAction, dataSourceSuccess, dataSourceFailure, dataSourceEachList, openApiUrlAction } from '../actionCreators/dataSource';
 
 const initialState = {
   isLoading: false,
@@ -28,5 +28,9 @@ export default {
         state.isLoading = false;
         state.list = action.payload;
       });
+    builder.addCase(openApiUrlAction, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+    });
   }),
 };

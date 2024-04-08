@@ -2,11 +2,11 @@ import { Box, Button, Card, CardContent, CardMedia, Grid, Typography } from '@mu
 import React, { useEffect, useState } from 'react';
 import { gridSpacing } from '../../constants/constant';
 import { useTranslation } from "react-i18next";
-import dexcom from '../../../public/img/dexcom.png';
-import { useAppSelector } from "../../customHooks";
+import { useAppDispatch, useAppSelector } from "../../customHooks";
 import { Link, useNavigate } from 'react-router-dom';
 import ViewDataAgreementModalInner from '../../container/DDAgreements/ViewDDAgreementModalInner';
 import "rapidoc";
+import { openApiUrlAction } from '../../redux/actionCreators/dataSource';
 
 const datasourceItems = [
     {
@@ -20,6 +20,7 @@ const datasourceItems = [
 const DataSourceListing = () => {
     const { t } = useTranslation("translation");
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
     const dataSourceItems = useAppSelector(
         (state) => state?.dataSourceList?.list
     );
@@ -34,6 +35,14 @@ const DataSourceListing = () => {
         setSelectedDDA(item);
         setIsOpenViewDDA(true);
       };
+
+    const handleViewApiClick = () => {
+        const openApiUrl = dataSourceItems?.dataSource?.openApiUrl;
+        if (openApiUrl.length > 0){
+            dispatch(openApiUrlAction(openApiUrl));
+            navigate(t('route.apiDoc'));
+        }
+    }
 
     useEffect(() => {
         !dataSourceItems?.dataSource && navigate('/');
@@ -104,11 +113,11 @@ const DataSourceListing = () => {
                                                         {dataDisclosureAgreement?.purposeDescription}
                                                     </Typography>
                                                     <Box className="actionListingBtn d-flex" sx={{ justifyContent: 'flex-end'}}>
-                                                        <Link to={t('route.apiDoc')}  state={openApiUrl}>
-                                                            <Button size="small"  sx={{fontSize: "14px"}} disabled={!openApiUrl}>
+                                                        {/* <Link to={t('route.apiDoc')}  state={openApiUrl}> */}
+                                                            <Button size="small"  sx={{fontSize: "14px"}} onClick={() => handleViewApiClick()} disabled={!openApiUrl}>
                                                                 {t('home.btn-viewMetadata')}
                                                             </Button>
-                                                        </Link>
+                                                        {/* </Link> */}
                                                         <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick(dataDisclosureAgreement)} >
                                                             {t('home.btn-signData')}
                                                         </Button>

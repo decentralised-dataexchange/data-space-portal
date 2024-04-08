@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useLocation} from 'react-router-dom';
 import 'rapidoc';
+import { useAppSelector } from '../../customHooks';
+import { useNavigate } from 'react-router-dom';
 
 
 const ApiDoc = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+  const openApiUrl = useAppSelector(
+    (state) => state?.dataSourceList?.data
+  );
+  useEffect(() => {
+    !openApiUrl && navigate('/');
+}, []);
     return(
         <rapi-doc
-          spec-url = {location?.state}
+          spec-url = {openApiUrl}
           render-style = "view"
           style = {{ height: "100vh", width: "100%" }}
           theme="light"
