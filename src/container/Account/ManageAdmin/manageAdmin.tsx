@@ -328,6 +328,7 @@ const ManageAdmin = () => {
                       width: "100%",
                       display: "flex",
                       justifyContent: "right",
+                      marginTop: "35px"
                     }}
                   >
                     <Typography

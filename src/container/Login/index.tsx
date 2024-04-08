@@ -16,8 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import SnackbarComponent from '../../component/notification';
 import { useAppDispatch } from "../../customHooks";
-import { loginAction } from "../../redux/actionCreators/login";
-import { LocalStorageService } from '../../utils/localStorageService';
+import { adminAction, loginAction } from "../../redux/actionCreators/login";
 
 interface FormValue {
   email: string,
@@ -46,6 +45,7 @@ const Login = () => {
   }, []);
 
   const callback = (isLogin) => {
+    dispatch(adminAction());
     isLogin ? navigate('/start') : setOpenSnackBar(true);
   }
 
