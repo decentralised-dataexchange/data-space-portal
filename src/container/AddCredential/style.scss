@@ -14,6 +14,11 @@
         }
     }
 
+    .mui-basic-table-container {
+        overflow: auto;
+        height: 500px; 
+    }
+
     .titleContainer {
         display: flex;
         align-items: center;
@@ -86,24 +91,6 @@
         th {
             font-size: 0.875rem;
             font-weight: 700;
-        }
-        height: 600px;
-    }
-
-    .mui-table-bordered th:not(:last-child),
-    .mui-table-bordered tr td:not(:last-child) {
-        border-right: 2px solid #000;
-    }
-
-    .mui-table-bordered tr:not(:last-child) {
-        border-bottom: 2px solid #000;
-    }
-
-    table {
-        border: 2px solid #000;
-        td {
-            font-size: 0.875rem;
-            width: 50%;
         }
     }
 
