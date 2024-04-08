@@ -1,11 +1,9 @@
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import * as actionTypes from '../actionTypes/login';
 import * as loginAction from '../actionCreators/login';
-import { doApiGet, doApiPost, doApiGetBlob } from '../../utils/fetchWrapper';
+import { doApiGet, doApiPost } from '../../utils/fetchWrapper';
 import { ENDPOINTS } from '../../utils/apiEndpoints';
 import { LocalStorageService } from '../../utils/localStorageService';
-import { imageBlobToBase64 } from '../../utils/utils';
-import * as gettingStartAction from '../actionCreators/gettingStart';
 
 export function* login(action) {
   const { email, password, callback } = action.payload;

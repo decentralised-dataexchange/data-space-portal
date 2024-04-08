@@ -7,25 +7,32 @@ import {
     Typography,
     FormControl
 } from "@mui/material";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { gridSpacing } from '../../constants/constant';
 import DataSourceCard from './DataSource';
 import './style.scss';
-import { useAppSelector } from "../../customHooks";
+import { useAppSelector, useAppDispatch } from "../../customHooks";
 import { useTranslation } from "react-i18next";
 import Loader from "../../component/Loader";
+import { dataSourceAction } from "../../redux/actionCreators/dataSource";
 
 const LandingPage = () => {
     const { t } = useTranslation("translation");
+    const dispatch = useAppDispatch();
     const [selectedValue, setSelectedValue] = useState('option 1')
 
     const dataSourceItems = useAppSelector(
         (state) => state?.dataSourceList?.data?.dataSources
       );
 
+    useEffect(() => {
+        !dataSourceItems?.length && dispatch(dataSourceAction());
+    }, [])
+
     const handleChange = (event) => {
         setSelectedValue(event.target.value)
     }
+    console.log(dataSourceItems?.length ,"dataSourceItems?.length");
     return (
         <>
          {

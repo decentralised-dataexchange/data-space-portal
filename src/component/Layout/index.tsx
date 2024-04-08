@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
   );
 
   useEffect(() => {
-    !adminData?.name && dispatch(adminAction());
+    !adminData?.name && isAuthenticated && dispatch(adminAction());
     !dataSource && dispatch(dataSourceAction());
   }, [])
 

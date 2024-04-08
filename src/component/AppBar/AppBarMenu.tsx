@@ -47,18 +47,11 @@ export const AppBarMenu = (props: Props) => {
         onClick={handleMenu}
         sx={{ marginLeft: "auto" }}
       >
-        {userAvatar ? (
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={defaultAvatar}
-          />
-        ) : (
-          <img
-            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={defaultAvatar}
+            src={defaultLogoImg}
             alt="img"
           />
-        )}
       </IconButton>
       <Menu
         sx={{ mt: "65px" }}
