@@ -65,14 +65,22 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }) => {
             role="presentation"
             className="drawerContent"
         >
-            <Box className="titleContainer">
-                {/* <Box component={"span"} alignItems="center">{currentIndex ? <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} onClick={() => handleBack(currentIndex)} /> :'' }</Box> */}
-                <Typography className='walletHeader'>{currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : t('gettingStarted.connectWalletTitle') + contentArray[currentIndex].headerName}</Typography>
-                <Box onClick={callRightSideDrawer} sx={{ cursor: "pointer", padding: '20px' }}>
-                    <CloseIcon />
-                </Box>
+            <Box className="dd-modal-header">
+              <Box pl={2} style={{ width: "90%" }}>
+                <Typography className="dd-modal-header-text ">
+                  {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : t('gettingStarted.connectWalletTitle') + contentArray[currentIndex].headerName}
+                </Typography>
+              </Box>
+              <CloseIcon
+                onClick={callRightSideDrawer}
+                sx={{
+                  paddingRight: 2,
+                  cursor: "pointer",
+                  color: "#F3F3F6",
+                }}
+              />
             </Box>
-            <Box className="contentContainer">{contentArray[currentIndex].component}</Box>
+            <Box>{contentArray[currentIndex].component}</Box>
             <Box className="modal-footer">
             <Button
               onClick={!isLoader && callRightSideDrawer}
