@@ -17,11 +17,11 @@ const ApiDoc = () => {
     return(
         <rapi-doc
           spec-url = {openApiUrl}
-          render-style = "view"
+          render-style = "focus"
           style = {{ height: "100vh", width: "100%" }}
           theme="light"
           persist-auth="true"
-          show-info="true"
+          show-info="false"
           show-header="false"
           nav-bg-color="#00182C"
           nav-text-color="#fff"
@@ -34,6 +34,11 @@ const ApiDoc = () => {
           font-size="large"
           schema-expand-level="1"
           default-schema-tab="schema"
+          load-fonts="false"
+          regular-font="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif"
+          mono-font="monospace"
         >
         </rapi-doc>
     )
