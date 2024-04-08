@@ -115,7 +115,9 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements }: DataSourceCard
                     </Typography>
                     
                     <Box className="actionBtn">
-                        <Button size="small" sx={{fontSize: "14px"}} onClick={() => handleClick({dataSource, dataDisclosureAgreements})}>
+                        <Button size="small" sx={{fontSize: "14px", cursor:  dataDisclosureAgreements.length === 0 ? 'not-allowed' : 'pointer'}} onClick={() => {
+                            if (dataDisclosureAgreements.length > 0) {handleClick({dataSource, dataDisclosureAgreements})}
+                        }}>
                             {t('home.btn-signData')}
                         </Button>
                         {/* <Button size="small"  sx={{fontSize: "14px"}}>
