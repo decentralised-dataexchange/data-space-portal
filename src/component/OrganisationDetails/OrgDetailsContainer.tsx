@@ -72,26 +72,21 @@ const OrganisationDetailsContainer = (props: Props) => {
         'policyUrl': organisationDetails?.policyUrl, 
         'description': organisationDetails?.description
       })
-      HttpService.getCoverImage().then((coverImage) => {
-        setCoverImageBase64(coverImage);
-        localStorage.setItem('cachedCoverImage', coverImage)
-      });
       HttpService.getLogoImage().then((logoImage) => {
         setLogoImageBase64(logoImage);
         localStorage.setItem('cachedLogoImage', logoImage)
       });
     }, [organisationDetails])
 
+  const verifyConnectionObj = useAppSelector(
+    (state) => state?.gettingStart?.data
+  );
+  
+  const isVerify = verifyConnectionObj?.verification?.presentationState == 'verified';
+
   const callRightSideDrawer = () => {
-    isEnableAddCredential && setOpenRightSideDrawer(!openRightSideDrawer)
+    isVerify && setOpenRightSideDrawer(!openRightSideDrawer)
 }
-
-const verifyConnectionObj = useAppSelector(
-  (state) => state?.gettingStart?.data
-);
-
-const isVerify = verifyConnectionObj?.verification?.presentationState == 'verified';
-
 
 const handleChange = (e) => {
   const { name, value } = e.target;
