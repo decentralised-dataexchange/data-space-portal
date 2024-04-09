@@ -92,12 +92,16 @@ const DDAtable = ({
                     title={"List to Data Marketplace"}
                     placement="top"
                   >
+                    
                     <IconButton aria-label="delete">
                       <UploadOutlined
-                        style={{color: row.status === "unlisted" ? "red" : "black"}}
+                        style={{color: row.status === "unlisted" ? "red" : "black", cursor: row.status === "awaitingForApproval" ? "not-allowed": "pointer"}}
                         fontSize="small"
                         onClick={() => {
-                          setIsOpenPublish(true), setSelectedDDA(row);
+                          if (row.status !== "awaitingForApproval") {
+                            setIsOpenPublish(true); 
+                            setSelectedDDA(row);
+                          }
                         }}
                       />
                     </IconButton>

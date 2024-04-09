@@ -37,7 +37,7 @@ export default function ListDDAModal(props: Props) {
     selectedData,
     confirmButtonText,
   } = props;
-  const [isOk, setIsOk] = useState(false);
+  const [isOk, setIsOk] = useState(true);
   const [status, setStatus] = useState("");
   const { t } = useTranslation("translation");
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -51,21 +51,33 @@ export default function ListDDAModal(props: Props) {
 
   const handleChange = (event: React.ChangeEvent<{ value: any }>) => {
     setStatus(event.target.value as string);
-    event.target.value !== selectedData?.status
-      ? setIsOk(true)
-      : setIsOk(false);
+    // event.target.value !== selectedData?.status
+    //   ? setIsOk(true)
+    //   : setIsOk(false);
   };
+
+  const getNextStatus = (currentStatus) => {
+    if (currentStatus === "listed") {
+      return "unlisted"
+    } else if (currentStatus === "unlisted") {
+      return "awaitingForApproval"
+    } else if (currentStatus === "approved") {
+      return "listed"
+    } else if (currentStatus === "rejected") {
+      return "awaitingForApproval"
+    }
+  }
 
   const onSubmit = () => {
     if (isOk) {
       const payload = {
-        status: status,
+        status: getNextStatus(selectedData.status),
       };
 
       HttpService.updateDDAStatus(selectedData?.templateId, payload)
         .then(() => {
           setOpen(false);
-          setIsOk(false);
+          // setIsOk(false);
           setStatus("");
           setRefetchTable(!refetchTable);
         })
@@ -99,7 +111,7 @@ export default function ListDDAModal(props: Props) {
             <CloseIcon
               onClick={() => {
                 setOpen(false);
-                setIsOk(false);
+                // setIsOk(false);
                 setStatus(selectedData.status);
               }}
               sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
@@ -118,21 +130,22 @@ export default function ListDDAModal(props: Props) {
                 Status Action:
                 <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
               </Typography>
-              <Select
-                value={status}
+              {selectedData &&<Select
+                value={getNextStatus(status)}
                 onChange={(e) => handleChange(e as any)}
                 fullWidth
                 variant="outlined"
                 sx={{ marginTop: "5px" }}
                 size="small"
+                defaultValue={getNextStatus(selectedData.status)}
               >
-                <MenuItem disabled value="awaitingForApproval">
+                <MenuItem disabled value="">
                   <em>Select status action ...</em>
                 </MenuItem>
-                {status === "listed" && <MenuItem value="unlisted">Unlist</MenuItem>}
-                {status === "unlisted" && <MenuItem value="awaitingForApproval">Request Review</MenuItem>}
-                {status === "approved" && <MenuItem value="listed">List</MenuItem>}
-                {status === "rejected" && <MenuItem value="awaitingForApproval">Request Review</MenuItem>}
+                {selectedData && selectedData.status === "listed" && <MenuItem value="unlisted">Unlist</MenuItem>}
+                {selectedData && selectedData.status === "unlisted" && <MenuItem value="awaitingForApproval">Request Review</MenuItem>}
+                {selectedData && selectedData.status === "approved" && <MenuItem value="listed">List</MenuItem>}
+                {selectedData && selectedData.status === "rejected" && <MenuItem value="awaitingForApproval">Request Review</MenuItem>}
                 {/* <span style={{ cursor: "not-allowed" }}>
                   <MenuItem value="approved" disabled>
                     Approved
@@ -143,14 +156,14 @@ export default function ListDDAModal(props: Props) {
                     Rejected
                   </MenuItem>
                 </span> */}
-              </Select>
+              </Select>}
             </Box>
           </Box>
           <Box className="modal-footer">
             <Button
               onClick={() => {
                 setOpen(false);
-                setIsOk(false);
+                // setIsOk(false);
                 setStatus(selectedData.status);
               }}
               className="delete-btn"
