@@ -33,7 +33,7 @@ const VersionDropdown = (props: Props) => {
         renderValue={(value) => (
           <span
             style={{
-              color: record.publish_flag === "false" ? "#FF0C10" : "black",
+              color: record.status === "unlisted" ? "#FF0C10" : "black",
             }}
           >
             {value}
@@ -43,7 +43,7 @@ const VersionDropdown = (props: Props) => {
         <MenuItem
           value={record.version}
           style={{
-            color: record.publish_flag === "false" ? "#FF0C10" : "black",
+            color: record.status === "unlisted" ? "#FF0C10" : "black",
           }}
         >
           {record.version}

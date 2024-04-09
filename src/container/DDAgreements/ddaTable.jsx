@@ -74,13 +74,13 @@ const DDAtable = ({
         <TableBody>
           {tabledata?.dataDisclosureAgreements?.length > 0 ? (
             tabledata.dataDisclosureAgreements.map((row, index) => (
-              <StyledTableRow key={row.templateId}>
-                <StyledTableCell>{row.purpose}</StyledTableCell>
+              <StyledTableRow key={row.templateId} style={{color: "red"}}>
+                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{row.purpose}</StyledTableCell>
                 <StyledTableCell>
                   <VersionDropdown record={row} />
                 </StyledTableCell>
-                <StyledTableCell>{getStatus(row.status)}</StyledTableCell>
-                <StyledTableCell>{row.lawfulBasis}</StyledTableCell>
+                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{getStatus(row.status)}</StyledTableCell>
+                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{row.lawfulBasis}</StyledTableCell>
                 <StyledTableCell
                   style={{
                     display: "flex",
@@ -94,6 +94,7 @@ const DDAtable = ({
                   >
                     <IconButton aria-label="delete">
                       <UploadOutlined
+                        style={{color: row.status === "unlisted" ? "red" : "black"}}
                         fontSize="small"
                         onClick={() => {
                           setIsOpenPublish(true), setSelectedDDA(row);
@@ -108,6 +109,7 @@ const DDAtable = ({
                   >
                     <IconButton aria-label="edit">
                       <VisibilityOutlined
+                        style={{color: row.status === "unlisted" ? "red" : "black"}}
                         fontSize="small"
                         onClick={() => {
                           setIsOpenViewDDA(true), setSelectedDDA(row);
@@ -122,6 +124,7 @@ const DDAtable = ({
                   >
                     <IconButton aria-label="delete">
                       <DeleteOutlineOutlined
+                        style={{color: row.status === "unlisted" ? "red" : "black"}}
                         fontSize="small"
                         onClick={() => {
                           setIsOpenDelete(true), setSelectedDDA(row);
