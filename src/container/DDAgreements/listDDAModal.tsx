@@ -125,11 +125,13 @@ export default function ListDDAModal(props: Props) {
                 variant="outlined"
                 sx={{ marginTop: "5px" }}
                 size="small"
-                defaultValue={status}
               >
+                <MenuItem disabled value="">
+                  <em>Select status action ...</em>
+                </MenuItem>
                 <MenuItem value="unlisted">Unlist</MenuItem>
                 <MenuItem value="awaitingForApproval">Review</MenuItem>
-                <MenuItem value="listed">List</MenuItem>
+                {console.log(status)}<MenuItem value="listed">List</MenuItem>
                 {/* <span style={{ cursor: "not-allowed" }}>
                   <MenuItem value="approved" disabled>
                     Approved
