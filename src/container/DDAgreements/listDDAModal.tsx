@@ -126,12 +126,13 @@ export default function ListDDAModal(props: Props) {
                 sx={{ marginTop: "5px" }}
                 size="small"
               >
-                <MenuItem disabled value="">
+                <MenuItem disabled value="awaitingForApproval">
                   <em>Select status action ...</em>
                 </MenuItem>
-                <MenuItem value="unlisted">Unlist</MenuItem>
-                <MenuItem value="awaitingForApproval">Review</MenuItem>
-                {console.log(status)}<MenuItem value="listed">List</MenuItem>
+                {status === "listed" && <MenuItem value="unlisted">Unlist</MenuItem>}
+                {status === "unlisted" && <MenuItem value="awaitingForApproval">Request Review</MenuItem>}
+                {status === "approved" && <MenuItem value="listed">List</MenuItem>}
+                {status === "rejected" && <MenuItem value="awaitingForApproval">Request Review</MenuItem>}
                 {/* <span style={{ cursor: "not-allowed" }}>
                   <MenuItem value="approved" disabled>
                     Approved
