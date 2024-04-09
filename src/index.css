@@ -91,7 +91,7 @@ body {
 
 .mui-basic-table-container {
     width: 100%;
-    /* overflow: auto; */
+    overflow: auto;
     border-radius: 0 !important;
     box-shadow: none !important;
 }
