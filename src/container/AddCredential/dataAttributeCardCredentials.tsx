@@ -23,6 +23,17 @@ interface Props {
 export const DataAttributeCardForDDA = (props: Props) => {
   const { selectedData } = props;
 
+  const splitByDotAndGetLastWord = (text) => {
+      const parts = text.split(".");
+      const lastValue = parts[parts.length - 1];
+      return lastValue
+  }
+
+  const camelCaseToWords = (str) => {
+    const words = str.match(/[A-Z]*[^A-Z]+/g);
+    return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  };
+
   return (
     <Box
       style={{
@@ -48,7 +59,7 @@ export const DataAttributeCardForDDA = (props: Props) => {
                   }}
                 >
                   <Typography variant="subtitle2">
-                    {attribute.attribute}
+                    {camelCaseToWords(splitByDotAndGetLastWord(attribute.attribute))}
                   </Typography>
                   <Typography variant="subtitle2">
                     {attribute.value}

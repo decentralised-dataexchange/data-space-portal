@@ -115,7 +115,7 @@ export default function ListDDAModal(props: Props) {
               }}
             >
               <Typography variant="subtitle1">
-                Status
+                Status Action:
                 <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
               </Typography>
               <Select
@@ -125,12 +125,12 @@ export default function ListDDAModal(props: Props) {
                 variant="outlined"
                 sx={{ marginTop: "5px" }}
                 size="small"
-                defaultValue=""
+                defaultValue={status}
               >
-                <MenuItem value="unlisted">Unlisted</MenuItem>
-                <MenuItem value="awaitingForApproval">In Review</MenuItem>
-                <MenuItem value="listed">Listed</MenuItem>
-                <span style={{ cursor: "not-allowed" }}>
+                <MenuItem value="unlisted">Unlist</MenuItem>
+                <MenuItem value="awaitingForApproval">Review</MenuItem>
+                <MenuItem value="listed">List</MenuItem>
+                {/* <span style={{ cursor: "not-allowed" }}>
                   <MenuItem value="approved" disabled>
                     Approved
                   </MenuItem>
@@ -139,7 +139,7 @@ export default function ListDDAModal(props: Props) {
                   <MenuItem value="rejected" disabled>
                     Rejected
                   </MenuItem>
-                </span>
+                </span> */}
               </Select>
             </Box>
           </Box>

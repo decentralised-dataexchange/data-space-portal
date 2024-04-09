@@ -141,9 +141,9 @@ const DDAgreements = () => {
         <ListDDAModal
           open={isOpenPublish}
           setOpen={setIsOpenPublish}
-          headerText={"Publish Data Disclosure Agreement"}
+          headerText={"List to Data Marketplace"}
           resourceName={"dataDisclosureAgreements"}
-          confirmButtonText={"PUBLISH"}
+          confirmButtonText={"SUBMIT"}
           selectedData={selectedDDA}
           setRefetchTable={setRefetchTable}
           refetchTable={refetchTable}

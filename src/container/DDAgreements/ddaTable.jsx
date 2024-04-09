@@ -47,15 +47,15 @@ const DDAtable = ({
 
   const getStatus = (status) => {
     if (status === "unlisted") {
-      return "Unlisted";
+      return "Unlist";
     } else if (status === "awaitingForApproval") {
-      return "In Review";
+      return "Review";
     } else if (status === "approved") {
-      return "Approved";
+      return "Approve";
     } else if (status === "rejected") {
-      return "Rejected";
+      return "Reject";
     } else if (status === "listed") {
-      return "Listed";
+      return "List";
     }
   };
 
@@ -89,7 +89,7 @@ const DDAtable = ({
                   }}
                 >
                   <Tooltip
-                    title={"Publish Data Disclosure Agreement"}
+                    title={"List to Data Marketplace"}
                     placement="top"
                   >
                     <IconButton aria-label="delete">
