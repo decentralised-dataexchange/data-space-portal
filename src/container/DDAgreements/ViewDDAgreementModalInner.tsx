@@ -32,7 +32,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
             <Box className="dd-modal-header">
               <Box pl={2} style={{ width: "90%" }}>
                 <Typography className="dd-modal-header-text ">
-                  View Data Disclosure Agreement: {selectedData?.purpose}
+                  {selectedData?.purpose}
                 </Typography>
                 {mode !== "Create" && (
                   <Typography color="#F3F3F6">
@@ -80,7 +80,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
                   {dataSourceLocation}
                 </Typography>
                 <Typography variant="subtitle1" mt={3}>
-                  {t("common.overView")}
+                  {"OVERVIEW"}
                 </Typography>
                 <Typography
                   variant="subtitle2"
@@ -91,8 +91,8 @@ export default function ViewDataAgreementModalInner(props: Props) {
                   {dataSourceDescription}
                 </Typography>
 
-                <Typography color="grey" mt={3} variant="subtitle1">
-                  {selectedData?.purpose.toUpperCase()}
+                <Typography color="black" mt={3} variant="subtitle1">
+                  {"DATASET"}
                 </Typography>
 
                 <DataAttributeCardForDDA selectedData={selectedData} />

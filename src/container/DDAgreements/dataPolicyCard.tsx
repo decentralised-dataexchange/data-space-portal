@@ -37,7 +37,7 @@ export const DDAPolicyCard = (props: Props) => {
     <>
       <Box style={titleAttrRestrictionStyle} onClick={handleCardClick}>
         <Typography color="grey" variant="subtitle2">
-          Data Disclosure Agreement Policy
+          Data Agreement Policy
         </Typography>
         <KeyboardArrowRightIcon style={{ color: "grey" }} />
       </Box>
