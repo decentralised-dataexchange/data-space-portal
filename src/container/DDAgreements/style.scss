@@ -1,5 +1,14 @@
 @import '../../../public/sass/helpers/breakpoints.scss';
 
+.drawer-dda {
+    .MuiPaper-root {
+        @include tabletAndDown {
+            width: 100%;
+            overflow: hidden;
+        }
+    }
+}
+
 .dd-container {
     .dd-titleTxt {
         font-weight: 700;
@@ -36,7 +45,7 @@
     width: 480px;
     @include tabletAndDown {
         margin-top: 0;
-        width: 380px;
+        width: 100%;
     }
 }
 
@@ -57,7 +66,7 @@
     margin-top: 0px;
     @include tabletAndDown {
         margin-top: 0;
-        width: 380px;
+        width: 100%;
     }
 }
 
@@ -67,7 +76,7 @@
     background-color: #FFFF;
     @include tabletAndDown {
         margin-top: 0;
-        width: 380px;
+        width: 100%;
     }
 }
 
@@ -95,7 +104,7 @@
     background-color: white;
     z-index: 1;
     @include tabletAndDown {
-        width: 380px;
+        width: 100%;
     }
 }
 

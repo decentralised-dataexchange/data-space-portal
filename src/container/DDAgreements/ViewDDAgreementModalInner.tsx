@@ -26,7 +26,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
 
   return (
     <>
-      <Drawer anchor="right" open={open}>
+      <Drawer anchor="right" open={open} className='drawer-dda'>
         <Box className="dd-modal-container">
           <form>
             <Box className="dd-modal-header">

@@ -8,14 +8,9 @@ import {
   Alert,
   Button,
   Snackbar,
-  TextField,
-  FormControl,
-  InputAdornment,
   TablePagination,
 } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import SearchIcon from '@mui/icons-material/Search';
-import InfoIcon from '@mui/icons-material/Info';
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 import BasicTable from '../../../component/Table';
@@ -37,28 +32,11 @@ const Container = styled("div")(({ theme }) => ({
   },
 }));
 
-const HeaderContainer = styled("div")({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  flexWrap: "wrap",
-  marginTop: "10px",
-});
-
 const DetailsContainer = styled("div")({
   height: "auto",
   width: "100%",
   borderRadius: 2,
 });
-
-const Item = styled("div")(({ theme }) => ({
-  backgroundColor: "#fff",
-  padding: 10,
-  paddingLeft: 20,
-  height: "auto",
-  borderRadius: 2,
-  border: "1px solid #CECECE",
-}));
 
 const DispConnection = () => {
   const dispatch = useAppDispatch();
@@ -68,7 +46,6 @@ const DispConnection = () => {
 
   const [limit, setLimit] = useState<number>(10);
   const [offset, setOffset] = useState<number>(0);
-  const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
   const { connections, pagination } = listConnections && listConnections || {};
 
   useEffect(() => {
@@ -121,34 +98,6 @@ const createConnection = () => {
 useEffect(() => { 
   invitationUrl && setShowAPI(true);
 }, [invitationUrl]);
-  
-
-  const ScopeField = (props: any) => {
-    const record = useRecordContext(props);
-    if (!record || !props.source) {
-      return null;
-    }
-    let scopes = record[props.source];
-    return (
-      <Box style={{ display: "flex" }}>
-        {scopes.map((scope: any, i: number) => {
-          if (i + 1 === scopes.length) {
-            return (
-              <Typography variant="body2">
-                {capitalizeFirstLetter(scope)}{" "}
-              </Typography>
-            );
-          } else {
-            return (
-              <Typography variant="body2" style={{ marginRight: 7 }}>
-                {capitalizeFirstLetter(scope)},{" "}
-              </Typography>
-            );
-          }
-        })}
-      </Box>
-    );
-  };
 
   return (
     <Container className="dd-container">

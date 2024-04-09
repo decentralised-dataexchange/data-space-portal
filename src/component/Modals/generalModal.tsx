@@ -47,87 +47,85 @@ export default function GeneralModal(props: Props) {
   };
 
   return (
-    <React.Fragment>
-      <Drawer anchor="right" open={open}>
-        <Box className="dd-modal-container">
-          <Box className="dd-modal-header">
-            <Box pl={2}>
-              <Typography color="#F3F3F6">
-                {headerText}: {selectedData?.purpose}
-              </Typography>
-              <Typography color="#F3F3F6">
-                {selectedData?.templateId}
-              </Typography>
-            </Box>
-            <CloseIcon
-              onClick={() => {
-                setOpen(false);
-                setIsOk(false);
-                setConfirmationTextInput('');
-              }}
-              sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
+    <Drawer anchor="right" open={open} className="drawer-dda">
+      <Box className="dd-modal-container">
+        <Box className="dd-modal-header">
+          <Box pl={2}>
+            <Typography color="#F3F3F6">
+              {headerText}: {selectedData?.purpose}
+            </Typography>
+            <Typography color="#F3F3F6">
+              {selectedData?.templateId}
+            </Typography>
+          </Box>
+          <CloseIcon
+            onClick={() => {
+              setOpen(false);
+              setIsOk(false);
+              setConfirmationTextInput('');
+            }}
+            sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
+          />
+        </Box>
+        <Box>
+          <Box
+            p={1.5}
+            sx={{
+              fontSize: "1rem",
+              lineHeight: "1.5",
+              letterSpacing: "0.00938em",
+            }}
+          >
+            {modalDescriptionText}
+            <TextField
+              autoFocus
+              variant="outlined"
+              fullWidth
+              value={confirmationTextInput}
+              onChange={handleCancelConfirmationText}
+              size="small"
+              sx={{marginTop:"5px"}}
             />
           </Box>
-          <Box>
-            <Box
-              p={1.5}
-              sx={{
-                fontSize: "1rem",
-                lineHeight: "1.5",
-                letterSpacing: "0.00938em",
-              }}
-            >
-              {modalDescriptionText}
-              <TextField
-                autoFocus
-                variant="outlined"
-                fullWidth
-                value={confirmationTextInput}
-                onChange={handleCancelConfirmationText}
-                size="small"
-                sx={{marginTop:"5px"}}
-              />
-            </Box>
-          </Box>
-          <Box className="modal-footer">
-            <Button
-              onClick={() => {
-                setOpen(false);
-                setIsOk(false);
-                setConfirmationTextInput('');
-              }}
-              className="delete-btn"
-              sx={{
-                marginRight: "10px",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
-              variant="outlined"
-            >
-              {t("common.cancel")}
-            </Button>
-            <Button
-              className="delete-btn"
-              onClick={onSubmit}
-              variant="outlined"
-              sx={{
-                marginRight: "20px",
-                cursor: !isOk ? "not-allowed" : "pointer",
-                color: !isOk ? "#6D7676" : "black",
-                "&:hover": {
-                  backgroundColor: !isOk ? "#6D7676" : "black",
-                  color: "white",
-                },
-              }}
-            >
-              {confirmButtonText}
-            </Button>
-          </Box>
         </Box>
-      </Drawer>
-    </React.Fragment>
+        <Box className="modal-footer">
+          <Button
+            onClick={() => {
+              setOpen(false);
+              setIsOk(false);
+              setConfirmationTextInput('');
+            }}
+            className="delete-btn"
+            sx={{
+              marginRight: "10px",
+              color: "black",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            variant="outlined"
+          >
+            {t("common.cancel")}
+          </Button>
+          <Button
+            className="delete-btn"
+            onClick={onSubmit}
+            variant="outlined"
+            sx={{
+              marginRight: "20px",
+              cursor: !isOk ? "not-allowed" : "pointer",
+              color: !isOk ? "#6D7676" : "black",
+              "&:hover": {
+                backgroundColor: !isOk ? "#6D7676" : "black",
+                color: "white",
+              },
+            }}
+          >
+            {confirmButtonText}
+          </Button>
+        </Box>
+      </Box>
+    </Drawer>
   );
 }

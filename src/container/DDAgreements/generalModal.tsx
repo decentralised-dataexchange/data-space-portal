@@ -57,7 +57,7 @@ export default function GeneralModal(props: Props) {
 
   return (
     <React.Fragment>
-      <Drawer anchor="right" open={open}>
+      <Drawer anchor="right" open={open} className="drawer-dda">
         <Box className="dd-modal-container">
           <Box className="dd-modal-header">
             <Box pl={2} style={{ width: "90%" }}>

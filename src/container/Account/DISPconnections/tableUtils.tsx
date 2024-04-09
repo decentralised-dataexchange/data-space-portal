@@ -32,24 +32,26 @@ const actionIcons = (props) => {
           <DeleteOutlineOutlined sx={{ color: 'rgb(185, 185, 185)', fontSize: '1.25rem'}} />
         </Tooltip>
     </Box>
-    <GeneralModal
-      open={isOpenDelete}
-      setOpen={setIsOpenDelete}
-      confirmText={t("dispConnection.delete")}
-      headerText={`${t("dispConnection.headerText")}  ${props.connection_id}`}
-      modalDescriptionText={
-        <Typography variant="body1">
-          You are about to delete an existing data disclosure agreement.
-          Please type <b>DELETE</b> to confirm and click DELETE. This action
-          is not reversible.
-        </Typography>
-      }
-      handleSubmit={handleSubmit}
-      confirmButtonText={"DELETE"}
-      selectedData={''}
-      setRefetchTable={''}
-      refetchTable={''}
-    />
+    <Box className="dd-container">
+      <GeneralModal
+        open={isOpenDelete}
+        setOpen={setIsOpenDelete}
+        confirmText={t("dispConnection.delete")}
+        headerText={`${t("dispConnection.headerText")}  ${props.connection_id}`}
+        modalDescriptionText={
+          <Typography variant="body1">
+            You are about to delete an existing data disclosure agreement.
+            Please type <b>DELETE</b> to confirm and click DELETE. This action
+            is not reversible.
+          </Typography>
+        }
+        handleSubmit={handleSubmit}
+        confirmButtonText={"DELETE"}
+        selectedData={''}
+        setRefetchTable={''}
+        refetchTable={''}
+      />
+    </Box>  
     </>
   )
 }
