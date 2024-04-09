@@ -47,15 +47,15 @@ const DDAtable = ({
 
   const getStatus = (status) => {
     if (status === "unlisted") {
-      return "Unlist";
+      return "Unlisted";
     } else if (status === "awaitingForApproval") {
-      return "Review";
+      return "InReview";
     } else if (status === "approved") {
-      return "Approve";
+      return "Approved";
     } else if (status === "rejected") {
-      return "Reject";
+      return "Rejected";
     } else if (status === "listed") {
-      return "List";
+      return "Listed";
     }
   };
 
