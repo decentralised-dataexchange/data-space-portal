@@ -1,27 +1,40 @@
 import axios from "axios";
 import { baseURL } from "../../constants/url";
 
-export const getAuthenticatedHeaders = () => {
-  const token = window?.localStorage?.getItem("Token");
-  if (!token) {
-    return "";
+// Create a function to get a configured axios instance that works in both client and server
+export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) => {
+  // Base config that works on both server and client
+  const config: any = {
+    baseURL,
+    withCredentials: true,
+    headers: {}
+  };
+
+  // Add response type if needed
+  if (options.isArrayBuffer) {
+    config.responseType = "arraybuffer";
   }
-  return "Bearer " + token;
+
+  // Create the instance
+  const instance = axios.create(config);
+
+  // Add request interceptor to set auth headers on the client side
+  instance.interceptors.request.use((config) => {
+    // Only try to get token on client side
+    if (typeof window !== 'undefined') {
+      const token = window.localStorage?.getItem("Token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  });
+
+  return instance;
 };
 
-export const axiosInstance = axios.create({
-  baseURL,
-  withCredentials: true,
-  headers:{
-    Authorization: getAuthenticatedHeaders()
-  }
-});
+// Create the standard axios instance
+export const axiosInstance = createAxiosInstance();
 
-export const axiosInstanceWithArrayBufferResType = axios.create({
-  baseURL,
-  withCredentials: true,
-  headers:{
-    Authorization: getAuthenticatedHeaders()
-  },
-  responseType: "arraybuffer"
-});
+// Create the array buffer axios instance
+export const axiosInstanceWithArrayBufferResType = createAxiosInstance({ isArrayBuffer: true });
