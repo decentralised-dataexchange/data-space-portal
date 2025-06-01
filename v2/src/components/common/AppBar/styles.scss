@@ -1,0 +1,47 @@
+.appBarContainer {
+    .logoImg {
+        width: 58px;
+        border-radius: 50%;
+        margin: 0px 10px;
+    }
+
+    .MuiPaper-root {
+        box-shadow: none;
+    }
+
+    .headerText,
+    .subHeaderText {
+        color: white;
+    }
+
+    .navHeaderTextLink {
+        text-decoration: none;
+    }
+
+
+    .loginBtn {
+        margin-left: auto;
+        width: 8rem;
+        background: white;
+        color: black;
+        border-radius: 0;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.79);
+        }
+
+        @media (max-width: 600px) {
+            width: 5rem;
+        }
+    }
+}
+
+.MuiDrawer-docked,
+.MuiDrawer-paperAnchorLeft {
+    margin-top: 80px;
+    padding-top: 20px;
+}
+
+.pointerNone {
+    pointer-events: none;
+}

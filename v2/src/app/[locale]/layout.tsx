@@ -2,8 +2,6 @@ import { notFound } from 'next/navigation';
 import { Locale, hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
-import { clsx } from 'clsx';
-import { Roboto } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 
 type Props = {
@@ -11,7 +9,7 @@ type Props = {
   params: Promise<{ locale: Locale }>;
 };
 
-const roboto = Roboto({ subsets: ['latin'] });
+// const roboto = Roboto({ subsets: ['latin'] });
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -29,7 +27,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html className="h-full" lang={locale}>
-      <body className={clsx(roboto.className, 'flex h-full flex-col')}>
+      <body className="flex h-full flex-col">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>

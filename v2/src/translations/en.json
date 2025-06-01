@@ -171,5 +171,8 @@
     "apiKeyCopyMessage": "Here is your new key. Copy it now! This is the only time we will show it you.",
     "headerText": "Data Intermediation Service Provider Connections",
     "titleText": " Manages connections towards your organisations"
+  },
+  "error": {
+    "generic": "Something went wrong."
   }
 }

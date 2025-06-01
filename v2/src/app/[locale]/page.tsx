@@ -17,7 +17,7 @@ export default function HomePage({params}: Props) {
 
   return (
     <PageLayout>
-      <h1>{t('header')}</h1>
+      <></>
     </PageLayout>
   );
 }

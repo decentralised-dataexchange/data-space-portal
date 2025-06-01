@@ -1,0 +1,102 @@
+@use '../assets/sass/helpers/breakpoints.scss';
+
+.appBar {
+    position: relative;
+    height:auto;
+    width: calc(100% - 260px);
+    left: 260px;
+}
+
+@include breakpoints.tabletAndDown {
+    .appBar {
+        padding: 0;
+        margin-left: 0px !important;
+        left: 0;
+    }   
+    .pageContainer {
+        margin-top: 0 !important;
+        padding: 0 10px 10px 10px !important;
+    }
+    .MuiDrawer-docked, .MuiDrawer-paperAnchorLeft {
+        margin-top: 0;
+    }
+}
+
+
+
+.pe-none {
+    pointer-events: none;
+    text-decoration: none;
+    color: #746e6e;
+}
+
+.link {
+    text-decoration: none;
+    color: rgb(77 75 75);
+}
+
+.linkfont {
+    // font-size: 0.90rem;
+    font-weight: 500;
+}
+
+.p-15 {
+    padding: 15px;
+}
+
+.pt-20 {
+    padding-top: 20px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.titleTxt {
+    font-weight: 400;
+    font-size: 1.25rem;
+    margin: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.space-between {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.smTabOpen {
+    padding-top: 4rem !important;
+}
+
+.leftNavigationContainer {
+    display:flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative !important;
+    .MuiDrawer-root {
+        .MuiPaper-root {
+            background-color: rgb(247, 246, 246);
+            border-right: 0;
+        }
+    }
+}
+
+.footerContainer {
+    // position: fixed;
+    background: white;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    height:auto;
+}
