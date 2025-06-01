@@ -4,6 +4,10 @@ import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
 
 export const apiService = {
+  dataSourceList: async (): Promise<any> => {
+    return api.get<any>(ENDPOINTS.dataSourceList())
+      .then(res => res.data);
+  },
   listDataDisclosureAgreements: async (
     filter: string,
     limit: number,
