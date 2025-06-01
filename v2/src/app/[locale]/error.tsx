@@ -1,7 +1,6 @@
 'use client';
 
 import {useTranslations} from 'next-intl';
-import {useEffect} from 'react';
 import PageLayout from '@/layouts/minimal/MinimalLayout';
 
 type Props = {
@@ -10,16 +9,12 @@ type Props = {
 };
 
 export default function Error({error, reset}: Props) {
-  const t = useTranslations('Error');
-
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
+  const t = useTranslations('error');
 
   return (
     <PageLayout>
       <div>
-        {t.rich('description', {
+        {t.rich('generic', {
           p: (chunks) => <p className="mt-4">{chunks}</p>,
           retry: (chunks) => (
             <button

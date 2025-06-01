@@ -93,5 +93,8 @@
     "title": "Manage Listing",
     "all": "All",
     "list": "List"
+  },
+  "error": {
+    "generic": "Något gick fel."
   }
 }

@@ -95,5 +95,8 @@
     "title": "Manage Listing",
     "all": "All",
     "list": "List"
+  },
+  "error": {
+    "generic": "Something went wrong."
   }
 }
