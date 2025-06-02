@@ -32,7 +32,6 @@ const LandingPage = () => {
     const handleChange = (event) => {
         setSelectedValue(event.target.value)
     }
-    console.log(dataSourceItems?.length ,"dataSourceItems?.length");
     return (
         <>
          {
