@@ -1,14 +1,22 @@
-
-
-@use './layout';
-
-
+// Flex utility classes
 .flex-row {
-  @include layout.flex;
+  display: flex;
   flex-direction: row;
 }
 
 .flex-justify-space-between {
-  @include layout.flex;
+  display: flex;
   justify-content: space-between;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

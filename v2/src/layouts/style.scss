@@ -1,10 +1,21 @@
 @use '../assets/sass/helpers/breakpoints.scss';
 
+// Default style for all appBar instances
 .appBar {
     position: relative;
-    height:auto;
+    height: auto;
+}
+
+// Style for authenticated layout (with sidebar)
+.appBar.drawer-open {
     width: calc(100% - 260px);
     left: 260px;
+}
+
+// Style for minimal layout (no sidebar)
+.appBar.drawer-closed {
+    width: 100%;
+    left: 0;
 }
 
 @include breakpoints.tabletAndDown {

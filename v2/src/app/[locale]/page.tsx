@@ -9,12 +9,11 @@ import DataSourceCard from '@/components/Home/DataSource';
 const gridSpacing = 3;
 
 type Props = {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 };
 
-
 export default async function HomePage({params}: Props) {
-  const { locale } = params;
+  const { locale } = await params;
 
   setRequestLocale(locale);
 
@@ -36,10 +35,10 @@ export default async function HomePage({params}: Props) {
                       
                       <Box component="div" className='dataSourceSelectionContainer'>
                           <Grid container spacing={gridSpacing}>
-                              <Grid item lg={6} md={6} sm={12} xs={12}>
+                              <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
                                   <Typography gutterBottom component="div" className="title">{t('home.title')}</Typography>
                               </Grid>
-                              <Grid className='pt-0' item lg={6} md={6} sm={12} xs={12} container justifyContent={'flex-end'}>
+                              <Grid className='pt-0' size={{ xs: 12, sm: 12, md: 6, lg: 6 }} container justifyContent={'flex-end'}>
                                   <Box component="div">
                                       <FormControl component="fieldset">
                                           <RadioGroup row value={1}>
@@ -54,15 +53,13 @@ export default async function HomePage({params}: Props) {
                       </Box>
                       <Box className="landingPageContainer">
                           <Grid container spacing={gridSpacing}>
-                              <Grid item xs={12}>
+                              <Grid size={{ xs: 12 }}>
                                   <Grid container spacing={gridSpacing}>
-                                      {dataSourceItems?.map((dataSourceItem, index) => {
+                                      {dataSourceItems?.map((dataSourceItem) => {
                                           return (
-                                              <Grid item lg={3} md={6} sm={6} xs={12} key={index}>
+                                              <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }} key={dataSourceItem.dataSource.id}>
                                                   <DataSourceCard
                                                       dataSource={dataSourceItem.dataSource}
-                                                      logoUrl={dataSourceItem.dataSource.logoUrl}
-                                                      description={dataSourceItem.dataSource.description}
                                                       dataDisclosureAgreements={dataSourceItem.dataDisclosureAgreements}
                                                   />
                                               </Grid>

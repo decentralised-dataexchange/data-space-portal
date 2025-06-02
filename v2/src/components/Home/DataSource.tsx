@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Typography,
-    Button,
     Box,
 } from "@mui/material";
 import Card from '@mui/material/Card';
@@ -9,6 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { useTranslations } from "next-intl";
 import Link from 'next/link';
+import './style.scss';
 
 interface DataDisclosureAgreement {
     purpose: string
@@ -65,6 +65,8 @@ interface DataSourceCardProp {
         location: string,
         policyUrl: string,
     },
+    logoUrl?: string, // For backward compatibility
+    description?: string, // For backward compatibility
     dataDisclosureAgreements: DataDisclosureAgreement[]
 }
 
@@ -74,12 +76,32 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements }: DataSourceCard
     return (
         <>
             <Card className='cardContainer'>
-                <CardMedia component="div" className='card-header' image={dataSource?.coverImageUrl}>
+                <CardMedia 
+                    component="div" 
+                    className='card-header' 
+                    image={dataSource?.coverImageUrl}
+                    sx={{
+                        height: '100px',
+                        position: 'relative',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                    }}
+                >
                     <CardMedia
                         component="img"
                         image={dataSource?.logoUrl}
-                        alt="symbiome"
+                        alt={dataSource?.name || 'Data Source'}
                         className='logo'
+                        sx={{
+                            width: '100px',
+                            height: '100px',
+                            objectFit: 'cover',
+                            borderRadius: '50%',
+                            position: 'absolute',
+                            top: '40px',
+                            left: '10px',
+                            border: '5px solid white'
+                        }}
                     />
                 </CardMedia>
                 <CardContent sx={{padding: "20px"}}>
