@@ -2,10 +2,11 @@ import { api } from "./api";
 import { ENDPOINTS } from "./apiEndpoints";
 import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
+import { DataSourceListResponse } from "@/types/dataDisclosureAgreement";
 
 export const apiService = {
-  dataSourceList: async (): Promise<any> => {
-    return api.get<any>(ENDPOINTS.dataSourceList())
+  dataSourceList: async (): Promise<DataSourceListResponse> => {
+    return api.get<DataSourceListResponse>(ENDPOINTS.dataSourceList())
       .then(res => res.data);
   },
   listDataDisclosureAgreements: async (
