@@ -3,21 +3,20 @@ import { Locale, hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
 import { routing } from '@/i18n/routing';
+import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 
 type Props = {
   children: ReactNode;
   params: Promise<{ locale: Locale }>;
 };
 
-// const roboto = Roboto({ subsets: ['latin'] });
-
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
-  // Ensure that the incoming `locale` is valid
   const { locale } = await params;
+  
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
@@ -26,9 +25,16 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html className="h-full" lang={locale}>
-      <body className="flex h-full flex-col">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+    <html lang={locale}>
+      <head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </head>
+      <body>
+        <ThemeRegistry>
+          <NextIntlClientProvider>
+            {children}
+          </NextIntlClientProvider>
+        </ThemeRegistry>
       </body>
     </html>
   );
