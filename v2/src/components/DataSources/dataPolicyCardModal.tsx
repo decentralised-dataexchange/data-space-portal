@@ -17,7 +17,7 @@ interface Props {
   setOpen: Dispatch<SetStateAction<boolean>>;
   headerText: string;
   selectedData: any;
-  handleCloseViewDDAModal: any;
+  handleCloseViewDDAModal: (open: boolean) => void;
 }
 
 const titleAttrRestrictionStyle = {

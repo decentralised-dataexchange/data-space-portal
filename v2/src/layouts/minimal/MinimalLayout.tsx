@@ -6,11 +6,6 @@ import '../style.scss';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
 
-  const drawerWidth = 260;
-  const open = false;
-
-  // Use className instead of sx with theme functions to avoid client/server component issues
-
   return (
     <>
       <MinimalAppBar />

@@ -2,6 +2,7 @@
 
 import {useTranslations} from 'next-intl';
 import PageLayout from '@/layouts/minimal/MinimalLayout';
+import { useEffect } from 'react';
 
 type Props = {
   error: Error;
@@ -10,6 +11,10 @@ type Props = {
 
 export default function Error({error, reset}: Props) {
   const t = useTranslations('error');
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   return (
     <PageLayout>
