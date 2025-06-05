@@ -15,7 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <>
       <MinimalAppBar />
       <Box className="leftNavigationContainer">
-        <Box component="main" className="appBar">
+        <Box component="main">
           {children}
         </Box>
         <Box className="footerContainer d-flex-center">

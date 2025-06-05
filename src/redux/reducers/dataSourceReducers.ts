@@ -4,7 +4,8 @@ import { dataSourceAction, dataSourceSuccess, dataSourceFailure, dataSourceEachL
 const initialState = {
   isLoading: false,
   data: null,
-  list: null
+  list: null,
+  openApiUrl: null
 };
 
 export default {
