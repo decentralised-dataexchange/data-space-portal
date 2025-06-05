@@ -111,35 +111,27 @@
 }
 
 .delete-btn {
-    @include common.button-like;
     height: 30px !important;
     width: 150px !important;
-    margin-top: 0;
-    
-    &.disabled {
-        @include common.button-like-disabled;
-    }
+    border-radius: 0 !important;
+    border: 1px solid #DFDFDF !important;
 }
 
 .copy-connection-btn {
-    @include common.button-like;
     height: 30px !important;
     // width: 150px !important;
-    margin-top: 0;
-    
-    &.disabled {
-        @include common.button-like-disabled;
-    }
+    border-radius: 0 !important;
+    border: 1px solid #DFDFDF !important;
 }
 
 .disable-btn {
-    @include common.button-like;
     height: 30px !important;
     width: 150px !important;
-    margin-top: 0;
-    
-    // Apply disabled styling directly
-    @include common.button-like-disabled;
+    border-radius: 0 !important;
+    border: 1px solid #EAEAEA !important;
+    opacity: 0.6;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: not-allowed;
 }
 
 .dd-modal-header-text {

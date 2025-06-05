@@ -2,12 +2,11 @@ import { apiService } from "@/lib/apiService/apiService";
 import { useAppDispatch, useAppSelector } from "./store";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { RootState } from "@/store/store";
 import { setDataSources } from "@/store/reducers/dataSourceReducers";
 
 export const useGetDataSourceList = () => {
     const dispatch = useAppDispatch();
-    const dataSourceItems = useAppSelector<RootState>(
+    const dataSourceItems = useAppSelector(
         (state) => state?.dataSources.list
     );
     const { data, isLoading, isError } = useQuery({
