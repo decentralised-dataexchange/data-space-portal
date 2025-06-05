@@ -1,0 +1,44 @@
+// Disabled element mixins
+
+@mixin disabled {
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+    color: rgba(0, 0, 0, 0.6) !important;
+    pointer-events: none !important; // Prevents interaction
+}
+
+// Button-like element styling
+@mixin button-like {
+    width: 100%;
+    text-transform: unset;
+    border: 1px solid rgb(223, 223, 223);
+    background: white;
+    border-radius: 0px;
+    color: #000;
+    margin-top: 8px;
+    display: block;
+    text-align: center;
+    padding: 6px 16px;
+    font-size: 14px;
+    
+    &:hover:not(.disabled) {
+        background: black;
+        color: white;
+    }
+}
+
+// Disabled button-like element styling
+@mixin button-like-disabled {
+    opacity: 0.6;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: not-allowed;
+    text-decoration: none;
+    pointer-events: all; // Ensures the cursor changes
+    
+    // Prevent hover effects
+    &:hover, &:active, &:focus {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.6);
+        background: white;
+    }
+}

@@ -1,72 +1,72 @@
-import {
-    Box,
-    FormControlLabel,
-    Grid,
-    Radio,
-    RadioGroup,
-    Typography,
-    FormControl
-} from "@mui/material";
-import React from 'react';
-import DataSourceCard from './DataSource';
-import { apiService } from '@/lib/apiService/apiService';
-import { useTranslations } from "next-intl";
+import {Locale} from 'next-intl';
+import {getTranslations, setRequestLocale} from 'next-intl/server';
+import {Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@mui/material';
 import Loader from '@/components/common/Loader';
-import './style.scss';
+import { apiService } from '@/lib/apiService/apiService';
+import DataSourceCard from '@/components/Home/DataSource';
+import { gridSpacing } from '@/constants/grid';
 
-const LandingPage = async () => {
-    const t = useTranslations("home");
-    const dataSourceItems = await apiService.listDataDisclosureAgreements("listed", 10, 0)
-    console.log("dataSourceItems", dataSourceItems.data.dataSources)
-    return (
-        <>
-         {
-            dataSourceItems?.length > 0 ? 
-            <Box className="homeContainer">
-                <Box component="div" className='dataSourceSelectionContainer'>
-                    <Grid container spacing={3}>
-                        <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <Typography gutterBottom component="div" className="title">{t('home.title')}</Typography>
-                        </Grid>
-                        <Grid className='pt-0' item lg={6} md={6} sm={12} xs={12} container justifyContent={'flex-end'}>
-                            <Box component="div">
-                                <FormControl component="fieldset">
-                                    <RadioGroup row value={1} >
-                                        <FormControlLabel value={1} control={<Radio  size='small' />} label={t('home.check-box-all')} labelPlacement='end' />
-                                        <FormControlLabel value={2} className="data-source-filter" control={<Radio size='small'  />} disabled label={t('home.check-box-org')} labelPlacement='end' />
-                                        <FormControlLabel value={3} className="data-source-filter" control={<Radio size='small'  />} disabled label={t('home.check-box-devices')} labelPlacement='end' />
-                                    </RadioGroup>
-                                </FormControl>
-                            </Box>
-                        </Grid>
+
+type Props = {
+  params: Promise<{ locale: Locale }>;
+};
+
+export default async function HomePage({params}: Props) {
+  const { locale } = await params;
+
+  setRequestLocale(locale);
+
+  const t = await getTranslations();
+
+  const dataSourceItems = (await apiService.dataSourceList())?.dataSources ?? [];
+
+  return (
+    <>
+      {
+        dataSourceItems?.length > 0 ? 
+        <Box className="homeContainer">
+            <Box component="div" className='dataSourceSelectionContainer'>
+                <Grid container spacing={gridSpacing}>
+                    <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                        <Typography gutterBottom component="div" className="title">{t('home.title')}</Typography>
                     </Grid>
-                </Box>
-                <Box className="landingPageContainer">
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Grid container spacing={3}>
-                                {dataSourceItems?.map((dataSourceItem, index) => {
-                                    return (
-                                        <Grid item lg={3} md={6} sm={6} xs={12} key={index}>
-                                            <DataSourceCard
-                                                dataSource={dataSourceItem.dataSource}
-                                                logoUrl={dataSourceItem.dataSource.logoUrl}
-                                                description={dataSourceItem.dataSource.description}
-                                                dataDisclosureAgreements={dataSourceItem.dataDisclosureAgreements}
-                                            />
-                                        </Grid>
-                                    );
-                                })}
-                            </Grid>
-                        </Grid>
+                    <Grid className='pt-0' size={{ xs: 12, sm: 12, md: 6, lg: 6 }} container justifyContent={'flex-end'}>
+                        <Box component="div">
+                            <FormControl component="fieldset">
+                                <RadioGroup row value={1}>
+                                    <FormControlLabel value={1} control={<Radio  size='small' />} label={t('home.check-box-all')} labelPlacement='end' />
+                                    <FormControlLabel value={2} disabled className="data-source-filter" control={<Radio size='small'  />} label={t('home.check-box-org')} labelPlacement='end' />
+                                    <FormControlLabel value={3} disabled className="data-source-filter" control={<Radio size='small'  />} label={t('home.check-box-devices')} labelPlacement='end' />
+                                </RadioGroup>
+                            </FormControl>
+                        </Box>
                     </Grid>
-                </Box>
+                </Grid>
             </Box>
-            : 
-            <Loader />
-         }
+            <Box className="landingPageContainer">
+                <Grid container spacing={gridSpacing}>
+                    <Grid size={{ xs: 12 }}>
+                        <Grid container spacing={gridSpacing}>
+                            {dataSourceItems?.map((dataSourceItem) => {
+                                return (
+                                    <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }} key={dataSourceItem.dataSource.id}>
+                                        <DataSourceCard
+                                            overviewLabel={t('common.overView')}
+                                            signDataLabel={t('home.btn-signData')}
+                                            dataSource={dataSourceItem.dataSource}
+                                            dataDisclosureAgreements={dataSourceItem.dataDisclosureAgreements}
+                                        />
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Box>
+        : 
+        <Loader />
+      }
     </>
-    )
+  );
 }
-
-export default LandingPage;

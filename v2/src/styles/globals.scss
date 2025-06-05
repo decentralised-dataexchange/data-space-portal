@@ -15,6 +15,13 @@ body {
   background-color: var(--background-color);
 }
 
+.verify {
+  margin: 0 10px 0 10px;
+  color: rgb(17, 170, 17);
+  width: 0.875rem !important;
+  height: 0.875rem !important;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -44,7 +51,6 @@ a {
   border-top: 1px solid var(--border-color);
 }
 
-/* Card container styles */
 .homeContainer {
   padding: 20px;
 }
