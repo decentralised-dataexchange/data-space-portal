@@ -137,6 +137,7 @@ export type DataSource = {
     sector: string,
     location: string,
     policyUrl: string,
+    openApiUrl: string,
 }
 
 export type DataSourceListResponse = {
