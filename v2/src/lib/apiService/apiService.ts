@@ -4,7 +4,21 @@ import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
 import { DataSourceListResponse } from "@/types/dataDisclosureAgreement";
 
+interface LoginResponse {
+  access: string;
+  refresh: string;
+}
+
+interface LoginRequest {
+  email: string;
+  password: string;
+}
+
 export const apiService = {
+  login: async (email: string, password: string): Promise<LoginResponse> => {
+    return api.post<LoginResponse>(ENDPOINTS.login(), { email, password })
+      .then(res => res.data);
+  },
   dataSourceList: async (): Promise<DataSourceListResponse> => {
     return api.get<DataSourceListResponse>(ENDPOINTS.dataSourceList())
       .then(res => res.data);
