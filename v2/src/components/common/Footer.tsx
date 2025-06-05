@@ -9,7 +9,7 @@ const Footer = (props: Props) => {
   const { txt } = props;
   return (
     <Box className=".d-flex-center" sx={{ color: '#808080' }}>
-      {/* <LanguageSelector /> |&nbsp; */}
+      <LanguageSelector /> |&nbsp;
       <Typography variant="caption" color="grey" className="pr-2">{txt}</Typography> |
       <Typography color="grey" className="pr-2" variant="caption">
         &nbsp;Powered by{" "}

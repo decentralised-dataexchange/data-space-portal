@@ -6,11 +6,11 @@ import {
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { useTranslations } from "next-intl";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Link from 'next/link';
 import './style.scss';
 
-interface DataDisclosureAgreement {
+export interface DataDisclosureAgreement {
     purpose: string
     version: string
     language: string
@@ -67,12 +67,12 @@ interface DataSourceCardProp {
     },
     logoUrl?: string, // For backward compatibility
     description?: string, // For backward compatibility
-    dataDisclosureAgreements: DataDisclosureAgreement[]
+    dataDisclosureAgreements: DataDisclosureAgreement[];
+    overviewLabel: string;
+    signDataLabel: string;
 }
 
-const DataSourceCard = ({ dataSource, dataDisclosureAgreements }: DataSourceCardProp) => {
-    const t = useTranslations();
-
+const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, signDataLabel }: DataSourceCardProp) => {
     return (
         <>
             <Card className='cardContainer'>
@@ -107,12 +107,13 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements }: DataSourceCard
                 <CardContent sx={{padding: "20px"}}>
                     <Typography variant="h6" fontWeight="bold">
                         {dataSource?.name}
+                        <CheckCircleIcon className="verify" />
                     </Typography>
                     <Typography color="#9F9F9F" className='datasource-location'>
                         {dataSource?.location}
                     </Typography>
                     <Typography variant="subtitle1" className='datasource-overview-label'>
-                        {t("common.overView")}
+                        {overviewLabel}
                     </Typography>
                     <Typography gutterBottom component="div" className="card-body datasource-overview" sx={{ fontSize: "14px" }}>
                         {dataSource?.description.slice(0, 275)}
@@ -124,12 +125,11 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements }: DataSourceCard
                     </Typography>
                     
                     <Box className="actionBtn">
-                        <Link href={`/data-source/${dataSource.id}`}>
-                            {t('home.btn-signData')}
-                        </Link>
-                        {/* <Button size="small"  sx={{fontSize: "14px"}}>
-                            {t('home.btn-viewMetadata')}
-                        </Button> */}
+                        {dataDisclosureAgreements.length > 0 ? (
+                            <Link href={`/data-source/read/${dataSource.id}`}>{signDataLabel}</Link>
+                        ) : (
+                            <span className="disabled">{signDataLabel}</span>
+                        )}
                     </Box>
                 </CardContent>
             </Card>

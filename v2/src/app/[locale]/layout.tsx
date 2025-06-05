@@ -3,7 +3,9 @@ import { Locale, hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
 import { routing } from '@/i18n/routing';
+import ClientProviders from '@/components/common/Providers';
 import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
+import MinimalLayout from '@/layouts/minimal/MinimalLayout';
 
 type Props = {
   children: ReactNode;
@@ -30,11 +32,15 @@ export default async function LocaleLayout({ children, params }: Props) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
       <body>
-        <ThemeRegistry>
-          <NextIntlClientProvider>
-            {children}
-          </NextIntlClientProvider>
-        </ThemeRegistry>
+        <ClientProviders>
+          <ThemeRegistry>
+            <NextIntlClientProvider>
+              <MinimalLayout>
+                {children}
+              </MinimalLayout>
+            </NextIntlClientProvider>
+          </ThemeRegistry>
+        </ClientProviders>
       </body>
     </html>
   );

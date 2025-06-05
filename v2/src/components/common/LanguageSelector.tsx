@@ -5,19 +5,30 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Popper from "@mui/material/Popper";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 const LanguageSelector: React.FC = () => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
-  const { t, i18n } = useTranslation("translation");
+  const t = useTranslations();
+  const router = useRouter();
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleChange = (value: any) => {
-    i18n.changeLanguage(value);
-    localStorage.setItem("i18nextLng", value);
+  const handleChange = (locale: string) => {
+    // Get current path and remove the locale part
+    const pathnameParts = window.location.pathname.split("/");
+    // Remove first empty string (from leading slash) and current locale
+    pathnameParts.splice(0, 2);
+    // Construct new path with new locale
+    const newPath = `/${locale}${pathnameParts.length > 0 ? '/' + pathnameParts.join('/') : ''}`;
+    
+    // Navigate to the new locale path
+    router.push(newPath);
+    // Optionally store language preference
+    localStorage.setItem("preferredLanguage", locale);
     setOpen(false);
   };
 
@@ -28,7 +39,7 @@ const LanguageSelector: React.FC = () => {
         aria-controls={open ? "dropdown-menu" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        sx={{ textTransform: "none", padding: 0, color: "#808080", fontSize:"12px" }}
+        sx={{ textTransform: "none", padding: 0, color: "#808080", fontSize: "12px" }}
       >
         {t("common.language")}
       </Button>
@@ -58,9 +69,9 @@ const LanguageSelector: React.FC = () => {
                 horizontal: "center",
               }}
             >
-              <MenuItem style={{fontSize:"12px"}} onClick={() => handleChange("en")}>English</MenuItem>
-              <MenuItem style={{fontSize:"12px"}} onClick={() => handleChange("sv")}>Swedish</MenuItem>
-              <MenuItem style={{fontSize:"12px"}} onClick={() => handleChange("fi")}>Finnish</MenuItem>
+              <MenuItem style={{ fontSize: "12px" }} onClick={() => handleChange("en")}>English</MenuItem>
+              <MenuItem style={{ fontSize: "12px" }} onClick={() => handleChange("sv")}>Swedish</MenuItem>
+              <MenuItem style={{ fontSize: "12px" }} onClick={() => handleChange("fi")}>Finnish</MenuItem>
             </Menu>
           </ClickAwayListener>
         )}
