@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import dataSourcesReducer from "./reducers/dataSourceReducers";
 import rootReducer from "./reducers/rootReducer";
 
 export const store = configureStore({

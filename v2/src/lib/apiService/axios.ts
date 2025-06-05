@@ -1,10 +1,11 @@
 import axios from "axios";
 import { baseURL } from "../../constants/url";
+import { AxiosRequestConfig } from "axios";
 
 // Create a function to get a configured axios instance that works in both client and server
 export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) => {
   // Base config that works on both server and client
-  const config: any = {
+  const config: AxiosRequestConfig = {
     baseURL,
     withCredentials: true,
     headers: {}

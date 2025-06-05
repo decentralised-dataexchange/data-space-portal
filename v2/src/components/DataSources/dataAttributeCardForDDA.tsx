@@ -1,5 +1,3 @@
-// Guard against invalid HTML nesting and missing data
-// Ensure this is a Client Component
 "use client";
 import React from "react";
 import { Box, Typography } from "@mui/material";

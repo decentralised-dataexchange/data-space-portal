@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { useTranslations } from "next-intl";
 import DataAgreementPolicyCardModal from "./dataPolicyCardModal";
 
 const titleAttrRestrictionStyle = {
@@ -20,7 +19,7 @@ const titleAttrRestrictionStyle = {
 
 interface Props {
   selectedData: any;
-  handleCloseViewDDAModal: any;
+  handleCloseViewDDAModal: (open: boolean) => void;
 }
 
 export const DDAPolicyCard = (props: Props) => {

@@ -9,11 +9,6 @@ interface LoginResponse {
   refresh: string;
 }
 
-interface LoginRequest {
-  email: string;
-  password: string;
-}
-
 export const apiService = {
   login: async (email: string, password: string): Promise<LoginResponse> => {
     return api.post<LoginResponse>(ENDPOINTS.login(), { email, password })

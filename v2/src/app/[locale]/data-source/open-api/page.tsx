@@ -10,8 +10,8 @@ export default function ApiDocPage() {
         (state) => state.dataSources.selectedOpenApiUrl
     );
     useEffect(() => {
-        !openApiUrl && router.push('/');
-    }, []);
+        if (!openApiUrl) router.push('/');
+    }, [openApiUrl, router]);
 
     return (
         <ApiDoc openApiUrl={openApiUrl} />

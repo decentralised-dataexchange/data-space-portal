@@ -1,5 +1,5 @@
 import { DataSourceListResponse } from '@/types/dataDisclosureAgreement';
-import { createReducer, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 type DataSourceSlice = {
   isLoading: boolean;

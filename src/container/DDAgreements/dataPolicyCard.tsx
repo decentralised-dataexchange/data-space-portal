@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useState } from "react";
 import DataAgreementPolicyCardModal from "./dataPolicyCardModal";
@@ -25,7 +24,6 @@ interface Props {
 
 export const DDAPolicyCard = (props: Props) => {
   const { selectedData, handleCloseViewDDAModal } = props;
-  const { t } = useTranslation("translation");
   const [openDataAgreementPolicyModal, setOpenDataAgreementPolicyModal] =
     useState(false);
 

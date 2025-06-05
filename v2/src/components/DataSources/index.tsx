@@ -11,7 +11,6 @@ export default async function DataSourceListingPage({ params }: { params: Promis
     const { id } = await params;
     const t = await getTranslations();
     const dataSourceItem = ((await apiService.dataSourceList())?.dataSources ?? []).find(item => item.dataSource.id === id);
-    const openApiUrl = dataSourceItem && dataSourceItem?.dataSource.openApiUrl;
 
     return (
         <Box className="dataListContainer">

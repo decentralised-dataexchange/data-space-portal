@@ -20,7 +20,7 @@ export const useGetDataSourceList = () => {
         if (data) {
             dispatch(setDataSources(data))
         }
-    }, [data, isLoading, isError])
+    }, [data, isLoading, isError, dispatch])
 
     return {
         dataSourceItems
