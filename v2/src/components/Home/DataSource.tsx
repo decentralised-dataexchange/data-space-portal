@@ -105,11 +105,11 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                     />
                 </CardMedia>
                 <CardContent sx={{padding: "20px"}}>
-                    <Typography variant="h6" fontWeight="bold">
+                    <Typography variant="h6" fontWeight="bold" className="org-name">
                         {dataSource?.name}
                         <CheckCircleIcon className="verify" />
                     </Typography>
-                    <Typography color="#9F9F9F" className='datasource-location'>
+                    <Typography color="#9F9F9F" className="datasource-location">
                         {dataSource?.location}
                     </Typography>
                     <Typography variant="subtitle1" className='datasource-overview-label'>

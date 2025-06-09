@@ -20,6 +20,22 @@ main {
   padding-top: 80px;
 }
 
+/* Card content and button positioning */
+.MuiCardContent-root {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+.org-name {
+  padding-top: 45px !important; /* Increased padding to prevent overlap with logo */
+}
+
+.actionBtn {
+  margin-top: auto !important;
+  padding-top: 20px !important;
+}
+
 .verify {
   margin: 0 10px 0 10px;
   color: rgb(17, 170, 17);

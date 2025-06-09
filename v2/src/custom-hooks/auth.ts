@@ -1,11 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiService } from "@/lib/apiService/apiService";
 import { useAppDispatch } from "./store";
-import { setAdminDetails, setAuthenticated, setError, setLoading } from "@/store/reducers/authReducer";
+import { setAdminDetails, setAuthenticated, setError, setMessage, setLoading } from "@/store/reducers/authReducer";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { LocalStorageService } from "@/utils/localStorageService";
+import { AccessToken } from "@/types/auth";
+import axios, { AxiosError } from "axios";
 
-// Update apiService with login and admin details methods
 declare module "@/lib/apiService/apiService" {
   interface ApiService {
     login: (email: string, password: string) => Promise<{ access: string; refresh: string }>;
@@ -23,22 +25,45 @@ export const useLogin = () => {
       dispatch(setLoading(true));
       return apiService.login(email, password);
     },
-    onSuccess: (data) => {
-      // Store tokens in localStorage
-      localStorage.setItem("Token", JSON.stringify(data.access));
-      localStorage.setItem("RefreshToken", JSON.stringify(data.refresh));
-      
-      // Update auth state
+    onSuccess: async (data) => {
+      // Store tokens using LocalStorageService (which also sets cookies)
+      const token: AccessToken = {
+        access_token: data.access,
+        refresh_token: data.refresh,
+        expires_in: 3600, // Default expiration time
+        refresh_expires_in: 86400, // Default refresh expiration time
+        token_type: 'Bearer'
+      };
+
+      // First update the token in localStorage and cookies
+      LocalStorageService.updateToken(token);
+
+      // Update auth state in Redux immediately
       dispatch(setAuthenticated(true));
       dispatch(setLoading(false));
-      dispatch(setError(null));
       
-      // Redirect to start page
-      router.push('/');
+      // Delay navigation to allow notification to be seen
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+
+      // Then fetch admin details in the background (non-blocking)
+      setTimeout(() => {
+        apiService.getAdminDetails()
+          .then(userData => {
+            if (userData) {
+              LocalStorageService.updateUser(userData);
+              dispatch(setAdminDetails(userData));
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching user details:', error);
+          });
+      }, 500);
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       dispatch(setLoading(false));
-      dispatch(setError(error?.response?.data?.detail || "Login failed"));
+      // Error handling is now done in the component using the returned error
     }
   });
 
@@ -52,7 +77,7 @@ export const useLogin = () => {
 // Get admin details hook
 export const useGetAdminDetails = () => {
   const dispatch = useAppDispatch();
-  
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['adminDetails'],
     queryFn: () => apiService.getAdminDetails(),

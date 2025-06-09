@@ -24,8 +24,8 @@ export default function SnackbarComponent(props: Props) {
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      style={{ top: topStyle ? topStyle : 30 }}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      style={{ top: topStyle ? topStyle : 100 }}
     >
       <Alert
         onClose={handleClose}

@@ -5,10 +5,13 @@ import Link from "next/link"
 import Image from "next/image";
 import { useTranslations} from 'next-intl';
 import './styles.scss';
+import { usePathname } from 'next/navigation';
 
 export default function CustomMinimalAppBar() {
   const t = useTranslations('appBar');
-
+  const pathname = usePathname();
+  const pathnameWithoutLocale = pathname.split('/').at(-1);
+  
   return (
     <Box className="appBarContainer">
     <AppBar
@@ -42,9 +45,13 @@ export default function CustomMinimalAppBar() {
               {t('subHeader')}
             </Typography>
         </Link>
-        <Button variant="contained" component={Link} href="/login" className="loginBtn">
-          Login
-        </Button>
+        {
+          pathnameWithoutLocale === 'login' ? null : (
+            <Button variant="contained" component={Link} href="/login" className="loginBtn">
+            Login
+          </Button>
+          )
+        }
       </Toolbar>
     </AppBar>
   </Box>

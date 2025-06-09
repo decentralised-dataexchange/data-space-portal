@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { routing } from '@/i18n/routing';
 import ClientProviders from '@/components/common/Providers';
 import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
-import MinimalLayout from '@/layouts/minimal/MinimalLayout';
+import AppLayout from '@/layouts/AppLayout';
 
 type Props = {
   children: ReactNode;
@@ -35,9 +35,9 @@ export default async function LocaleLayout({ children, params }: Props) {
         <ClientProviders>
           <ThemeRegistry>
             <NextIntlClientProvider>
-              <MinimalLayout>
+              <AppLayout>
                 {children}
-              </MinimalLayout>
+              </AppLayout>
             </NextIntlClientProvider>
           </ThemeRegistry>
         </ClientProviders>
