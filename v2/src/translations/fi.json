@@ -33,7 +33,11 @@
   },
   "sideBar": {
     "gettingStarted": "Getting Started",
-    "dataAgreements": "Data Source Listing"
+    "dataAgreements": "Manage Listing",
+    "account": "Account",
+    "manageAdmin": "Manage Admin",
+    "developerApis": "Developer APIs",
+    "businessWallet": "Business Wallet"
   },
   "gettingStarted": {
     "sector": "Sector:",

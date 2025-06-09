@@ -32,8 +32,12 @@
     "subHeader": "Sweden - Region Västerbotten"
   },
   "sideBar": {
-    "gettingStarted": "Starta",
-    "dataAgreements": "Data Disclosure Agreements"
+    "gettingStarted": "Getting Started",
+    "dataAgreements": "Manage Listing",
+    "account": "Account",
+    "manageAdmin": "Manage Admin",
+    "developerApis": "Developer APIs",
+    "businessWallet": "Business Wallet"
   },
   "gettingStarted": {
     "sector": "Sektor",

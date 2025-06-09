@@ -23,9 +23,19 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
   instance.interceptors.request.use((config) => {
     // Only try to get token on client side
     if (typeof window !== 'undefined') {
-      const token = window.localStorage?.getItem("Token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      try {
+        const tokenString = window.localStorage?.getItem("Token");
+        if (tokenString) {
+          // Parse the token from localStorage which is stored as a JSON string
+          const tokenObj = JSON.parse(tokenString);
+          const accessToken = tokenObj.access_token;
+          
+          if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing token for request:', error);
       }
     }
     return config;
