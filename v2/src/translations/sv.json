@@ -57,7 +57,9 @@
     "location": "Plats",
     "descriptionPlaceholder": "Beskrivning av organisationen (max 500 tecken)",
     "prepareDA": "Hantera listningar",
+    "manageDDA": "Hantera datautlämningsavtal",
     "manageAccount": "Hantera konto",
+    "manageAdminUser":"Hantera administratörsanvändare",
     "developerDocumentation": "Utvecklardokumentation",
     "connectWalletTitle": "LÄGG TILL BEHÖRIGHETER",
     "connect": "ANSLUT",
@@ -98,7 +100,8 @@
     "viewAll": "Visa alla",
     "timestamp": "Tidsstämpel",
     "status": "Status",
-    "name": "Namn"
+    "name": "Namn",
+    "businessWallet": "business-wallet"
   },
   "errors": {
     "generic": "Något gick fel."

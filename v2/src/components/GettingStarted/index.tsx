@@ -156,7 +156,7 @@ const GettingStarted = () => {
               onClick={() => router.push(`/${t("route.dd-agreements")}`)}
             >
               <Typography variant="body1" color="grey">
-                {t('gettingStarted.prepareDA')}
+                {t('gettingStarted.manageDDA')}
               </Typography>
             </Item>
           </Grid>
@@ -166,7 +166,7 @@ const GettingStarted = () => {
               onClick={() => router.push(`/${t("route.manageAdmin")}`)}
             >
               <Typography variant="body1" color="grey">
-              {t('gettingStarted.manageAccount')}
+              {t('gettingStarted.manageAdminUser')}
               </Typography>
             </Item>
           </Grid>
