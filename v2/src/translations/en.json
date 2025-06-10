@@ -104,7 +104,9 @@
     "developerApis" : "developer-apis",
     "disp-connections" : "disp-connections"
   },
-
+  "errors": {
+    "generic": "Something went wrong."
+  },
   "dataAgreements": {
     "title": "Manage Listing",
     "all": "All",

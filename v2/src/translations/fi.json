@@ -99,6 +99,9 @@
     "status": "Tila",
     "name": "Nimi"
   },
+  "errors": {
+    "generic": "Jokin meni pieleen."
+  },
   "dataAgreements": {
     "title": "Hallitse listauksia",
     "all": "Kaikki",

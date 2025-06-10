@@ -3,7 +3,15 @@
 import React from 'react';
 import { Box, CircularProgress } from '@mui/material';
 
-const Loader = () => {
+interface LoaderProps {
+  isBtnLoader?: boolean;
+}
+
+const Loader = ({ isBtnLoader = false }: LoaderProps) => {
+  if (isBtnLoader) {
+    return <CircularProgress size={20} />;
+  }
+  
   return (
     <Box 
       sx={{ 
