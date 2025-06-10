@@ -60,8 +60,63 @@ export const apiService = {
       return imageBlobToBase64(res.data);
     });
   },
+  // list connections for organisation
+  listConnections: async (limit: number, offsetValue: number, restrictTemplate: boolean = false): Promise<any> => {
+    return api.get<any>(ENDPOINTS.listConnections(limit, offsetValue))
+      .then(res => res.data);
+  },
   updateOrganisationCoverImage: async (formData: FormData): Promise<any> => {
     return api.put<{ Organization: any }>(ENDPOINTS.getCoverImage(), formData)
       .then(res => res.data.Organization);
+  },
+  // Methods for getLogoImage and updateOrganisationLogoImage already exist above
+  // Getting Started endpoints
+  getGettingStartData: async (): Promise<any> => {
+    console.log('DEBUG API: Calling getGettingStartData endpoint', ENDPOINTS.gettingStart());
+    try {
+      const response = await api.get<any>(ENDPOINTS.gettingStart());
+      console.log('DEBUG API: getGettingStartData response status:', response.status);
+      console.log('DEBUG API: getGettingStartData response data:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error('DEBUG API: Error in getGettingStartData:', error?.message, error?.response?.status, error?.response?.data);
+      throw error;
+    }
+  },
+  updateDataSource: async (payload: unknown): Promise<any> => {
+    return api.put<any>(ENDPOINTS.gettingStart(), payload)
+      .then(res => res.data)
+      .catch(error => {
+        throw error;
+      });
+  },
+  getVerificationTemplate: async (restrictTemplate: boolean = false): Promise<any> => {
+    try {
+      // Following the reference app pattern, we only fetch the template if restrictTemplate is false
+      if (restrictTemplate) {
+        return null;
+      }
+      const url = ENDPOINTS.verificationTemplate();
+      const response = await api.get<any>(url);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  createVerification: async (): Promise<any> => {
+    try {
+      const response = await api.post<any>(ENDPOINTS.verification(), {});
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getVerification: async (): Promise<any> => {
+    try {
+      const response = await api.get<any>(ENDPOINTS.verification());
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   },
 };
