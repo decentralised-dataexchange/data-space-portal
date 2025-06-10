@@ -58,7 +58,9 @@
     "location": "Location",
     "descriptionPlaceholder": "Description of organisation with character limit of 500 characters",
     "prepareDA": "Manage Listing",
+    "manageDDA": "Manage Data Disclosure Agreements",
     "manageAccount": "Manage Account",
+    "manageAdminUser": "Manage Admin User",
     "developerDocumentation": "Developer Documentation",
     "connectWalletTitle": "Add Credentials - ",
     "connect": "Connect",
@@ -102,7 +104,8 @@
     "name": "Name",
     "manageAdmin" : "manage-admin",
     "developerApis" : "developer-apis",
-    "disp-connections" : "disp-connections"
+    "disp-connections" : "disp-connections",
+    "businessWallet" : "business-wallet"
   },
   "errors": {
     "generic": "Something went wrong."

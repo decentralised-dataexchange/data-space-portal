@@ -56,7 +56,9 @@
     "location": "Sijainti",
     "descriptionPlaceholder": "Organisaation kuvaus, enintään 500 merkkiä",
     "prepareDA": "Valmistele tietojen luovutussopimukset",
+    "manageDDA": "Hallitse tietojen luovutussopimuksia",
     "manageAccount": "Hallitse tiliä",
+    "manageAdminUser": "Hallitse ylläpitäjäkäyttäjää",
     "developerDocumentation": "Kehittäjädokumentaatio",
     "connectWalletTitle": "LISÄÄ TUNNISTETIEDOT",
     "connect": "YHDISTÄ",
@@ -97,7 +99,8 @@
     "viewAll": "Näytä kaikki",
     "timestamp": "Aikaleima",
     "status": "Tila",
-    "name": "Nimi"
+    "name": "Nimi",
+    "businessWallet": "business-wallet"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
