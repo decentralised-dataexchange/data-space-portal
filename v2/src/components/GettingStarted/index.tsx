@@ -129,7 +129,6 @@ const GettingStarted = () => {
     );
   }
 
-  // If data is loaded successfully, show content
   return (
     <Container className='pageContainer'>
       <OrgCoverImageUpload

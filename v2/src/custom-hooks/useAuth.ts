@@ -17,7 +17,7 @@ export const useAuth = () => {
     const checkAuth = () => {
       try {
         // Check if token exists in localStorage
-        const tokenString = localStorage.getItem('Token');
+        const tokenString = localStorage.getItem('access_token');
         if (!tokenString) {
           setIsAuthenticatedState(false);
           dispatch(setAuthenticated(false));

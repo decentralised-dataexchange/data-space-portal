@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const tokenString = localStorage.getItem('Token');
+        const tokenString = localStorage.getItem('access_token');
         
         if (!tokenString) {
           setIsAuthenticated(false);

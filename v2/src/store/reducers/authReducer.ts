@@ -20,13 +20,11 @@ const checkInitialAuthState = (): boolean => {
   if (typeof window === 'undefined') return false;
   
   try {
-    const tokenString = localStorage.getItem('Token');
-    if (!tokenString) return false;
-    
-    const token = JSON.parse(tokenString);
-    return !!token.access_token;
+    // Check for access token in the new format
+    const accessToken = localStorage.getItem('access_token');
+    return !!accessToken;
   } catch (e) {
-    console.error('Error parsing token:', e);
+    console.error('Error checking token:', e);
     return false;
   }
 };
@@ -64,8 +62,13 @@ const authSlice = createSlice({
       state.error = false;
       state.message = '';
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('Token');
-        localStorage.removeItem('RefreshToken');
+        // Clear tokens in new format
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('token_expires_in');
+        localStorage.removeItem('refresh_expires_in');
+        localStorage.removeItem('token_type');
+        localStorage.removeItem('User');
       }
     }
   }

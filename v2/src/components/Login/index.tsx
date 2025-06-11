@@ -16,7 +16,6 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import SnackbarComponent from '@/components/notification';
 import { useLogin } from '@/custom-hooks/auth';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import axios, { AxiosError } from 'axios';
 import './style.scss';
@@ -30,33 +29,22 @@ const Login = () => {
   const t = useTranslations();
   const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [successMessage, setSuccessMessage] = useState<string>('');
   const [formValue, setFormValue] = useState<FormValue>({ email: '', password: '' });
   const { email, password } = formValue;
-  const { login, error } = useLogin();
-  const router = useRouter();
-
-  useEffect(() => {
-    // Check if user is already authenticated
-    const isAuthenticated = localStorage.getItem('Token');
-    if (isAuthenticated) {
-      router.push('/');
-    }
-  }, [router]);
+  const { login, error, success, isLoading, data } = useLogin();
 
   // Handle errors from login attempt
   useEffect(() => {
     if (error) {
       setOpenSnackBar(true);
-      setSuccessMessage('');
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         // Extract error message from response if available
         const responseData = axiosError.response?.data as any;
-        const errorMsg = responseData?.detail || 
-                        responseData?.message || 
-                        axiosError.message || 
-                        'Invalid email or password';
+        const errorMsg = responseData?.detail ||
+          responseData ||
+          axiosError.message ||
+          t("errors.generic");
         setErrorMessage(errorMsg);
       } else if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -64,37 +52,23 @@ const Login = () => {
         setErrorMessage('Login failed');
       }
     }
-  }, [error]);
-  
-  // Watch for successful login attempts
-  useEffect(() => {
-    // This will run after a successful login
-    const token = localStorage.getItem('Token');
-    if (token && !error) {
+
+    if (success) {
       setOpenSnackBar(true);
-      setSuccessMessage('Login successful');
       setErrorMessage('');
     }
-  }, [error]);
+  }, [error, success, data]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setOpenSnackBar(true);
       setErrorMessage('Please enter email and password');
-      setSuccessMessage('');
       return;
     }
 
     sessionStorage.removeItem('isVerify');
     login({ email, password });
-    
-    // Show success message on successful login
-    if (!error) {
-      setOpenSnackBar(true);
-      setSuccessMessage('Login successful');
-      setErrorMessage('');
-    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -116,8 +90,8 @@ const Login = () => {
       <SnackbarComponent
         open={openSnackBar}
         setOpen={setOpenSnackBar}
-        message={errorMessage || t("login.errorMessage")}
-        successMessage={successMessage}
+        message={errorMessage}
+        successMessage={success ? "Login Successful" : ""}
       />
       <Box className='loginContainer'>
         <Box className='d-flex-center'>

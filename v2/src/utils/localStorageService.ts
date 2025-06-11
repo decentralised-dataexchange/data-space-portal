@@ -10,21 +10,20 @@ export const LocalStorageService = {
   updateUser: (user: User) => {
     localStorage.setItem("User", JSON.stringify(user));
   },
-  getUser: (): User => {
-    return JSON.parse(localStorage.getItem("User")!);
+  getUser: (): User | null => {
+    const userStr = localStorage.getItem("User");
+    return userStr ? JSON.parse(userStr) : null;
   },
   getAccessToken: () => {
     try {
-      const token = JSON.parse(localStorage.getItem("Token")!);
-      return token?.access_token;
+      return localStorage.getItem("access_token");
     } catch (error) {
       return null;
     }
   },
   getRefreshToken: () => {
     try {
-      const token = JSON.parse(localStorage.getItem("Token")!);
-      return token?.refresh_token;
+      return localStorage.getItem("refresh_token");
     } catch (error) {
       return null;
     }
@@ -34,7 +33,11 @@ export const LocalStorageService = {
     CookieService.clearAuthCookies();
     
     // Clear localStorage items
-    localStorage.removeItem("Token");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("token_expires_in");
+    localStorage.removeItem("refresh_expires_in");
+    localStorage.removeItem("token_type");
     localStorage.removeItem("User");
     localStorage.removeItem("Avatar");
     localStorage.removeItem("cachedCoverImage");

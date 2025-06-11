@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LocalStorageService } from "@/utils/localStorageService";
 import { AccessToken } from "@/types/auth";
-import axios, { AxiosError } from "axios";
 
 declare module "@/lib/apiService/apiService" {
   interface ApiService {
@@ -20,9 +19,9 @@ export const useLogin = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const mutation = useMutation({
+  const { mutate, isSuccess, isPending, error, data } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => {
-      dispatch(setLoading(true));
+      // dispatch(setLoading(true));
       return apiService.login(email, password);
     },
     onSuccess: async (data) => {
@@ -40,12 +39,12 @@ export const useLogin = () => {
 
       // Update auth state in Redux immediately
       dispatch(setAuthenticated(true));
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
       
       // Delay navigation to allow notification to be seen
       setTimeout(() => {
-        router.push('/');
-      }, 1000);
+        router.push('/start');
+      }, 0);
 
       // Then fetch admin details in the background (non-blocking)
       setTimeout(() => {
@@ -62,15 +61,17 @@ export const useLogin = () => {
       }, 500);
     },
     onError: (error: unknown) => {
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
       // Error handling is now done in the component using the returned error
     }
   });
 
   return {
-    login: mutation.mutate,
-    isLoading: mutation.isPending,
-    error: mutation.error
+    login: mutate,
+    error: error,
+    success: isSuccess,
+    isLoading: isPending,
+    data
   };
 };
 
@@ -81,7 +82,7 @@ export const useGetAdminDetails = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['adminDetails'],
     queryFn: () => apiService.getAdminDetails(),
-    enabled: typeof window !== 'undefined' && !!localStorage.getItem('Token')
+    enabled: typeof window !== 'undefined' && !!localStorage.getItem('access_token')
   });
 
   useEffect(() => {

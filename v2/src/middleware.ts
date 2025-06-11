@@ -19,7 +19,7 @@ export default async function middleware(request: NextRequest) {
     );
 
   // Get the token from cookies or headers (server-side only)
-  const token = request.cookies.get('Token')?.value || 
+  const token = request.cookies.get('access_token')?.value || 
                request.headers.get('Authorization')?.split(' ')[1];
   
   // If it's not a public route and there's no token, redirect to login
