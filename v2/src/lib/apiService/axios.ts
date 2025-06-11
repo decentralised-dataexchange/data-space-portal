@@ -24,18 +24,14 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
     // Only try to get token on client side
     if (typeof window !== 'undefined') {
       try {
-        const tokenString = window.localStorage?.getItem("Token");
-        if (tokenString) {
-          // Parse the token from localStorage which is stored as a JSON string
-          const tokenObj = JSON.parse(tokenString);
-          const accessToken = tokenObj.access_token;
-          
-          if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
-          }
+        // Get access token directly (now stored as a string, not JSON)
+        const accessToken = window.localStorage?.getItem("access_token");
+        
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
         }
       } catch (error) {
-        console.error('Error parsing token for request:', error);
+        console.error('Error setting authorization header:', error);
       }
     }
     return config;
