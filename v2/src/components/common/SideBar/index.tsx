@@ -85,7 +85,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           <Box sx={{ ml: 2 }}>
             {list.subMenu.map((subItem) => (
               <MenuItem key={subItem.name}>
-                <Link href={subItem.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
+                <Link href={`${list.link}/${subItem.link}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
                   <Typography variant="body2">{subItem.name}</Typography>
                 </Link>
               </MenuItem>
@@ -140,7 +140,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
       <Box
           sx={{
             marginTop: "auto",
-            paddingBottom: 15,
+            // paddingBottom: 15,
             textAlign: "center",
           }}
         >

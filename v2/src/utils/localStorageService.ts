@@ -14,6 +14,33 @@ export const LocalStorageService = {
     const userStr = localStorage.getItem("User");
     return userStr ? JSON.parse(userStr) : null;
   },
+  getToken: () => {
+    try {
+      // First try to get from localStorage
+      const accessToken = localStorage.getItem("access_token");
+      const refreshToken = localStorage.getItem("refresh_token");
+      const expiresIn = localStorage.getItem("token_expires_in");
+      const refreshExpiresIn = localStorage.getItem("refresh_expires_in");
+      const tokenType = localStorage.getItem("token_type");
+      
+      if (accessToken && refreshToken) {
+        return {
+          access_token: accessToken,
+          refresh_token: refreshToken,
+          expires_in: expiresIn ? parseInt(expiresIn) : 3600,
+          refresh_expires_in: refreshExpiresIn ? parseInt(refreshExpiresIn) : 86400,
+          token_type: tokenType || 'Bearer'
+        };
+      }
+      
+      // If not in localStorage, try to get from cookies via CookieService
+      return CookieService.getToken();
+    } catch (error) {
+      console.error('Error getting token:', error);
+      return null;
+    }
+  },
+  
   getAccessToken: () => {
     try {
       return localStorage.getItem("access_token");

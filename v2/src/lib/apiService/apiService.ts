@@ -119,4 +119,22 @@ export const apiService = {
       throw error;
     }
   },
+  
+  // Admin profile management
+  updateAdminDetails: async (payload: { name: string }): Promise<any> => {
+    return api.put<any>(ENDPOINTS.getAdminDetails(), payload)
+      .then(res => res.data)
+      .catch(error => {
+        throw error;
+      });
+  },
+  
+  // Password reset
+  passwordReset: async (payload: { old_password: string, new_password1: string, new_password2: string }): Promise<any> => {
+    return api.post<any>(ENDPOINTS.passwordReset(), payload)
+      .then(res => res.data)
+      .catch(error => {
+        throw error;
+      });
+  },
 };

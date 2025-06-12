@@ -49,17 +49,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const tokenString = localStorage.getItem('access_token');
+        // Check if we're in a browser environment
+        if (typeof window === 'undefined') {
+          setIsLoading(false);
+          return;
+        }
         
-        if (!tokenString) {
+        // Get token from LocalStorageService
+        const token = LocalStorageService.getToken();
+        
+        if (!token || !token.access_token) {
           setIsAuthenticated(false);
           dispatch(setAuthenticated(false));
           setIsLoading(false);
           return;
         }
-
-        // Parse token and check expiration
-        const token = JSON.parse(tokenString);
+        
+        // Get the access token string
         const accessToken = token.access_token;
         
         if (!accessToken) {
@@ -71,30 +77,38 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
         
         // Verify token expiration
-        const decodedToken = jwtDecode(accessToken);
-        const currentTime = Date.now() / 1000;
-        
-        if ((decodedToken as any).exp < currentTime) {
-          // Token expired
+        try {
+          const decodedToken = jwtDecode(accessToken);
+          const currentTime = Date.now() / 1000;
+          
+          if ((decodedToken as any).exp < currentTime) {
+            // Token expired
+            console.log('Token expired, logging out');
+            LocalStorageService.clear();
+            setIsAuthenticated(false);
+            dispatch(setAuthenticated(false));
+            setIsLoading(false);
+            return;
+          }
+          
+          // Token is valid, update Redux state
+          console.log('Token is valid, setting authenticated state');
+          dispatch(setAuthenticated(true));
+          
+          // Get admin details if available
+          try {
+            const user = LocalStorageService.getUser();
+            if (user) {
+              dispatch(setAdminDetails(user));
+            }
+          } catch (error) {
+            console.error('Error getting user details:', error);
+          }
+        } catch (error) {
+          console.error('Error decoding token:', error);
           LocalStorageService.clear();
           setIsAuthenticated(false);
           dispatch(setAuthenticated(false));
-          setIsLoading(false);
-          return;
-        }
-
-        // Valid token
-        setIsAuthenticated(true);
-        dispatch(setAuthenticated(true));
-        
-        // Get admin details if available
-        try {
-          const user = LocalStorageService.getUser();
-          if (user) {
-            dispatch(setAdminDetails(user));
-          }
-        } catch (error) {
-          console.error('Error getting user details:', error);
         }
         
         setIsLoading(false);

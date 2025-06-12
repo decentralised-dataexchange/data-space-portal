@@ -17,10 +17,21 @@ export interface AuthState {
 
 // Helper function to check if token exists and is valid
 const checkInitialAuthState = (): boolean => {
+  // Always return false for initial server-side rendering
+  // The actual state will be determined client-side in AuthProvider
   if (typeof window === 'undefined') return false;
   
   try {
-    // Check for access token in the new format
+    // Check for access token in cookies first (more reliable for SSR)
+    const cookieToken = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('access_token='));
+      
+    if (cookieToken) {
+      return true;
+    }
+    
+    // Fallback to localStorage
     const accessToken = localStorage.getItem('access_token');
     return !!accessToken;
   } catch (e) {
@@ -78,9 +89,30 @@ export const {
   setAuthenticated, 
   setAdminDetails, 
   setLoading, 
-  setError,
-  setMessage,
+  setError, 
+  setMessage, 
   logout 
 } = authSlice.actions;
+
+/**
+ * Action creator that handles both Redux logout and React Query reset
+ * This should be used instead of the plain logout action when you need to clear React Query cache
+ */
+export const logoutAndClearState = () => {
+  return (dispatch: any) => {
+    // Dispatch the Redux logout action
+    dispatch(logout());
+    
+    // Clear localStorage and cookies
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      localStorage.removeItem('token_expires_in');
+      localStorage.removeItem('refresh_expires_in');
+      localStorage.removeItem('token_type');
+      localStorage.removeItem('User');
+    }
+  };
+};
 
 export default authSlice.reducer;
