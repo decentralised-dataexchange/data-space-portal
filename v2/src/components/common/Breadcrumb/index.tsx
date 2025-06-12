@@ -4,21 +4,15 @@ import { Breadcrumbs, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-type BreadCrumb = {
-  readonly link: string;
-  readonly name: string;
-  readonly icon: string;
-};
+import { BREADCRUMB_ROUTES, BreadcrumbKey } from "@/constants/breadcrumbs";
 
 type BreadCrumbProps = {
   readonly primaryRoute?: string;
-  readonly BreadCrumbTitle?: BreadCrumb[];
-  readonly sxStyles?: Object;
+  readonly sxStyles?: React.CSSProperties;
   readonly classNames?: string;
 };
 
-const customStyles: Object = {
+const customStyles: React.CSSProperties = {
   color: "#094c4a",
   fontSize: "1.1rem",
   fontWeight: 500,
@@ -30,7 +24,7 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
   primaryRoute = "Home",
   sxStyles = customStyles,
   classNames = "breadCrumb",
-}: BreadCrumbProps) => {
+}) => {
   const t = useTranslations();
   const pathname = usePathname();
   
@@ -40,82 +34,59 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
   // Split path into segments and filter out empty segments
   const routesPath = pathWithoutLocale.split('/').filter(Boolean);
 
-  const menuList = [
-    {
-        'name': `${t('sideBar.gettingStarted')}`,
-        'icon': 'CottageOutlined',
-        'link': 'start'
+  // Generate breadcrumb items based on the current path
+  const generateBreadcrumbs = () => {
+    const breadcrumbs: { path: string; name: string; isClickable: boolean }[] = [];
+    let currentPath = '';
 
-    },
-    {
-        'name': `${t('sideBar.dataAgreements')}`,
-        'icon': 'InsertDriveFileOutlined',
-        'link': 'dd-agreements'
+    routesPath.forEach((segment, index) => {
+      currentPath += `/${segment}`;
+      const routeKey = segment as BreadcrumbKey;
+      
+      // Skip if this is not a known breadcrumb route
+      if (!BREADCRUMB_ROUTES[routeKey]) return;
+      
+      const isLast = index === routesPath.length - 1;
+      const route = BREADCRUMB_ROUTES[routeKey];
+      
+      breadcrumbs.push({
+        path: currentPath,
+        name: t(route.translationKey as any),
+        isClickable: route.isClickable && !isLast
+      });
+    });
 
-    },
-    {
-      'name': `${t('sideBar.account')}`,
-      'icon': 'LockOutlined',
-      'link': 'account'
-
-    },
-    {
-      'name': `${t('sideBar.manageAdmin')}`,
-      'link': `${t("common.manageAdmin")}`,
-    },
-
-    {
-      'name': `${t('sideBar.developerApis')}`,
-      'link': `${t("common.developerApis")}`,
-    },
-
-    {
-      'name': `${t('sideBar.businessWallet')}`,
-      'link': `${t("common.businessWallet")}`,
-    },
-]
-  
-  // logic for render the breadcrumb names based on route path
-  const renderRouteName = (name: string) => {
-    const filterBreadCrumb = menuList.filter(
-      (breadCrumb) => (breadCrumb.link) == name
-    );
-    switch (name) {
-      case `${filterBreadCrumb?.length && filterBreadCrumb[0].link}`:
-        return filterBreadCrumb[0].name;
-      default:
-        return "";
-    }
+    return breadcrumbs;
   };
+
+  const breadcrumbs = generateBreadcrumbs();
 
   return (
     <Breadcrumbs
       aria-label="breadcrumb"
       sx={sxStyles}
       className={classNames}
-    > 
+    >
       <Typography variant="caption" color="text.primary">
-          <Link
-              href="/"
-              id="dashboard"
-              className='link linkfont'>
-                  {primaryRoute}
-          </Link>
+        <Link href="/" id="dashboard" className="link linkfont">
+          {primaryRoute}
+        </Link>
       </Typography>
-      {routesPath[0] != "" &&
-        routesPath.map((route, i) => (
-            <Typography variant="caption" color="inherit">
-            <Link
-              key={`${route}-${i}`}
-              className={`${
-                (i == routesPath.length - 1 || route == 'account') ? "pe-none linkfont" : "linkfont"
-              }`}
-              href={i > 0 ? `${routesPath[i - 1]}/${route}` : route}
+      
+      {breadcrumbs.map((breadcrumb, index) => (
+        <Typography key={index} variant="caption" color="inherit">
+          {breadcrumb.isClickable ? (
+            <Link 
+              href={breadcrumb.path} 
+              className="link linkfont"
             >
-            {renderRouteName(route)}
+              {breadcrumb.name}
             </Link>
-            </Typography>
-        ))}
+          ) : (
+            <span className="pe-none">{breadcrumb.name}</span>
+          )}
+        </Typography>
+      ))}
     </Breadcrumbs>
   );
 };

@@ -17,7 +17,16 @@
     "errorMessage": "Virheelliset kirjautumistiedot. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen."
   },
   "breadcrumbs" : {
-    "home" : "Koti"
+    "home": "Koti",
+    "start": "Aloittaminen",
+    "login": "Kirjaudu sisään",
+    "account": "Tili",
+    "manage-admin": "Hallitse ylläpitäjää",
+    "developer-apis": "Kehittäjä-API:t",
+    "disp-connections": "DISP-yhteydet",
+    "business-wallet": "Yrityksen lompakko",
+    "data-source": "Tietolähde",
+    "open-api": "OpenAPI-dokumentaatio"
   },
   "home": {
     "header": "KOTI",
@@ -163,7 +172,13 @@
     "selectedScopes": "Valitut laajuudet",
     "deleteDescription1": "Olet poistamassa olemassa olevaa API-avainta. Kirjoita ",
     "deleteDescription2": " vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
-    "tooltipDelete": "Poista yhteys"
+    "tooltipDelete": "Poista yhteys",
+    "apiKeyCopied": "API-avain kopioitu leikepöydälle",
+    "openApiUpdated": "OpenAPI-määrittelyn URL-osoite päivitetty onnistuneesti",
+    "openApiUpdateFailed": "OpenAPI-määrittelyn URL-osoitteen päivitys epäonnistui",
+    "configureOpenApi": "Määritä OpenAPI-määrittely",
+    "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite:",
+    "uploadButton": "Lataa"
   },
   "dispConnection": {
     "copy": "KOPIOI",

@@ -75,7 +75,7 @@ export default function DeveloperAPIs () {
   const handleCopy = () => {
     navigator.clipboard.writeText(token);
     setOpenSnackBar(true);
-    setSuccess("API key copied to clipboard");
+    setSuccess(t("developerAPIs.apiKeyCopied"));
   };
 
   const handleUpdateUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,12 +96,12 @@ export default function DeveloperAPIs () {
       updateOpenApiUrl(payload, {
         onSuccess: () => {
           setOpenSnackBar(true);
-          setSuccess("Successfully updated open API specification URL");
+          setSuccess(t("developerAPIs.openApiUpdated"));
           setIsOk(false);
         },
         onError: () => {
           setOpenSnackBar(true);
-          setError("Updating open API specification URL failed");
+          setError(t("developerAPIs.openApiUpdateFailed"));
         }
       });
     }
@@ -258,18 +258,18 @@ export default function DeveloperAPIs () {
       <Box className="apiKey">
         <Grid container spacing={1} alignItems={"center"}>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-            <Typography
-              color="black"
-              variant="subtitle1"
-              fontWeight="bold"
-              mb={0.5}
-            >
-              Configure OpenAPI Specification
-            </Typography>
+              <Typography
+                color="black"
+                variant="subtitle1"
+                fontWeight="bold"
+                mb={0.5}
+              >
+                {t("developerAPIs.configureOpenApi")}
+              </Typography>
           </Grid>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 2 }}>
             <Typography color="grey" variant="body1" className="description">
-              OpenAPI Specification URL: 
+              {t("developerAPIs.openApiUrlLabel")} 
             </Typography>
           </Grid>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
@@ -303,7 +303,7 @@ export default function DeveloperAPIs () {
                 },
               }}
             >
-              {isUpdating ? <CircularProgress size={20} /> : "Upload"}
+              {isUpdating ? <CircularProgress size={20} /> : t("developerAPIs.uploadButton")}
             </Button>
           </Grid>
         </Grid>

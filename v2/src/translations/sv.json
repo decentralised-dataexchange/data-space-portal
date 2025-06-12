@@ -17,7 +17,16 @@
     "errorMessage": "Ogiltiga inloggningsuppgifter. Dubbelkolla ditt användarnamn och lösenord och försök igen."
   },
   "breadcrumbs": {
-    "home": "Hem"
+    "home": "Hem",
+    "start": "Kom igång",
+    "login": "Logga in",
+    "account": "Konto",
+    "manage-admin": "Hantera admin",
+    "developer-apis": "Utvecklar-API:er",
+    "disp-connections": "DISP-anslutningar",
+    "business-wallet": "Företagsplånbok",
+    "data-source": "Datakälla",
+    "open-api": "OpenAPI-dokumentation"
   },
   "home": {
     "header": "HEM",
@@ -164,7 +173,13 @@
     "selectedScopes": "Valda omfattningar",
     "deleteDescription1": "Du är på väg att radera en befintlig nyckel. Skriv ",
     "deleteDescription2": " för att bekräfta och klicka RADERA. Detta går ej att ångra.",
-    "tooltipDelete": "Radera anslutning"
+    "tooltipDelete": "Radera anslutning",
+    "apiKeyCopied": "API-nyckel kopierad till urklipp",
+    "openApiUpdated": "OpenAPI-specifikations-URL uppdaterad",
+    "openApiUpdateFailed": "Uppdatering av OpenAPI-specifikations-URL misslyckades",
+    "configureOpenApi": "Konfigurera OpenAPI-specifikation",
+    "openApiUrlLabel": "OpenAPI-specifikations-URL:",
+    "uploadButton": "Ladda upp"
   },
   "dispConnection": {
     "copy": "KOPIERA",

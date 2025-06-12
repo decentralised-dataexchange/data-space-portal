@@ -18,7 +18,16 @@
     "errorMessage": "Invalid login credentials. Please double-check your username and password and try again."
   },
   "breadcrumbs" : {
-    "home" : "Home"
+    "home": "Home",
+    "start": "Getting Started",
+    "login": "Login",
+    "account": "Account",
+    "manage-admin": "Manage Admin",
+    "developer-apis": "Developer APIs",
+    "disp-connections": "DISP Connections",
+    "business-wallet": "Business Wallet",
+    "data-source": "Data Source",
+    "open-api": "OpenAPI Documentation"
   },
   "home": {
     "header": "HOME",
@@ -168,7 +177,13 @@
     "selectedScopes": "Selected Scopes",
     "deleteDescription1": "You are about to delete an existing api key. Please type ",
     "deleteDescription2": " to confirm and click DELETE. This action is not reversible.",
-    "tooltipDelete": "Delete Connection"
+    "tooltipDelete": "Delete Connection",
+    "apiKeyCopied": "API key copied to clipboard",
+    "openApiUpdated": "Successfully updated open API specification URL",
+    "openApiUpdateFailed": "Updating open API specification URL failed",
+    "configureOpenApi": "Configure OpenAPI Specification",
+    "openApiUrlLabel": "OpenAPI Specification URL:",
+    "uploadButton": "Upload"
   },
   "dispConnection": {
     "copy": "COPY",
