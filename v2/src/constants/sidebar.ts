@@ -24,7 +24,7 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
     subMenu: []
   },
   {
-    name: 'Data Agreements', // Fallback name if translation fails
+    name: 'Marketplace Listing', // Fallback name if translation fails
     translationKey: 'dataAgreements',
     icon: 'InsertDriveFileOutlined',
     link: '/dd-agreements',
