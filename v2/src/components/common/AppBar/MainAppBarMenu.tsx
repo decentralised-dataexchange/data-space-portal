@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { LocalStorageService } from "@/utils/localStorageService";
 import { Box, Menu, Typography, IconButton } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";

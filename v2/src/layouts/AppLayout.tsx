@@ -15,15 +15,43 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isLoading = useAppSelector((state) => state.auth.loading);
   const [currentLayout, setCurrentLayout] = useState<'main' | 'minimal'>('minimal');
+  const [isClient, setIsClient] = useState(false);
   
-  // Effect to update layout when authentication state changes
+  // Effect to handle client-side hydration
   useEffect(() => {
-    if (isAuthenticated) {
-      setCurrentLayout('main');
-    } else {
-      setCurrentLayout('minimal');
-    }
+    setIsClient(true);
+    
+    // Check client-side auth state
+    const checkClientAuth = () => {
+      if (isAuthenticated) {
+        setCurrentLayout('main');
+        return;
+      }
+      
+      // Only access browser APIs after hydration
+      try {
+        const hasToken = typeof window !== 'undefined' && 
+                        (document.cookie.includes('access_token=') || 
+                        localStorage.getItem('access_token'));
+                        
+        if (hasToken) {
+          setCurrentLayout('main');
+        } else {
+          setCurrentLayout('minimal');
+        }
+      } catch (e) {
+        console.error('Error checking client auth:', e);
+        setCurrentLayout('minimal');
+      }
+    };
+    
+    checkClientAuth();
   }, [isAuthenticated]);
+  
+  // Show loading state during server-side rendering
+  if (!isClient) {
+    return <MinimalLayout><Loader /></MinimalLayout>;
+  }
   
   // Show loading state if still checking authentication
   if (isLoading) {
