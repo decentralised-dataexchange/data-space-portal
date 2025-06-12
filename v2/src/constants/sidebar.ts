@@ -20,7 +20,7 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
     name: 'Getting Started', // Fallback name if translation fails
     translationKey: 'gettingStarted',
     icon: 'HouseOutlined',
-    link: 'start',
+    link: '/start',
     subMenu: []
   },
   {
