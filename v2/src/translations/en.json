@@ -57,13 +57,14 @@
     "businessWallet": "Business Wallet"
   },
   "gettingStarted": {
+    "public": "Public",
     "sector": "Sector:",
     "overView": "Overview",
     "organisationName": "Organisation Name",
     "addCredential": "Add Credentials",
     "viewCredential": "View Credentials",
     "edit": "Edit",
-    "policyUrl": "policyUrl",
+    "policyUrl": "Policy URL",
     "location": "Location",
     "descriptionPlaceholder": "Description of organisation with character limit of 500 characters",
     "prepareDA": "Manage Listing",
@@ -86,7 +87,8 @@
     "chooseWalletTitle": "CONNECTED WALLET: ",
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Issues by:",
-    "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business."
+    "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business.",
+    "industry": "Industry"
   },
   "common": {
     "certificateOfRegistration": "CERTIFICATION OF REGISTRATION",

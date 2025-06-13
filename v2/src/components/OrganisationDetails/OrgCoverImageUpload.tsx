@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { apiService } from "@/lib/apiService/apiService";
 import { useGetCoverImage, useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
+import { defaultCoverImage } from "@/constants/defalultImages";
+import BannerCamera from "@/assets/img/camera_photo1.png";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -87,7 +89,7 @@ const OrgCoverImageUpload = (props: Props) => {
           <div>
             <form>
               <label className="uptext" htmlFor="uploadCoverImage">
-                <img
+                <Image
                   style={{
                     opacity: 0.45,
                   }}

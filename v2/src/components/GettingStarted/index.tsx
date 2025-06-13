@@ -14,7 +14,10 @@ import {
   useListConnections, 
   useGetCoverImage,
   useGetLogoImage,
-  useGetVerificationTemplate
+  useGetVerificationTemplate,
+  useUpdateDataSource,
+  useUpdateLogoImage,
+  useUpdateCoverImage
 } from '@/custom-hooks/gettingStarted';
 
 const Container = styled("div")(({ theme }) => ({
@@ -66,8 +69,55 @@ const GettingStarted = () => {
   const isEnableAddCredential = listConnections?.connections?.length > 0 && 
     listConnections?.connections[0]?.connectionState === 'active';
 
+  const [formData, setFormData] = useState<any>({});
+
+  // Initialize form data when data is loaded
+  useEffect(() => {
+    if (gettingStartData?.dataSource) {
+      setFormData({
+        name: gettingStartData.dataSource.name || '',
+        location: gettingStartData.dataSource.location || '',
+        policyUrl: gettingStartData.dataSource.policyUrl || '',
+        description: gettingStartData.dataSource.description || '',
+        sector: gettingStartData.dataSource.sector || ''
+      });
+    }
+  }, [gettingStartData]);
+
   const handleEdit = () => {
     setEditMode(!editMode);
+  };
+
+  const handleFormChange = (field: string, value: string) => {
+    setFormData((prev: Record<string, string>) => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Mutation hooks
+  const { mutateAsync: updateDataSource } = useUpdateDataSource();
+  const { mutateAsync: updateLogoImage } = useUpdateLogoImage();
+  const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
+
+  const handleLogoImageChange = async (newImage: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', newImage);
+      await updateLogoImage(formData);
+    } catch (error) {
+      console.error('Error updating logo image:', error);
+    }
+  };
+
+  const handleCoverImageChange = async (newImage: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', newImage);
+      await updateCoverImage(formData);
+    } catch (error) {
+      console.error('Error updating cover image:', error);
+    }
   };
 
   // Add detailed logging for debugging
@@ -139,12 +189,12 @@ const GettingStarted = () => {
       />
       <OrganisationDetailsContainer
         editMode={editMode}
-        logoImageBase64={logoImageBase64 || ''}
-        handleEdit={() => { handleEdit() }}
+        logoImageBase64={logoImageBase64}
+        handleEdit={handleEdit}
         isEnableAddCredential={isEnableAddCredential}
-        organisationDetails={gettingStartData?.dataSource}
-        setOganisationDetails={() => {}}
-        setLogoImageBase64={() => {}}
+        organisationDetails={formData}
+        setOganisationDetails={handleFormChange}
+        setLogoImageBase64={handleLogoImageChange}
       />
 
       <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>

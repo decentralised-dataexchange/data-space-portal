@@ -56,6 +56,7 @@
     "businessWallet": "Företagsplånbok"
   },
   "gettingStarted": {
+    "public": "Offentlig",
     "sector": "Sektor",
     "overView": "Översikt",
     "organisationName": "Organisationsnamn",
@@ -85,7 +86,8 @@
     "chooseWalletTitle": "ANSLUTEN PLÅNBOK:",
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Utfärdade av: Bolagsverket",
-    "confirmWalletDescription": "Ditt företag är ej verifierat. Klicka Bekräfta för att verifiera."
+    "confirmWalletDescription": "Ditt företag är ej verifierat. Klicka Bekräfta för att verifiera.",
+    "industry": "Bransch"
   },
   "common": {
     "certificateOfRegistration": "REGISTRERINGSBEVIS",
