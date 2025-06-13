@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { Avatar, Box } from "@mui/material";
 import { apiService } from "@/lib/apiService/apiService";
-
-// Import camera icon as string path
-const LogoCammera = "/img/camera_photo2.png";
+import LogoCamera from "@/assets/img/camera_photo2.png";
+import Image from "next/image";
 
 // Temporary default logo image
 const defaultLogoImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
@@ -100,11 +99,11 @@ const OrgLogoImageUpload = (props: Props) => {
           <div>
             <form>
               <label className="uptext" htmlFor="uploadLogoImage">
-                <img
+                <Image
                   style={{
                     opacity: 0.45,
                   }}
-                  src={LogoCammera}
+                  src={LogoCamera}
                   alt="img"
                 />
               </label>

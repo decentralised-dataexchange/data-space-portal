@@ -56,6 +56,7 @@
     "businessWallet": "Yrityksen lompakko"
   },
   "gettingStarted": {
+    "public": "Julkinen",
     "sector": "Sektori",
     "overView": "Yleiskatsaus",
     "organisationName": "Organisaation nimi",
@@ -84,7 +85,8 @@
     "chooseWalletTitle": "YHDISTETTY LOMPAKKO: BYGG AB, SUOMI",
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Myöntäjä: Kaupparekisteri, Suomi",
-    "confirmWalletDescription": "Yrityksesi on tällä hetkellä vahvistamaton. Valitse vahvista vahvistaaksesi yrityksesi."
+    "confirmWalletDescription": "Yrityksesi on tällä hetkellä vahvistamaton. Valitse vahvista vahvistaaksesi yrityksesi.",
+    "industry": "Toimiala"
   },
   "common": {
     "certificateOfRegistration": "REKISTERÖINTITODISTUS",

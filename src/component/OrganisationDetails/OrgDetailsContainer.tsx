@@ -54,6 +54,7 @@ const OrganisationDetailsContainer = (props: Props) => {
     handleEdit,
     isEnableAddCredential
   } = props;
+  console.log("organistaionDetails", organisationDetails)
   const [coverImageBase64, setCoverImageBase64] = useState();
   const [logoImageBase64, setLogoImageBase64] = useState();
   const dispatch = useAppDispatch();
