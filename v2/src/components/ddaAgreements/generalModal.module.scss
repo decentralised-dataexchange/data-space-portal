@@ -1,0 +1,118 @@
+.dd-modal {
+  .MuiPaper-root {
+    @media (max-width: 900px) {
+      width: 100%;
+      overflow: hidden;
+    }
+  }
+}
+
+.dd-modal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #fff;
+  width: 480px;
+  
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+}
+
+.dd-modal-header {
+  font-size: 16px;
+  background-color: #03182b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 80px;
+  color: #fff;
+  
+  .close-btn {
+    color: #fff;
+    min-width: 40px;
+    padding: 8px;
+  }
+}
+
+.dd-modal-body {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  margin-bottom: 65px; // Space for footer
+  
+  .dd-modal-description {
+    margin-bottom: 24px;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  .dd-modal-input {
+    margin-top: 16px;
+    
+    .MuiOutlinedInput-root {
+      border-radius: 4px;
+      
+      .MuiOutlinedInput-notchedOutline {
+        border-color: rgba(0, 0, 0, 0.23);
+      }
+      
+      &:hover .MuiOutlinedInput-notchedOutline {
+        border-color: rgba(0, 0, 0, 0.87);
+      }
+      
+      &.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: #1976d2;
+        border-width: 1px;
+      }
+    }
+    
+    .MuiInputBase-input {
+      padding: 12px 14px;
+    }
+  }
+}
+
+.dd-modal-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 480px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 24px;
+  background-color: #fff;
+  border-top: 1px solid #e0e0e0;
+  z-index: 1;
+  
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+  
+  .cancel-btn {
+    margin-right: 16px;
+    border-color: rgba(0, 0, 0, 0.23);
+    color: rgba(0, 0, 0, 0.87);
+    text-transform: none;
+    font-weight: 500;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.87);
+    }
+  }
+  
+  .confirm-btn {
+    text-transform: none;
+    font-weight: 500;
+    
+    &:disabled {
+      background-color: rgba(0, 0, 0, 0.12);
+      color: rgba(0, 0, 0, 0.26);
+    }
+  }
+}
