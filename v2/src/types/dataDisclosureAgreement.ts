@@ -111,21 +111,23 @@ type Verification = {
     presentation_request_dict: PresentationRequestDict;
 }
 
-export type DataDisclosureAgreement = {
-    purpose: string
-    version: string
-    language: string
-    connection: Connection
-    templateId: string
-    lawfulBasis: string
-    personalData: PersonalDaum[]
-    codeOfConduct: string
-    dataController: DataController
-    agreementPeriod: number
-    purposeDescription: string
-    dataSharingRestrictions: DataSharingRestrictions
-    status: string
-    isLatestVersion: boolean
+export interface DataDisclosureAgreement {
+  purpose: string;
+  version: string;
+  language: string;
+  connection: Connection;
+  templateId: string;
+  lawfulBasis: string;
+  personalData: PersonalDaum[];
+  codeOfConduct: string;
+  dataController: DataController;
+  agreementPeriod: number;
+  purposeDescription: string;
+  dataSharingRestrictions: DataSharingRestrictions;
+  status: string;
+  isLatestVersion: boolean;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export type DataSource = {

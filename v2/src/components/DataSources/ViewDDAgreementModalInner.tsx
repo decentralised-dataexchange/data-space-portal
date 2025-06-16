@@ -53,11 +53,23 @@ export default function ViewDataAgreementModalInner(props: Props) {
             </Box>
             <Box className="dd-modal-banner-container">
               <Box
-                style={{ height: "150px", width: "100%" }}
-                component="img"
-                alt="Banner"
-                src={coverImage}
-              />
+                style={{
+                  height: "150px",
+                  width: "100%",
+                  backgroundImage: coverImage ? `url(${coverImage})` : 'none',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundColor: coverImage ? 'transparent' : '#f0f0f0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#666',
+                  fontSize: '14px'
+                }}
+                component="div"
+              >
+                {!coverImage && 'No banner image available'}
+              </Box>
             </Box>
             <Box sx={{ marginBottom: "60px" }}>
               <Avatar
