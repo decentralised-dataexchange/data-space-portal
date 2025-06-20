@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormControl,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import "../DataSources/style.scss";
 import { useTranslations } from "next-intl";
-import { DataDisclosureAgreement, DataSource, DataSourceListResponse } from "@/types/dataDisclosureAgreement";
+import { DataDisclosureAgreement, DataSource } from "@/types/dataDisclosureAgreement";
 import DDAtable from "./ddaTable";
 import ViewDDAgreementModalInner from "../DataSources/ViewDDAgreementModalInner";
 import GeneralModal from "./generalModal";
@@ -117,6 +117,8 @@ const DDAgreements = () => {
     setIsOpenViewDDA(false);
   };
 
+  console.log("error", error);
+
   return (
     <>
       <Box sx={{ margin: "15px 10px" }} className="dd-container">
@@ -199,15 +201,15 @@ const DDAgreements = () => {
           <GeneralModal
             open={isOpenDelete}
             setOpen={setIsOpenDelete}
-            confirmText={"DELETE"}
-            headerText={"Delete Data Agreement"}
+            confirmText={t("dataAgreements.deleteModal.confirmText")}
+            headerText={t("dataAgreements.deleteModal.title")}
             modalDescriptionText={
               <Typography variant="body1">
-                Are you sure you want to delete this data agreement? This action cannot be undone.
+                {t("dataAgreements.deleteModal.description")}
               </Typography>
             }
             resourceName={"dataDisclosureAgreements"}
-            confirmButtonText={"Delete"}
+            confirmButtonText={t("dataAgreements.deleteModal.confirmButton")}
             selectedData={{
               templateId: selectedDDA.templateId,
               purpose: selectedDDA.purpose
@@ -219,9 +221,9 @@ const DDAgreements = () => {
           <ListDDAModal
             open={isOpenPublish}
             setOpen={setIsOpenPublish}
-            headerText={"Publish to Marketplace"}
+            headerText={t("dataAgreements.publishModal.title")}
             resourceName={"dataDisclosureAgreements"}
-            confirmButtonText={"Submit"}
+            confirmButtonText={t("dataAgreements.publishModal.confirmButton")}
             selectedData={{
               id: selectedDDA.templateId,
               templateId: selectedDDA.templateId,

@@ -1,0 +1,145 @@
+.dd-modal {
+  .MuiPaper-root {
+    @media (max-width: 900px) {
+      width: 100%;
+      overflow: hidden;
+    }
+  }
+}
+
+.dd-modal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #fff;
+  width: 480px;
+  
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+}
+
+.dd-modal-header {
+  background-color: #03182b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 80px;
+  
+  .close-btn {
+    color: #fff;
+    min-width: 40px;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .header-content {
+    width: 90%;
+    
+    .header-text {
+      color: #F3F3F6;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .template-id {
+      color: #F3F3F6;
+      opacity: 0.8;
+      font-size: 0.875rem;
+      margin-top: 4px;
+    }
+  }
+}
+
+.modal-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  margin-bottom: 65px; // Space for footer
+  
+  .status-section {
+    margin-bottom: 24px;
+    
+    .status-label {
+      font-size: 1rem;
+      line-height: 1.5;
+      letter-spacing: 0.00938em;
+      margin-bottom: 8px;
+      
+      .required {
+        color: #e00707fc;
+        margin-left: 4px;
+      }
+    }
+    
+    .select-container {
+      margin-top: 5px;
+      width: 100%;
+      
+      .MuiSelect-select {
+        padding: 10px 14px;
+      }
+    }
+  }
+}
+
+.modal-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 480px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 24px;
+  background-color: #fff;
+  border-top: 1px solid #e0e0e0;
+  z-index: 1;
+  
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+  
+  .cancel-btn {
+    margin-right: 16px;
+    border-color: rgba(0, 0, 0, 0.23);
+    color: rgba(0, 0, 0, 0.87);
+    text-transform: none;
+    font-weight: 500;
+    height: 36px;
+    min-width: 120px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.87);
+    }
+  }
+  
+  .confirm-btn {
+    text-transform: none;
+    font-weight: 500;
+    height: 36px;
+    min-width: 120px;
+    transition: all 0.3s ease;
+    
+    &:disabled {
+      background-color: #e0e0e0;
+      color: #9e9e9e;
+      cursor: not-allowed;
+      box-shadow: none;
+      border-color: transparent;
+      
+      &:hover {
+        background-color: #e0e0e0;
+      }
+      
+      .MuiCircularProgress-root {
+        color: #9e9e9e;
+      }
+    }
+  }
+}

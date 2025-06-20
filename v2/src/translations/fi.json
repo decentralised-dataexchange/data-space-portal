@@ -117,9 +117,34 @@
     "generic": "Jokin meni pieleen."
   },
   "dataAgreements": {
+    "deleteModal": {
+      "title": "Poista tietosopimus",
+      "description": "Haluatko varmasti poistaa tämän tietosopimuksen? Tätä toimintoa ei voi peruuttaa.",
+      "confirmButton": "Poista",
+      "confirmText": "POISTA"
+    },
+    "publishModal": {
+      "title": "Julkaise markkinapaikalla",
+      "confirmButton": "Lähetä"
+    },
     "title": "Hallitse listauksia",
     "all": "Kaikki",
     "list": "Listatut",
+    "underReview": "Arvioitavana",
+    "selectStatusAction": "Valitse toimenpide ...",
+    "statusActionLabel": "Toimenpide",
+    "statuses": {
+      "unlisted": "Listaamaton",
+      "inReview": "Arvioitavana",
+      "approved": "Hyväksytty",
+      "rejected": "Hylätty",
+      "listed": "Listattu"
+    },
+    "actions": {
+      "unlist": "Poista listauksesta",
+      "requestReview": "Pyydä arviointia",
+      "list": "Listaa"
+    },
     "tooltipPublished": "Tietojen luovutussopimus on julkaistu",
     "tooltipView": "Näytä tietojen luovutussopimus",
     "tooltipEdit": "Muokkaa tietojen luovutussopimusta",
@@ -135,7 +160,19 @@
     "dataUsingService": "Tietoja käyttävä palvelu",
     "descritptionInputPlaceholder": "Lyhyt kuvaus tietojen käytöstä (3-500 merkkiä)",
     "connectedData": "Yhdistetty tietojen luovutussopimus",
-    "legalID": "Rekisterinpitäjän oikeudellinen tunnus"
+    "legalID": "Tietosuojavastaavan rekisteröintitunnus",
+    "table": {
+      "headers": {
+        "usagePurpose": "Käyttötarkoitus",
+        "version": "Versio",
+        "status": "Tila",
+        "lawfulBasis": "Tietojen käsittelyn oikeusperuste"
+      },
+      "tooltips": {
+        "listToMarketplace": "Listaa datamarkkinapaikalle"
+      },
+      "noData": "Ei näytettäviä tietoja"
+    }
   },
   "manageAdmin": {
     "adminUser": "Ylläpitäjäkäyttäjä",

@@ -16,6 +16,7 @@ import VersionDropdown from "../VersionDropDown";
 import { TablePagination, Tooltip } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
+import { getStatus } from "@/utils/dda";
 
 interface DDATableProps {
   setIsOpenViewDDA: (isOpen: boolean) => void;
@@ -70,29 +71,15 @@ const DDATable: React.FC<DDATableProps> = ({
 }) => {
   const t = useTranslations();
 
-  const getStatus = (status: string) => {
-    if (status === "unlisted") {
-      return "Unlisted";
-    } else if (status === "awaitingForApproval") {
-      return "InReview";
-    } else if (status === "approved") {
-      return "Approved";
-    } else if (status === "rejected") {
-      return "Rejected";
-    } else if (status === "listed") {
-      return "Listed";
-    }
-  };
-
   return (
     <RootTableContainer>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Usage purpose</StyledTableCell>
-            <StyledTableCell>Version</StyledTableCell>
-            <StyledTableCell>Status</StyledTableCell>
-            <StyledTableCell>Lawful Basis of Processing</StyledTableCell>
+            <StyledTableCell>{t("dataAgreements.table.headers.usagePurpose")}</StyledTableCell>
+            <StyledTableCell>{t("dataAgreements.table.headers.version")}</StyledTableCell>
+            <StyledTableCell>{t("dataAgreements.table.headers.status")}</StyledTableCell>
+            <StyledTableCell>{t("dataAgreements.table.headers.lawfulBasis")}</StyledTableCell>
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
@@ -104,7 +91,7 @@ const DDATable: React.FC<DDATableProps> = ({
                 <StyledTableCell>
                   <VersionDropdown record={row} />
                 </StyledTableCell>
-                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{getStatus(row.status)}</StyledTableCell>
+                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{getStatus(t, row.status)}</StyledTableCell>
                 <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{row.lawfulBasis}</StyledTableCell>
                 <StyledTableCell
                   style={{
@@ -114,13 +101,13 @@ const DDATable: React.FC<DDATableProps> = ({
                   }}
                 >
                   <Tooltip
-                    title={"List to Data Marketplace"}
+                    title={t("dataAgreements.table.tooltips.listToMarketplace")}
                     placement="top"
                   >
                     
-                    <IconButton aria-label="delete">
+                    <IconButton className="actionButton" aria-label="delete" data-disabled={row.status === "awaitingForApproval"}>
                       <UploadOutlined
-                        style={{color: row.status === "unlisted" ? "red" : "black", cursor: row.status === "awaitingForApproval" ? "not-allowed": "pointer"}}
+                        style={{color: row.status === "unlisted" ? "red" : row.status === "awaitingForApproval" ? "gray" : "black", cursor: row.status === "awaitingForApproval" ? "not-allowed": "pointer"}}
                         fontSize="small"
                         onClick={() => {
                           if (row.status !== "awaitingForApproval") {
@@ -167,7 +154,7 @@ const DDATable: React.FC<DDATableProps> = ({
           ) : (
             <TableRow>
               <StyledTableCell colSpan={5} align="center">
-                No datas to display
+                {t("dataAgreements.table.noData")}
               </StyledTableCell>
             </TableRow>
           )}

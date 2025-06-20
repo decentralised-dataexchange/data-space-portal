@@ -6,6 +6,20 @@ import { routing } from '@/i18n/routing';
 import ClientProviders from '@/components/common/Providers';
 import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import AppLayout from '@/layouts/AppLayout';
+import localFont from 'next/font/local';
+
+// Load the font file
+const untitledSans = localFont({
+  src: [
+    {
+      path: "../../assets/fonts/UntitledSans-Regular.woff2",
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-untitled-sans',
+  display: 'swap',
+});
 
 type Props = {
   children: ReactNode;
@@ -27,7 +41,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${untitledSans.variable} font-sans`}>
       <head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>

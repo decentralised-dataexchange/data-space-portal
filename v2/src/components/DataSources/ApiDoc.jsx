@@ -25,9 +25,7 @@ const ApiDoc = ({openApiUrl}) => {
       schema-expand-level="1"
       default-schema-tab="schema"
       load-fonts="false"
-      regular-font="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-          sans-serif"
+      regular-font="UntitledSans"
       mono-font="monospace"
     >
     </rapi-doc>
