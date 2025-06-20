@@ -118,9 +118,34 @@
     "generic": "Något gick fel."
   },
   "dataAgreements": {
+    "deleteModal": {
+      "title": "Ta bort dataavtal",
+      "description": "Är du säker på att du vill ta bort detta dataavtal? Denna åtgärd kan inte ångras.",
+      "confirmButton": "Ta bort",
+      "confirmText": "RADERA"
+    },
+    "publishModal": {
+      "title": "Publicera på marknadsplatsen",
+      "confirmButton": "Skicka"
+    },
     "title": "Hantera listningar",
     "all": "Alla",
     "list": "Listade",
+    "underReview": "Under granskning",
+    "selectStatusAction": "Välj statusåtgärd ...",
+    "statusActionLabel": "Statusåtgärd",
+    "statuses": {
+      "unlisted": "Olistad",
+      "inReview": "Under granskning",
+      "approved": "Godkänd",
+      "rejected": "Avvisad",
+      "listed": "Listad"
+    },
+    "actions": {
+      "unlist": "Ta bort från lista",
+      "requestReview": "Begär granskning",
+      "list": "Lista"
+    },
     "tooltipPublished": "Datautlämningsavtal är publicerat",
     "tooltipView": "Visa datautlämningsavtal",
     "tooltipEdit": "Redigera datautlämningsavtal",
@@ -136,7 +161,19 @@
     "dataUsingService": "Dataanvändningstjänst",
     "descritptionInputPlaceholder": "Kort beskrivning (3–500 tecken)",
     "connectedData": "Anslutet datautlämningsavtal",
-    "legalID": "Personuppgiftsansvarigs ID"
+    "legalID": "Juridiskt ID för datakontrollant",
+    "table": {
+      "headers": {
+        "usagePurpose": "Användningssyfte",
+        "version": "Version",
+        "status": "Status",
+        "lawfulBasis": "Rättslig grund för behandling"
+      },
+      "tooltips": {
+        "listToMarketplace": "Lista på datamarknadsplatsen"
+      },
+      "noData": "Ingen data att visa"
+    }
   },
   "manageAdmin": {
     "adminUser": "Administratörsanvändare",

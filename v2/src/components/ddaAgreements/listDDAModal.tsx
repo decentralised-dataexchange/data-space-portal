@@ -6,6 +6,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
 import SnackbarComponent from "@/components/notification";
 import { useUpdateDDAStatus } from "@/custom-hooks/dataDisclosureAgreements";
+import styles from "./listDDAModal.module.scss";
+import { getStatus } from "@/utils/dda";
 
 interface DDAItem {
   id: string;
@@ -32,36 +34,30 @@ export default function ListDDAModal({
   confirmButtonText,
   onSuccess,
 }: Props) {
-  const [status, setStatus] = useState<string>("");
   const t = useTranslations();
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [error, setError] = useState("");
   const { mutate: updateStatus, isPending } = useUpdateDDAStatus();
 
-  useEffect(() => {
-    if (selectedData?.status) {
-      setStatus(selectedData.status);
-    } else {
-      setStatus("");
+  const getOptionValue = () => {
+    switch (selectedData?.status) {
+      case "listed":
+        return "unlisted";
+      case "unlisted":
+      case "rejected":
+        return "awaitingForApproval";
+      case "approved":
+        return "listed";
+      default:
+        return "";
     }
-  }, [selectedData]);
+  }
+
+  const [status, setStatus] = useState(getOptionValue());
 
   const handleChange = (event: React.ChangeEvent<{ value: any }>) => {
     setStatus(event.target.value as string);
   };
-
-  const getNextStatus = (currentStatus: string = "") => {
-    if (currentStatus === "listed") {
-      return "unlisted";
-    } else if (currentStatus === "unlisted") {
-      return "awaitingForApproval";
-    } else if (currentStatus === "approved") {
-      return "listed";
-    } else if (currentStatus === "rejected") {
-      return "awaitingForApproval";
-    }
-    return "";
-  }
 
   const handleClose = () => {
     setOpen(false);
@@ -90,94 +86,89 @@ export default function ListDDAModal({
     );
   };
 
+  const getDefaultAction = () => {
+    switch (selectedData?.status) {
+      case "listed":
+        return t("dataAgreements.actions.unlist");
+      case "unlisted":
+      case "rejected":
+        return t("dataAgreements.actions.requestReview");
+      case "approved":
+        return t("dataAgreements.actions.list");
+      default:
+        return "";
+    }
+  };
+
+
+
+
   return (
     <React.Fragment>
-      <Drawer anchor="right" open={open}>
-        <Box className="dd-modal-container">
-          <Box className="dd-modal-header">
+      <Drawer 
+        anchor="right" 
+        open={open}
+        className={styles['dd-modal']}
+      >
+        <Box className={styles['dd-modal-container']}>
+          <Box className={styles['dd-modal-header']}>
             <SnackbarComponent
               open={openSnackBar}
               setOpen={setOpenSnackBar}
               message={error}
               topStyle={100}
             />
-            <Box pl={2} style={{ width: "90%" }}>
-              <Typography className="dd-modal-header-text ">
+            <Box className={styles['header-content']}>
+              <Typography variant="h6" className={styles['header-text']}>
                 {headerText}: {selectedData?.purpose || 'N/A'}
               </Typography>
-              <Typography color="#F3F3F6">
+              <Typography className={styles['template-id']}>
                 {selectedData?.templateId || 'N/A'}
               </Typography>
             </Box>
             <CloseIcon
-              onClick={() => {
-                setOpen(false);
-                if (selectedData?.status) {
-                  setStatus(selectedData.status);
-                } else {
-                  setStatus("");
-                }
-              }}
-              sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
+              onClick={handleClose}
+              className={styles['close-btn']}
             />
           </Box>
-          <Box>
-            <Box
-              p={1.5}
-              sx={{
-                fontSize: "1rem",
-                lineHeight: "1.5",
-                letterSpacing: "0.00938em",
-              }}
-            >
-              <Typography variant="subtitle1">
+          
+          <Box className={styles['modal-content']}>
+            <Box className={styles['status-section']}>
+              <Typography className={styles['status-label']}>
                 Status Action:
-                <span style={{ color: "rgba(224, 7, 7, 0.986)" }}>*</span>
+                <span className={styles['required']}>*</span>
               </Typography>
               {selectedData ? (
-                <Select
-                  value={getNextStatus(status)}
-                  onChange={(e) => handleChange(e as any)}
-                  fullWidth
-                  variant="outlined"
-                  sx={{ marginTop: "5px" }}
-                  size="small"
-                  defaultValue={selectedData.status ? getNextStatus(selectedData.status) : ""}
-                >
-                  <MenuItem disabled value="">
-                    <em>Select status action ...</em>
-                  </MenuItem>
-                  {selectedData.status === "listed" && (
-                    <MenuItem value="unlisted">Unlist</MenuItem>
-                  )}
-                  {selectedData.status === "unlisted" && (
-                    <MenuItem value="awaitingForApproval">Request Review</MenuItem>
-                  )}
-                  {selectedData.status === "approved" && (
-                    <MenuItem value="listed">List</MenuItem>
-                  )}
-                  {selectedData.status === "rejected" && (
-                    <MenuItem value="awaitingForApproval">Request Review</MenuItem>
-                  )}
-                </Select>
+                <Box className={styles['select-container']}>
+                  <Select
+                     value={getOptionValue()}
+                     onChange={(e) => handleChange(e as any)}
+                     fullWidth
+                     variant="outlined"
+                     sx={{ marginTop: "5px" }}
+                     size="small"
+                     defaultValue={getOptionValue()}
+                  >
+                    <MenuItem disabled value="">
+                      <em>Select status action ...</em>
+                    </MenuItem>
+                    <MenuItem value={getOptionValue()}>
+                      {getDefaultAction()}
+                    </MenuItem>
+                  </Select>
+                </Box>
               ) : (
                 <Typography color="error">No data selected</Typography>
               )}
             </Box>
           </Box>
-          <Box className="modal-footer">
+          
+          <Box className={styles['modal-footer']}>
             <Button
-              onClick={handleClose}
-              className="delete-btn"
-              sx={{
-                marginRight: "10px",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
               variant="outlined"
+              onClick={handleClose}
+              className={styles['cancel-btn']}
+              disabled={isPending}
             >
               {t("common.cancel")}
             </Button>
@@ -186,7 +177,7 @@ export default function ListDDAModal({
               color="primary"
               onClick={handleSubmit}
               disabled={!status || isPending}
-              className="confirm-btn"
+              className={styles['confirm-btn']}
             >
               {isPending ? (
                 <CircularProgress size={24} color="inherit" />

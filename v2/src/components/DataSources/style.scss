@@ -16,7 +16,6 @@
         font-weight: 700;
         font-size: 1.25rem;
         margin: 0;
-        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
         line-height: 1.6;
         letter-spacing: 0.0075em;
     }
@@ -36,7 +35,7 @@
     .actionBtnContainer {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: space-between;
     }
 }
 
