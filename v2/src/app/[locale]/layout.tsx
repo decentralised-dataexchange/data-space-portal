@@ -6,46 +6,36 @@ import { routing } from '@/i18n/routing';
 import ClientProviders from '@/components/common/Providers';
 import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import AppLayout from '@/layouts/AppLayout';
-import localFont from 'next/font/local';
-
-// Load the font file
-const untitledSans = localFont({
-  src: [
-    {
-      path: "../../assets/fonts/UntitledSans-Regular.woff2",
-      weight: '400',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-untitled-sans',
-  display: 'swap',
-});
+import { font } from '../fonts';
 
 type Props = {
   children: ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: { locale: Locale };
 };
+
+if (!routing.locales) {
+  throw new Error('routing.locales is not defined');
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
-  const { locale } = await params;
+  const { locale } = params;
   
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
 
-  // Enable static rendering
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={`${untitledSans.variable} font-sans`}>
+    <html lang={locale} className={`${font.variable} font-sans`}>
       <head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
-      <body>
+      <body className="min-h-screen bg-background font-sans antialiased">
         <ClientProviders>
           <ThemeRegistry>
             <NextIntlClientProvider>

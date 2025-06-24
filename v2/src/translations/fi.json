@@ -63,6 +63,37 @@
     "addCredential": "Lisää tunnistetiedot",
     "edit": "Muokkaa",
     "policyUrl": "Käytäntö URL",
+    "verification": {
+      "confirm": {
+        "title": "Vahvista varmennus",
+        "description": "Tarkista ja vahvista varmennustietosi",
+        "verifying": "Vahvistetaan tietojasi...",
+        "success": "Varmennus onnistui!",
+        "error": "Varmennus epäonnistui. Yritä uudelleen.",
+        "templateError": "Varmennuspohjaa ei löytynyt",
+        "errorDescription": "Kohtasimme ongelman varmennustietojesi käsittelyssä. Tarkista seuraavat asiat:",
+        "checkConnection": "Tarkista internetyhteytesi",
+        "tryAgain": "Yritä uudelleen hetken kuluttua",
+        "contactSupport": "Ota yhteyttä tukeen, jos ongelma jatkuu",
+        "retry": "Yritä uudelleen",
+        "back": "Takaisin",
+        "issuedOn": "Myönnetty",
+        "validUntil": "Voimassa",
+        "status": "Tila",
+        "verificationId": "Varmennuksen tunniste"
+      },
+      "connect": {
+        "title": "Yhdistä lompakkosi",
+        "description": "Valitse vahvistustapa jatkaaksesi",
+        "selectWallet": "Valitse yhdistettävä lompakko",
+        "walletTitle": "Lompakon yhdistäminen",
+        "cloudWallet": "Pilvilompakko",
+        "mobileWallet": "Mobiililompakko",
+        "walletDescription": "Anna lyhyt perustelu lompakkosi yhdistämiselle:",
+        "justificationPlaceholder": "Kirjoita perustelusi tähän...",
+        "connectWallet": "Yhdistä lompakko"
+      }
+    },
     "location": "Sijainti",
     "descriptionPlaceholder": "Organisaation kuvaus, enintään 500 merkkiä",
     "prepareDA": "Valmistele tietojen luovutussopimukset",
@@ -89,6 +120,7 @@
     "industry": "Toimiala"
   },
   "common": {
+    "continue": "Jatka",
     "certificateOfRegistration": "REKISTERÖINTITODISTUS",
     "language": "Kieli",
     "poweredby": "Palvelun tarjoaa",
@@ -117,6 +149,11 @@
     "generic": "Jokin meni pieleen."
   },
   "dataAgreements": {
+    "title": "Markkinapaikkailmoitukset",
+    "subtitle": "Hallitse markkinapaikkailmoituksia käyttämällä organisaatiosi tietojen luovutussopimuksia (DDA).",
+    "addButton": "Lisää uusi DDA",
+    "saveButton": "Tallenna muutokset",
+    "noListingsAvailable": "Ei listauksia saatavilla. Lisää uusi listaus painamalla +",
     "deleteModal": {
       "title": "Poista tietosopimus",
       "description": "Haluatko varmasti poistaa tämän tietosopimuksen? Tätä toimintoa ei voi peruuttaa.",
@@ -127,7 +164,6 @@
       "title": "Julkaise markkinapaikalla",
       "confirmButton": "Lähetä"
     },
-    "title": "Hallitse listauksia",
     "all": "Kaikki",
     "list": "Listatut",
     "underReview": "Arvioitavana",

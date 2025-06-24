@@ -14,40 +14,39 @@ export interface SidebarMenuItem {
   subMenu: SubMenuItem[];
 }
 
-// Define menu items with direct translation keys
 export const sidebarMenuItems: SidebarMenuItem[] = [
   {
-    name: 'Getting Started', // Fallback name if translation fails
+    name: 'Getting Started',
     translationKey: 'gettingStarted',
     icon: 'HouseOutlined',
     link: '/start',
     subMenu: []
   },
   {
-    name: 'Marketplace Listing', // Fallback name if translation fails
-    translationKey: 'dataAgreements',
+    name: 'Marketplace Listing',
+    translationKey: 'dataAgreements.title',
     icon: 'InsertDriveFileOutlined',
     link: '/dd-agreements',
     subMenu: []
   },
   {
-    name: 'Account', // Fallback name if translation fails
+    name: 'Account',
     translationKey: 'account',
     icon: 'LockOutlined',
     link: '/account',
     subMenu: [
       {
-        name: 'Manage Admin', // Fallback name if translation fails
+        name: 'Manage Admin',
         translationKey: 'manageAdmin',
         link: '/manage-admin',
       },
       {
-        name: 'Developer APIs', // Fallback name if translation fails
+        name: 'Developer APIs',
         translationKey: 'developerApis',
         link: '/developer-apis',
       },
       {
-        name: 'Business Wallet', // Fallback name if translation fails
+        name: 'Business Wallet',
         translationKey: 'businessWallet',
         link: '/business-wallet',
       }

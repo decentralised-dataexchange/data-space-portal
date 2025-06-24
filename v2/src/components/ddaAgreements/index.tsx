@@ -10,7 +10,11 @@ import {
   Typography,
   CircularProgress,
   Alert,
+  IconButton,
+  Divider,
 } from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import "../DataSources/style.scss";
 import { useTranslations } from "next-intl";
 import { DataDisclosureAgreement, DataSource } from "@/types/dataDisclosureAgreement";
@@ -21,6 +25,7 @@ import ListDDAModal from "./listDDAModal";
 import { useDDAgreements } from "@/custom-hooks/dataDisclosureAgreements";
 import { defaultLogoImg } from "@/constants/defalultImages";
 import { useGetDataSourceList } from "@/custom-hooks/dataSources";
+import styles from "./ddaAgreements.module.scss";
 
 interface DataSourceItem {
   api?: string[];
@@ -51,41 +56,55 @@ const DDAgreements = () => {
   const dataSources = dataSourceItems as unknown as ApiResponse;
 
   const getDataSourceDetails = (dataAgreement: DataDisclosureAgreement | null) => {
-    if (!dataAgreement) return { coverImage: "", logoImage: defaultLogoImg };
-    
-    if (!dataSources) {
-      return { coverImage: "", logoImage: defaultLogoImg };
+    // Default return values with fallback to default logo
+    const defaultImages = { 
+      coverImage: "", 
+      logoImage: defaultLogoImg 
+    };
+
+    if (!dataAgreement || !dataSources) {
+      return defaultImages;
     }
     
     // Extract the data sources list from the response
-    const dataSourcesList = dataSources && typeof dataSources === 'object' && 'dataSources' in dataSources ? 
-      dataSources.dataSources : 
-      (Array.isArray(dataSources) ? dataSources : []);
+    const dataSourcesList = Array.isArray(dataSources) 
+      ? dataSources 
+      : 'dataSources' in dataSources 
+        ? dataSources.dataSources 
+        : [];
     
     if (!dataSourcesList.length) {
-      return { coverImage: "", logoImage: defaultLogoImg };
+      return defaultImages;
     }
     
-    // Find the data source that contains this DDA
+    // Try to find a data source that contains this DDA
     for (const item of dataSourcesList) {
       if (!item?.dataSource) continue;
       
-      const agreements = item.dataDisclosureAgreements || [];
-      
-      // Find matching DDA by templateId
-      const matchingDDA = agreements.find(
+      // First, check if this item has the DDA we're looking for
+      const matchingDDA = (item.dataDisclosureAgreements || []).find(
         (dda: DataDisclosureAgreement) => dda?.templateId === dataAgreement.templateId
       );
       
       if (matchingDDA) {
         // Return the cover image and logo from the matched data source
-        const coverImage = item.dataSource.coverImageUrl || '';
-        const logoImage = item.dataSource.logoUrl || defaultLogoImg;
-        return { coverImage, logoImage };
+        return {
+          coverImage: item.dataSource.coverImageUrl || "",
+          logoImage: item.dataSource.logoUrl || defaultLogoImg
+        };
       }
     }
     
-    return { coverImage: "", logoImage: defaultLogoImg };
+    // If no matching DDA found, try to use the first available data source's images
+    const firstDataSource = dataSourcesList[0]?.dataSource;
+    if (firstDataSource) {
+      return {
+        coverImage: firstDataSource.coverImageUrl || "",
+        logoImage: firstDataSource.logoUrl || defaultLogoImg
+      };
+    }
+    
+    return defaultImages;
   };
   
   const { data, isLoading, error, refetch } = useDDAgreements(
@@ -119,70 +138,127 @@ const DDAgreements = () => {
 
   console.log("error", error);
 
-  return (
-    <>
-      <Box sx={{ margin: "15px 10px" }} className="dd-container">
-        <Box className="d-flex space-between">
-          <span className="dd-titleTxt">{t("dataAgreements.title")}</span>
-          <Box component="div">
-            <FormControl>
-              <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="all"
-                name="radio-buttons-group"
-                row
-              >
-                <FormControlLabel
-                  value="all"
-                  onChange={() => handleChange("all")}
-                  control={<Radio name="all" color="default" size="small" />}
-                  label={
-                    <Typography variant="body2">{t("common.all")}</Typography>
-                  }
-                />
-                <FormControlLabel
-                  value="complete"
-                  onChange={() => handleChange("complete")}
-                  control={
-                    <Radio name="complete" color="default" size="small" />
-                  }
-                  label={
-                    <Typography variant="body2">
-                      {t("dataAgreements.list")}
-                    </Typography>
-                  }
-                />
-              </RadioGroup>
-            </FormControl>
-          </Box>
+  const handleAddNewListing = () => {
+    console.log('Add new listing clicked');
+    // TODO: Implement add new listing functionality
+  };
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <Box display="flex" justifyContent="center" my={4}>
+          <CircularProgress />
         </Box>
+      );
+    }
+
+    if (error) {
+      return (
+        <Alert severity="error" sx={{ my: 2 }}>
+          {commonT("errors.generic")}
+        </Alert>
+      );
+    }
+
+    const hasListings = (data?.dataDisclosureAgreements?.length ?? 0) > 0;
+
+    if (!hasListings) {
+      return (
+        <div className={styles.emptyState}>
+          <p className={styles.emptyText}>{t("dataAgreements.noListingsAvailable")}</p>
+          <div 
+            className={styles.addButton}
+            onClick={handleAddNewListing}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && handleAddNewListing()}
+          >
+            <AddCircleOutlineIcon />
+            <span>{t("dataAgreements.addButton")}</span>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className={styles.filters}>
+          <FormControl>
+            <RadioGroup
+              aria-labelledby="radio-buttons-group-label"
+              defaultValue="all"
+              name="radio-buttons-group"
+              row
+            >
+              <FormControlLabel
+                value="all"
+                onChange={() => handleChange("all")}
+                control={<Radio name="all" color="default" size="small" />}
+                label={
+                  <Typography variant="body2">{t("common.all")}</Typography>
+                }
+              />
+              <FormControlLabel
+                value="complete"
+                onChange={() => handleChange("complete")}
+                control={
+                  <Radio name="complete" color="default" size="small" />
+                }
+                label={
+                  <Typography variant="body2">
+                    {t("dataAgreements.list")}
+                  </Typography>
+                }
+              />
+            </RadioGroup>
+          </FormControl>
+        </div>
         <Box sx={{ marginTop: "16px" }}>
-          {isLoading ? (
-            <Box display="flex" justifyContent="center" my={4}>
-              <CircularProgress />
-            </Box>
-          ) : error ? (
-            <Alert severity="error" sx={{ my: 2 }}>
-              {commonT("errors.generic")}
-            </Alert>
-          ) : data?.dataDisclosureAgreements.length === 0 ? (
-            <Alert severity="info" sx={{ my: 2 }}>
-              {commonT("noResultsFound")}
-            </Alert>
-          ) : (
-            <DDAtable
-              setIsOpenViewDDA={setIsOpenViewDDA}
-              setSelectedDDA={setSelectedDDA}
-              tabledata={data || { dataDisclosureAgreements: [], pagination: { total: 0, limit, offset: offsetValue, hasNext: false, hasPrevious: false, totalItems: 0, currentPage: 0, totalPages: 0 } }}
-              setIsOpenDelete={setIsOpenDelete}
-              setIsOpenPublish={setIsOpenPublish}
-              limit={limit}
-              offset={offsetValue}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-            />
-          )}
+          <DDAtable
+            setIsOpenViewDDA={setIsOpenViewDDA}
+            setSelectedDDA={setSelectedDDA}
+            tabledata={data || { dataDisclosureAgreements: [], pagination: { total: 0, limit, offset: offsetValue, hasNext: false, hasPrevious: false, totalItems: 0, currentPage: 0, totalPages: 0 } }}
+            setIsOpenDelete={setIsOpenDelete}
+            setIsOpenPublish={setIsOpenPublish}
+            limit={limit}
+            offset={offsetValue}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleRowsPerPageChange}
+          />
         </Box>
+      </>
+    );
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <div className={styles.headerRow}>
+            <h1 className={styles.title}>{t("dataAgreements.title")}</h1>
+            <div className={styles.actions}>
+              <IconButton 
+                onClick={handleAddNewListing}
+                aria-label={t('dataAgreements.addButton')}
+                className={styles.actionButton}
+              >
+                <AddCircleOutlineIcon fontSize="large" />
+              </IconButton>
+              <IconButton 
+                onClick={() => console.log('Save changes')}
+                aria-label={t('dataAgreements.saveButton')}
+                className={styles.actionButton}
+              >
+                <SaveAltIcon fontSize="large" />
+              </IconButton>
+            </div>
+          </div>
+          <p className={styles.subtitle}>
+            {t("dataAgreements.subtitle")}
+          </p>
+        </div>
+      </div>
+      {renderContent()}
 
         {selectedDDA && (
           <ViewDDAgreementModalInner
@@ -233,8 +309,7 @@ const DDAgreements = () => {
             onSuccess={refetch}
           />
         )}
-      </Box>
-    </>
+    </div>
   );
 };
 

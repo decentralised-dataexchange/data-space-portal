@@ -13,7 +13,10 @@ interface VerificationTemplateState {
 }
 
 interface VerificationState {
-  data: any;
+  data: {
+    verification: any;
+    selectedTemplate: any;
+  } | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
@@ -37,7 +40,14 @@ const initialState: GettingStartState = {
   error: null,
   listConnection: { data: null, status: 'idle', error: null },
   verificationTemplate: { data: null, status: 'idle', error: null },
-  verification: { data: null, status: 'idle', error: null },
+  verification: { 
+    data: { 
+      verification: null, 
+      selectedTemplate: null 
+    }, 
+    status: 'idle', 
+    error: null 
+  },
   imageSet: { logo: null, cover: null },
 };
 
@@ -87,11 +97,39 @@ const gettingStartSlice = createSlice({
     },
     setVerificationSuccess(state, action: PayloadAction<any>) {
       state.verification.status = 'succeeded';
-      state.verification.data = action.payload;
+      if (!state.verification.data) {
+        state.verification.data = { verification: null, selectedTemplate: null };
+      }
+      state.verification.data.verification = action.payload;
     },
     setVerificationFailure(state, action: PayloadAction<string>) {
       state.verification.status = 'failed';
       state.verification.error = action.payload;
+    },
+    setSelectedTemplate(state, action: PayloadAction<any>) {
+      if (!state.verification.data) {
+        state.verification.data = { verification: null, selectedTemplate: null };
+      }
+      state.verification.data.selectedTemplate = action.payload;
+    },
+    setVerification(state, action: PayloadAction<{ verification: any }>) {
+      if (!state.verification.data) {
+        state.verification.data = { verification: null, selectedTemplate: null };
+      }
+      state.verification.data.verification = action.payload.verification;
+      state.verification.status = 'succeeded';
+      state.verification.error = null;
+    },
+    setVerificationError(state, action: PayloadAction<string>) {
+      state.verification.status = 'failed';
+      state.verification.error = action.payload;
+    },
+    resetVerification(state) {
+      state.verification = {
+        data: { verification: null, selectedTemplate: null },
+        status: 'idle',
+        error: null
+      };
     },
     setImages(state, action: PayloadAction<{logo: string | null, cover: string | null}>) {
       state.imageSet = action.payload;
@@ -99,9 +137,9 @@ const gettingStartSlice = createSlice({
   },
 });
 
-export const {
-  setGettingStartLoading,
-  setGettingStartSuccess,
+export const { 
+  setGettingStartLoading, 
+  setGettingStartSuccess, 
   setGettingStartFailure,
   setListConnectionLoading,
   setListConnectionSuccess,
@@ -112,7 +150,11 @@ export const {
   setVerificationLoading,
   setVerificationSuccess,
   setVerificationFailure,
-  setImages,
+  setSelectedTemplate,
+  setVerification,
+  setVerificationError,
+  resetVerification,
+  setImages
 } = gettingStartSlice.actions;
 
 export default gettingStartSlice.reducer;

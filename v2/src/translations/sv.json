@@ -89,7 +89,39 @@
     "confirmWalletDescription": "Ditt företag är ej verifierat. Klicka Bekräfta för att verifiera.",
     "industry": "Bransch"
   },
+  "verification": {
+    "confirm": {
+      "title": "Bekräfta verifiering",
+      "description": "Granska och bekräfta dina verifieringsuppgifter",
+      "verifying": "Verifierar dina uppgifter...",
+      "success": "Verifiering lyckades!",
+      "error": "Verifiering misslyckades. Försök igen.",
+      "templateError": "Verifieringsmall hittades inte",
+      "errorDescription": "Vi stötte på ett problem vid bearbetning av din verifiering. Kontrollera följande:",
+      "checkConnection": "Kontrollera din internetanslutning",
+      "tryAgain": "Försök igen om en stund",
+      "contactSupport": "Kontakta supporten om problemet kvarstår",
+      "retry": "Försök igen",
+      "back": "Tillbaka",
+      "issuedOn": "Utfärdad den",
+      "validUntil": "Giltig till",
+      "status": "Status",
+      "verificationId": "Verifierings-ID"
+    },
+    "connect": {
+      "title": "Anslut din plånbok",
+      "description": "Välj en verifieringsmetod för att fortsätta",
+      "selectWallet": "Välj en plånbok att ansluta",
+      "walletTitle": "Plånboksanslutning",
+      "cloudWallet": "Molnplånbok",
+      "mobileWallet": "Mobilplånbok",
+      "walletDescription": "Ange en kort motivering för att ansluta din plånbok:",
+      "justificationPlaceholder": "Ange din motivering här...",
+      "connectWallet": "Anslut plånbok"
+    }
+  },
   "common": {
+    "continue": "Fortsätt",
     "certificateOfRegistration": "REGISTRERINGSBEVIS",
     "language": "Språk",
     "poweredby": "Drivs av",
@@ -118,6 +150,11 @@
     "generic": "Något gick fel."
   },
   "dataAgreements": {
+    "title": "Marknadsplatslistning",
+    "subtitle": "Hantera marknadsplatslistning med hjälp av Data Disclosure Agreements (DDA) för din organisation.",
+    "addButton": "Lägg till ny DDA",
+    "saveButton": "Spara ändringar",
+    "noListingsAvailable": "Inga listor tillgängliga. Klicka på + för att lägga till ny lista",
     "deleteModal": {
       "title": "Ta bort dataavtal",
       "description": "Är du säker på att du vill ta bort detta dataavtal? Denna åtgärd kan inte ångras.",
@@ -128,7 +165,6 @@
       "title": "Publicera på marknadsplatsen",
       "confirmButton": "Skicka"
     },
-    "title": "Hantera listningar",
     "all": "Alla",
     "list": "Listade",
     "underReview": "Under granskning",
