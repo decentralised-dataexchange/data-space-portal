@@ -1,76 +1,90 @@
-import { Box, Button, FormControl, FormControlLabel, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+"use client";
 
-const ConnectComponent = ({ callRightSideDrawer }) => {
+import { Box, Button, TextField, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-    const { t } = useTranslation('translation');
-    const [credentialArray, setcredentialArray] = useState([]);
-
-    return (
-        <>
-            <Box component="div" className='businessInfo'>
-                <Typography gutterBottom component="div">{t('gettingStarted.connectDescription')}</Typography>
-            </Box>
-            <Grid container spacing={2}>
-                {/* <Grid item xs={4}>
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-outlined-label">{t('gettingStarted.country')}</InputLabel>
-                    </FormControl>
-                </Grid> */}
-                {/* <Grid item xs={8}>
-                    <FormControl fullWidth variant="outlined">
-                        <Select
-                            labelId="demo-simple-select-outlined-label"
-                        >
-                            <MenuItem value={10}>Sweden</MenuItem>
-                            <MenuItem value={20}>Sweden 2</MenuItem>
-                            <MenuItem value={30}>Sweden 3</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid> */}
-                {/* <Grid item xs={4}>
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-outlined-label">{t('gettingStarted.trustedIssuers')}</InputLabel>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={8}>
-                    <FormControl fullWidth variant="outlined">
-                        <Select
-                            labelId="demo-simple-select-outlined-label"
-                        >
-                            <MenuItem value={10}>Bolagsverket</MenuItem>
-                            <MenuItem value={20}>Bolagsverket 2</MenuItem>
-                            <MenuItem value={30}>Bolagsverket 3</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid> */}
-            </Grid>
-            <Box className="walletContainer">
-                <Typography gutterBottom>{t('gettingStarted.walletTitle')}</Typography>
-                <Box className="walletInfo">
-                    {/* <FormControl component="fieldset">
-                        <RadioGroup row value={1}   >
-                            <FormControlLabel value={1} control={<Radio />} label={t('gettingStarted.cloudWallet')} labelPlacement='end' />
-                            <FormControlLabel value={2} control={<Radio />} label={t('gettingStarted.mobileWallet')} labelPlacement='end' />
-                        </RadioGroup>
-                    </FormControl> */}
-                    <Box component="div">
-                        <Typography gutterBottom component="div">{t('gettingStarted.walletDescription')}</Typography>
-                        <TextField
-                            className="businessJustifiation"
-                            multiline
-                            rows={4}
-                            fullWidth
-                        />
-                    </Box>
-                </Box>
-            </Box>
-        </>
-    );
+interface ConnectProps {
+  onNext: () => void;
+  onBack?: () => void;
 }
 
+const ConnectComponent = ({ onNext, onBack }: ConnectProps) => {
+  const t = useTranslations();
+  const router = useRouter();
+  const [justification, setJustification] = useState('');
+
+  const handleConnect = () => {
+    // In a real implementation, this would initiate the wallet connection
+    // For now, we'll just proceed to the next step
+    onNext();
+  };
+
+  const handleJustificationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setJustification(event.target.value);
+  };
+
+  return (
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h6" gutterBottom>
+        {t('verification.connect.title')}
+      </Typography>
+      
+      <Typography variant="body1" color="text.secondary" paragraph>
+        {t('verification.connect.description')}
+      </Typography>
+
+      <Box className="walletContainer" sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="subtitle1" gutterBottom>
+          {t('verification.connect.walletTitle')}
+        </Typography>
+        
+        <Box className="walletInfo" sx={{ 
+          bgcolor: '#f5f5f5', 
+          p: 3, 
+          borderRadius: 1,
+          mt: 2
+        }}>
+          <Box>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              {t('verification.connect.walletDescription')}
+            </Typography>
+            <TextField
+              className="businessJustifiation"
+              fullWidth
+              multiline
+              rows={4}
+              value={justification}
+              onChange={handleJustificationChange}
+              variant="outlined"
+              margin="normal"
+            />
+          </Box>
+        </Box>
+      </Box>
+
+      <Box mt={4} display="flex" justifyContent="space-between">
+        {onBack && (
+          <Button 
+            onClick={onBack}
+            variant="outlined"
+            size="large"
+          >
+            {t('common.back')}
+          </Button>
+        )}
+        <Button
+          variant="contained"
+          onClick={handleConnect}
+          size="large"
+          disabled={!justification.trim()}
+        >
+          {t('common.continue')}
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
 export default ConnectComponent;
-
-
-

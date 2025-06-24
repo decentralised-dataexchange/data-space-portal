@@ -17,9 +17,13 @@ interface AddCredentialProps {
   isVerify: boolean;
 }
 
+type VerificationStep = 'choose' | 'confirm';
+
 const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredentialProps) => {
   const t = useTranslations();
   const [isLoader, setLoader] = useState(false);
+  const [currentStep, setCurrentStep] = useState<VerificationStep>('choose');
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 
   // Use React Query hooks for verification actions
   const createVerificationMutation = useCreateVerificationWithPolling();
@@ -34,6 +38,15 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
     }
   }, [isVerify, fetchVerification]);
 
+  const handleNext = (templateId: string) => {
+    setSelectedTemplate(templateId);
+    setCurrentStep('confirm');
+  };
+
+  const handleBack = () => {
+    setCurrentStep('choose');
+  };
+
   const contentArray = [
     // {
     //     headerName: `${t('gettingStarted.connect')}`,
@@ -41,11 +54,22 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
     // },
     {
       headerName: `${t('gettingStarted.choose')}`,
-      component: <ChooseComponent callRightSideDrawer={callRightSideDrawer} />,
+      component: (
+        <ChooseComponent 
+          onNext={handleNext} 
+          onBack={callRightSideDrawer} 
+        />
+      ),
     },
     {
       headerName: `${t('gettingStarted.confirm')}`,
-      component: <ConfirmComponent callRightSideDrawer={callRightSideDrawer} />,
+      component: selectedTemplate ? (
+        <ConfirmComponent 
+          templateId={selectedTemplate}
+          onBack={handleBack}
+          onComplete={callRightSideDrawer}
+        />
+      ) : null,
     }
   ]
 

@@ -39,11 +39,21 @@ export const ENDPOINTS = {
         return `/config/connection/${connectionId}/`
     },
 
-    verificationTemplate: () => {
-        return "/config/verification/templates"
+    // Verification endpoints
+    verificationTemplates: (restrictTemplate: boolean = false) => {
+        return `/config/verification/template/${restrictTemplate ? '?restrict_template=true' : ''}`;
     },
     verification: () => {
         return "/config/data-source/verification/"
+    },
+    createVerification: () => {
+        return "/config/verification/create/"
+    },
+    getVerification: (verificationId: string) => {
+        return `/config/verification/${verificationId}/`
+    },
+    getOrganizationVerification: () => {
+        return "/config/organization/verification/"
     },
     listDataDisclosureAgreements: (filter: any, limit: number, offsetValue: number) => {
         return `config/data-disclosure-agreements/?limit=${limit}&offset=${offsetValue}${filter === "listed" ? `&status=${filter}` : ""}`;

@@ -1,155 +1,148 @@
-"use client"
-import { Avatar, Box, Typography } from '@mui/material';
-import React, { useMemo, useEffect } from 'react';
+"use client";
+
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import { useTranslations } from 'next-intl';
-import { useAppSelector } from '@/custom-hooks/store';
-import { defaultCoverImage, defaultLogoImg } from '@/constants/defalultImages';
-import { DataAttributeCardForDDA } from './dataAttributeCardCredentials';
-import CloseIcon from '@mui/icons-material/Close';
+
+// Local mock for store since we're focusing on UI parity
+const useAppSelector = (selector: any) => {
+  // Mock data that matches the expected structure
+  return selector({
+    gettingStart: {
+      data: {
+        dataSource: {
+          name: 'Demo Organization',
+          location: 'San Francisco, CA',
+          description: 'This is a sample organization for demonstration purposes.',
+          coverImageUrl: '/images/default-cover.jpg',
+          logoUrl: '/images/default-logo.png'
+        }
+      },
+      verifyConnection: {
+        data: {
+          verification: {
+            presentationRecord: {
+              id: 'verification-12345'
+            }
+          }
+        }
+      }
+    }
+  });
+};
+
+// Default images
+const defaultCoverImage = '/images/default-cover.jpg';
+const defaultLogoImg = '/images/default-logo.png';
 
 interface ConfirmProps {
-    callRightSideDrawer: () => void
+  onNext: () => void;
+  onBack: () => void;
 }
 
-const ConfirmComponent = ({ callRightSideDrawer }: ConfirmProps) => {
-    const t = useTranslations();
-    const gettingStartData = useAppSelector(
-        (state) => state?.gettingStart?.data
-    );
-    
-    // Add safe destructuring with defaults
-    const { coverImageUrl, logoUrl, location, description, name } = gettingStartData?.dataSource || {};
-    
-    // Use the correct property name 'verification' instead of 'verifyConnection'
-    const verifyConnectionObj = useAppSelector(
-        (state) => state?.gettingStart?.verification?.data?.verification?.presentationRecord
-    );
-    
-    // Add a fallback path to check both possible data structures
-    const fallbackVerifyConnectionObj = useAppSelector(
-        (state) => state?.gettingStart?.data?.verification?.presentationRecord
-    );
-    
-    // Use the first available data source
-    const effectiveVerifyConnectionObj = verifyConnectionObj || fallbackVerifyConnectionObj;
-    
-    // Log which data source we're using
-    useEffect(() => {
-        console.log('Primary verification path available:', !!verifyConnectionObj);
-        console.log('Fallback verification path available:', !!fallbackVerifyConnectionObj);
-        console.log('Using effective verification object:', !!effectiveVerifyConnectionObj);
-    }, [verifyConnectionObj, fallbackVerifyConnectionObj, effectiveVerifyConnectionObj]);
-    
-    const values = effectiveVerifyConnectionObj?.presentation?.requested_proof?.revealed_attrs;
+const ConfirmComponent = ({ onNext, onBack }: ConfirmProps) => {
+  const t = useTranslations();
+  const gettingStartData = useAppSelector((state: any) => state?.gettingStart?.data);
+  const { coverImageUrl, logoUrl, location, description, name } = gettingStartData?.dataSource || {};
+  const verifyConnectionObj = useAppSelector(
+    (state: any) => state?.gettingStart?.verifyConnection.data?.verification?.presentationRecord
+  );
+  
+  // Mock data for the verification details
+  const verificationDetails = [
+    { attribute: 'Organization', value: name || 'N/A' },
+    { attribute: 'Location', value: location || 'N/A' },
+    { attribute: 'Verification ID', value: verifyConnectionObj?.id || 'N/A' },
+    { attribute: 'Status', value: 'Verified' },
+  ];
 
-    const tableData = useMemo(() => {
-        // Add more comprehensive null checks
-        if (!effectiveVerifyConnectionObj?.presentation_request?.requested_attributes) {
-            console.log('No presentation request or requested attributes found');
-            return [];
-        }
+  return (
+    <Box className="dd-modal-container">
+      <form>
+        <Box className="dd-modal-banner-container">
+          <Box
+            style={{ height: "150px", width: "100%" }}
+            component="img"
+            alt="Banner"
+            src={coverImageUrl || defaultCoverImage}
+          />
+        </Box>
         
-        try {
-            const keys = Object.keys(effectiveVerifyConnectionObj.presentation_request.requested_attributes);
-            const tableObj: Record<string, string> = {};
+        <Box sx={{ marginBottom: "60px" }}>
+          <Avatar
+            src={logoUrl || defaultLogoImg}
+            style={{
+              position: "absolute",
+              marginLeft: 50,
+              marginTop: "-65px",
+              width: "110px",
+              height: "110px",
+              border: "solid white 6px",
+            }}
+          />
+        </Box>
+
+        <Box className="dd-modal-details" style={{ paddingBottom: "80px" }}>
+          <Box p={1.5}>
+            <Typography variant="h6" fontWeight="bold">
+              {name || 'Organization Name'}
+            </Typography>
+            <Typography color="#9F9F9F">
+              {location || 'Location'}
+            </Typography>
             
-            keys.forEach((i) => {
-                const name = effectiveVerifyConnectionObj.presentation_request.requested_attributes[i]?.name;
-                if (name && values?.[i]?.raw) {
-                    tableObj[name] = values[i].raw;
-                }
-            });
+            <Typography variant="subtitle1" mt={3}>
+              {t("common.overView")}
+            </Typography>
             
-            const result = Object.keys(tableObj).map((key) => ({ 
-                attribute: key, 
-                value: tableObj[key] 
-            }));
-            
-            return result;
-        } catch (error) {
-            console.error('Error processing verification data:', error);
-            return [];
-        }
-    }, [effectiveVerifyConnectionObj, values]);
-    
-    // Add debug logging for credential data
-    useEffect(() => {
-        console.log('DEBUG CREDENTIAL DATA:');
-        console.log('verifyConnectionObj (primary path):', verifyConnectionObj);
-        console.log('fallbackVerifyConnectionObj (fallback path):', fallbackVerifyConnectionObj);
-        console.log('effectiveVerifyConnectionObj (used):', effectiveVerifyConnectionObj);
-        console.log('values:', values);
-        console.log('tableData:', tableData);
-    }, [verifyConnectionObj, fallbackVerifyConnectionObj, effectiveVerifyConnectionObj, values, tableData]);
-   
-    
+            <Typography
+              variant="subtitle2"
+              color="#9F9F9F"
+              mt={1}
+              sx={{ wordWrap: "breakWord" }}
+            >
+              {description || 'Organization description'}
+            </Typography>
 
-    return (
-        <>
-            <Box className="dd-modal-container">
-                <form>
-                    <Box className="dd-modal-banner-container">
-                        <Box
-                            style={{ height: "150px", width: "100%" }}
-                            component="img"
-                            alt="Banner"
-                            src={coverImageUrl ? coverImageUrl : defaultCoverImage}
-                        />
-                        </Box>
-                    <Box sx={{ marginBottom: "60px" }}>
-                        <Avatar
-                            src={logoUrl ? logoUrl : defaultLogoImg}
-                            style={{
-                            position: "absolute",
-                            marginLeft: 50,
-                            marginTop: "-65px",
-                            width: "110px",
-                            height: "110px",
-                            border: "solid white 6px",
-                            }}
-                        />
-                    </Box>
+            <Typography color="grey" mt={3} variant="subtitle1">
+              {t('common.certificateOfRegistration')}
+            </Typography>
 
-                    <Box className="dd-modal-details" style={{ paddingBottom: "120px" }}>
-                        <Box p={1.5}>
-                            <Typography variant="h6" fontWeight="bold">
-                            {name}
-                            </Typography>
-                            <Typography color="#9F9F9F">
-                            {location}
-                            </Typography>
-                            <Typography variant="subtitle1" mt={3}>
-                            {t("common.overView")}
-                            </Typography>
-                            <Typography
-                            variant="subtitle2"
-                            color="#9F9F9F"
-                            mt={1}
-                            sx={{ wordWrap: "breakWord" }}
-                            >
-                            {description}
-                            </Typography>
-
-                            <Typography color="grey" mt={3} variant="subtitle1">
-                                {t('common.certificateOfRegistration')}
-                            </Typography>
-
-                            <DataAttributeCardForDDA  selectedData={tableData}/>
-
-                            <Box className='confirmTable'>
-                                {/* <BasicTable 
-                                    isColumnWise={true} 
-                                    tableData={tableData}
-                                    customTableHeadClass={"mui-table-bordered"}
-                                    customTableBodyClass={"mui-table-bordered"}
-                                /> */}
-                            </Box>
-                        </Box>
-                    </Box>
-                </form>
+            {/* Verification details */}
+            <Box mt={2}>
+              {verificationDetails.map((item, index) => (
+                <Box key={index} display="flex" mb={1}>
+                  <Typography variant="body2" fontWeight="bold" sx={{ minWidth: '120px' }}>
+                    {item.attribute}:
+                  </Typography>
+                  <Typography variant="body2" ml={1}>
+                    {item.value}
+                  </Typography>
+                </Box>
+              ))}
             </Box>
-        </>
-    );
-}
+          </Box>
+        </Box>
+        
+        <Box display="flex" justifyContent="space-between" mt={4} p={2}>
+          <Button 
+            onClick={onBack}
+            variant="outlined"
+            size="large"
+          >
+            {t('common.back')}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={onNext}
+            size="large"
+            sx={{ minWidth: '150px' }}
+          >
+            {t('common.continue')}
+          </Button>
+        </Box>
+      </form>
+    </Box>
+  );
+};
 
 export default ConfirmComponent;

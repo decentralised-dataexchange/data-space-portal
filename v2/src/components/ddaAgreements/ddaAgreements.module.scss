@@ -1,0 +1,83 @@
+.container {
+  margin: 16px 24px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.headerContent {
+  flex: 1;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  color: #000;
+  margin: 4px 0 0 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+}
+
+.actionButton {
+  color: #000 !important;
+  padding: 4px !important;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  
+  .emptyText {
+    margin-bottom: 16px;
+    font-size: 1rem;
+  }
+  
+  .addButton {
+    color: #000;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.filters {
+  margin-top: 8px;
+}
