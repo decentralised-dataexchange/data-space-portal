@@ -1,15 +1,18 @@
 import localFont from 'next/font/local';
 
 // Load the local font file
-export const font = localFont({
+export const untitledSans = localFont({
   src: [
     {
-      path: './fonts/UntitledSans-Regular.woff2',
+      path: '../../public/fonts/UntitledSans-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
   ],
-  variable: '--font-sans',
+  variable: '--font-untitled-sans',
   display: 'swap',
   preload: true,
 });
+
+// Export as the default font
+export const font = untitledSans;

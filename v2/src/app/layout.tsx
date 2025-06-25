@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { font } from './fonts';
+import { untitledSans } from './fonts';
 import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import '../styles/globals.scss';
 
@@ -9,7 +9,7 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className={`${font.variable} font-sans`}>
+    <html lang="en" className={`${untitledSans.variable} font-sans`}>
       <body className="min-h-screen bg-background font-sans antialiased">
         <ThemeRegistry>
           {children}
