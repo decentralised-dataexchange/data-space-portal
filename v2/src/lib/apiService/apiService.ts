@@ -9,54 +9,14 @@ import {
   OrganizationVerificationResponse,
   PresentationRecord 
 } from "@/types/verification";
-import { v4 as uuidv4 } from 'uuid';
 
-// Mock data store - keeping only for reference, not used in production
-const mockDataStore = {
-  organization: {
-    id: 'org-123',
-    name: 'Demo Organization',
-    isVerified: false,
-    verification: {
-      id: null as string | null,
-      status: 'not_started' as const,
-      attempts: 0
-    }
-  },
-  verificationTemplates: [
-    {
-      id: 'template-1',
-      name: 'Business Registration',
-      description: 'Verify your business registration details',
-      issuerId: 'issuer-1',
-      issuerName: 'Business Registry Authority',
-      issuerLocation: 'Finland',
-      issuerLogoUrl: '/images/business-registry-logo.png',
-      walletName: 'Business Wallet',
-      walletLocation: 'Finland',
-      available: true,
-      requiredFields: ['businessName', 'registrationNumber', 'country']
-    }
-  ] as VerificationTemplate[],
-  verifications: {} as Record<string, Verification>
-};
-
-// Helper function to simulate API delay
-const simulateApiCall = <T>(data: T, delay = 800): Promise<T> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(data), delay);
-  });
-};
-
-interface LoginResponse {
-  access: string;
-  refresh: string;
-}
-
+// API Service implementation with real API calls
 export const apiService = {
-  login: async (email: string, password: string): Promise<LoginResponse> => {
-    return api.post<LoginResponse>(ENDPOINTS.login(), { email, password })
-      .then(res => res.data);
+  login: async (email: string, password: string): Promise<{ access: string; refresh: string }> => {
+    return api.post<{ access: string; refresh: string }>(
+      ENDPOINTS.login(), 
+      { email, password }
+    ).then(res => res.data);
   },
   dataSourceList: async (): Promise<DataSourceListResponse> => {
     return api.get<DataSourceListResponse>(ENDPOINTS.dataSourceList())
@@ -90,9 +50,29 @@ export const apiService = {
     return api.put<any>(ENDPOINTS.updateOpenApiUrl(), payload)
       .then(res => res.data);
   },
-  updateOrganisationLogoImage: async (formData: FormData): Promise<any> => {
-    return api.put<{ Organization: any }>(ENDPOINTS.getLogoImage(), formData)
-      .then(res => res.data.Organization);
+  updateLogoImage: async (file: File): Promise<{ logoImage: string }> => {
+    try {
+      const formData = new FormData();
+      formData.append('logo', file);
+      
+      // Create headers with the correct content type for file upload
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+      };
+      
+      // Make the API call
+      const response = await api.put<{ Organization: { logoImage: string } }>(
+        ENDPOINTS.getLogoImage(),
+        formData,
+        { headers }
+      );
+      
+      // Return the logo image URL
+      return { logoImage: response.data.Organization.logoImage };
+    } catch (error) {
+      console.error('Error updating logo image:', error);
+      throw error;
+    }
   },
   getCoverImage: async (): Promise<any> => {
     return axiosInstanceWithArrayBufferResType.get(ENDPOINTS.getCoverImage()).then((res) => {
@@ -104,7 +84,6 @@ export const apiService = {
       return imageBlobToBase64(res.data);
     });
   },
-  // list connections for organisation
   listConnections: async (limit: number, offsetValue: number, restrictTemplate: boolean = false): Promise<any> => {
     return api.get<any>(ENDPOINTS.listConnections(limit, offsetValue))
       .then(res => res.data);
@@ -113,60 +92,28 @@ export const apiService = {
     return api.put<{ Organization: any }>(ENDPOINTS.getCoverImage(), formData)
       .then(res => res.data.Organization);
   },
-  // Verification template endpoints
-  getVerificationTemplates: async (restrictTemplate: boolean = false) => {
-    type ResponseData = { verificationTemplates: VerificationTemplate[] };
-    
-    // Use mock data in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Using mock verification templates');
-      return {
-        verificationTemplates: [
-          {
-            id: 'template-1',
-            name: 'Business Verification',
-            description: 'Verify your business credentials',
-            issuerId: 'issuer-1',
-            issuerName: 'Business Registry',
-            issuerLocation: 'Finland',
-            walletName: 'Business Wallet',
-            walletLocation: 'Finland',
-            available: true,
-            requiredFields: ['businessName', 'registrationNumber'],
-            issuerLogoUrl: '/images/business-registry-logo.png'
-          },
-          {
-            id: 'template-2',
-            name: 'Identity Verification',
-            description: 'Verify your personal identity',
-            issuerId: 'issuer-2',
-            issuerName: 'National ID',
-            issuerLocation: 'Finland',
-            walletName: 'Personal Wallet',
-            walletLocation: 'Finland',
-            available: true,
-            requiredFields: ['firstName', 'lastName', 'dateOfBirth'],
-            issuerLogoUrl: '/images/national-id-logo.png'
-          }
-        ]
-      };
-    }
-    
-    // In production, make the actual API call
+  getVerificationTemplates: async (restrictTemplate: boolean = false): Promise<VerificationTemplate[]> => {
     try {
-      const response = await api.get<ResponseData>(
-        ENDPOINTS.verificationTemplates(restrictTemplate)
+      const response = await api.get(ENDPOINTS.verificationTemplates(restrictTemplate)) as 
+        { data: { verificationTemplates: VerificationTemplate[] } };
+      return response.data.verificationTemplates;
+    } catch (error) {
+      console.error('Error fetching verification templates:', error);
+      throw error;
+    }
+  },
+  getVerificationTemplate: async (templateId: string): Promise<VerificationTemplate> => {
+    try {
+      // Use the endpoint from apiEndpoints and append the template ID
+      const response = await api.get<VerificationTemplate>(
+        `${ENDPOINTS.verificationTemplates()}/${templateId}/`
       );
       return response.data;
     } catch (error) {
-      console.error('Error fetching verification templates:', error);
-      // Return mock data as fallback even in production if API fails
-      return {
-        verificationTemplates: []
-      };
+      console.error(`Error fetching verification template ${templateId}:`, error);
+      throw error;
     }
   },
-
   createVerification: async (templateId: string): Promise<Verification> => {
     try {
       const response = await api.post<Verification>(
@@ -179,7 +126,6 @@ export const apiService = {
       throw error;
     }
   },
-
   getVerification: async (verificationId: string): Promise<Verification> => {
     try {
       const response = await api.get<Verification>(
@@ -191,7 +137,6 @@ export const apiService = {
       throw error;
     }
   },
-
   getOrganizationVerification: async (): Promise<OrganizationVerificationResponse> => {
     try {
       const response = await api.get<OrganizationVerificationResponse>(
@@ -203,29 +148,14 @@ export const apiService = {
       throw error;
     }
   },
-
-  // Getting Started endpoints
   getGettingStartData: async (): Promise<any> => {
-    return simulateApiCall({
-      dataSource: {
-        id: mockDataStore.organization.id,
-        name: mockDataStore.organization.name,
-        description: 'This is a demo organization for testing',
-        location: 'Demo City, Demo Country',
-        policyUrl: 'https://example.com/privacy-policy',
-        sector: 'Technology',
-        isVerified: mockDataStore.organization.isVerified,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        verification: {
-          ...mockDataStore.organization.verification,
-          status: mockDataStore.organization.isVerified ? 'verified' : 'not_verified'
-        }
-      },
-      verification: mockDataStore.organization.verification.id ? 
-        await apiService.getVerification(mockDataStore.organization.verification.id) : 
-        null
-    });
+    try {
+      const response = await api.get(ENDPOINTS.gettingStart());
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching getting started data:', error);
+      throw error;
+    }
   },
   updateDataSource: async (payload: unknown): Promise<any> => {
     return api.put<any>(ENDPOINTS.gettingStart(), payload)
@@ -234,13 +164,7 @@ export const apiService = {
         throw error;
       });
   },
-  getVerificationTemplate: async (restrictTemplate: boolean = false): Promise<any> => {
-    if (restrictTemplate) {
-      return simulateApiCall(null);
-    }
-    return simulateApiCall(mockDataStore.verificationTemplates[0] || null);
-  },
-  
+
   // Admin profile management
   updateAdminDetails: async (payload: { name: string }): Promise<any> => {
     return api.put<any>(ENDPOINTS.getAdminDetails(), payload)

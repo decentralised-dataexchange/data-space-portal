@@ -32,19 +32,19 @@ export const useCreateVerification = () => {
   return useMutation<Verification, Error, string>({
     mutationFn: async (templateId: string): Promise<Verification> => {
       try {
-        if (process.env.NODE_ENV === 'development') {
-          // Mock response for development
-          return {
-            id: `mock-verification-${Date.now()}`,
-            templateId,
-            status: 'pending',
-            organizationId: 'org-123',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-            metadata: {},
-          };
-        }
+        // if (process.env.NODE_ENV === 'development') {
+        //   // Mock response for development
+        //   return {
+        //     id: `mock-verification-${Date.now()}`,
+        //     templateId,
+        //     status: 'pending',
+        //     organizationId: 'org-123',
+        //     createdAt: new Date().toISOString(),
+        //     updatedAt: new Date().toISOString(),
+        //     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        //     metadata: {},
+        //   };
+        // }
         return await apiService.createVerification(templateId);
       } catch (error) {
         console.error('Error creating verification:', error);
@@ -74,19 +74,19 @@ export const useReadVerificationWithPolling = () => {
 
   return useMutation<Verification, Error, string>({
     mutationFn: async (verificationId: string): Promise<Verification> => {
-      if (process.env.NODE_ENV === 'development') {
-        // Mock response for development
-        return {
-          id: verificationId,
-          templateId: 'mock-template',
-          status: 'verified',
-          organizationId: 'org-123',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-          metadata: {},
-        };
-      }
+      // if (process.env.NODE_ENV === 'development') {
+      //   // Mock response for development
+      //   return {
+      //     id: verificationId,
+      //     templateId: 'mock-template',
+      //     status: 'verified',
+      //     organizationId: 'org-123',
+      //     createdAt: new Date().toISOString(),
+      //     updatedAt: new Date().toISOString(),
+      //     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      //     metadata: {},
+      //   };
+      // }
       return await apiService.getVerification(verificationId);
     },
     onSuccess: (verification) => {
@@ -125,31 +125,31 @@ export const usePollVerification = (verificationId?: string) => {
         throw new Error('No verification ID provided');
       }
 
-      // In development, simulate API call with mock data
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Polling verification status for:', verificationId);
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      // // In development, simulate API call with mock data
+      // if (process.env.NODE_ENV === 'development') {
+      //   console.log('Polling verification status for:', verificationId);
+      //   // Simulate API delay
+      //   await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Simulate verification process (70% success rate for demo)
-        const shouldSucceed = Math.random() > 0.3;
-        const status = shouldSucceed ? 'verified' : 'failed';
+      //   // Simulate verification process (70% success rate for demo)
+      //   const shouldSucceed = Math.random() > 0.3;
+      //   const status = shouldSucceed ? 'verified' : 'failed';
         
-        if (!shouldSucceed) {
-          throw new Error('Verification failed. Please try again.');
-        }
+      //   if (!shouldSucceed) {
+      //     throw new Error('Verification failed. Please try again.');
+      //   }
 
-        return {
-          id: verificationId,
-          status,
-          templateId: 'mock-template',
-          organizationId: 'org-123',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-          metadata: {},
-        };
-      }
+      //   return {
+      //     id: verificationId,
+      //     status,
+      //     templateId: 'mock-template',
+      //     organizationId: 'org-123',
+      //     createdAt: new Date().toISOString(),
+      //     updatedAt: new Date().toISOString(),
+      //     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      //     metadata: {},
+      //   };
+      // }
 
       // In production, make the actual API call
       try {
