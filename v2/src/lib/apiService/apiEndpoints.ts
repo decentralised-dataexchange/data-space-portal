@@ -41,7 +41,7 @@ export const ENDPOINTS = {
 
     // Verification endpoints
     verificationTemplates: (restrictTemplate: boolean = false) => {
-        return `/config/verification/template/${restrictTemplate ? '?restrict_template=true' : ''}`;
+        return `/config/verification/templates${restrictTemplate ? '?restrict_template=true' : ''}`;
     },
     verification: () => {
         return "/config/data-source/verification/"

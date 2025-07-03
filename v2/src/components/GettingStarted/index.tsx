@@ -14,7 +14,7 @@ import {
   useListConnections, 
   useGetCoverImage,
   useGetLogoImage,
-  useGetVerificationTemplate,
+  
   useUpdateDataSource,
   useUpdateLogoImage,
   useUpdateCoverImage
@@ -52,20 +52,11 @@ const GettingStarted = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  // Use React Query hooks instead of Redux actions directly
   const { data: gettingStartData, isLoading: isGettingStartLoading } = useGetGettingStartData();
   const { data: listConnections } = useListConnections(10, 0, false);
   const { data: coverImageBase64, isLoading: isCoverImageLoading } = useGetCoverImage();
   const { data: logoImageBase64, isLoading: isLogoImageLoading } = useGetLogoImage();
-  const { refetch: fetchVerificationTemplate } = useGetVerificationTemplate();
-
-  // Fetch verification template when connections are available
-  useEffect(() => {
-    if (listConnections?.connections?.length > 0) {
-      fetchVerificationTemplate();
-    }
-  }, [listConnections, fetchVerificationTemplate]);
-
+  
   const isEnableAddCredential = listConnections?.connections?.length > 0 && 
     listConnections?.connections[0]?.connectionState === 'active';
 
@@ -120,30 +111,12 @@ const GettingStarted = () => {
     }
   };
 
-  // Add detailed logging for debugging
-  useEffect(() => {
-    console.log('=== DEBUG START PAGE ===');
-    console.log('Loading states:', { 
-      isGettingStartLoading, 
-      isCoverImageLoading, 
-      isLogoImageLoading 
-    });
-    console.log('gettingStartData:', gettingStartData);
-    console.log('coverImageBase64:', coverImageBase64 ? 'exists' : 'null/undefined');
-    console.log('logoImageBase64:', logoImageBase64 ? 'exists' : 'null/undefined');
-    console.log('listConnections:', listConnections);
-  }, [isGettingStartLoading, isCoverImageLoading, isLogoImageLoading, gettingStartData, coverImageBase64, logoImageBase64, listConnections]);
-
-  // Memoize the loading state to prevent unnecessary re-renders
   const isLoading = useMemo(() => {
     const loading = isGettingStartLoading || isCoverImageLoading || isLogoImageLoading;
-    console.log('Combined loading state:', loading);
     return loading;
   }, [isGettingStartLoading, isCoverImageLoading, isLogoImageLoading]);
 
-  // Handle error states with detailed logging
   const hasError = useMemo(() => {
-    // The API response doesn't have a status field, so we just check if gettingStartData exists and has dataSource
     const error = !isLoading && (!gettingStartData || !gettingStartData.dataSource);
     console.log('Error state evaluation:', {
       isLoading,
@@ -154,9 +127,7 @@ const GettingStarted = () => {
     return error;
   }, [isLoading, gettingStartData]);
 
-  // If still loading, show loader
   if (isLoading) {
-    console.log('Rendering loader due to loading state');
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <Loader />
@@ -164,9 +135,7 @@ const GettingStarted = () => {
     );
   }
 
-  // If there's an error, show error message
   if (hasError) {
-    console.log('Rendering error message due to error state');
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <Typography variant="h6" color="error" gutterBottom>

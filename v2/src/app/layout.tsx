@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { untitledSans } from './fonts';
+import { untitledSans } from '@/constants/fonts';
 import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import '../styles/globals.scss';
 

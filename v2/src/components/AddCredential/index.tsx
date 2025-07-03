@@ -1,166 +1,138 @@
-"use client"
 import { Box, Button, Typography } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // import ConnectComponent from './Connect';
 import ChooseComponent from './Choose';
 import ConfirmComponent from './Confirm';
 import CloseIcon from '@mui/icons-material/Close';
 // import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import '@/assets/sass/style.scss'
-import './style.scss'
 import { useTranslations } from 'next-intl';
-import { useCreateVerificationWithPolling, useReadVerificationWithPolling, useGetVerification } from '@/custom-hooks/gettingStarted';
-import Loader from '@/components/common/Loader';
+
+import { useCreateVerification, useReadVerificationWithPolling } from '@/custom-hooks/verification' // consolidated hooks  
+import Loader from "@/components/common/Loader";
+import './style.scss'
+import { useAppSelector } from '@/custom-hooks/store';
 
 interface AddCredentialProps {
-  callRightSideDrawer: () => void;
-  isVerify: boolean;
+    callRightSideDrawer: () => void;
+    isVerify: boolean;
 }
 
-type VerificationStep = 'choose' | 'confirm';
-
 const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredentialProps) => {
-  const t = useTranslations();
-  const [isLoader, setLoader] = useState(false);
-  const [currentStep, setCurrentStep] = useState<VerificationStep>('choose');
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
-
-  // Use React Query hooks for verification actions
-  const createVerificationMutation = useCreateVerificationWithPolling();
-  const readVerificationMutation = useReadVerificationWithPolling();
-  const { refetch: fetchVerification } = useGetVerification();
-
-  // Fetch verification data when the modal opens for viewing credentials
-  useEffect(() => {
-    if (isVerify) {
-      console.log('Fetching verification data for viewing credentials');
-      fetchVerification();
-    }
-  }, [isVerify, fetchVerification]);
-
-  const handleNext = (templateId: string) => {
-    setSelectedTemplate(templateId);
-    setCurrentStep('confirm');
-  };
-
-  const handleBack = () => {
-    setCurrentStep('choose');
-  };
-
-  const contentArray = [
-    // {
-    //     headerName: `${t('gettingStarted.connect')}`,
-    //     component: <ConnectComponent callRightSideDrawer={callRightSideDrawer} />,
-    // },
-    {
-      headerName: `${t('gettingStarted.choose')}`,
-      component: (
-        <ChooseComponent 
-          onNext={handleNext} 
-          onBack={callRightSideDrawer} 
-        />
-      ),
-    },
-    {
-      headerName: `${t('gettingStarted.confirm')}`,
-      component: selectedTemplate ? (
-        <ConfirmComponent 
-          templateId={selectedTemplate}
-          onBack={handleBack}
-          onComplete={callRightSideDrawer}
-        />
-      ) : null,
-    }
-  ]
-
-  const [currentIndex, setCurrentIndex] = useState(isVerify ? 1 : 0);
-
-  const startPoll = (obj: any) => {
-    const isVerified = obj.verification?.presentationState;
-    if (isVerified !== 'verified') {
-      setTimeout(() => {
-        readVerificationMutation.mutate(startPoll);
-      }, 5000);
-    } else if (isVerified === 'verified') {
-      setLoader(false);
-      setCurrentIndex(0);
-      callRightSideDrawer();
-    }
-  }
-
-  const handleAddComponent = (index: number) => {
-    createVerificationMutation.mutate(startPoll);
-    setLoader(true);
-  };
-
-  // const handleBack = (index) => {
-  //     setCurrentIndex(currentIndex - 1);
-  // }
-
-  return (
-    <Box
-      role="presentation"
-      className="drawerContent"
-    >
-      <Box className="dd-modal-header" sx={{ backgroundColor: '#03182b' }}>
-        <Box pl={2} className="dd-modal-header-content">
-          <Typography className="dd-modal-header-text" sx={{ color: '#F3F3F6', fontWeight: 500 }}>
-            {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : t('gettingStarted.connectWalletTitle') + contentArray[currentIndex].headerName}
-          </Typography>
-          <CloseIcon
-            onClick={callRightSideDrawer}
-            sx={{
-              cursor: "pointer",
-              color: "#F3F3F6",
-            }}
-          />
-        </Box>
-      </Box>
-      <Box>{contentArray[currentIndex].component}</Box>
-      <Box className="modal-footer">
-        <Button
-          onClick={() => !isLoader && callRightSideDrawer()}
-          className="delete-btn"
-          sx={{
-            height: 36,
-            minWidth: 100,
-            borderRadius: 0,
-            border: "1px solid #DFDFDF",
-            cursor: isLoader ? "not-allowed" : "pointer",
-            color: isLoader ? "#6D7676" : "black",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-            },
-          }}
-          variant="outlined"
-        >
-          {t('common.close')}
-        </Button>
-        {currentIndex === 0 ? <Button
-          className="delete-btn"
-          onClick={() => !isLoader && handleAddComponent(currentIndex)}
-          variant="outlined"
-          sx={{
-            height: 36,
-            minWidth: 100,
-            borderRadius: 0,
-            border: "1px solid #DFDFDF",
-            marginLeft: "10px",
-            cursor: isLoader ? "not-allowed" : "pointer",
-            color: isLoader ? "#6D7676" : "black",
-            "&:hover": {
-              backgroundColor: isLoader ? "#6D7676" : "black",
-              color: "white",
-            },
-          }}
-        >
-          {isLoader ? <Loader isBtnLoader={true} /> : `${t('common.confirm')}`}
-        </Button> : ''
-        }
-      </Box>
-    </Box>
+    const t = useTranslations();
+    
+    const [isLoader, setLoader] = useState(false);
+  const { mutate: createVerification } = useCreateVerification();
+  // select templates
+  const verificationTemplates = useAppSelector(
+    (state) => state.gettingStart.verificationTemplate.data as any[]
   );
+  const defaultTemplateId = verificationTemplates?.[0]?.id;
+  const { mutate: readVerification } = useReadVerificationWithPolling();
+    const contentArray = [
+        // {
+        //     headerName: `${t('gettingStarted.connect')}`,
+        //     component: <ConnectComponent callRightSideDrawer={callRightSideDrawer} />,
+
+        // },
+        {
+            headerName: `${t('gettingStarted.choose')}`,
+            component: <ChooseComponent callRightSideDrawer={callRightSideDrawer} />,
+        },
+        {
+            headerName: `${t('gettingStarted.confirm')}`,
+            component: <ConfirmComponent />, 
+        }
+
+
+    ]
+    const [currentIndex, setCurrentIndex] = useState(isVerify ? 1 : 0);
+
+    const startPoll = (verification: any) => {
+        const isVerified = obj.verification?.presentationState;
+        if(isVerified != 'verified') {
+            setTimeout(() => {
+                readVerification(verification.id)
+            }, 5000);
+        } else if(isVerified == 'verified') {
+            setLoader(false)
+            setCurrentIndex(0);
+            callRightSideDrawer();
+        }
+    }
+
+    const handleAddComponent = () => {
+        if (!defaultTemplateId) {
+            console.error('No verification template selected');
+            return;
+        }
+        createVerification(defaultTemplateId, { onSuccess: startPoll });
+        setLoader(true);
+    };
+
+    const handleBack = () => {
+        setCurrentIndex(prev => prev - 1);
+    }
+
+    return (
+        <Box
+            role="presentation"
+            className="drawerContent"
+        >
+            <Box className="dd-modal-header">
+              <Box pl={2} style={{ width: "90%" }}>
+                <Typography className="dd-modal-header-text">
+                  {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : `${t('gettingStarted.connectWalletTitle')} ${contentArray[currentIndex].headerName}`}
+                </Typography>
+              </Box>
+              <CloseIcon
+                onClick={callRightSideDrawer}
+                fontSize='large'
+                sx={{
+                  paddingRight: 2,
+                  cursor: "pointer",
+                  color: "white",
+                }}
+              />
+            </Box>
+            <Box>{contentArray[currentIndex].component}</Box>
+            <Box className="modal-footer">
+            <Button
+              onClick={isLoader ? undefined : callRightSideDrawer}
+              className="delete-btn"
+              sx={{
+                marginRight: "10px",
+                cursor: isLoader ? "not-allowed" : "pointer",
+                color: isLoader ? "#6D7676" : "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+              variant="outlined"
+            >
+              {"Close"}
+            </Button>
+            {currentIndex == 0 ? <Button
+              className="delete-btn"
+              onClick={isLoader ? undefined : handleAddComponent}
+              variant="outlined"
+              sx={{
+                marginRight: "20px",
+                cursor: isLoader ? "not-allowed" : "pointer",
+                color: isLoader ? "#6D7676" : "black",
+                "&:hover": {
+                  backgroundColor: isLoader ? "#6D7676" : "black",
+                  color: "white",
+                },
+              }}
+            >
+              {isLoader ? <Loader isBtnLoader={true} /> : `${t('common.confirm')}`}
+            </Button> : ''
+            }
+          </Box>
+        </Box>
+    );
 }
 
 export default AddCredentialComponent;

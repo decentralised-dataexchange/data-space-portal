@@ -23,15 +23,15 @@ interface Props {
 export const DataAttributeCardForDDA = (props: Props) => {
   const { selectedData } = props;
 
-  const splitByDotAndGetLastWord = (text) => {
+  const splitByDotAndGetLastWord = (text: string) => {
       const parts = text.split(".");
       const lastValue = parts[parts.length - 1];
       return lastValue
   }
 
-  const camelCaseToWords = (str) => {
+  const camelCaseToWords = (str: string) => {
     const words = str.match(/[A-Z]*[^A-Z]+/g);
-    return words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    return words ? words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') : str;
   };
 
   return (

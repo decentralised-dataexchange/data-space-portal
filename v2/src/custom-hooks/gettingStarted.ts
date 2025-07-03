@@ -14,6 +14,7 @@ import {
   setVerificationLoading,
   setVerificationSuccess,
   setVerificationFailure,
+  setVerification,
   setImages,
 } from '@/store/reducers/gettingStartReducers';
 
@@ -31,6 +32,10 @@ export const useGetGettingStartData = () => {
         const data = await apiService.getGettingStartData();
         console.log('DEBUG: getGettingStartData response:', data);
         dispatch(setGettingStartSuccess(data));
+        // Populate initial verification slice if data contains verification
+        if (data.verification) {
+          dispatch(setVerification({ verification: data.verification }));
+        }
         return data;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to fetch getting start data';
@@ -86,110 +91,15 @@ export const useGetVerificationTemplate = () => {
   });
 };
 
-// Hook for creating verification
-export const useCreateVerification = () => {
-  const queryClient = useQueryClient();
-  const dispatch = useAppDispatch();
-  
-  return useMutation({
-    mutationFn: async () => {
-      dispatch(setVerificationLoading());
-      try {
-        const data = await apiService.createVerification();
-        dispatch(setVerificationSuccess(data));
-        return data;
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Failed to create verification';
-        dispatch(setVerificationFailure(errorMessage));
-        throw error;
-      }
-    },
-    onSuccess: () => {
-      // Invalidate and refetch relevant queries after successful mutation
-      queryClient.invalidateQueries({ queryKey: ['verification'] });
-    },
-  });
-};
 
-// Hook for getting verification
-export const useGetVerification = () => {
-  const dispatch = useAppDispatch();
-  
-  return useQuery({
-    queryKey: ['verification'],
-    queryFn: async () => {
-      dispatch(setVerificationLoading());
-      try {
-        const data = await apiService.getVerification();
-        dispatch(setVerificationSuccess(data));
-        return data;
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch verification';
-        dispatch(setVerificationFailure(errorMessage));
-        throw error;
-      }
-    },
-    enabled: false, // This query will not run automatically
-  });
-};
 
-// Hook for creating verification with polling functionality
-export const useCreateVerificationWithPolling = () => {
-  const dispatch = useAppDispatch();
-  const createVerificationMutation = useMutation({
-    mutationFn: async (startPoll: (data: any) => void) => {
-      dispatch(setVerificationLoading());
-      try {
-        // First create the verification
-        await apiService.createVerification();
-        
-        // Then get the verification status
-        const data = await apiService.getVerification();
-        dispatch(setVerificationSuccess(data));
-        
-        // Start polling if callback provided
-        if (startPoll) {
-          startPoll(data);
-        }
-        
-        return data;
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Failed to create verification';
-        dispatch(setVerificationFailure(errorMessage));
-        throw error;
-      }
-    }
-  });
-  
-  return createVerificationMutation;
-};
 
-// Hook for reading verification with polling functionality
-export const useReadVerificationWithPolling = () => {
-  const dispatch = useAppDispatch();
-  const readVerificationMutation = useMutation({
-    mutationFn: async (startPoll?: (data: any) => void) => {
-      dispatch(setVerificationLoading());
-      try {
-        const data = await apiService.getVerification();
-        dispatch(setVerificationSuccess(data));
-        
-        // Call the polling callback if provided
-        if (startPoll) {
-          startPoll(data);
-        }
-        
-        return data;
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Failed to read verification';
-        dispatch(setVerificationFailure(errorMessage));
-        throw error;
-      }
-    }
-  });
-  
-  return readVerificationMutation;
-};
+
+
+
+
+
+
 
 // Hook for updating data source
 export const useUpdateDataSource = () => {

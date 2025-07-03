@@ -1,17 +1,18 @@
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 
-export const untitledSans = Inter({
-  subsets: ['latin'],
-  display: 'swap',
+// Load the local font file
+export const untitledSans = localFont({
+  src: [
+    {
+      path: "../assets/fonts/UntitledSans-Regular.woff2",
+      weight: '400',
+      style: 'normal',
+    },
+  ],
   variable: '--font-untitled-sans',
+  display: 'swap',
   preload: true,
 });
 
-// For local font (uncomment if you want to use the local font instead)
-// import localFont from 'next/font/local';
-// export const untitledSans = localFont({
-//   src: '../assets/fonts/UntitledSans-Regular.woff2',
-//   display: 'swap',
-//   variable: '--font-untitled-sans',
-//   preload: true,
-// });
+// Export as the default font
+export const font = untitledSans;
