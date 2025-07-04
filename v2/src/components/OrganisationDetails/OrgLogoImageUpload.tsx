@@ -35,11 +35,10 @@ const OrgLogoImageUpload = (props: Props) => {
     reader.readAsDataURL(file);
 
     try {
-      const formData = new FormData();
-      file && formData.append('orgimage', file);
-      
-      // Update the logo image
-      await apiService.updateOrganisationLogoImage(formData);
+      // Update the logo image directly with the file
+      if (file) {
+        await apiService.updateLogoImage(file);
+      }
       
       // Get the newly uploaded image from the server
       const imageBase64 = await apiService.getLogoImage();

@@ -17,7 +17,8 @@ import {
   
   useUpdateDataSource,
   useUpdateLogoImage,
-  useUpdateCoverImage
+  useUpdateCoverImage,
+  useGetVerificationTemplate,
 } from '@/custom-hooks/gettingStarted';
 
 const Container = styled("div")(({ theme }) => ({
@@ -48,6 +49,9 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const GettingStarted = () => {
+  
+
+  
   const [editMode, setEditMode] = useState(false);
   const t = useTranslations();
   const router = useRouter();
@@ -57,7 +61,7 @@ const GettingStarted = () => {
   const { data: coverImageBase64, isLoading: isCoverImageLoading } = useGetCoverImage();
   const { data: logoImageBase64, isLoading: isLogoImageLoading } = useGetLogoImage();
   
-  const isEnableAddCredential = listConnections?.connections?.length > 0 && 
+  const isEnableAddCredential = listConnections?.connections && listConnections?.connections.length > 0 && 
     listConnections?.connections[0]?.connectionState === 'active';
 
   const [formData, setFormData] = useState<any>({});
@@ -93,9 +97,20 @@ const GettingStarted = () => {
 
   const handleLogoImageChange = async (newImage: string) => {
     try {
-      const formData = new FormData();
-      formData.append('file', newImage);
-      await updateLogoImage(formData);
+      // Convert base64 string to a File object
+      const byteString = atob(newImage.split(',')[1]);
+      const mimeString = newImage.split(',')[0].split(':')[1].split(';')[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      
+      const blob = new Blob([ab], { type: mimeString });
+      const file = new File([blob], 'logo.png', { type: mimeString });
+      
+      await updateLogoImage(file);
     } catch (error) {
       console.error('Error updating logo image:', error);
     }
@@ -160,7 +175,7 @@ const GettingStarted = () => {
         editMode={editMode}
         logoImageBase64={logoImageBase64}
         handleEdit={handleEdit}
-        isEnableAddCredential={isEnableAddCredential}
+        isEnableAddCredential={isEnableAddCredential ?? false}
         organisationDetails={formData}
         setOganisationDetails={handleFormChange}
         setLogoImageBase64={handleLogoImageChange}
