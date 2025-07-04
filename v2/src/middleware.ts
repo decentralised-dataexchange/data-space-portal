@@ -11,12 +11,12 @@ export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   // Check if the path is a public route
-  const isPublicRoute = publicRoutes.has(pathname) || 
-    routing.locales.some(locale => 
-      pathname.startsWith(`/${locale}`) && 
-      publicRoutes.has(pathname.replace(`/${locale}`, '')) || 
-      publicRoutes.has(pathname)
-    );
+  const isPublicRoute = publicRoutes.has(pathname) ||
+    routing.locales.some(locale => {
+      if (!pathname.startsWith(`/${locale}`)) return false;
+      const cleanPath = pathname.replace(`/${locale}`, '') || '/';
+      return publicRoutes.has(cleanPath);
+    });
 
   // Get the token from cookies or headers (server-side only)
   const token = request.cookies.get('access_token')?.value || 
