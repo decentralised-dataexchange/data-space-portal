@@ -11,26 +11,48 @@ import {
   setVerificationTemplateLoading,
   setVerificationTemplateSuccess,
   setVerificationTemplateFailure,
-  setVerificationLoading,
-  setVerificationSuccess,
-  setVerificationFailure,
   setVerification,
   setImages,
 } from '@/store/reducers/gettingStartReducers';
 
-// Hook for getting started data
+// Define types for API responses
+interface GettingStartData {
+  dataSource: {
+    name?: string;
+    location?: string;
+    policyUrl?: string;
+    description?: string;
+    sector?: string;
+  };
+  verification?: any;
+  [key: string]: any;
+}
+
+interface ConnectionsData {
+  connections: Array<{
+    id: string;
+    connectionState: string;
+    [key: string]: any;
+  }>;
+  [key: string]: any;
+}
+
+// Import the VerificationTemplate type from the verification types
+import { VerificationTemplate } from '@/types/verification';
+
+/**
+ * Hook for fetching getting started data
+ * @returns Query result with typed GettingStartData
+ */
 export const useGetGettingStartData = () => {
   const dispatch = useAppDispatch();
   
-  return useQuery({
+  return useQuery<GettingStartData, Error>({
     queryKey: ['gettingStartData'],
-    queryFn: async () => {
-      console.log('DEBUG: Starting to fetch gettingStartData');
+    queryFn: async (): Promise<GettingStartData> => {
       dispatch(setGettingStartLoading());
       try {
-        console.log('DEBUG: Calling apiService.getGettingStartData()');
         const data = await apiService.getGettingStartData();
-        console.log('DEBUG: getGettingStartData response:', data);
         dispatch(setGettingStartSuccess(data));
         // Populate initial verification slice if data contains verification
         if (data.verification) {
@@ -39,22 +61,29 @@ export const useGetGettingStartData = () => {
         return data;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to fetch getting start data';
-        console.error('DEBUG: Error in getGettingStartData:', errorMessage, error);
         dispatch(setGettingStartFailure(errorMessage));
-        throw error;
+        throw new Error(errorMessage);
       }
     },
+    staleTime: 30 * 1000, // 30 seconds
     retry: 1, // Only retry once to avoid infinite loading
+    refetchOnWindowFocus: false,
   });
 };
 
-// Hook for listing connections
+/**
+ * Hook for listing connections
+ * @param limit Maximum number of connections to fetch
+ * @param offset Pagination offset
+ * @param restrictTemplate Whether to restrict templates
+ * @returns Query result with typed ConnectionsData
+ */
 export const useListConnections = (limit: number = 10, offset: number = 0, restrictTemplate: boolean = false) => {
   const dispatch = useAppDispatch();
   
-  return useQuery({
+  return useQuery<ConnectionsData, Error>({
     queryKey: ['listConnections', limit, offset, restrictTemplate],
-    queryFn: async () => {
+    queryFn: async (): Promise<ConnectionsData> => {
       dispatch(setListConnectionLoading());
       try {
         const data = await apiService.listConnections(limit, offset, restrictTemplate);
@@ -63,52 +92,66 @@ export const useListConnections = (limit: number = 10, offset: number = 0, restr
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to fetch connections';
         dispatch(setListConnectionFailure(errorMessage));
-        throw error;
+        throw new Error(errorMessage);
       }
     },
+    staleTime: 30 * 1000, // 30 seconds
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 
-// Hook for getting verification template
+/**
+ * Hook for getting verification templates
+ * @returns Query result with array of VerificationTemplate objects
+ */
 export const useGetVerificationTemplate = () => {
   const dispatch = useAppDispatch();
   
-  return useQuery({
+  return useQuery<{ verificationTemplates: VerificationTemplate[] }, Error>({
     queryKey: ['verificationTemplate'],
-    queryFn: async () => {
+    queryFn: async (): Promise<{ verificationTemplates: VerificationTemplate[] }> => {
       dispatch(setVerificationTemplateLoading());
       try {
-        const data = await apiService.getVerificationTemplate();
+        // The API returns { verificationTemplates: VerificationTemplate[] }
+        const templates = await apiService.getVerificationTemplates();
+        const data = { verificationTemplates: templates };
         dispatch(setVerificationTemplateSuccess(data));
         return data;
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch verification template';
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch verification templates';
         dispatch(setVerificationTemplateFailure(errorMessage));
-        throw error;
+        throw new Error(errorMessage);
       }
     },
-    enabled: false, // This query will not run automatically
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1,
+    refetchOnWindowFocus: false
   });
 };
 
 
-
-
-
-
-
-
-
-
-
-// Hook for updating data source
+/**
+ * Hook for updating data source information
+ * @returns Mutation function for updating data source
+ */
 export const useUpdateDataSource = () => {
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   
-  return useMutation({
-    mutationFn: (payload: unknown) => apiService.updateDataSource(payload),
-    onSuccess: () => {
+  // Define the payload type for data source update
+  interface DataSourceUpdatePayload {
+    name?: string;
+    location?: string;
+    policyUrl?: string;
+    description?: string;
+    sector?: string;
+    [key: string]: any;
+  }
+  
+  return useMutation<any, Error, DataSourceUpdatePayload>({
+    mutationFn: (payload: DataSourceUpdatePayload) => apiService.updateDataSource(payload),
+    onSuccess: (data) => {
       // Invalidate and refetch getting started data after successful update
       queryClient.invalidateQueries({ queryKey: ['gettingStartData'] });
     },
@@ -119,13 +162,16 @@ export const useUpdateDataSource = () => {
   });
 };
 
-// Hook for getting cover image
+/**
+ * Hook for getting cover image
+ * @returns Query result with cover image as string (base64 or URL)
+ */
 export const useGetCoverImage = () => {
   const dispatch = useAppDispatch();
   
-  return useQuery({
+  return useQuery<string, Error>({
     queryKey: ['coverImage'],
-    queryFn: async () => {
+    queryFn: async (): Promise<string> => {
       try {
         const coverImage = await apiService.getCoverImage();
         // Only update Redux if we got a valid image
@@ -134,7 +180,9 @@ export const useGetCoverImage = () => {
         }
         return coverImage || ''; // Return empty string instead of null/undefined to avoid hydration issues
       } catch (error) {
-        console.error('Error fetching cover image:', error);
+        // Log error but don't throw - we want to return empty string instead of failing
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('Error fetching cover image:', errorMessage);
         return ''; // Return empty string on error to avoid null/undefined
       }
     },
@@ -144,13 +192,16 @@ export const useGetCoverImage = () => {
   });
 };
 
-// Hook for getting logo image
+/**
+ * Hook for getting logo image
+ * @returns Query result with logo image as string (base64 or URL)
+ */
 export const useGetLogoImage = () => {
   const dispatch = useAppDispatch();
   
-  return useQuery({
+  return useQuery<string, Error>({
     queryKey: ['logoImage'],
-    queryFn: async () => {
+    queryFn: async (): Promise<string> => {
       try {
         const logoImage = await apiService.getLogoImage();
         // Only update Redux if we got a valid image
@@ -159,7 +210,9 @@ export const useGetLogoImage = () => {
         }
         return logoImage || ''; // Return empty string instead of null/undefined to avoid hydration issues
       } catch (error) {
-        console.error('Error fetching logo image:', error);
+        // Log error but don't throw - we want to return empty string instead of failing
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('Error fetching logo image:', errorMessage);
         return ''; // Return empty string on error to avoid null/undefined
       }
     },
@@ -169,32 +222,46 @@ export const useGetLogoImage = () => {
   });
 };
 
-// Hook for updating logo image
+/**
+ * Hook for updating organization logo image
+ * @returns Mutation function for updating logo image
+ */
 export const useUpdateLogoImage = () => {
   const queryClient = useQueryClient();
   
-  return useMutation({
-    mutationFn: (formData: FormData) => {
-      return apiService.updateOrganisationLogoImage(formData);
+  return useMutation<{ logoImage: string }, Error, File>({
+    mutationFn: (file: File) => {
+      return apiService.updateLogoImage(file);
     },
     onSuccess: () => {
       // Invalidate the logo image query to trigger a refetch
       queryClient.invalidateQueries({ queryKey: ['logoImage'] });
     },
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update logo image';
+      console.error('Error updating logo image:', errorMessage);
+    },
   });
 };
 
-// Hook for updating cover image
+/**
+ * Hook for updating organization cover image
+ * @returns Mutation function for updating cover image
+ */
 export const useUpdateCoverImage = () => {
   const queryClient = useQueryClient();
   
-  return useMutation({
+  return useMutation<{ Organization: any }, Error, FormData>({
     mutationFn: (formData: FormData) => {
       return apiService.updateOrganisationCoverImage(formData);
     },
     onSuccess: () => {
       // Invalidate the cover image query to trigger a refetch
       queryClient.invalidateQueries({ queryKey: ['coverImage'] });
+    },
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update cover image';
+      console.error('Error updating cover image:', errorMessage);
     },
   });
 };
