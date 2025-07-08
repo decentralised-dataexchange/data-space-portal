@@ -248,7 +248,7 @@ const OrganisationDetailsContainer = (props: Props) => {
             <Box
               sx={{
                 textAlign: { xs: "left", sm: "right" },
-                marginTop: { xs: "-40px", sm: "0px" },
+                marginTop: { xs: "12px", sm: "0px" },
                 paddingTop: "8px"
               }}
             >
