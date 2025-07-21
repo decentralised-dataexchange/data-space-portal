@@ -94,7 +94,8 @@
 .leftNavigationContainer {
     display:flex;
     flex-direction: column;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     position: relative !important;
     .MuiDrawer-root {
         .MuiPaper-root {
