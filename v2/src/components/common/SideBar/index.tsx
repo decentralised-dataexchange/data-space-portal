@@ -82,7 +82,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           </Typography>
         </MenuItem>
         {isOpen && (
-          <Box sx={{ ml: 2 }}>
+          <Box sx={{ ml: 8 }}>
             {list.subMenu.map((subItem) => (
               <MenuItem key={subItem.name}>
                 <Link href={`${list.link}/${subItem.link}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
