@@ -10,7 +10,7 @@ import {
   Checkbox,
   IconButton
 } from "@mui/material";
-import { PersonOutlineOutlined, ArrowCircleRightOutlined, LockOpenOutlined } from "@mui/icons-material";
+import { ArrowCircleRightIcon, UserIcon, LockOpenIcon } from "@phosphor-icons/react";
 import Logo from '@/assets/img/logo.jpg';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -124,7 +124,7 @@ const Login = () => {
               slotProps={{
                 input: {
                   startAdornment: (
-                    <PersonOutlineOutlined style={{ color: "#A1A1A1" }} />
+                    <UserIcon size={22} style={{ color: "#777", marginRight: "0.5rem", transform: "translateY(-2px)" }} />
                   ),
                   disableUnderline: true,
                   onKeyPress: handleKeyPress,
@@ -143,13 +143,15 @@ const Login = () => {
               fullWidth
               slotProps={{
                 input: {
-                  startAdornment: <LockOpenOutlined style={{ color: "#A1A1A1" }} />,
+                  startAdornment: <LockOpenIcon size={22} style={{ color: "#777", marginRight: "0.5rem", transform: "translateY(-2px)" }} />,
                   disableUnderline: true,
                   onKeyPress: handleKeyPress,
                   endAdornment: (
                     <IconButton type="submit">
-                      <ArrowCircleRightOutlined
-                        style={{ color: "#A1A1A1", cursor: "pointer" }}
+                      <ArrowCircleRightIcon
+                        size={22}
+
+                        style={{ color: "#888", cursor: "pointer", transform: "translateY(-2px)" }}
                       />
                     </IconButton>
                   ),
