@@ -11,10 +11,11 @@ import {
     useMediaQuery,
     useTheme
 } from '@mui/material';
-import { HouseOutlined, InsertDriveFileOutlined, LockOutlined } from '@mui/icons-material';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { sidebarMenuItems, SidebarMenuItem, SubMenuItem } from '@/constants/sidebar';
+import './style.scss';
 
 const drawerWidth = 260;
 interface SideBarProps {
@@ -22,37 +23,49 @@ interface SideBarProps {
   handleDrawerClose: () => void;
 }
 
+// Colors for active/inactive states
+const activeTextColor = '#000000';
+const inactiveTextColor = '#757575';
+
 export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
   const t = useTranslations();
   // Track open state for each submenu by name
   const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>({});
+  
+  // Use current path to determine active menu item
+  const pathname = usePathname();
   
   // Use MUI breakpoints instead of getDevice
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-
-  const renderIcon = (icon: string) => {
-    switch (icon) {
-      case "HouseOutlined":
-        return <HouseOutlined />
-      case "InsertDriveFileOutlined":
-        return <InsertDriveFileOutlined />
-      case "LockOutlined":
-        return <LockOutlined />
-      default:
-        return <></>;
+  
+  // Check if a menu item is active based on the current path
+  // Account for locale prefix in the URL (e.g., /en/dd-agreements)
+  const isActive = (itemPath: string) => {
+    if (!pathname) return false;
+    
+    // Extract path after locale
+    const pathParts = pathname.split('/');
+    if (pathParts.length >= 3) {
+      // pathParts[0] is empty (before first slash), pathParts[1] is locale
+      const pathAfterLocale = '/' + pathParts.slice(2).join('/');
+      return pathAfterLocale === itemPath || pathAfterLocale.startsWith(itemPath + '/');
     }
-  }
+    
+    return pathname.endsWith(itemPath);
+  };
 
   // Apply translations to the imported sidebar menu items using translation keys
   const menuList = sidebarMenuItems.map(item => ({
     name: t(`sideBar.${item.translationKey}`, { fallback: item.name }),
+    translationKey: item.translationKey, // Include translationKey to match SidebarMenuItem interface
     icon: item.icon,
     link: item.link,
     subMenu: item.subMenu.map(subItem => ({
       name: t(`sideBar.${subItem.translationKey}`, { fallback: subItem.name }),
+      translationKey: subItem.translationKey, // Include translationKey for submenu items
       link: subItem.link
     }))
   }))
@@ -71,25 +84,42 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
   }
 
   const SubMenuComponent = ({ list, isOpen, handleToggle }: SubMenuComponentProps) => {
+    const active = isActive(list.link);
+    
     return (
       <Box>
-        <MenuItem onClick={() => handleToggle(list.name)}>
-          <ListItemIcon>
-            {renderIcon(list.icon)}
+        <MenuItem 
+          onClick={() => handleToggle(list.name)}
+          sx={{
+            color: active ? activeTextColor : inactiveTextColor,
+            fontWeight: active ? 'bold' : 'normal',
+          }}
+        >
+          <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
+            <list.icon size={22} weight={active ? "fill" : "regular"} />
           </ListItemIcon>
-          <Typography variant="inherit" color="textSecondary">
-            {list.name}
-          </Typography>
+          <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
+          </ListItemText>
         </MenuItem>
         {isOpen && (
           <Box sx={{ ml: 8 }}>
-            {list.subMenu.map((subItem) => (
-              <MenuItem key={subItem.name}>
-                <Link href={`${list.link}/${subItem.link}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
-                  <Typography variant="body2">{subItem.name}</Typography>
-                </Link>
-              </MenuItem>
-            ))}
+            {list.subMenu.map((subItem) => {
+              const subItemActive = isActive(`${list.link}/${subItem.link}`);
+              return (
+                <MenuItem 
+                  key={subItem.name}
+                  sx={{
+                    color: subItemActive ? activeTextColor : inactiveTextColor,
+                    fontWeight: subItemActive ? 'bold' : 'normal'
+                  }}
+                >
+                  <Link href={`${list.link}/${subItem.link}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
+                    <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{subItem.name}</Typography>
+                  </Link>
+                </MenuItem>
+              );
+            })}
           </Box>
         )}
       </Box>
@@ -114,29 +144,34 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
       anchor="left"
       onClose={handleDrawerClose}
       open={open}
+      className="sideBarContainer"
     >
-      {menuList.map((list, i) => (
-        <Box key={list.name} sx={{ p: 1 }}>
-          {!list.subMenu.length ? (
-            <MenuItem>
-              <Link href={list.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
-                <ListItemIcon>
-                  {renderIcon(list.icon)}
-                </ListItemIcon>
-                <ListItemText>
-                  <Typography variant="body2">{list.name}</Typography>
-                </ListItemText>
-              </Link>
-            </MenuItem>
-          ) : (
-            <SubMenuComponent 
-              list={list} 
-              isOpen={!!openSubMenus[list.name]} 
-              handleToggle={handleToggle}
-            />
-          )}
-        </Box>
-      ))}
+      {menuList.map((list, i) => {
+        const active = isActive(list.link);
+        
+        return (
+          <Box key={list.name} sx={{ p: 1 }}>
+            {!list.subMenu.length ? (
+              <MenuItem sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal' }}>
+                <Link href={list.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%', alignItems: 'center' }}>
+                  <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
+                    <list.icon size={22} weight={active ? "fill" : "regular"} />
+                  </ListItemIcon>
+                  <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
+                  </ListItemText>
+                </Link>
+              </MenuItem>
+            ) : (
+              <SubMenuComponent 
+                list={list} 
+                isOpen={!!openSubMenus[list.name]} 
+                handleToggle={handleToggle}
+              />
+            )}
+          </Box>
+        );
+      })}
       <Box
           sx={{
             marginTop: "auto",
