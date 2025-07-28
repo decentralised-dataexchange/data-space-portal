@@ -24,9 +24,10 @@
     "manage-admin": "Hantera admin",
     "developer-apis": "Utvecklar-API:er",
     "disp-connections": "DISP-anslutningar",
-    "business-wallet": "Företagsplånbok",
+    "business-wallet": "Business Wallet Connections",
     "data-source": "Datakälla",
-    "open-api": "OpenAPI-dokumentation"
+    "open-api": "OpenAPI-dokumentation",
+    "businessWallet": "Business Wallet"
   },
   "home": {
     "header": "HEM",
@@ -38,7 +39,7 @@
     "readLess": "Läs mindre....",
     "btn-signData": "Visa datautlämningsavtal",
     "btn-viewMetadata": "Visa API:er",
-    "footerTxt": "© NordXData Foundation (CRANE - dHDSI )"
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI )"
   },
   "appBar": {
     "header": "CRANE d-HDSI Dataspace",
@@ -135,6 +136,7 @@
     "save": "Spara",
     "all": "Alla",
     "noResultsFound": "Inga resultat hittades",
+    "noData": "Inga anslutningar att visa",
     "description": "Beskrivning",
     "true": "Sant",
     "false": "Falskt",
@@ -263,7 +265,18 @@
     "headerText": "Anslutningar för dataförmedlingstjänstleverantör",
     "titleText": "Hantera anslutningar mot dina organisationer"
   },
+  "businessWallet": {
+    "title": "Företagsplånboksanslutningar",
+    "subtitle": "Hantera din organisations företagsplånboksanslutningar",
+    "label": "Anslutningsnamn",
+    "connectedOn": "Ansluten",
+    "connectionId": "Anslutnings-ID",
+    "addButton": "Lägg till ny anslutning",
+    "searchPlaceholder": "Sök anslutningar...",
+    "noConnections": "Inga plånboksanslutningar hittades"
+  },
   "error": {
     "generic": "Något gick fel."
   }
+
 }
