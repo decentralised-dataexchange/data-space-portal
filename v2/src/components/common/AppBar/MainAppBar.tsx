@@ -4,7 +4,8 @@ import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { MainAppBarMenu } from "./MainAppBarMenu";
-import { defaultLogoImg as Logo } from "@/constants/defalultImages";
+import Image from "next/image";
+import Logo from "@/assets/img/logo.jpg";
 
 import './styles.scss';
 import Link from "next/link";
@@ -39,7 +40,14 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                         <MenuIcon style={{ height: 60, width: 60 }} />
                     </IconButton>
                     <Link href="/">
-                        <img className='logoImg' src={Logo} alt="Logo" />
+                        <Image 
+                            src={Logo} 
+                            alt="Logo" 
+                            className='logoImg' 
+                            width={58}
+                            height={58}
+                            priority
+                        />
                     </Link>
                     <Box className='flex-column' onClick={() => router.push('/')} sx={{ cursor: 'pointer' }}>
                         <Typography
