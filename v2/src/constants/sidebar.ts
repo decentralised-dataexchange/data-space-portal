@@ -1,5 +1,4 @@
-// Sidebar menu configuration
-
+import { FileIcon, HouseIcon, LockIcon } from "@phosphor-icons/react";
 export interface SubMenuItem {
   name: string;
   translationKey: string; // Key for translation lookup
@@ -9,7 +8,7 @@ export interface SubMenuItem {
 export interface SidebarMenuItem {
   name: string;
   translationKey: string; // Key for translation lookup
-  icon: string;
+  icon: typeof HouseIcon;
   link: string;
   subMenu: SubMenuItem[];
 }
@@ -18,38 +17,38 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
   {
     name: 'Getting Started',
     translationKey: 'gettingStarted',
-    icon: 'HouseOutlined',
+    icon: HouseIcon,
     link: '/start',
     subMenu: []
   },
-  {
-    name: 'Marketplace Listing',
+{
+  name: 'Marketplace Listing',
     translationKey: 'dataAgreements.title',
-    icon: 'InsertDriveFileOutlined',
-    link: '/dd-agreements',
-    subMenu: []
-  },
-  {
-    name: 'Account',
+      icon: FileIcon,
+        link: '/dd-agreements',
+          subMenu: []
+},
+{
+  name: 'Account',
     translationKey: 'account',
-    icon: 'LockOutlined',
-    link: '/account',
-    subMenu: [
-      {
-        name: 'Manage Admin',
-        translationKey: 'manageAdmin',
-        link: '/manage-admin',
-      },
-      {
-        name: 'Developer APIs',
-        translationKey: 'developerApis',
-        link: '/developer-apis',
-      },
-      {
-        name: 'Business Wallet',
-        translationKey: 'businessWallet',
-        link: '/business-wallet',
-      }
-    ]
-  }
+      icon: LockIcon,
+        link: '/account',
+          subMenu: [
+            {
+              name: 'Manage Admin',
+              translationKey: 'manageAdmin',
+              link: '/manage-admin',
+            },
+            {
+              name: 'Developer APIs',
+              translationKey: 'developerApis',
+              link: '/developer-apis',
+            },
+            {
+              name: 'Business Wallet',
+              translationKey: 'businessWallet',
+              link: '/business-wallet',
+            }
+          ]
+}
 ];
