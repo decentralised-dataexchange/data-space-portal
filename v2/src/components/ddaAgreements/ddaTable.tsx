@@ -1,17 +1,13 @@
 import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
-import {
-  VisibilityOutlined,
-  UploadOutlined,
-  DeleteOutlineOutlined,
-} from "@mui/icons-material";
+import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import VersionDropdown from "../VersionDropDown";
 import { TablePagination, Tooltip } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -48,11 +44,23 @@ const RootTableContainer = styled(TableContainer)({
   overflowY: "hidden",
 });
 
-const StyledTableCell = styled(TableCell)({
-  fontWeight: "lighter !important",
-  fontSize: "14px !important",
-  border: "1px solid #D7D6D6",
-});
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    fontSize: "0.875rem",
+    fontWeight: "bold",
+    color: "rgba(0, 0, 0, 0.87)",
+    padding: "6px 16px",
+    border: "1px solid #D7D6D6",
+    backgroundColor: "#e5e4e4"
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: "0.875rem",
+    fontWeight: "lighter",
+    color: "rgba(0, 0, 0, 0.87)",
+    padding: "6px 16px",
+    border: "1px solid #D7D6D6",
+  },
+}));
 
 const StyledTableRow = styled(TableRow)({
   border: "1px solid #D7D6D6",
@@ -72,8 +80,8 @@ const DDATable: React.FC<DDATableProps> = ({
   const t = useTranslations();
 
   return (
-    <RootTableContainer>
-      <Table aria-label="simple table">
+    <RootTableContainer className="dd-container">
+      <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
             <StyledTableCell>{t("dataAgreements.table.headers.usagePurpose")}</StyledTableCell>
@@ -86,13 +94,13 @@ const DDATable: React.FC<DDATableProps> = ({
         <TableBody>
           {tabledata?.dataDisclosureAgreements?.length > 0 ? (
             tabledata.dataDisclosureAgreements.map((row, index) => (
-              <StyledTableRow key={row.templateId} style={{color: "red"}}>
-                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{row.purpose}</StyledTableCell>
+              <StyledTableRow key={row.templateId} style={{ color: "red" }}>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.purpose}</StyledTableCell>
                 <StyledTableCell>
                   <VersionDropdown record={row} />
                 </StyledTableCell>
-                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{getStatus(t, row.status)}</StyledTableCell>
-                <StyledTableCell style={{color: row.status === "unlisted" ? "red" : "black"}}>{row.lawfulBasis}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{getStatus(t, row.status)}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.lawfulBasis}</StyledTableCell>
                 <StyledTableCell
                   style={{
                     display: "flex",
@@ -104,14 +112,14 @@ const DDATable: React.FC<DDATableProps> = ({
                     title={t("dataAgreements.table.tooltips.listToMarketplace")}
                     placement="top"
                   >
-                    
+
                     <IconButton className="actionButton" aria-label="delete" data-disabled={row.status === "awaitingForApproval"}>
-                      <UploadOutlined
-                        style={{color: row.status === "unlisted" ? "red" : row.status === "awaitingForApproval" ? "gray" : "black", cursor: row.status === "awaitingForApproval" ? "not-allowed": "pointer"}}
-                        fontSize="small"
+                      <UploadSimpleIcon
+                        style={{ color: row.status === "unlisted" ? "red" : row.status === "awaitingForApproval" ? "gray" : "black", cursor: row.status === "awaitingForApproval" ? "not-allowed" : "pointer" }}
+                        size={16}
                         onClick={() => {
                           if (row.status !== "awaitingForApproval") {
-                            setIsOpenPublish(true); 
+                            setIsOpenPublish(true);
                             setSelectedDDA(row);
                           }
                         }}
@@ -124,9 +132,9 @@ const DDATable: React.FC<DDATableProps> = ({
                     placement="top"
                   >
                     <IconButton aria-label="edit">
-                      <VisibilityOutlined
-                        style={{color: row.status === "unlisted" ? "red" : "black"}}
-                        fontSize="small"
+                      <EyeIcon
+                        style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                        size={17}
                         onClick={() => {
                           setIsOpenViewDDA(true), setSelectedDDA(row);
                         }}
@@ -139,9 +147,9 @@ const DDATable: React.FC<DDATableProps> = ({
                     placement="top"
                   >
                     <IconButton aria-label="delete">
-                      <DeleteOutlineOutlined
-                        style={{color: row.status === "unlisted" ? "red" : "black"}}
-                        fontSize="small"
+                      <TrashSimpleIcon
+                        style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                        size={17}
                         onClick={() => {
                           setIsOpenDelete(true), setSelectedDDA(row);
                         }}
