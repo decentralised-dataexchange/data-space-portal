@@ -182,37 +182,7 @@ const DDAgreements = () => {
 
     return (
       <>
-        <div className={styles.filters}>
-          <FormControl>
-            <RadioGroup
-              aria-labelledby="radio-buttons-group-label"
-              defaultValue="all"
-              name="radio-buttons-group"
-              row
-            >
-              <FormControlLabel
-                value="all"
-                onChange={() => handleChange("all")}
-                control={<Radio name="all" color="default" size="small" />}
-                label={
-                  <Typography variant="body2">{t("common.all")}</Typography>
-                }
-              />
-              <FormControlLabel
-                value="complete"
-                onChange={() => handleChange("complete")}
-                control={
-                  <Radio name="complete" color="default" size="small" />
-                }
-                label={
-                  <Typography variant="body2">
-                    {t("dataAgreements.list")}
-                  </Typography>
-                }
-              />
-            </RadioGroup>
-          </FormControl>
-        </div>
+
         <Box sx={{ marginTop: "16px" }}>
           <DDAtable
             setIsOpenViewDDA={setIsOpenViewDDA}
@@ -253,9 +223,42 @@ const DDAgreements = () => {
               </IconButton>
             </div>
           </div>
-          <p className={styles.subtitle}>
-            {t("dataAgreements.subtitle")}
-          </p>
+          <div className={styles.subtitleContainer}>
+            <p className={styles.subtitle}>
+              {t("dataAgreements.subtitle")}
+            </p>
+            <div className={styles.filters}>
+              <FormControl>
+                <RadioGroup
+                  aria-labelledby="radio-buttons-group-label"
+                  defaultValue="all"
+                  name="radio-buttons-group"
+                  row
+                >
+                  <FormControlLabel
+                    value="all"
+                    onChange={() => handleChange("all")}
+                    control={<Radio name="all" color="default" size="small" />}
+                    label={
+                      <Typography variant="body2">{t("common.all")}</Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value="complete"
+                    onChange={() => handleChange("complete")}
+                    control={
+                      <Radio name="complete" color="default" size="small" />
+                    }
+                    label={
+                      <Typography variant="body2">
+                        {t("dataAgreements.list")}
+                      </Typography>
+                    }
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+          </div>
         </div>
       </div>
       {renderContent()}
