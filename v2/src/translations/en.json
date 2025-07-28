@@ -25,9 +25,10 @@
     "manage-admin": "Manage Admin",
     "developer-apis": "Developer APIs",
     "disp-connections": "DISP Connections",
-    "business-wallet": "Business Wallet",
+    "business-wallet": "Business Wallet Connections",
     "data-source": "Data Source",
-    "open-api": "OpenAPI Documentation"
+    "open-api": "OpenAPI Documentation",
+    "businessWallet": "Business Wallet"
   },
   "home": {
     "header": "HOME",
@@ -39,7 +40,7 @@
     "readLess": "Read Less....",
     "btn-signData" : "View Data Disclosure Agreements",
     "btn-viewMetadata": "View APIs",
-    "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) "
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) "
   },
   "appBar": {
     "header": "CRANE d-HDSI Dataspace",
@@ -52,7 +53,6 @@
     "gettingStarted": "Getting Started",
     "dataAgreements": {
       "title": "Marketplace Listing",
-      "subtitle": "Manage marketplace listing using Data Disclosure Agreements (DDAs) for your organisation.",
       "addButton": "Add new DDA",
       "saveButton": "Save changes"
     },
@@ -118,6 +118,7 @@
     "policyUrl": "Policy URL",
     "all": "All",
     "noResultsFound": "No results found",
+    "noData": "No connections to show",
     "description": "Description",
     "true": "True",
     "false": "False",
@@ -294,5 +295,17 @@
   },
   "error": {
     "generic": "Something went wrong."
-  }
+  },
+  "businessWallet": {
+    "title": "Business Wallet Connections",
+    "subtitle": "Manage your organization's business wallet connections",
+    "label": "Connection Name",
+    "connectedOn": "Connected on",
+    "connectionId": "Connection ID",
+    "addButton": "Add New Connection",
+    "searchPlaceholder": "Search connections...",
+    "noConnections": "No wallet connections found"
+  },
+  "addDataDisclosureAgreement": "Add Data Disclosure Agreement",
+  "noBannerImageAvailable": "No banner image available"
 }
