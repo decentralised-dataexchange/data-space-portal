@@ -26,6 +26,7 @@
     "disp-connections": "DISP-yhteydet",
     "business-wallet": "Business Wallet Connections",
     "data-source": "Tietolähde",
+    "dd-agreements": "Markkinapaikkailmoitukset",
     "open-api": "OpenAPI-dokumentaatio",
     "businessWallet": "Business Wallet"
   },
