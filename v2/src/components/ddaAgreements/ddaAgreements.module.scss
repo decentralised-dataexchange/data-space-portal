@@ -27,11 +27,26 @@
   line-height: 1.2;
 }
 
+.subtitleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+  gap: 16px;
+  
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
 .subtitle {
   color: #000;
-  margin: 4px 0 0 0;
+  margin: 0;
   font-size: 0.875rem;
   line-height: 1.4;
+  flex-shrink: 0;
 }
 
 .actions {
@@ -83,5 +98,18 @@
 }
 
 .filters {
-  margin-top: 8px;
+  margin: 0;
+  flex-grow: 1;
+  
+  @media (min-width: 900px) {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .MuiFormGroup-root {
+    @media (max-width: 600px) {
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
 }
