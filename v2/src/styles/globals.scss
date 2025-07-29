@@ -34,6 +34,19 @@ body {
   line-height: 1.5;
 }
 
+/* Footer styles */
+.leftNavigationContainer > .footerContainer {
+  height: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-top: 1px solid var(--border-color);
+  padding: 0 16px;
+  margin: 0;
+}
+
 /* Ensure MUI components inherit the correct font */
 .MuiTypography-root,
 .MuiButton-root,
