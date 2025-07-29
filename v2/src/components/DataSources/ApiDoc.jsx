@@ -8,7 +8,7 @@ const ApiDoc = ({openApiUrl}) => {
     <rapi-doc
       spec-url={openApiUrl}
       render-style="focus"
-      style={{ height: "100vh", width: "100%" }}
+      style={{ height: "100vh", width: "100%", margin:0 }}
       theme="light"
       persist-auth="true"
       show-info="false"

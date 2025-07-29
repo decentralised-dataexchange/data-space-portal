@@ -2,13 +2,13 @@ import { Box, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import ChooseComponent from './Choose';
 import ConfirmComponent from './Confirm';
-import CloseIcon from '@mui/icons-material/Close';
 import '@/assets/sass/style.scss'
 import { useTranslations } from 'next-intl';
 
 import { useCreateVerification, useReadVerificationWithPolling, useVerificationTemplates } from '@/custom-hooks/verification'
 import Loader from "@/components/common/Loader";
 import './style.scss'
+import { XIcon } from '@phosphor-icons/react';
 
 interface AddCredentialProps {
   callRightSideDrawer: () => void;
@@ -83,9 +83,9 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
             {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : `${t('gettingStarted.connectWalletTitle')} ${contentArray[currentIndex].headerName}`}
           </Typography>
         </Box>
-        <CloseIcon
+        <XIcon
+          size={22}
           onClick={callRightSideDrawer}
-          fontSize='large'
           sx={{
             paddingRight: 2,
             cursor: "pointer",
