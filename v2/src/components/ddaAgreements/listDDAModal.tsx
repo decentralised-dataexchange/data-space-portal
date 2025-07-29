@@ -1,7 +1,8 @@
 "use client"
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Drawer, Typography, Button, Box, Select, MenuItem, CircularProgress } from "@mui/material";
+import { Drawer, Typography, Button, Box, CircularProgress } from "@mui/material";
+import { CustomSelect } from "@/components/common";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslations } from "next-intl";
 import SnackbarComponent from "@/components/notification";
@@ -55,8 +56,8 @@ export default function ListDDAModal({
 
   const [status, setStatus] = useState(getOptionValue());
 
-  const handleChange = (event: React.ChangeEvent<{ value: any }>) => {
-    setStatus(event.target.value as string);
+  const handleChange = (value: string) => {
+    setStatus(value);
   };
 
   const handleClose = () => {
@@ -140,22 +141,16 @@ export default function ListDDAModal({
               </Typography>
               {selectedData ? (
                 <Box className={styles['select-container']}>
-                  <Select
-                     value={getOptionValue()}
-                     onChange={(e) => handleChange(e as any)}
-                     fullWidth
-                     variant="outlined"
-                     sx={{ marginTop: "5px" }}
-                     size="small"
-                     defaultValue={getOptionValue()}
-                  >
-                    <MenuItem disabled value="">
-                      <em>Select status action ...</em>
-                    </MenuItem>
-                    <MenuItem value={getOptionValue()}>
-                      {getDefaultAction()}
-                    </MenuItem>
-                  </Select>
+                  <CustomSelect
+                    value={getOptionValue()}
+                    onChange={handleChange}
+                    options={[
+                      { value: getOptionValue(), label: getDefaultAction() }
+                    ]}
+                    sx={{ marginTop: "5px" }}
+                    size="small"
+                    fullWidth
+                  />
                 </Box>
               ) : (
                 <Typography color="error">No data selected</Typography>
