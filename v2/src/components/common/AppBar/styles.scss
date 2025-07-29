@@ -1,6 +1,10 @@
 @use "@/assets/sass/helpers/breakpoints";
 
 .appBarContainer {
+    .MuiAppBar-root {
+        z-index: 1300 !important; // Higher than sidebar's 1200
+    }
+    
     .logoImg {
         width: 58px;
         border-radius: 50%;
@@ -24,7 +28,6 @@
         text-decoration: none;
     }
 
-
     .loginBtn {
         margin-left: auto;
         width: 8rem;
@@ -40,11 +43,6 @@
             width: 5rem;
         }
     }
-}
-
-.MuiDrawer-docked,
-.MuiDrawer-paperAnchorLeft {
-    margin-top: 80px;
 }
 
 .pointerNone {
