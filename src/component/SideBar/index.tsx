@@ -82,7 +82,8 @@ export default function MenuBar({ open, handleDrawerClose }) {
           width: drawerWidth,
           boxSizing: 'border-box',
         },
-        position: "absolute"
+        position: "absolute",
+        borderRight: "1px solid rgb(225, 225, 225)",
       }}
       ModalProps={{
         keepMounted: true,
