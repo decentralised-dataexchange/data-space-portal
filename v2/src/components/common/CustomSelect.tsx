@@ -2,18 +2,34 @@ import React from 'react';
 import { Select, SelectProps, MenuItem, SelectChangeEvent, styled } from '@mui/material';
 
 const StyledSelect = styled(Select)(({ theme }) => ({
-  '& .MuiSelect-select': {
-    padding: '8px 32px 8px 12px',
-    borderRadius: '4px',
-    border: '1px solid #e0e0e0',
-    backgroundColor: '#fff',
-    '&:focus': {
+  '&.MuiInputBase-root': {
+    width: '100%',
+    fontSize: '14px',
+    minHeight: '32px',
+    '& .MuiSelect-select': {
+      padding: '6px 32px 6px 12px',
+      minHeight: '32px',
+      height: '32px',
+      lineHeight: '1.5',
+      boxSizing: 'border-box',
       borderRadius: '4px',
-      borderColor: '#000',
-      boxShadow: '0 0 0 1px #000',
-    },
-    '&:hover': {
-      borderColor: '#000',
+      border: '1px solid #e0e0e0',
+      backgroundColor: '#fff',
+      fontSize: '14px',
+      display: 'flex',
+      alignItems: 'center',
+      '&:focus': {
+        borderRadius: '4px',
+        borderColor: '#000',
+        boxShadow: '0 0 0 1px #000',
+      },
+      '&:hover': {
+        borderColor: '#000',
+      },
+      '&.Mui-disabled': {
+        backgroundColor: 'transparent',
+        WebkitTextFillColor: 'inherit',
+      },
     },
   },
   '& .MuiOutlinedInput-notchedOutline': {
@@ -28,12 +44,26 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   },
   '& .MuiSvgIcon-root': {
     color: 'rgba(0, 0, 0, 0.54)',
+    right: '8px',
+  },
+  '& .MuiSelect-iconOutlined': {
+    right: '8px',
+  },
+  '&.Mui-disabled': {
+    '& .MuiOutlinedInput-notchedOutline': {
+      border: 'none',
+    },
+    '& .MuiSelect-select': {
+      paddingRight: '32px',
+    },
   },
 }));
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   '&.MuiMenuItem-root': {
     padding: '8px 16px',
+    fontSize: '14px',
+    minHeight: '32px',
     '&:hover': {
       backgroundColor: '#f5f5f5',
     },
