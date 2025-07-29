@@ -10,13 +10,26 @@ const intlMiddleware = createMiddleware(routing);
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Check if the path is a public route
-  const isPublicRoute = publicRoutes.has(pathname) ||
-    routing.locales.some(locale => {
-      if (!pathname.startsWith(`/${locale}`)) return false;
-      const cleanPath = pathname.replace(`/${locale}`, '') || '/';
-      return publicRoutes.has(cleanPath);
+  // Check if the path is a public route (including dynamic routes)
+  const isPublicRoute = Array.from(publicRoutes).some(route => {
+    // Check exact match
+    if (pathname === route) return true;
+    
+    // Check if path starts with a public route (for dynamic routes)
+    return pathname.startsWith(route);
+  }) ||
+  routing.locales.some(locale => {
+    if (!pathname.startsWith(`/${locale}`)) return false;
+    
+    const pathWithoutLocale = pathname.slice(locale.length + 1) || '/';
+    return Array.from(publicRoutes).some(route => {
+      // Check exact match for localized routes
+      if (pathWithoutLocale === route) return true;
+      
+      // Check if localized path starts with a public route
+      return pathWithoutLocale.startsWith(route);
     });
+  });
 
   // Get the token from cookies or headers (server-side only)
   const token = request.cookies.get('access_token')?.value || 
