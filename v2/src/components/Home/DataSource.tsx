@@ -6,9 +6,10 @@ import {
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import './style.scss';
+import VerifiedBadge from '../common/VerifiedBadge';
 
 export interface DataDisclosureAgreement {
     purpose: string
@@ -54,31 +55,33 @@ interface DataSharingRestrictions {
     geographicRestriction: string
 }
 
+interface DataSource {
+    description: string,
+    logoUrl: string,
+    id: string
+    coverImageUrl: string,
+    name: string,
+    sector: string,
+    location: string,
+    policyUrl: string,
+    trusted?: boolean;
+}
+
 interface DataSourceCardProp {
-    dataSource: {
-        description: string,
-        logoUrl: string,
-        id: string
-        coverImageUrl: string,
-        name: string,
-        sector: string,
-        location: string,
-        policyUrl: string,
-    },
-    logoUrl?: string, // For backward compatibility
-    description?: string, // For backward compatibility
+    dataSource: DataSource
     dataDisclosureAgreements: DataDisclosureAgreement[];
     overviewLabel: string;
     signDataLabel: string;
 }
 
 const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, signDataLabel }: DataSourceCardProp) => {
+    const t = useTranslations();
     return (
         <>
             <Card className='cardContainer'>
-                <CardMedia 
-                    component="div" 
-                    className='card-header' 
+                <CardMedia
+                    component="div"
+                    className='card-header'
                     image={dataSource?.coverImageUrl}
                     sx={{
                         height: '100px',
@@ -104,14 +107,19 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                         }}
                     />
                 </CardMedia>
-                <CardContent sx={{padding: "20px"}}>
-                    <Typography variant="h6" fontWeight="bold" className="org-name">
+                <CardContent sx={{ padding: "20px" }}>
+                    <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1 }}>
                         {dataSource?.name}
-                        <CheckCircleIcon className="verify" />
                     </Typography>
-                    <Typography color="#9F9F9F" className="datasource-location">
-                        {dataSource?.location}
+                    <Typography color="text.secondary" variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
+                        {dataSource?.trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+                        <VerifiedBadge trusted={dataSource?.trusted} size="small" />
                     </Typography>
+                    {dataSource?.location && (
+                        <Typography color="text.secondary" variant="body2" className="datasource-location" sx={{ mb: 1 }}>
+                            {dataSource.location}
+                        </Typography>
+                    )}
                     <Typography variant="subtitle1" className='datasource-overview-label'>
                         {overviewLabel}
                     </Typography>
@@ -123,7 +131,7 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                             </Typography>
                         }
                     </Typography>
-                    
+
                     <Box className="actionBtn">
                         {dataDisclosureAgreements.length > 0 ? (
                             <Link href={`/data-source/read/${dataSource.id}`}>{signDataLabel}</Link>
