@@ -49,7 +49,7 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl }: DDAA
         {t("home.btn-viewMetadata")}
       </Button>
       <Button
-        variant="contained"
+        variant="outlined"
         size="medium"
         sx={{
           fontSize: "14px",
@@ -58,7 +58,6 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl }: DDAA
           textTransform: "none",
           fontWeight: "medium",
           minWidth: "120px",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
         }}
         onClick={handleDDAClick}
       >
