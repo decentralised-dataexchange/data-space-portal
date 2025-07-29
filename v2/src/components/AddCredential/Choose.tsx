@@ -1,6 +1,6 @@
 import { Box, Checkbox, Grid, ListItem, ListItemText, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import { WalletIcon } from "@phosphor-icons/react";
 import './style.scss'
 import { useTranslations } from 'next-intl';
 import { useAppSelector } from '@/custom-hooks/store';
@@ -10,8 +10,8 @@ interface ChooseProps {
 }
 
 
-const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
-    const [ isChecked, setIsChecked ] = useState<boolean>(true);
+const ChooseComponent = ({ callRightSideDrawer }: ChooseProps) => {
+    const [isChecked, setIsChecked] = useState<boolean>(true);
     const t = useTranslations();
 
     const handleChange = () => {
@@ -20,7 +20,7 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
 
     const verificationTemplateObj = useAppSelector(
         (state) => state?.gettingStart?.verificationTemplate?.data
-      );
+    );
 
     const { verificationTemplates } = verificationTemplateObj || [];
 
@@ -30,7 +30,10 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
                 <Typography className='mdc-typography--body2' gutterBottom component="div">{t('gettingStarted.chooseDescription')} </Typography>
                 <Grid container alignItems="center" className='mt-4'>
                     <Grid>
-                        <Typography className="ml-1" variant="body1" style={{display: "flex"}}><AccountBalanceWalletOutlinedIcon fontSize='small' style={{marginRight: "5px"}} />{`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletName}, ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletLocation}`}</Typography>
+                        <Typography className="ml-1" variant="body1" style={{ display: "flex" }}>
+                            <WalletIcon size={24} style={{ marginRight: "5px" }} />
+                            {`${t('gettingStarted.chooseWalletTitle')} ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletName}, ${verificationTemplates?.length > 0 && verificationTemplates[0]?.walletLocation}`}
+                        </Typography>
                     </Grid>
                 </Grid>
                 <Box className="itemContainer">
@@ -48,13 +51,13 @@ const ChooseComponent = ({ callRightSideDrawer } : ChooseProps) => {
                                     <Box className="itemTextContainer">
                                         <ListItemText primary={
                                             <Grid container alignItems="center">
-                                                <Grid size={{xs: 10 }}>
+                                                <Grid size={{ xs: 10 }}>
                                                     <Typography className='title-font pb-10'>{obj?.verificationTemplateName}</Typography>
                                                     <Typography className='title-font' fontWeight="bold">{`${obj?.walletName}, ${obj?.walletLocation}`}</Typography>
                                                     <Typography className='title-font' fontStyle="italic">{`${t('gettingStarted.chooseWalletThree')} ${obj?.issuerName}, ${obj?.issuerLocation}`}</Typography>
                                                 </Grid>
-                                                <Grid size={{xs: 2}}>
-                                                    <img 
+                                                <Grid size={{ xs: 2 }}>
+                                                    <img
                                                         style={{ width: "50px", height: "50px", borderRadius: "50%" }}
                                                         src={obj?.issuerLogoUrl}
                                                     />

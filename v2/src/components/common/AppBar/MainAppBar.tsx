@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 import { MainAppBarMenu } from "./MainAppBarMenu";
 import Image from "next/image";
@@ -12,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/custom-hooks/store";
+import { ListIcon } from "@phosphor-icons/react";
 
 interface Props {
     handleOpenMenu: () => void;
@@ -37,7 +37,7 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                         color="inherit"
                         onClick={handleOpenMenu}
                     >
-                        <MenuIcon style={{ height: 60, width: 60 }} />
+                        <ListIcon size={32} />
                     </IconButton>
                     <Link href="/">
                         <Image 
