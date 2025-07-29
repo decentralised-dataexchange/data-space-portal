@@ -123,6 +123,8 @@
     "industry": "Toimiala"
   },
   "common": {
+    "trustedServiceProvider": "Luotettu palveluntarjoaja",
+    "untrustedServiceProvider": "Luottamaton palveluntarjoaja",
     "continue": "Jatka",
     "certificateOfRegistration": "REKISTERÖINTITODISTUS",
     "language": "Kieli",

@@ -97,6 +97,8 @@
     "industry": "Industry"
   },
   "common": {
+    "trustedServiceProvider": "Trusted Service Provider",
+    "untrustedServiceProvider": "Untrusted Service Provider",
     "continue": "Continue",
     "back": "Back",
     "next": "Next",

@@ -123,6 +123,8 @@
     }
   },
   "common": {
+    "trustedServiceProvider": "Pålitlig tjänsteleverantör",
+    "untrustedServiceProvider": "Opålitlig tjänsteleverantör",
     "continue": "Fortsätt",
     "certificateOfRegistration": "REGISTRERINGSBEVIS",
     "language": "Språk",

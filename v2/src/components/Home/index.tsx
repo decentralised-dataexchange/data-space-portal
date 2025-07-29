@@ -18,7 +18,15 @@ export default async function HomePage({params}: Props) {
 
   const t = await getTranslations();
 
-  const dataSourceItems = (await apiService.dataSourceList())?.dataSources ?? [];
+  const dataSourceList = await apiService.dataSourceList();
+  const dataSourceItems = (dataSourceList?.dataSources ?? []).map(item => ({
+    ...item,
+    dataSource: {
+      ...item.dataSource,
+      // Map verification status to trusted property
+      trusted: item.verification?.presentationRecord?.verified === 'true' || false
+    }
+  }));
 
   return (
     <>
