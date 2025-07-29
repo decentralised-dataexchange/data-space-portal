@@ -1,9 +1,5 @@
 "use client"
-import {
-  ContentCopyOutlined,
-  VisibilityOffOutlined,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { CopyIcon, EyeIcon, EyeClosedIcon, EyeSlashIcon } from "@phosphor-icons/react";
 import { Box, Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
@@ -235,20 +231,20 @@ export default function DeveloperAPIs () {
               sx={{ cursor: "pointer" }}
             >
               {showAPI ? (
-                <VisibilityOffOutlined
+                <EyeIcon
                   onClick={() => setShowAPI(false)}
-                  sx={{ color: "black", fontSize: "1.25rem" }}
+                  size={24}
                 />
               ) : (
-                <VisibilityOutlined
+                <EyeSlashIcon
                   onClick={() => setShowAPI(true)}
-                  sx={{ color: "black", fontSize: "1.25rem" }}
+                  size={24}
                 />
               )}
 
-              <ContentCopyOutlined
+              <CopyIcon
+                size={24}
                 onClick={handleCopy}
-                sx={{ color: "black", fontSize: "1.25rem" }}
               />
             </Box>
           </Grid>
