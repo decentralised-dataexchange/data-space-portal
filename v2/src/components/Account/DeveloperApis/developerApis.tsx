@@ -1,5 +1,5 @@
 "use client"
-import { CopyIcon, EyeIcon, EyeClosedIcon, EyeSlashIcon } from "@phosphor-icons/react";
+import { CopyIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
 import { Box, Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
@@ -9,10 +9,10 @@ import SnackbarComponent from "@/components/notification";
 import { useGetAdminDetails, useGetOrganizationDetails, useUpdateOpenApiUrl, useGetApiToken } from "@/custom-hooks/developerApis";
 
 const Container = styled("div")(({ theme }) => ({
-  margin: "0 15px 0px 15px",
+  margin: "0px 15px 0px 15px",
   paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
-    margin: "10px",
+    margin: "52px 0 10px 0",
   },
 }));
 
