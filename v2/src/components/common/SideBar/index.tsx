@@ -134,8 +134,21 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          marginTop: '80px',
+          paddingTop: "15px",
+          backgroundColor: 'rgb(247, 246, 246)',
+          '@media (max-width: 900px)': {
+            position: 'absolute',
+            height: 'calc(100% - 80px)',
+            zIndex: 1200,
+            '&.MuiDrawer-paperAnchorLeft': {
+              backgroundColor: 'rgb(247, 246, 246) !important'
+            }
+          }
         },
-        position: "absolute"
+        '& .MuiBackdrop-root': {
+          display: 'none'
+        }
       }}
       ModalProps={{
         keepMounted: true,

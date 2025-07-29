@@ -192,6 +192,7 @@
       "confirmButton": "Delete",
       "confirmText": "DELETE"
     },
+    "copyConnection": "Copy Connection",
     "publishModal": {
       "title": "Publish to Marketplace",
       "confirmButton": "Submit"

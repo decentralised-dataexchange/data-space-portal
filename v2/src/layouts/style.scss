@@ -97,11 +97,8 @@
     height: auto;
     min-height: 100vh;
     position: relative !important;
-    .MuiDrawer-root {
-        .MuiPaper-root {
-            background-color: rgb(247, 246, 246);
-            border-right: 0;
-        }
+    .MuiPaper-root {
+        background-color: rgb(247, 246, 246);
     }
 }
 

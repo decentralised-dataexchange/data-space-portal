@@ -122,19 +122,14 @@ export default function ViewDataAgreementModalInner(props: Props) {
                   onClick={() => {
                     navigator.clipboard.writeText(selectedData?.connection?.invitationUrl);
                   }}
-                  className="copy-connection-btn"
                   sx={{
                     marginLeft: "15px",
                     marginRight: "auto",
                     color: "black",
-                    "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                    },
                   }}
-                  variant="outlined"
+                  variant="text"
                 >
-                  {"Copy Connection"}
+                  {t("dataAgreements.copyConnection")}
                 </Button>}
                 <Button
                   onClick={() => {
