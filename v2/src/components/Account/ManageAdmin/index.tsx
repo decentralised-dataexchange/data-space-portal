@@ -15,7 +15,7 @@ const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
   paddingBottom: "50px",
   [theme.breakpoints.down("sm")]: {
-    margin: "10px",
+    margin: "52px 0 10px 0",
   },
 }));
 
@@ -173,7 +173,7 @@ const ManageAdmin = () => {
   };
 
   return (
-    <Container className="manageAdmin-container">
+    <Container className="pageContainer manageAdmin-container">
       <SnackbarComponent
         open={openSnackBar}
         setOpen={setOpenSnackBar}
