@@ -130,7 +130,7 @@ export interface DataDisclosureAgreement {
   updatedAt?: string;
 }
 
-export type DataSource = {
+export interface DataSource {
     description: string,
     logoUrl: string,
     id: string
@@ -140,6 +140,7 @@ export type DataSource = {
     location: string,
     policyUrl: string,
     openApiUrl: string,
+    trusted: boolean;
 }
 
 export type DataSourceListResponse = {
