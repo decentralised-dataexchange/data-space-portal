@@ -178,6 +178,38 @@ const DDATable: React.FC<DDATableProps> = ({
           page={Math.floor(offset / limit)}
           onPageChange={onPageChange}
           onRowsPerPageChange={onRowsPerPageChange}
+          sx={{
+            ".MuiSelect-select": {
+              padding: 0,
+              paddingTop: "0.2rem",
+              fontSize: "14px"
+            },
+            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "black",
+              borderWidth: "1px"
+            }
+          }}
+          SelectProps={{
+            MenuProps: {
+              sx: {
+                '& .MuiPaper-root': {
+                  '& .MuiMenuItem-root': {
+                    fontSize: '14px',
+                    minHeight: '32px',
+                    '&:hover': {
+                      backgroundColor: '#f5f5f5',
+                    },
+                    '&.Mui-selected': {
+                      backgroundColor: '#e0e0e0',
+                      '&:hover': {
+                        backgroundColor: '#e0e0e0',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          }}
         />
       )}
     </RootTableContainer>
