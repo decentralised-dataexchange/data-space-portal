@@ -105,7 +105,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
         {isOpen && (
           <Box sx={{ ml: 8 }}>
             {list.subMenu.map((subItem) => {
-              const subItemActive = isActive(`${list.link}/${subItem.link}`);
+              const subItemActive = pathname.includes(subItem.link);
               return (
                 <MenuItem 
                   key={subItem.name}
