@@ -22,7 +22,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
   const t = useTranslations();
   const [isLoader, setLoader] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(isVerify ? 1 : 0);
-  const [showValues, setShowValues] = useState(true);
+  const [showValues, setShowValues] = useState(false);
   
   // Load templates using the consolidated verification hooks
   const { data: templates } = useVerificationTemplates();
