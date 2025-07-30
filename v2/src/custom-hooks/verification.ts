@@ -7,13 +7,22 @@ import {
   VerificationTemplate
 } from '@/types/verification';
 
+interface VerificationTemplatesResponse {
+  verificationTemplates: VerificationTemplate[];
+}
+
 export const useVerificationTemplates = (restrictTemplate = false) => {
   return useQuery<VerificationTemplate[], Error>({
     queryKey: ['verificationTemplates', { restrictTemplate }],
     queryFn: async (): Promise<VerificationTemplate[]> => {
       try {
-        const data = await apiService.getVerificationTemplates(restrictTemplate);
-        return Array.isArray(data) ? data : data?.verificationTemplates || [];
+        const response = await apiService.getVerificationTemplates(restrictTemplate);
+        // Handle both array response and object with verificationTemplates property
+        if (Array.isArray(response)) {
+          return response;
+        }
+        const templatesResponse = response as VerificationTemplatesResponse;
+        return templatesResponse?.verificationTemplates || [];
       } catch (error) {
         console.error('Error fetching verification templates:', error);
         throw new Error('Failed to load verification templates. Please try again later.');

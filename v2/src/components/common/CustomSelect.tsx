@@ -76,7 +76,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   },
 }));
 
-interface CustomSelectProps extends Omit<SelectProps, 'onChange'> {
+interface CustomSelectProps extends Omit<SelectProps, 'onChange' | 'variant'> {
   options: Array<{ value: string | number; label: string }>;
   onChange?: (value: string) => void;
 }
@@ -98,6 +98,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       value={value}
       onChange={handleChange}
       displayEmpty
+      variant="outlined"
       inputProps={{ 'aria-label': 'select' }}
       {...props}
     >
