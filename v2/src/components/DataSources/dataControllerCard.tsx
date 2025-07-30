@@ -1,8 +1,16 @@
 import React from "react";
 import { Box, Typography } from "@mui/material"; 
+
 const DataControllerCard = ({ selectedData }) => {
   return (
-    <>
+    <Box 
+      sx={{
+        backgroundColor: '#FFFFFF',
+        borderRadius: '7px',
+        padding: '12px',
+        border: '1px solid #DFE0E1',
+      }}
+    >
       <InfoRow label="Name" value={selectedData?.dataController.name} />
       <InfoRow label="DID" value={selectedData?.dataController.did} />
       <InfoRow label="Legal ID" value={selectedData?.dataController.legalId} />
@@ -11,7 +19,7 @@ const DataControllerCard = ({ selectedData }) => {
         label="Industry Sector"
         value={selectedData?.dataController.industrySector}
       />
-    </>
+    </Box>
   );
 };
 
@@ -25,8 +33,8 @@ const InfoRow = ({ label, value }) => {
         padding: "12px",
       }}
     >
-      <Typography variant="subtitle2">{label}</Typography>
-      <Typography color="grey" variant="subtitle2">
+      <Typography variant="subtitle2" color="black">{label}</Typography>
+      <Typography variant="subtitle2" color="black">
         {value}
       </Typography>
     </Box>

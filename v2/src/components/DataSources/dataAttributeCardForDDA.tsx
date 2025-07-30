@@ -31,9 +31,10 @@ export const DataAttributeCardForDDA = (props: Props) => {
       style={{
         marginTop: "10px",
         border: "1px solid #DFE0E1",
-        borderRadius: 5,
+        borderRadius: "7px",
         paddingTop: 10,
         paddingBottom: 10,
+        backgroundColor: "#FFFFFF",
       }}
     >
       {attributes?.map((attribute: any, index: number) => {

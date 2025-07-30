@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import ChooseComponent from './Choose';
 import ConfirmComponent from './Confirm';
@@ -8,7 +8,10 @@ import { useTranslations } from 'next-intl';
 import { useCreateVerification, useReadVerificationWithPolling, useVerificationTemplates } from '@/custom-hooks/verification'
 import Loader from "@/components/common/Loader";
 import './style.scss'
-import { XIcon } from '@phosphor-icons/react';
+import { X, Eye, EyeClosed } from '@phosphor-icons/react';
+import RightSidebar from '@/components/common/RightSidebar';
+import { useAppSelector } from '@/custom-hooks/store';
+import { defaultCoverImage, defaultLogoImg } from '@/constants/defalultImages';
 
 interface AddCredentialProps {
   callRightSideDrawer: () => void;
@@ -19,6 +22,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
   const t = useTranslations();
   const [isLoader, setLoader] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(isVerify ? 1 : 0);
+  const [showValues, setShowValues] = useState(true);
   
   // Load templates using the consolidated verification hooks
   const { data: templates } = useVerificationTemplates();
@@ -36,7 +40,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
     },
     {
       headerName: `${t('gettingStarted.confirm')}`,
-      component: <ConfirmComponent />,
+      component: <ConfirmComponent showValues={showValues} setShowValues={setShowValues} />,
     }
   ];
 
@@ -72,46 +76,34 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
     setCurrentIndex((prev: number) => prev - 1);
   };
 
-  return (
-    <Box
-      role="presentation"
-      className="drawerContent"
-    >
-      <Box className="dd-modal-header">
-        <Box pl={2} style={{ width: "90%" }}>
-          <Typography className="dd-modal-header-text">
-            {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : `${t('gettingStarted.connectWalletTitle')} ${contentArray[currentIndex].headerName}`}
-          </Typography>
-        </Box>
-        <XIcon
-          size={22}
-          onClick={callRightSideDrawer}
-          sx={{
-            paddingRight: 2,
-            cursor: "pointer",
+  // Define header content
+  const headerContent = (
+    <Typography variant="h6" color="inherit">
+      {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : `${t('gettingStarted.connectWalletTitle')} ${contentArray[currentIndex].headerName}`}
+    </Typography>
+  );
+
+  // Define footer content
+  const footerContent = (
+    <>
+      <Button
+        onClick={isLoader ? undefined : callRightSideDrawer}
+        className="delete-btn"
+        sx={{
+          marginRight: "10px",
+          cursor: isLoader ? "not-allowed" : "pointer",
+          color: isLoader ? "#6D7676" : "black",
+          "&:hover": {
+            backgroundColor: "black",
             color: "white",
-          }}
-        />
-      </Box>
-      <Box>{contentArray[currentIndex].component}</Box>
-      <Box className="modal-footer">
+          },
+        }}
+        variant="outlined"
+      >
+        {"Close"}
+      </Button>
+      {currentIndex === 0 && (
         <Button
-          onClick={isLoader ? undefined : callRightSideDrawer}
-          className="delete-btn"
-          sx={{
-            marginRight: "10px",
-            cursor: isLoader ? "not-allowed" : "pointer",
-            color: isLoader ? "#6D7676" : "black",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-            },
-          }}
-          variant="outlined"
-        >
-          {"Close"}
-        </Button>
-        {currentIndex === 0 && <Button
           className="delete-btn"
           onClick={isLoader ? undefined : handleAddComponent}
           variant="outlined"
@@ -126,9 +118,66 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
           }}
         >
           {isLoader ? <Loader isBtnLoader={true} /> : `${t('common.confirm')}`}
-        </Button>}
-      </Box>
+        </Button>
+      )}
+    </>
+  );
+
+  // Get data source metadata for banner and header
+  const gettingStartData = useAppSelector((state: any) => state.gettingStart.data);
+  const { coverImageUrl, logoUrl, name } = gettingStartData?.dataSource || {};
+
+  // Define header content
+  const headerContentValue = (
+    <Box sx={{ width: "100%" }}>
+      <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '20px', color: '#F3F3F6' }}>
+        {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : `${t('gettingStarted.connectWalletTitle')} ${contentArray[currentIndex].headerName}`}
+      </Typography>
     </Box>
+  );
+
+  // Define banner content
+  const bannerContent = (
+    <>
+      <Box
+        component="img"
+        alt="Banner"
+        src={coverImageUrl || defaultCoverImage}
+        sx={{ height: 194, width: '100%', objectFit: 'cover' }}
+      />
+      <Box sx={{ position: "relative", height: '65px', marginTop: '-65px' }}>
+        <Avatar
+          src={logoUrl || defaultLogoImg}
+          sx={{
+            position: 'absolute',
+            left: 50,
+            top: 0,
+            width: 110,
+            height: 110,
+            border: '6px solid white'
+          }}
+        />
+      </Box>
+    </>
+  );
+
+  return (
+    <RightSidebar
+      open={true}
+      onClose={callRightSideDrawer}
+      headerContent={headerContentValue}
+      bannerContent={bannerContent}
+      showBanner={true}
+      footerContent={footerContent}
+      width={594}
+      maxWidth={594}
+      height="100%"
+      hideCloseButton={true}
+    >
+      <Box sx={{ p: 2 }}>
+        {contentArray[currentIndex].component}
+      </Box>
+    </RightSidebar>
   );
 };
 

@@ -161,6 +161,7 @@
     "saveButton": "Spara ändringar",
     "noListingsAvailable": "Inga listor tillgängliga. Klicka på + för att lägga till ny lista",
     "copyConnection": "Kopiera anslutning",
+    "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Ta bort dataavtal",
       "description": "Är du säker på att du vill ta bort detta dataavtal? Denna åtgärd kan inte ångras.",

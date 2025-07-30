@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { Box, Typography, Collapse } from "@mui/material";
+import { useTranslations } from "next-intl";
+import { CaretRight as CaretRightIcon, CaretDown as CaretDownIcon } from "@phosphor-icons/react";
 import DataAgreementPolicyCardModal from "./dataPolicyCardModal";
 
 const titleAttrRestrictionStyle = {
@@ -13,8 +14,9 @@ const titleAttrRestrictionStyle = {
   alignItems: "center",
   cursor: "pointer",
   border: "1px solid #DFE0E1",
-  borderRadius: 5,
+  borderRadius: "7px",
   padding: "12px",
+  backgroundColor: "#FFFFFF",
 };
 
 interface Props {
@@ -23,6 +25,7 @@ interface Props {
 }
 
 export const DDAPolicyCard = (props: Props) => {
+  const t = useTranslations();
   const { selectedData, handleCloseViewDDAModal } = props;
   const [openDataAgreementPolicyModal, setOpenDataAgreementPolicyModal] =
     useState(false);
@@ -35,9 +38,9 @@ export const DDAPolicyCard = (props: Props) => {
     <>
       <Box style={titleAttrRestrictionStyle} onClick={handleCardClick}>
         <Typography color="grey" variant="subtitle2">
-          Data Agreement Policy
+          {t("dataAgreements.dataAgreementPolicy")}
         </Typography>
-        <KeyboardArrowRightIcon style={{ color: "grey" }} />
+        <CaretRightIcon style={{ color: "grey" }} size={20}/>
       </Box>
       <DataAgreementPolicyCardModal
         open={openDataAgreementPolicyModal}

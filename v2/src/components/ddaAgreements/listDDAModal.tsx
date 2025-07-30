@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Drawer, Typography, Button, Box, CircularProgress } from "@mui/material";
 import { CustomSelect } from "@/components/common";
-import CloseIcon from "@mui/icons-material/Close";
+import { XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import SnackbarComponent from "@/components/notification";
 import { useUpdateDDAStatus } from "@/custom-hooks/dataDisclosureAgreements";
@@ -127,7 +127,8 @@ export default function ListDDAModal({
                 {selectedData?.templateId || 'N/A'}
               </Typography>
             </Box>
-            <CloseIcon
+            <XIcon
+              size={24}
               onClick={handleClose}
               className={styles['close-btn']}
             />

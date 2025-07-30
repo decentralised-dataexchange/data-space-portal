@@ -3,7 +3,19 @@
 @use "../Home/style" as home;
 
 .drawer-dda {
+    // Target the backdrop
+    .MuiBackdrop-root {
+        z-index: 1400 !important; // Higher than RightSidebar's 1300
+    }
+    
+    // Target the paper component
     .MuiPaper-root {
+        z-index: 1500 !important; // Higher than backdrop
+        background-color: #F7F6F6 !important;
+        height: 100vh;
+        width: 594px;
+        max-width: 594px;
+        margin-top: 0;
         @include breakpoints.tabletAndDown {
             width: 100%;
             overflow: hidden;
@@ -40,13 +52,16 @@
 }
 
 .dd-modal-container {
+    background-color: #F7F6F6; // Updated from white to match full sidebar background
     height: 100vh;
-    background-color: #FFFF;
+    background-color: #F7F6F6;
     margin-top: 0;
-    width: 480px;
+    width: 594px;
+    max-width: 594px;
     @include breakpoints.tabletAndDown {
         margin-top: 0;
         width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -72,7 +87,7 @@
 }
 
 .dd-modal-details {
-    width: 480px;
+    width: 594px;
     border-radius: 2;
     background-color: #FFFF;
     @include breakpoints.tabletAndDown {
@@ -96,7 +111,7 @@
 .modal-footer {
     position: fixed;
     bottom: 0px;
-    width: 480px;
+    width: 594px;
     border-top: 1px solid #E9ECEF;
     height: 65px;
     display: flex;

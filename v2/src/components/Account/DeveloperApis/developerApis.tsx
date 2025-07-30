@@ -141,7 +141,7 @@ export default function DeveloperAPIs () {
   }
 
   return (
-    <Container>
+    <Container className='pageContainer'>
       <HeaderContainer>
         <SnackbarComponent
           open={openSnackBar}

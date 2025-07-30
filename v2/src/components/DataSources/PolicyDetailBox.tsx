@@ -20,8 +20,8 @@ const PolicyDetailsBox = (props: Props) => {
         padding: "12px",
       }}
     >
-      <Typography variant="subtitle2">{name}</Typography>
-      <Typography color="grey" variant="subtitle2">
+      <Typography variant="subtitle2" color="black">{name}</Typography>
+      <Typography variant="subtitle2" color="black">
         {value}
       </Typography>
     </Box>

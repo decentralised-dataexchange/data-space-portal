@@ -4,12 +4,11 @@ import React, { useState } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { LocalStorageService } from "@/utils/localStorageService";
 import { Box, Menu, Typography, IconButton } from "@mui/material";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useTranslations } from "next-intl";
 import { defaultLogoImg } from "@/constants/defalultImages";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { logout } from "@/store/reducers/authReducer";
+import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
 
 type Props = {
   firstName?: string;
@@ -110,7 +109,7 @@ export const MainAppBarMenu = (props: Props) => {
             }}
             onClick={() => router.push("/account/manage-admin")}
           >
-            <SettingsOutlinedIcon />
+            <GearSixIcon size={24}/>
             <Typography ml={1} variant="body2">
               {t("appBar.settings")}
             </Typography>
@@ -126,7 +125,7 @@ export const MainAppBarMenu = (props: Props) => {
             }}
             onClick={handleClickLogOut}
           >
-            <ExitToAppIcon />
+            <SignOutIcon size={24}/>
             <Typography ml={1} variant="body2">
               {t("appBar.signout")}
             </Typography>

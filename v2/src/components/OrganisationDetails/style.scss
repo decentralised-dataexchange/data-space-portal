@@ -44,6 +44,17 @@
     letter-spacing: 0.01071em;
 }
 
+// Element below banner in Getting Started page
+.gettingStarted {
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgb(225, 225, 225);
+  border-top: none;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 16px;
+  margin-top: -2px; // Ensure it touches the banner above
+}
+
 .logoContainer {
     opacity: 1;
     margin-top: -100px;
@@ -53,7 +64,7 @@
 }
 
 .gettingStarted {
-    padding: 1.5rem 0 1rem 0 !important;
+    padding: 1.5rem 0 1rem 1rem !important;
     .MuiInputBase-formControl {
         margin-top: 0;
     }

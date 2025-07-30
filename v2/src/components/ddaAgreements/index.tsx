@@ -56,13 +56,15 @@ const DDAgreements = () => {
 
   const getDataSourceDetails = (dataAgreement: DataDisclosureAgreement | null) => {
     // Default return values with fallback to default logo
-    const defaultImages = {
+    const defaultValues = {
       coverImage: "",
-      logoImage: defaultLogoImg
+      logoImage: defaultLogoImg,
+      dataSourceName: "",
+      dataSourceLocation: ""
     };
 
     if (!dataAgreement || !dataSources) {
-      return defaultImages;
+      return defaultValues;
     }
 
     // Extract the data sources list from the response
@@ -73,7 +75,7 @@ const DDAgreements = () => {
         : [];
 
     if (!dataSourcesList.length) {
-      return defaultImages;
+      return defaultValues;
     }
 
     // Try to find a data source that contains this DDA
@@ -86,10 +88,12 @@ const DDAgreements = () => {
       );
 
       if (matchingDDA) {
-        // Return the cover image and logo from the matched data source
+        // Return the cover image, logo, name, and location from the matched data source
         return {
           coverImage: item.dataSource.coverImageUrl || "",
-          logoImage: item.dataSource.logoUrl || defaultLogoImg
+          logoImage: item.dataSource.logoUrl || defaultLogoImg,
+          dataSourceName: item.dataSource.name || "",
+          dataSourceLocation: item.dataSource.location || ""
         };
       }
     }
@@ -99,11 +103,13 @@ const DDAgreements = () => {
     if (firstDataSource) {
       return {
         coverImage: firstDataSource.coverImageUrl || "",
-        logoImage: firstDataSource.logoUrl || defaultLogoImg
+        logoImage: firstDataSource.logoUrl || defaultLogoImg,
+        dataSourceName: firstDataSource.name || "",
+        dataSourceLocation: firstDataSource.location || ""
       };
     }
 
-    return defaultImages;
+    return defaultValues;
   };
 
   const { data, isLoading, error, refetch } = useDDAgreements(
@@ -134,8 +140,6 @@ const DDAgreements = () => {
     setSelectedDDA(null);
     setIsOpenViewDDA(false);
   };
-
-  console.log("error", error);
 
   const handleAddNewListing = () => {
     console.log('Add new listing clicked');
@@ -269,8 +273,8 @@ const DDAgreements = () => {
           setOpen={handleCloseModal}
           mode="private"
           selectedData={selectedDDA}
-          dataSourceName={t("common.name")}
-          dataSourceLocation=""
+          dataSourceName={getDataSourceDetails(selectedDDA).dataSourceName}
+          dataSourceLocation={getDataSourceDetails(selectedDDA).dataSourceLocation}
           dataSourceDescription={selectedDDA.purposeDescription || ''}
           coverImage={getDataSourceDetails(selectedDDA).coverImage}
           logoImage={getDataSourceDetails(selectedDDA).logoImage}
