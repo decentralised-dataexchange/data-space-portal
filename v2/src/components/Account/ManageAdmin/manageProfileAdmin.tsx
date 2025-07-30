@@ -28,8 +28,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
   };
 
   const handleChangeImage = async (e: any) => {
-    let reader = new FileReader();
-    let file = e.target.files[0];
+    const reader = new FileReader();
+    const file = e.target.files[0];
 
     if (file && file.type && file.type.startsWith("image/")) {
       reader.onloadend = () => {

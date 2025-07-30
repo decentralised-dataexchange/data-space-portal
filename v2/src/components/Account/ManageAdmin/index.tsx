@@ -62,7 +62,7 @@ const editStyleEnable: React.CSSProperties = {
 const ManageAdmin = () => {
   // Get admin data from Redux store (for backward compatibility)
   const adminData = useAppSelector(
-    (state) => state?.user?.data
+    (state) => state?.auth?.adminDetails
   );
   
   // React Query hooks

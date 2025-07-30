@@ -76,9 +76,12 @@ export default function DeveloperAPIs () {
 
   const handleUpdateUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOpenApiUrl(event.target.value);
-    event.target.value !== orgDetails?.openApiUrl
-      ? setIsOk(true)
-      : setIsOk(false);
+
+    if (event.target.value !== orgDetails?.openApiUrl) {
+      setIsOk(true);
+    } else {
+      setIsOk(false);
+    }
   };
 
   const udateOpenApiUrls = () => {
