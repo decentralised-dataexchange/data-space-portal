@@ -39,13 +39,34 @@ const DetailsContainer = styled("div")({
 const Item = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: "#f7f6f6",
+  backgroundColor: "#fff",
   padding: theme.spacing(1),
   justifyContent: "center",
-  color: "#0000",
-  height: 90,
-  borderRadius: 7,
-  border: "1px solid grey",
+  color: "#000",
+  height: 'auto',
+  minHeight: 90,
+  borderRadius: 0,
+  border: "1px solid #DFDFDF",
+  boxShadow: 'none',
+  transition: 'all 0.3s ease',
+  textTransform: 'unset',
+  width: '100%',
+  textAlign: 'center',
+  '&:hover': {
+    backgroundColor: '#000',
+    color: '#fff',
+    '& .MuiTypography-root': {
+      color: '#fff',
+    }
+  },
+  '& .MuiTypography-root': {
+    color: '#000',
+    fontSize: '14px',
+    textAlign: 'center',
+    width: '100%',
+    padding: '6px 16px',
+    margin: '8px 0 0 0',
+  }
 }));
 
 const GettingStarted = () => {
@@ -181,32 +202,23 @@ const GettingStarted = () => {
       <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>
         <Grid container spacing={2}>
           <Grid size={{lg: 4, md: 6, sm: 6, xs:12}}>
-            <Item
-              sx={{ cursor: "pointer" }}
-              onClick={() => router.push(`/${t("route.dd-agreements")}`)}
-            >
-              <Typography variant="body1" color="grey">
+            <Item onClick={() => router.push(`/${t("route.dd-agreements")}`)}>
+              <Typography variant="body1">
                 {t('gettingStarted.manageDDA')}
               </Typography>
             </Item>
           </Grid>
           <Grid size={{lg: 4, md: 6, sm: 6, xs:12}}>
-            <Item
-              sx={{ cursor: "pointer" }}
-              onClick={() => router.push(`/${t("route.manageAdmin")}`)}
-            >
-              <Typography variant="body1" color="grey">
-              {t('gettingStarted.manageAdminUser')}
+            <Item onClick={() => router.push(`/${t("route.manageAdmin")}`)}>
+              <Typography variant="body1">
+                {t('gettingStarted.manageAdminUser')}
               </Typography>
             </Item>
           </Grid>
           <Grid size={{lg: 4, md: 6, sm: 6, xs: 12}}>
-            <Item
-              sx={{ cursor: "pointer" }}
-              onClick={() => router.push(`/${t("route.developerApis")}`)}
-            >
-              <Typography variant="body1" color="grey">
-                {t('gettingStarted.developerDocumentation')} 
+            <Item onClick={() => router.push(`/${t("route.developerApis")}`)}>
+              <Typography variant="body1">
+                {t('gettingStarted.developerDocumentation')}
               </Typography>
             </Item>
           </Grid>
