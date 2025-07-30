@@ -2,11 +2,10 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
-import { Drawer, Typography, Button, Box } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Drawer, Typography, Button, Box, useTheme } from "@mui/material";
 
 import { useTranslations } from "next-intl";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { CaretLeftIcon, XIcon } from "@phosphor-icons/react";
 
 import PolicyDetailsBox from "./PolicyDetailBox";
 import DataControllerCard from "./dataControllerCard";
@@ -34,8 +33,12 @@ const titleAttrRestrictionStyle = {
 
 export default function DataAgreementPolicyCardModal(props: Props) {
   const t = useTranslations();
+  const theme = useTheme();
   const { open, setOpen, headerText, selectedData, handleCloseViewDDAModal } =
     props;
+  
+  // Create ref for the container
+  const containerRef = React.useRef<HTMLDivElement>(null);
   
   const SSIpolicyDetailsForContainer = [
     {
@@ -76,34 +79,50 @@ export default function DataAgreementPolicyCardModal(props: Props) {
 
   return (
     <React.Fragment>
-      <Drawer anchor="right" open={open} className="drawer-dda">
+      <Drawer 
+        anchor="right" 
+        open={open} 
+        className="drawer-dda"
+        style={{ zIndex: 9999 }}
+        SlideProps={{
+          style: { zIndex: 9999 }
+        }}
+      >
+
         <Box className="dd-modal-container">
           <Box className="dd-modal-header">
             <Box pl={2} display={"flex"} alignItems={"center"}>
-              <ArrowBackIosIcon
-                fontSize="small"
-                style={{ color: "white", cursor: "pointer" }}
+              <CaretLeftIcon
+                size={22}
+                className="dd-modal-header-icon"
                 onClick={() => {
                   setOpen(false);
                 }}
               />
-              <Typography color="#F3F3F6">{headerText}</Typography>
+              <Typography color="#F3F3F6" >{headerText}</Typography>
             </Box>
-            <CloseIcon
-              fontSize="large"
+            <XIcon
+              size={22}
+              className="dd-modal-header-icon"
               onClick={() => {
                 setOpen(false);
                 handleCloseViewDDAModal(false);
               }}
-              sx={{ paddingRight: 2, cursor: "pointer", color: "#F3F3F6" }}
             />
           </Box>
 
-          <Box className="dd-modal-details" style={{ paddingBottom: "70px" }}>
-            <Box m={1.5} style={titleAttrRestrictionStyle}>
+          <Box className="dd-modal-details" style={{ paddingBottom: "70px", backgroundColor: '#F7F6F6' }}>
+            <Box m={1.5}>
               <DataControllerCard selectedData={selectedData} />
             </Box>
-            <Box m={1.5} style={titleAttrRestrictionStyle}>
+            <Box 
+              m={1.5}
+              sx={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '7px',
+                border: '1px solid #DFE0E1',
+              }}
+            >
               {SSIpolicyDetailsForContainer?.map((policyDetail, index) => (
                 <PolicyDetailsBox
                   key={index}
@@ -119,7 +138,12 @@ export default function DataAgreementPolicyCardModal(props: Props) {
 
         
           </Box>
-          <Box className="modal-footer ">
+          <Box className="modal-footer" sx={{
+            width: 594,
+            [theme.breakpoints.down('sm')]: {
+              width: '100%',
+            },
+          }}>
             <Button
               onClick={() => {
                 setOpen(false);

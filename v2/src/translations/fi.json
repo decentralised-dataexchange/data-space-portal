@@ -166,6 +166,7 @@
     "saveButton": "Tallenna muutokset",
     "noListingsAvailable": "Ei listauksia saatavilla. Lisää uusi listaus painamalla +",
     "copyConnection": "Kopioi yhteys",
+    "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",
       "description": "Haluatko varmasti poistaa tämän tietosopimuksen? Tätä toimintoa ei voi peruuttaa.",

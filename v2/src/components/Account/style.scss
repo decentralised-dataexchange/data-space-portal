@@ -31,6 +31,7 @@
 
 .searchField {
     width: 450px !important;
+
     .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
         border-radius: 100px !important;
     }
@@ -39,5 +40,14 @@
 .manageAdmin-container {
     .css-jcincl {
         font-size: 0.875rem !important;
+    }
+}
+
+.delete-icon {
+    cursor: pointer;
+    color: #888;
+
+    &:hover {
+        color: #f44336
     }
 }

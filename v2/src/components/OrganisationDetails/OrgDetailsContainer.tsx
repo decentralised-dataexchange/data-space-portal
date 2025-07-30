@@ -6,12 +6,12 @@ import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "@/components/OrganisationDetails/OrgLogoImageUpload";
 import DrawerComponent from "@/components/common/Drawer";
 import AddCredentialComponent from "@/components/AddCredential";
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RightSidebar from "@/components/common/RightSidebar";
 import './style.scss';
 import { useTranslations } from "next-intl";
 import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
 import { apiService } from "@/lib/apiService/apiService";
+import VerifiedBadge from "../common/VerifiedBadge";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -98,7 +98,6 @@ const OrganisationDetailsContainer = (props: Props) => {
       [name]: value,
     };
     setFormValue(updatedFormValue);
-    // Update parent component's state with field name and value
     setOganisationDetails(name, value);
   }
 
@@ -109,26 +108,52 @@ const OrganisationDetailsContainer = (props: Props) => {
       const obj = {
         "dataSource": formValue
       };
-
-      // Use the custom hook for updating data source
       await updateDataSource(obj);
 
-      // Exit edit mode after successful save
       handleEdit();
     } catch (error) {
       console.error('Error saving organization details:', error);
-      // You might want to show an error toast here
     }
   }
 
   const addCredentialClass = isVerify ? 'view-credential' : !isEnableAddCredential ? 'add-credential cursorNotAllowed' : 'add-credential';
   return (
     <DetailsContainer sx={{ flexGrow: 1 }} className="gettingStarted">
-      <DrawerComponent
-        openRightSideDrawer={openRightSideDrawer}
-        onCloseRightSideDrawer={callRightSideDrawer}>
+      <RightSidebar
+        open={openRightSideDrawer}
+        onClose={callRightSideDrawer}
+        width={594}
+        maxWidth={594}
+        height="100%"
+        headerContent={
+          <Box sx={{ width: "100%" }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '20px' }}>
+              {isVerify ? 
+                t('gettingStarted.viewCredential') : 
+                `${t('gettingStarted.connectWalletTitle')} ${t('gettingStarted.choose')}`}
+            </Typography>
+          </Box>
+        }
+        bannerContent={
+          <Box
+            sx={{
+              height: "194px",
+              width: "100%",
+              backgroundColor: '#E6E6E6',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#666',
+              fontSize: '14px'
+            }}
+          >
+            No banner image available
+          </Box>
+        }
+        showBanner={true}
+      >
         <AddCredentialComponent isVerify={isVerify} callRightSideDrawer={callRightSideDrawer} />
-      </DrawerComponent>
+      </RightSidebar>
       <Grid
         sx={{
           display: { xs: "grid", sm: "flex" },
@@ -217,14 +242,17 @@ const OrganisationDetailsContainer = (props: Props) => {
             ) :
               <>
                 <Box sx={{ display: "flex", alignItems: 'center' }} mt={"-7px"} >
-                  <Typography variant="h6" fontWeight="bold">
-                    {organisationDetails?.name}
+                    <Typography variant="h6" fontWeight="bold">
+                      {organisationDetails?.name}
+                    </Typography>
+                    <p style={{marginLeft: '0.5rem'}}className={addCredentialClass} onClick={callRightSideDrawer}>
+                      {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential'))}
+                    </p>
+                  </Box>
+                  <Typography color="text.secondary" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: 'black' }}>
+                    {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+                    <VerifiedBadge trusted={isVerify} size="small" />
                   </Typography>
-                  {isVerify ? <CheckCircleIcon className="verify" /> : <DoNotDisturbOnIcon className="no-verify" />}
-                  <p className={addCredentialClass} onClick={callRightSideDrawer}>
-                    {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential'))}
-                  </p>
-                </Box>
                 <Typography variant="body2" height="23px">
                   {(t('gettingStarted.sector'))} {t('gettingStarted.public')}
                 </Typography>

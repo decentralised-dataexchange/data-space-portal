@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Drawer, Typography, Button, Box, TextField, CircularProgress } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useDeleteDDA } from "@/custom-hooks/dataDisclosureAgreements";
 import styles from "./generalModal.module.scss";
@@ -81,7 +81,7 @@ export default function GeneralModal({
             {headerText}{selectedData?.purpose ? `: ${selectedData.purpose}` : ''}
           </Typography>
           <Button onClick={handleClose} className={styles['close-btn']}>
-            <CloseIcon />
+            <XIcon size={24} />
           </Button>
         </Box>
         <Box className={styles['dd-modal-body']}>

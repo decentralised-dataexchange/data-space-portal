@@ -1,0 +1,456 @@
+export { default } from './RightSidebar';
+export { default } from './RightSidebar';
+export * from './RightSidebar';
+import { 
+  Drawer, 
+  DrawerProps, 
+  IconButton, 
+  Box, 
+  BoxProps, 
+  Typography, 
+  styled, 
+  Theme, 
+  CSSObject,
+  useTheme,
+  useMediaQuery
+} from '@mui/material';
+import { X } from '@phosphor-icons/react';
+import clsx from 'clsx';
+import './style.scss';
+
+ {
+  /** Styles applied to the root element. */
+  root?: string;
+  /** Styles applied to the Paper component. */
+  paper?: string;
+  /** Styles applied to the header container. */
+  header?: string;
+  /** Styles applied to the content wrapper. */
+  content?: string;
+  /** Styles applied to the footer container. */
+  footer?: string;
+  /** Styles applied to the close button. */
+  closeButton?: string;
+}
+
+export interface RightSidebarProps extends Omit<DrawerProps, 'onClose' | 'anchor' | 'title' | 'classes'> {
+  /** If `true`, the sidebar is open. */
+  open: boolean;
+  /** Callback fired when the component requests to be closed. */
+  onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+  /** The title displayed in the header. */
+  title?: React.ReactNode;
+  /** Custom header content. If provided, overrides the title. */
+  headerContent?: React.ReactNode;
+  /** Props applied to the header container. */
+  headerProps?: BoxProps;
+  /** Content displayed in the footer. */
+  footerContent?: React.ReactNode;
+  /** Props applied to the footer container. */
+  footerProps?: BoxProps;
+  /** Props applied to the content wrapper. */
+  contentProps?: BoxProps;
+  /** The content of the component. */
+  children: React.ReactNode;
+  /** The width of the sidebar. */
+  width?: number | string;
+  /** The maximum width of the sidebar. */
+  maxWidth?: number | string;
+  /** The height of the sidebar. */
+  height?: number | string;
+  /** The maximum height of the sidebar. */
+  maxHeight?: number | string;
+  /** If `true`, clicking the backdrop will not fire the `onClose` callback. */
+  disableBackdropClick?: boolean;
+  /** If `true`, hitting escape will not fire the `onClose` callback. */
+  disableEscapeKeyDown?: boolean;
+  /** Keep the children in the DOM while closed. */
+  keepMounted?: boolean;
+  /** The duration for the transition, in milliseconds. */
+  transitionDuration?: number | { appear?: number; enter?: number; exit?: number };
+  /** The easing function to be used for the transition. */
+  transitionEasing?: string;
+  /** Override or extend the styles applied to the component. */
+  classes?: Partial<RightSidebarClasses>;
+  /** Additional props to pass to the Drawer component. */
+  DrawerProps?: Partial<DrawerProps>;
+}
+
+interface StyledDrawerProps {
+  width?: number | string;
+  maxWidth?: number | string;
+  height?: number | string;
+  maxHeight?: number | string;
+  transitionDuration?: number | { appear?: number; enter?: number; exit?: number };
+  transitionEasing?: string;
+}
+
+const StyledDrawer = styled(Drawer, {
+  shouldForwardProp: (prop) => 
+    !['width', 'maxWidth', 'height', 'maxHeight', 'transitionDuration', 'transitionEasing'].includes(prop as string)
+})<StyledDrawerProps>(({ 
+  theme, 
+  width = 480, 
+  maxWidth = '100%',
+  height = '100%',
+  maxHeight = '100%',
+  transitionDuration = 225,
+  transitionEasing = 'cubic-bezier(0.4, 0, 0.2, 1)'
+}) => {
+  const duration = typeof transitionDuration === 'number' 
+    ? transitionDuration 
+    : transitionDuration.enter || 225;
+    
+  return {
+    '&.MuiModal-root': {
+      zIndex: theme.zIndex.drawer,
+    },
+    '& .MuiDrawer-paper': {
+      width: typeof width === 'number' ? `${width}px` : width,
+      maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
+      height: typeof height === 'number' ? `${height}px` : height,
+      maxHeight: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight,
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      transition: theme.transitions.create('transform', {
+        duration,
+        easing: transitionEasing,
+      }),
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+        maxWidth: '100%',
+        height: '100%',
+        maxHeight: '100%',
+      },
+    },
+  };
+});
+
+const Header = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(2, 3),
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  minHeight: 64,
+}));
+
+const Content = styled(Box)(({ theme }) => ({
+  flex: 1,
+  overflow: 'auto',
+  padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  '&:not(:last-child)': {
+    paddingBottom: theme.spacing(6),
+  },
+}));
+
+const Footer = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2, 3),
+  borderTop: `1px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.background.paper,
+  position: 'sticky',
+  bottom: 0,
+  zIndex: 1,
+  display: 'flex',
+  justifyContent: 'flex-end',
+  gap: theme.spacing(2),
+  '& > *': {
+    margin: theme.spacing(0, 0.5),
+  },
+}));
+
+const RightSidebarInner = ({
+  open,
+  onClose,
+  title,
+  headerContent,
+  headerProps,
+  footerContent,
+  footerProps,
+  contentProps,
+  children,
+  width = 480,
+  maxWidth = '100%',
+  height = '100%',
+  maxHeight = '100%',
+  disableBackdropClick = false,
+  disableEscapeKeyDown = false,
+  keepMounted = false,
+  transitionDuration = 225,
+  transitionEasing = 'cubic-bezier(0.4, 0, 0.2, 1)',
+  classes: classesProp = {},
+  DrawerProps,
+  ...props
+}: RightSidebarProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const {
+    root: rootClass,
+    paper: paperClass,
+    header: headerClass,
+    content: contentClass,
+    footer: footerClass,
+    closeButton: closeButtonClass,
+  } = classesProp;
+
+  const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if ((reason === 'backdropClick' && disableBackdropClick) || 
+        (reason === 'escapeKeyDown' && disableEscapeKeyDown)) {
+      return;
+    }
+    onClose(event, reason);
+  };
+
+  const renderHeader = () => {
+    if (!headerContent && !title) return null;
+    
+    return (
+      <Header 
+        className={clsx('right-sidebar-header', headerClass)}
+        {...headerProps}
+      >
+        <Box sx={{ 
+          flex: 1, 
+          minWidth: 0,
+          ...headerProps?.sx 
+        }}>
+          {headerContent || (typeof title === 'string' ? (
+            <Typography 
+              variant="h6" 
+              noWrap
+              component="h2"
+              sx={{ 
+                fontWeight: 600,
+                color: 'inherit',
+                margin: 0,
+              }}
+            >
+              {title}
+            </Typography>
+          ) : (
+            title
+          )}
+        </Box>
+        <IconButton
+          onClick={(e) => onClose(e, 'escapeKeyDown')}
+          size="small"
+          className={clsx('right-sidebar-close-button', closeButtonClass)}
+          sx={{ 
+            color: 'inherit',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            },
+            marginLeft: 2,
+          }}
+          aria-label="close"
+        >
+          <X size={20} weight="bold" />
+        </IconButton>
+      </Header>
+    );
+  };
+
+  const renderFooter = () => {
+    if (!footerContent) return null;
+    
+    return (
+      <Footer 
+        className={clsx('right-sidebar-footer', footerClass)}
+        {...footerProps}
+      >
+        {footerContent}
+      </Footer>
+    );
+  };
+
+  return (
+    <StyledDrawer
+      ref={ref}
+      anchor="right"
+      open={open}
+      onClose={handleClose}
+      width={width}
+      maxWidth={maxWidth}
+      height={height}
+      maxHeight={maxHeight}
+      transitionDuration={transitionDuration}
+      transitionEasing={transitionEasing}
+      className={clsx('right-sidebar-root', rootClass, {
+        'right-sidebar-mobile': isMobile,
+      })}
+      {...DrawerProps}
+      {...props}
+      sx={{
+        '& .MuiDrawer-paper': {
+          ...(DrawerProps?.sx as CSSObject),
+        },
+        ...(DrawerProps?.sx as CSSObject),
+      }}
+      keepMounted={keepMounted}
+    >
+      {renderHeader()}
+      <Content 
+        className={clsx('right-sidebar-content', contentClass)}
+        {...contentProps}
+      >
+        {children}
+      </Content>
+      {renderFooter()}
+    </StyledDrawer>
+  );
+};
+
+const RightSidebar = React.forwardRef<HTMLDivElement, RightSidebarProps>(({
+  open,
+  onClose,
+  title,
+  headerContent,
+  headerProps,
+  footerContent,
+  footerProps,
+  contentProps,
+  children,
+  width = 480,
+  maxWidth = '100%',
+  height = '100%',
+  maxHeight = '100%',
+  disableBackdropClick = false,
+  disableEscapeKeyDown = false,
+  keepMounted = false,
+  transitionDuration = 225,
+  transitionEasing = 'cubic-bezier(0.4, 0, 0.2, 1)',
+  classes: classesProp = {},
+  DrawerProps,
+  ...props
+}, ref) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const {
+    root: rootClass,
+    paper: paperClass,
+    header: headerClass,
+    content: contentClass,
+    footer: footerClass,
+    closeButton: closeButtonClass,
+  } = classesProp;
+
+  const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if ((reason === 'backdropClick' && disableBackdropClick) || 
+        (reason === 'escapeKeyDown' && disableEscapeKeyDown)) {
+      return;
+    }
+    onClose(event, reason);
+  };
+
+  const renderHeader = () => {
+    if (!headerContent && !title) return null;
+    
+    return (
+      <Header 
+        className={clsx('right-sidebar-header', headerClass)}
+        {...headerProps}
+      >
+        <Box sx={{ 
+          flex: 1, 
+          minWidth: 0,
+          ...headerProps?.sx 
+        }}>
+          {headerContent || (typeof title === 'string' ? (
+            <Typography 
+              variant="h6" 
+              noWrap
+              component="h2"
+              sx={{ 
+                fontWeight: 600,
+                color: 'inherit',
+                margin: 0,
+              }}
+            >
+              {title}
+            </Typography>
+          ) : (
+            title
+          )}
+        </Box>
+        <IconButton
+          onClick={(e) => onClose(e, 'escapeKeyDown')}
+          size="small"
+          className={clsx('right-sidebar-close-button', closeButtonClass)}
+          sx={{ 
+            color: 'inherit',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            },
+            marginLeft: 2,
+          }}
+          aria-label="close"
+        >
+          <X size={20} weight="bold" />
+        </IconButton>
+      </Header>
+    );
+  };
+
+  const renderFooter = () => {
+    if (!footerContent) return null;
+    
+    return (
+      <Footer 
+        className={clsx('right-sidebar-footer', footerClass)}
+        {...footerProps}
+      >
+        {footerContent}
+      </Footer>
+    );
+  };
+
+  return (
+    <StyledDrawer
+      ref={ref}
+      anchor="right"
+      open={open}
+      onClose={handleClose}
+      width={width}
+      maxWidth={maxWidth}
+      height={height}
+      maxHeight={maxHeight}
+      transitionDuration={transitionDuration}
+      transitionEasing={transitionEasing}
+      className={clsx('right-sidebar-root', rootClass, {
+        'right-sidebar-mobile': isMobile,
+      })}
+      {...DrawerProps}
+      {...props}
+      sx={{
+        '& .MuiDrawer-paper': {
+          ...(DrawerProps?.sx as CSSObject),
+        },
+        ...(DrawerProps?.sx as CSSObject),
+      }}
+      keepMounted={keepMounted}
+    >
+      {renderHeader()}
+      <Content 
+        className={clsx('right-sidebar-content', contentClass)}
+        {...contentProps}
+      >
+        {children}
+      </Content>
+      {renderFooter()}
+    </StyledDrawer>
+  );
+});
+
+RightSidebarInner.displayName = 'RightSidebar';
+
+const RightSidebar = React.forwardRef<HTMLDivElement, RightSidebarProps>((props, ref) => (
+  <RightSidebarInner {...props} ref={ref} />
+));
+
+RightSidebar.displayName = 'RightSidebar';
+
+export default RightSidebar;

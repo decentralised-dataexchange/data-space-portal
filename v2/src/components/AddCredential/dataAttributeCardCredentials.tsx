@@ -18,10 +18,11 @@ const tableAttrAdditionalInfoStyle = {
 
 interface Props {
   selectedData: any;
+  showValues?: boolean;
 }
 
 export const DataAttributeCardForDDA = (props: Props) => {
-  const { selectedData } = props;
+  const { selectedData, showValues = true } = props;
 
   const splitByDotAndGetLastWord = (text: string) => {
       const parts = text.split(".");
@@ -37,11 +38,12 @@ export const DataAttributeCardForDDA = (props: Props) => {
   return (
     <Box
       style={{
-        marginTop: "10px",
+        marginTop: "16px",
         border: "1px solid #DFE0E1",
-        borderRadius: 5,
+        borderRadius: 7, // Updated to 7px border radius
         paddingTop: 10,
         paddingBottom: 10,
+        backgroundColor: "#FFFFFF", // Added white background
       }}
     >
       {selectedData?.map((attribute: any, index: number) => {
@@ -62,7 +64,7 @@ export const DataAttributeCardForDDA = (props: Props) => {
                     {camelCaseToWords(splitByDotAndGetLastWord(attribute.attribute))}
                   </Typography>
                   <Typography variant="subtitle2">
-                    {attribute.value}
+                    {showValues ? attribute.value : '••••••••'}
                   </Typography>
                 </tr>
               </tbody>

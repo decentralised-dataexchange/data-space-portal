@@ -72,11 +72,11 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                     </Grid>
                 </Grid>
                 <DDAModalController
-                  dataSourceName={dataSourceItem?.dataSource.name!}
-                  dataSourceLocation={dataSourceItem?.dataSource.location!}
-                  dataSourceDescription={dataSourceItem?.dataSource.description!}
-                  coverImage={dataSourceItem?.dataSource.coverImageUrl!}
-                  logoImage={dataSourceItem?.dataSource.logoUrl!}
+                  dataSourceName={dataSourceItem?.dataSource?.name || ''}
+                  dataSourceLocation={dataSourceItem?.dataSource?.location || ''}
+                  dataSourceDescription={dataSourceItem?.dataSource?.description || ''}
+                  coverImage={dataSourceItem?.dataSource?.coverImageUrl || ''}
+                  logoImage={dataSourceItem?.dataSource?.logoUrl || ''}
                   dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
                 />
             </Grid>

@@ -49,9 +49,6 @@ const Item = styled("div")(({ theme }) => ({
 }));
 
 const GettingStarted = () => {
-  
-
-  
   const [editMode, setEditMode] = useState(false);
   const t = useTranslations();
   const router = useRouter();
