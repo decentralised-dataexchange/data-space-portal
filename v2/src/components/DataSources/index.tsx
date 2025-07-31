@@ -6,12 +6,13 @@ import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import VerifiedBadge from '../common/VerifiedBadge';
 
 export default async function DataSourceListingPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
     const t = await getTranslations();
     const dataSourceItem = ((await apiService.dataSourceList())?.dataSources ?? []).find(item => item.dataSource.id === id);
-
+    const isVerified = dataSourceItem?.verification?.presentationState === "verified";
     return (
         <Box className="dataListContainer">
             <Grid container spacing={gridSpacing}>
@@ -33,9 +34,13 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                                 <CardContent>
                                     <Typography variant="h6" fontWeight="bold">
                                         {dataSourceItem?.dataSource?.name}
-                                        <CheckCircleIcon className="verify" />
+                                        {/* <CheckCircleIcon className="verify" /> */}
                                     </Typography>
-                                    <Typography color="#9F9F9F" className='datasource-location'>
+                                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
+                                        {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+                                        <VerifiedBadge trusted={isVerified} size="small" />
+                                    </Typography>
+                                    <Typography className='datasource-location'>
                                         {dataSourceItem?.dataSource?.location}
                                     </Typography>
                                     <Typography variant="subtitle1" className='datasource-overview-label'>
@@ -61,8 +66,8 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                                                 {dataDisclosureAgreement.purposeDescription}
                                             </Typography>
                                             <DDAActions
-                                              dataDisclosureAgreement={dataDisclosureAgreement}
-                                              openApiUrl={dataSourceItem?.dataSource.openApiUrl || ''}
+                                                dataDisclosureAgreement={dataDisclosureAgreement}
+                                                openApiUrl={dataSourceItem?.dataSource.openApiUrl || ''}
                                             />
                                         </CardContent>
                                     </Card>
@@ -72,12 +77,12 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                     </Grid>
                 </Grid>
                 <DDAModalController
-                  dataSourceName={dataSourceItem?.dataSource?.name || ''}
-                  dataSourceLocation={dataSourceItem?.dataSource?.location || ''}
-                  dataSourceDescription={dataSourceItem?.dataSource?.description || ''}
-                  coverImage={dataSourceItem?.dataSource?.coverImageUrl || ''}
-                  logoImage={dataSourceItem?.dataSource?.logoUrl || ''}
-                  dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
+                    dataSourceName={dataSourceItem?.dataSource?.name || ''}
+                    dataSourceLocation={dataSourceItem?.dataSource?.location || ''}
+                    dataSourceDescription={dataSourceItem?.dataSource?.description || ''}
+                    coverImage={dataSourceItem?.dataSource?.coverImageUrl || ''}
+                    logoImage={dataSourceItem?.dataSource?.logoUrl || ''}
+                    dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
                 />
             </Grid>
         </Box>

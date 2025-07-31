@@ -29,7 +29,7 @@ const BusinessWalletTable = styled("div")({
   marginTop: "20px",
   width: "100%",
   backgroundColor: "#FFFFFF",
-  borderRadius: "4px",
+  borderRadius: "7px",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.05)",
 });
 
