@@ -4,10 +4,12 @@
 .landingPageContainer {
     border: 1px solid rgb(223, 223, 223);
     padding: 20px;
+    border-radius: 7px;
 
     .cardContainer {
         background-color: white;
         border: 1px solid rgb(223, 223, 223);
+        border-radius: 7px;
         padding: 0px;
         box-shadow: none;
 
@@ -88,6 +90,7 @@
         padding: 0px;
         margin-bottom: 15px;
         box-shadow: none;
+        border-radius: 7px;
 
         .logo {
             width: 100px;
@@ -161,6 +164,7 @@
         padding: 20px;
         margin-bottom: 15px;
         box-shadow: none;
+        border-radius: 7px;
     
         .actionListingBtn {
             @include breakpoints.mobileOnly {
