@@ -9,7 +9,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+COPY v2/package.json v2/yarn.lock* v2/package-lock.json* v2/pnpm-lock.yaml* v2/.npmrc* ./
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
   elif [ -f package-lock.json ]; then npm ci; \
@@ -22,7 +22,7 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY v2/ .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -47,7 +47,8 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
+# Ensure public directory exists (Next.js expects this even if empty)
+RUN mkdir -p ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing

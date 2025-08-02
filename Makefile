@@ -48,14 +48,30 @@ run: ## Run frontend locally for development purposes
 		--name "${CONTAINER_DATASPACE_FRONTEND}" \
 		$(DOCKER_IMAGE):dev
 
+run/v2: ## Run Next.js v2 frontend locally for development purposes
+	docker run \
+		$(CONTAINER_DEFAULT_RUN_FLAGS) \
+		-p 3000:3000 \
+		--name "${CONTAINER_DATASPACE_FRONTEND}-v2" \
+		$(DOCKER_IMAGE)-v2:dev
+
 .PHONY: build/docker/deployable
 build/docker/deployable: ## Builds deployable docker image for preview, staging and production
 	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile .
 	echo "$(DOCKER_IMAGE):$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
 
+.PHONY: build/docker/deployable/v2
+build/docker/deployable/v2: ## Builds deployable Next.js v2 docker image for preview, staging and production
+	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE)-v2:$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs .
+	echo "$(DOCKER_IMAGE)-v2:$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
+
 .PHONY: build
 build: ## Builds the docker image
 	docker build -t $(DOCKER_IMAGE):dev -f resources/docker/Dockerfile .
+
+.PHONY: build/v2
+build/v2: ## Builds the Next.js v2 docker image
+	docker build -t $(DOCKER_IMAGE)-v2:dev -f resources/docker/Dockerfile.nextjs .
 
 .PHONY: publish
 publish: $(DEPLOY_VERSION_F ILE) ## Publish latest production Docker image to docker hub
@@ -63,6 +79,9 @@ publish: $(DEPLOY_VERSION_F ILE) ## Publish latest production Docker image to do
 
 deploy/staging: $(DEPLOY_VERSION_FILE) ## Deploy to K8s cluster (e.g. make deploy/{preview,staging,staging})
 	kubectl set image deployment/dataspace-frontend dataspace-frontend=$(DEPLOY_VERSION) -n dataspace 
+
+deploy/staging/v2: $(DEPLOY_VERSION_FILE) ## Deploy Next.js v2 to K8s cluster
+	kubectl set image deployment/dataspace-frontend-v2 dataspace-frontend-v2=$(DEPLOY_VERSION) -n dataspace
 
 $(DEPLOY_VERSION_FILE):
 	@echo "Missing '$(DEPLOY_VERSION_FILE)' file. Run 'make build/docker/deployable'" >&2

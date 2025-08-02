@@ -34,11 +34,16 @@ jobs:
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GKE_SA_KEY }}
       
-      - name: Replace the API URL
+      - name: Replace the API URL for v1
         run: |
           sed -i "s/const baseUrl = 'http:\/\/.*'/const baseUrl = 'https:\/\/api.nxd.foundation'/" src/utils/fetchWrapper.ts
           sed -i "s/const baseUrl = 'https:\/\/.*'/const baseUrl = 'https:\/\/api.nxd.foundation'/" src/utils/fetchWrapper.ts
 
-      - name: Deploy
+      - name: Replace the API URL for v2
+        run: |
+          sed -i 's/export const baseURL = "http:\/\/.*"/export const baseURL = "https:\/\/api.nxd.foundation"/' v2/src/constants/url.ts
+          sed -i 's/export const baseURL = "https:\/\/.*"/export const baseURL = "https:\/\/api.nxd.foundation"/' v2/src/constants/url.ts
+
+      - name: Deploy v2
         run: |-
-          make build/docker/deployable publish deploy/staging
+          make build/docker/deployable/v2 publish deploy/staging/v2
