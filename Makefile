@@ -75,13 +75,13 @@ build/v2: ## Builds the Next.js v2 docker image
 
 .PHONY: publish
 publish: $(DEPLOY_VERSION_F ILE) ## Publish latest production Docker image to docker hub
-	gcloud docker -- push $(DEPLOY_VERSION)
+	docker -- push $(DEPLOY_VERSION)
 
 deploy/staging: $(DEPLOY_VERSION_FILE) ## Deploy to K8s cluster (e.g. make deploy/{preview,staging,staging})
 	kubectl set image deployment/dataspace-frontend dataspace-frontend=$(DEPLOY_VERSION) -n dataspace 
 
 deploy/staging/v2: $(DEPLOY_VERSION_FILE) ## Deploy Next.js v2 to K8s cluster
-	kubectl set image deployment/dataspace-frontend-v2 dataspace-frontend-v2=$(DEPLOY_VERSION) -n dataspace
+	kubectl set image deployment/dataspace-frontend dataspace-frontend=$(DEPLOY_VERSION) -n dataspace
 
 $(DEPLOY_VERSION_FILE):
 	@echo "Missing '$(DEPLOY_VERSION_FILE)' file. Run 'make build/docker/deployable'" >&2
