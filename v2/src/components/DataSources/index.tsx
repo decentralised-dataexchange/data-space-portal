@@ -38,7 +38,7 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                                     </Typography>
                                     <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
                                         {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-                                        <VerifiedBadge trusted={isVerified} size="small" />
+                                        <VerifiedBadge trusted={isVerified} />
                                     </Typography>
                                     <Typography className='datasource-location'>
                                         {dataSourceItem?.dataSource?.location}

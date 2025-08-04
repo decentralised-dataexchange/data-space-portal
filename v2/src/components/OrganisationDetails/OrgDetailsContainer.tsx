@@ -16,7 +16,7 @@ import VerifiedBadge from "../common/VerifiedBadge";
 const DetailsContainer = styled("div")({
   height: "auto",
   width: "100%",
-  borderRadius: 2,
+  borderRadius: 7,
   backgroundColor: "#FFFFF",
   padding: 10,
 });
@@ -251,7 +251,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                   </Box>
                   <Typography color="text.secondary" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: 'black' }}>
                     {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-                    <VerifiedBadge trusted={isVerify} size="small" />
+                    <VerifiedBadge trusted={isVerify} />
                   </Typography>
                 <Typography variant="body2" height="23px">
                   {(t('gettingStarted.sector'))} {t('gettingStarted.public')}
