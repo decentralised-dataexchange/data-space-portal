@@ -34,11 +34,11 @@ export default async function HomePage({params}: Props) {
         dataSourceItems?.length > 0 ? 
         <Box className="homeContainer">
             <Box component="div" className='dataSourceSelectionContainer'>
-                <Grid container spacing={gridSpacing}>
-                    <Grid size={{ xs: 12, sm: 12, md: 6, lg: 6 }}>
+                <Grid container className='datasources-header-container'>
+                    <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
                         <Typography gutterBottom component="div" className="title">{t('home.title')}</Typography>
                     </Grid>
-                    <Grid className='pt-0' size={{ xs: 12, sm: 12, md: 6, lg: 6 }} container justifyContent={'flex-end'}>
+                    <Grid className='datasources-filter-container' size={{ xs: 12, sm: 12, md: 6, lg: 6 }} container>
                         <Box component="div">
                             <FormControl component="fieldset">
                                 <RadioGroup row value={1}>
