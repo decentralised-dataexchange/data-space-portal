@@ -1,6 +1,21 @@
 @use '../../assets/sass/helpers/breakpoints';
 @use '../../assets/sass/helpers/common';
 
+
+.datasources-header-container {
+    gap: 0.5em;
+    width: 100%;
+    padding-bottom: 1rem;
+    .datasources-filter-container {
+        padding-bottom: 0px;
+        justify-content: flex-end;
+
+        @media screen and (max-width: 900px) {
+            justify-content: flex-start;
+        }
+    }
+}
+
 .landingPageContainer {
     border: 1px solid rgb(223, 223, 223);
     padding: 20px;
@@ -13,8 +28,6 @@
         padding: 0px;
         box-shadow: none;
 
-        // min-height: 300px;
-
         .logo {
             width: 100px;
             height: auto;
@@ -26,7 +39,6 @@
         }
 
         .card-header {
-            // height: 40px;
             display: flex;
             justify-content: flex-start;
             height: 100px;
@@ -70,9 +82,12 @@
         }
 
         .actionBtn {
-            .MuiButtonBase-root, a, span {
+
+            .MuiButtonBase-root,
+            a,
+            span {
                 @include common.button-like;
-                
+
                 &.disabled {
                     @include common.button-like-disabled;
                 }
@@ -85,6 +100,7 @@
     padding: 20px;
     max-width: breakpoints.$start-lgDesktop;
     margin: 0 auto;
+
     .leftSection {
         border: 1px solid rgb(223, 223, 223);
         padding: 0px;
@@ -103,7 +119,6 @@
         }
 
         .card-header {
-            // height: 40px;
             display: flex;
             justify-content: flex-start;
             height: 100px;
@@ -146,6 +161,7 @@
 
         }
     }
+
     .policyUrl {
         padding: 10px 0;
         cursor: pointer;
@@ -153,23 +169,26 @@
         color: #1793ca;
         font-size: 0.875rem;
     }
+
     .rightContainer {
         height: auto;
         overflow: auto;
         margin-top: 24px;
         padding-top: 0 !important;
     }
+
     .cardContainerList {
         border: 1px solid rgb(223, 223, 223);
         padding: 20px;
         margin-bottom: 15px;
         box-shadow: none;
         border-radius: 7px;
-    
+
         .actionListingBtn {
             @include breakpoints.mobileOnly {
                 flex-direction: column;
             }
+
             .MuiButtonBase-root {
                 // @include breakpoints.tabletAndDown {
                 //     margin-left: 0px;
@@ -190,13 +209,13 @@
                 color: white;
             }
         }
-    
+
         .card-body {
             overflow: hidden;
             height: 11em;
         }
-    
-    
+
+
         .MuiCardContent-root {
             padding: 0 !important;
         }
@@ -206,7 +225,7 @@
 
 
 .homeContainer {
-    padding: 0 25px 25px 25px;
+    padding: 15px 25px 25px 25px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -214,7 +233,7 @@
 
 @include breakpoints.tabletAndDown {
     .homeContainer {
-        padding: 0 10px !important;
+        padding-bottom: 0px !important;
     }
 }
 
@@ -229,14 +248,15 @@
 }
 
 // Radio button styling
-.MuiRadio-root{
+.MuiRadio-root {
     &.Mui-disabled {
         @include common.disabled;
         pointer-events: auto !important;
     }
+
     &.Mui-checked {
         color: #000000 !important;
-        
+
         .MuiSvgIcon-root {
             color: #000000 !important;
         }
