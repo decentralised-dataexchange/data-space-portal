@@ -22,11 +22,11 @@ const VerifiedBadge: React.FC<VerifiedBadgeProps> = ({
   
   const sizeMap = {
     small: 14,
-    medium: 16,
+    medium: 19,
     large: 20,
   };
 
-  const iconSize = sizeMap[size] || 16;
+  const iconSize = sizeMap[size] || 19;
 
   return trusted ? <VerifiedIcon size={iconSize} /> : <UnverifiedIcon size={iconSize} />;
 };

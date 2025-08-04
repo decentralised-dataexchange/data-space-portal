@@ -85,7 +85,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
       </Box>
       <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
         {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-        <VerifiedBadge trusted={isVerified} size="small" />
+        <VerifiedBadge trusted={isVerified} />
       </Typography>
       <Typography variant="subtitle1" mt={2}>
         {t('common.overView')}

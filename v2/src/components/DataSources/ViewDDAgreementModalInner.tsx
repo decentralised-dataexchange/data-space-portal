@@ -130,7 +130,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
         </Box>
         <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
           Trusted Service Provider
-          <VerifiedBadge trusted={true} size="small" />
+          <VerifiedBadge trusted={true} />
         </Typography>
         <Typography variant="subtitle1" mt={2}>
           {"OVERVIEW"}
