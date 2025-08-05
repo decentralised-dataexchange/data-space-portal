@@ -99,7 +99,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
         {description}
       </Typography>
 
-      <Typography color="black" mt={2} variant="subtitle1">
+      <Typography color="grey" mt={2} variant="subtitle1">
         {t('common.certificateOfRegistration')}
       </Typography>
 
