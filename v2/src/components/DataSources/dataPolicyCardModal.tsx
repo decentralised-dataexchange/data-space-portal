@@ -121,6 +121,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                 backgroundColor: '#FFFFFF',
                 borderRadius: '7px',
                 border: '1px solid #DFE0E1',
+                padding: '12px',
               }}
             >
               {SSIpolicyDetailsForContainer?.map((policyDetail, index) => (

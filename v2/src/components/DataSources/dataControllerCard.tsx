@@ -24,7 +24,7 @@ const DataControllerCard = ({ selectedData }) => {
   );
 };
 
-const InfoRow = ({ label, value, hideBottomBorder = false }) => {
+export const InfoRow = ({ label, value, hideBottomBorder = false }) => {
   return (
     <Box
       style={{
