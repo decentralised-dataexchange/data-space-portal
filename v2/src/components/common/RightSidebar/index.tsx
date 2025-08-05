@@ -155,7 +155,7 @@ const RightSidebar = ({
     >
       {/* Header */}
       {showHeader && (
-        <Header className="right-sidebar-header" style={headerProps?.style} sx={headerProps?.sx}>
+        <Header className="right-sidebar-header" style={headerProps?.style} sx={{ ...headerProps?.sx, height: "80px" }}>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             {headerContent || (typeof title === 'string' ? (
               <Typography 
