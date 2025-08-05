@@ -18,18 +18,19 @@ const DataControllerCard = ({ selectedData }) => {
       <InfoRow
         label="Industry Sector"
         value={selectedData?.dataController.industrySector}
+        hideBottomBorder
       />
     </Box>
   );
 };
 
-const InfoRow = ({ label, value }) => {
+const InfoRow = ({ label, value, hideBottomBorder = false }) => {
   return (
     <Box
       style={{
         display: "flex",
         justifyContent: "space-between",
-        borderBottom: "solid 1px #dee2e6",
+        borderBottom: hideBottomBorder ? "none" : "solid 1px #dee2e6",
         padding: "12px",
       }}
     >
