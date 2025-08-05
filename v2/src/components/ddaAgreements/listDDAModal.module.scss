@@ -1,5 +1,9 @@
 .dd-modal {
+  z-index: 1400 !important; // Higher than navbar's 1300
+  
   .MuiPaper-root {
+    z-index: 1400 !important;
+    
     @media (max-width: 900px) {
       width: 100%;
       overflow: hidden;
@@ -12,11 +16,8 @@
   flex-direction: column;
   height: 100vh;
   background-color: #fff;
-  width: 480px;
-  
-  @media (max-width: 900px) {
-    width: 100%;
-  }
+  width: 594px;
+  max-width: 100vw;
 }
 
 .dd-modal-header {
@@ -89,9 +90,15 @@
     .select-container {
       margin-top: 5px;
       width: 100%;
+      position: relative;
+      z-index: 2;
       
       .MuiSelect-select {
         padding: 10px 14px;
+      }
+      
+      .MuiPaper-root {
+        z-index: 1500 !important;
       }
     }
   }
@@ -101,7 +108,7 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  width: 480px;
+  width: 594px;
   height: 65px;
   display: flex;
   align-items: center;
@@ -110,6 +117,7 @@
   background-color: #fff;
   border-top: 1px solid #e0e0e0;
   z-index: 1;
+  gap: 16px;
   
   @media (max-width: 900px) {
     width: 100%;
