@@ -5,7 +5,6 @@ import { gridSpacing } from '@/constants/grid';
 import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import VerifiedBadge from '../common/VerifiedBadge';
 
 export default async function DataSourceListingPage({ params }: { params: Promise<{ id: string }> }) {
@@ -32,18 +31,23 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                                 {/* <Box className='policyUrl'>
                                     {dataSourceItem?.policyUrl}
                                 </Box> */}
-                                <CardContent>
-                                    <Typography variant="h6" fontWeight="bold">
-                                        {dataSourceItem?.dataSource?.name}
-                                        {/* <CheckCircleIcon className="verify" /> */}
-                                    </Typography>
-                                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
-                                        {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-                                        <VerifiedBadge trusted={isVerified} />
-                                    </Typography>
-                                    <Typography className='datasource-location'>
-                                        {dataSourceItem?.dataSource?.location}
-                                    </Typography>
+                                <CardContent sx={{ minHeight: "229px" }}>
+                                    <Box sx={{
+                                        marginLeft: { xs: 0, sm: "200px" },
+                                        paddingTop: { xs: "50px", sm: "0px" },
+                                        transform: { xs: 0, sm: "translateY(-30px)" }
+                                    }}>
+                                        <Typography variant="h6" fontWeight="bold">
+                                            {dataSourceItem?.dataSource?.name}
+                                        </Typography>
+                                        <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
+                                            {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+                                            <VerifiedBadge trusted={isVerified} />
+                                        </Typography>
+                                        <Typography className='datasource-location'>
+                                            {dataSourceItem?.dataSource?.location}
+                                        </Typography>
+                                    </Box>
                                     <Typography variant="subtitle1" className='datasource-overview-label'>
                                         {t("common.overView")}
                                     </Typography>
