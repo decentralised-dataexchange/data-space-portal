@@ -145,7 +145,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
         src={coverImageUrl || defaultCoverImage}
         sx={{ height: 194, width: '100%', objectFit: 'cover' }}
       />
-      <Box sx={{ position: "relative", height: '65px', marginTop: '-65px' }}>
+      <Box sx={{ position: "relative", height: '65px', marginTop: '-65px', left: -25 }}>
         <Avatar
           src={logoUrl || defaultLogoImg}
           sx={{

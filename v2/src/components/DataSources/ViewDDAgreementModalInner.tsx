@@ -60,7 +60,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
         }}
         component="div"
       />
-      <Box sx={{ position: "relative", height: '65px' }}>
+      <Box sx={{ position: "relative", height: '65px', left: -25 }}>
         <Avatar
           src={logoImage}
           style={{
