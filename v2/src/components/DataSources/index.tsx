@@ -13,8 +13,9 @@ export default async function DataSourceListingPage({ params }: { params: Promis
     const t = await getTranslations();
     const dataSourceItem = ((await apiService.dataSourceList())?.dataSources ?? []).find(item => item.dataSource.id === id);
     const isVerified = dataSourceItem?.verification?.presentationState === "verified";
+
     return (
-        <Box className="dataListContainer" sx={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
+        <Box className="dataListContainer" sx={{ width: '100%' }}>
             <Grid container spacing={gridSpacing} sx={{ width: '100%', margin: 0 }}>
                 <Grid size={{ xs: 12 }}>
                     <Grid container spacing={gridSpacing} justifyContent="center">
@@ -58,7 +59,7 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                             <Grid container spacing={2}>
                                 {dataSourceItem?.dataDisclosureAgreements?.map((dataDisclosureAgreement, index) => {
                                     return (
-                                        <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} sx={{ width: 400 }}>
+                                        <Grid key={index} size={{ xs: 12, sm: 4, md: 3 }} sx={{ minWidth: 400 }}>
                                             <Card className='cardContainerList' sx={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                                 <CardContent sx={{ padding: '24px' }}>
                                                     <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px", fontWeight: 'bold' }}>
