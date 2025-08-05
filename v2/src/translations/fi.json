@@ -165,7 +165,7 @@
     "addButton": "Lisää uusi DDA",
     "saveButton": "Tallenna muutokset",
     "noListingsAvailable": "Ei listauksia saatavilla. Lisää uusi listaus painamalla +",
-    "copyConnection": "Kopioi yhteys",
+    "signWithBusinessWallet": "Allekirjoita yrityslompakolla",
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",

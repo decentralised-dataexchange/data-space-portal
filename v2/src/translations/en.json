@@ -193,7 +193,7 @@
       "confirmButton": "Delete",
       "confirmText": "DELETE"
     },
-    "copyConnection": "Copy Connection",
+    "signWithBusinessWallet": "Sign with Business Wallet",
     "publishModal": {
       "title": "Publish to Marketplace",
       "confirmButton": "Submit"

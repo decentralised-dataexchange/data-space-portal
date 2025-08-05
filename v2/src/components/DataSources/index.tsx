@@ -14,7 +14,7 @@ export default async function DataSourceListingPage({ params }: { params: Promis
     const dataSourceItem = ((await apiService.dataSourceList())?.dataSources ?? []).find(item => item.dataSource.id === id);
     const isVerified = dataSourceItem?.verification?.presentationState === "verified";
     return (
-        <Box className="dataListContainer">
+        <Box className="dataListContainer" sx={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
             <Grid container spacing={gridSpacing} sx={{ width: '100%', margin: 0 }}>
                 <Grid size={{ xs: 12 }}>
                     <Grid container spacing={gridSpacing} justifyContent="center">

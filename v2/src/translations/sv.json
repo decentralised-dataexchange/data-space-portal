@@ -71,7 +71,7 @@
     "prepareDA": "Hantera listningar",
     "manageDDA": "Hantera datautlämningsavtal",
     "manageAccount": "Hantera konto",
-    "manageAdminUser":"Hantera administratörsanvändare",
+    "manageAdminUser": "Hantera administratörsanvändare",
     "developerDocumentation": "Utvecklardokumentation",
     "connectWalletTitle": "LÄGG TILL BEHÖRIGHETER",
     "connect": "ANSLUT",
@@ -160,7 +160,7 @@
     "addButton": "Lägg till ny DDA",
     "saveButton": "Spara ändringar",
     "noListingsAvailable": "Inga listor tillgängliga. Klicka på + för att lägga till ny lista",
-    "copyConnection": "Kopiera anslutning",
+    "signWithBusinessWallet": "Signera med företagsplånbok",
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Ta bort dataavtal",
@@ -283,5 +283,4 @@
   "error": {
     "generic": "Något gick fel."
   }
-
 }

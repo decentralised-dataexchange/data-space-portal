@@ -78,19 +78,29 @@ export default function ViewDataAgreementModalInner(props: Props) {
 
   // Footer content with action buttons
   const footerContent = (
-    <>
+    <Box sx={{
+      display: "flex",
+      width: "100%",
+      justifyContent: "space-between",
+    }}>
       {mode === "public" && (
         <Button
           onClick={() => {
             navigator.clipboard.writeText(selectedData?.connection?.invitationUrl);
           }}
           sx={{
-            marginRight: "auto",
             color: "black",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              width: "fit-content",
+              borderRadius: "none"
+            },
           }}
-          variant="text"
+          className="delete-btn"
+          variant="outlined"
         >
-          {t("dataAgreements.copyConnection")}
+          {t("dataAgreements.signWithBusinessWallet")}
         </Button>
       )}
       <Button
@@ -109,7 +119,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
       >
         {t("common.close")}
       </Button>
-    </>
+    </Box>
   );
 
   return (
