@@ -15,9 +15,9 @@ export default async function DataSourceListingPage({ params }: { params: Promis
     const isVerified = dataSourceItem?.verification?.presentationState === "verified";
     return (
         <Box className="dataListContainer">
-            <Grid container spacing={gridSpacing}>
+            <Grid container spacing={gridSpacing} sx={{ width: '100%', margin: 0 }}>
                 <Grid size={{ xs: 12 }}>
-                    <Grid container spacing={gridSpacing}>
+                    <Grid container spacing={gridSpacing} justifyContent="center">
                         <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }} className='leftContainer'>
                             <Card className='leftSection'>
                                 <CardMedia component="div" className='card-header' image={dataSourceItem?.dataSource?.coverImageUrl}>
@@ -55,24 +55,28 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                             </Card>
                         </Grid>
                         <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
-                            {dataSourceItem?.dataDisclosureAgreements?.map((dataDisclosureAgreement, index) => {
-                                return (
-                                    <Card key={index} className='cardContainerList'>
-                                        <CardContent>
-                                            <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px" }}>
-                                                {dataDisclosureAgreement.purpose}
-                                            </Typography>
-                                            <Typography sx={{ fontSize: "14px" }}>
-                                                {dataDisclosureAgreement.purposeDescription}
-                                            </Typography>
-                                            <DDAActions
-                                                dataDisclosureAgreement={dataDisclosureAgreement}
-                                                openApiUrl={dataSourceItem?.dataSource.openApiUrl || ''}
-                                            />
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })}
+                            <Grid container spacing={2}>
+                                {dataSourceItem?.dataDisclosureAgreements?.map((dataDisclosureAgreement, index) => {
+                                    return (
+                                        <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} sx={{ width: 400 }}>
+                                            <Card className='cardContainerList' sx={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                                                <CardContent sx={{ padding: '24px' }}>
+                                                    <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px", fontWeight: 'bold' }}>
+                                                        {dataDisclosureAgreement.purpose}
+                                                    </Typography>
+                                                    <Typography sx={{ fontSize: "14px", paddingBottom: "20px", color: '#666666' }}>
+                                                        {dataDisclosureAgreement.purposeDescription}
+                                                    </Typography>
+                                                    <DDAActions
+                                                        dataDisclosureAgreement={dataDisclosureAgreement}
+                                                        openApiUrl={dataSourceItem?.dataSource.openApiUrl || ''}
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+                                    )
+                                })}
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
