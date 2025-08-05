@@ -82,38 +82,47 @@
 
 .dd-modal-footer {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 480px;
+  bottom: 0px;
+  width: 594px;
+  border-top: 1px solid #E9ECEF;
   height: 65px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 0 24px;
-  background-color: #fff;
-  border-top: 1px solid #e0e0e0;
+  justify-content: space-between;
+  background-color: white;
   z-index: 1;
-  
+  padding: 0 24px;
   @media (max-width: 900px) {
     width: 100%;
   }
-  
-  .cancel-btn {
-    margin-right: 16px;
-    border-color: rgba(0, 0, 0, 0.23);
-    color: rgba(0, 0, 0, 0.87);
-    text-transform: none;
-    font-weight: 500;
+
+  .footer-btn {
+    width: auto;
+    text-transform: unset;
+    border: 1px solid rgb(223, 223, 223);
+    background: white;
+    border-radius: 0px;
+    color: #000;
+    margin-top: 0;
+    display: block;
+    text-align: center;
+    padding: 6px 16px;
+    font-size: 14px;
+    min-width: 120px;
+    height: auto;
     
     &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-      border-color: rgba(0, 0, 0, 0.87);
+      background: black;
+      color: white;
     }
   }
   
+  .cancel-btn {
+    @extend .footer-btn;
+  }
+  
   .confirm-btn {
-    text-transform: none;
-    font-weight: 500;
+    @extend .footer-btn;
     
     &:disabled {
       background-color: rgba(0, 0, 0, 0.12);

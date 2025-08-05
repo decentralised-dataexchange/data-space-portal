@@ -109,7 +109,7 @@ export default function GeneralModal({
             {t("common.cancel")}
           </Button>
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={handleSubmit}
             disabled={!isOk || isPending}

@@ -151,10 +151,17 @@ export default function ListDDAModal({
                     sx={{ marginTop: "5px" }}
                     size="small"
                     fullWidth
+                    MenuProps={{
+                      disablePortal: false,
+                      style: { zIndex: 1500 },
+                      MenuListProps: {
+                        style: { zIndex: 1500 }
+                      }
+                    }}
                   />
                 </Box>
               ) : (
-                <Typography color="error">No data selected</Typography>
+                <Typography color="error">{t("common.noDataSelected")}</Typography>
               )}
             </Box>
           </Box>
@@ -165,15 +172,21 @@ export default function ListDDAModal({
               onClick={handleClose}
               className={styles['cancel-btn']}
               disabled={isPending}
+              sx={{
+                borderRadius: "0px"
+              }}
             >
               {t("common.cancel")}
             </Button>
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               onClick={handleSubmit}
               disabled={!status || isPending}
               className={styles['confirm-btn']}
+              sx={{
+                borderRadius: "0px"
+              }}
             >
               {isPending ? (
                 <CircularProgress size={24} color="inherit" />
