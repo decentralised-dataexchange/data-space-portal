@@ -1,19 +1,23 @@
 import {Locale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@mui/material';
+import ClientPagination from './ClientPagination';
 import Loader from '@/components/common/Loader';
-import { apiService } from '@/lib/apiService/apiService';
+import {apiService} from '@/lib/apiService/apiService';
 import DataSourceCard from '@/components/Home/DataSource';
-import { gridSpacing } from '@/constants/grid';
-
+import {gridSpacing} from '@/constants/grid';
 
 type Props = {
   params: Promise<{ locale: Locale }>;
+  searchParams?: Promise<{ page?: string }>;
 };
 
-export default async function HomePage({params}: Props) {
+export default async function HomePage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const pageParam = (await searchParams)?.page;
+  
 
+  
   setRequestLocale(locale);
 
   const t = await getTranslations();
@@ -28,10 +32,22 @@ export default async function HomePage({params}: Props) {
     }
   }));
 
+  // Server-side pagination
+  const itemsPerPage = 12;
+  const totalItems = dataSourceItems.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  
+  // Get current page from search params, default to 1
+  const currentPage = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const currentItems = dataSourceItems.slice(startIndex, endIndex);
+
   return (
     <>
       {
-        dataSourceItems?.length > 0 ? 
+        currentItems?.length > 0 ? 
         <Box className="homeContainer">
             <Box component="div" className='dataSourceSelectionContainer'>
                 <Grid container className='datasources-header-container'>
@@ -55,9 +71,9 @@ export default async function HomePage({params}: Props) {
                 <Grid container spacing={gridSpacing}>
                     <Grid size={{ xs: 12 }}>
                         <Grid container spacing={gridSpacing}>
-                            {dataSourceItems?.map((dataSourceItem) => {
+                            {currentItems?.map((dataSourceItem, idx) => {
                                 return (
-                                    <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }} key={dataSourceItem.dataSource.id}>
+                                    <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }} key={dataSourceItem.dataSource.id + idx}>
                                         <DataSourceCard
                                             overviewLabel={t('common.overView')}
                                             signDataLabel={t('home.btn-signData')}
@@ -71,6 +87,13 @@ export default async function HomePage({params}: Props) {
                     </Grid>
                 </Grid>
             </Box>
+            
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 2 }}>
+                    <ClientPagination currentPage={currentPage} totalPages={totalPages} />
+                </Box>
+            )}
         </Box>
         : 
         <Loader />
