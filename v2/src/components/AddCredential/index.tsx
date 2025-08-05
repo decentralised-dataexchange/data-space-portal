@@ -172,7 +172,6 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
       width={594}
       maxWidth={594}
       height="100%"
-      hideCloseButton={true}
     >
       <Box sx={{ p: 2 }}>
         {contentArray[currentIndex].component}
