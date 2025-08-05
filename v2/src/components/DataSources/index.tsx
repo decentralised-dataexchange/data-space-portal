@@ -36,7 +36,7 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                                         {dataSourceItem?.dataSource?.name}
                                         {/* <CheckCircleIcon className="verify" /> */}
                                     </Typography>
-                                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
+                                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
                                         {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                         <VerifiedBadge trusted={isVerified} />
                                     </Typography>

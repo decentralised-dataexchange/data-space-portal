@@ -13,6 +13,7 @@ export interface AuthState {
   loading: boolean;
   error: boolean;
   message: string;
+  successMessage: string;
 }
 
 // Helper function to check if token exists and is valid
@@ -45,7 +46,8 @@ const initialState: AuthState = {
   adminDetails: null,
   loading: false,
   message: "",
-  error: false
+  error: false,
+  successMessage: ""
 };
 
 const authSlice = createSlice({
@@ -66,6 +68,9 @@ const authSlice = createSlice({
     },
     setMessage: (state, action: PayloadAction<string>) => {
       state.message = action.payload;
+    },
+    setSuccessMessage: (state, action: PayloadAction<string>) => {
+      state.successMessage = action.payload;
     },
     logout: (state) => {
       state.isAuthenticated = false;
@@ -91,6 +96,7 @@ export const {
   setLoading, 
   setError, 
   setMessage, 
+  setSuccessMessage,
   logout 
 } = authSlice.actions;
 
