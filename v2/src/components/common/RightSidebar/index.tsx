@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Drawer, DrawerProps, IconButton, Box, Typography, styled, BoxProps } from '@mui/material';
-import { X } from '@phosphor-icons/react';
+import { XIcon } from '@phosphor-icons/react';
 import './style.scss';
 
 export interface RightSidebarProps extends Omit<DrawerProps, 'onClose' | 'anchor' | 'title'> {
@@ -185,7 +185,7 @@ const RightSidebar = ({
                 }}
                 aria-label="close"
               >
-                <X size={20} />
+              <XIcon size={20} />
               </IconButton>
             )
           )}
