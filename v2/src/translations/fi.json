@@ -166,6 +166,7 @@
     "saveButton": "Tallenna muutokset",
     "noListingsAvailable": "Ei listauksia saatavilla. Lisää uusi listaus painamalla +",
     "signWithBusinessWallet": "Allekirjoita yrityslompakolla",
+    "dataDisclosureAgreementPolicy": "Tietojen luovutussopimuksen käytäntö",
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",

@@ -187,6 +187,7 @@
     "addButton": "Add new DDA",
     "saveButton": "Save changes",
     "noListingsAvailable": "No listings available. Click + to add new listing",
+    "dataDisclosureAgreementPolicy": "Data Disclosure Agreement Policy",
     "deleteModal": {
       "title": "Delete Data Agreement",
       "description": "Are you sure you want to delete this data agreement? This action cannot be undone.",
