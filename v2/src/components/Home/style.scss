@@ -100,6 +100,8 @@
     padding: 20px;
     max-width: breakpoints.$start-lgDesktop;
     margin: 0 auto;
+    width: 100%;
+
 
     .leftSection {
         border: 1px solid rgb(223, 223, 223);
@@ -183,6 +185,7 @@
         margin-bottom: 15px;
         box-shadow: none;
         border-radius: 7px;
+        background-color: #fff;
 
         .actionListingBtn {
             @include breakpoints.mobileOnly {
@@ -200,7 +203,6 @@
                 border-radius: 0px;
                 color: #000;
                 margin-top: 8px;
-                margin-left: 20px;
                 padding: 5px 30px;
             }
 
