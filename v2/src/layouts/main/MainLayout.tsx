@@ -23,10 +23,11 @@ const MainLayout = ({ children }: Props) => {
   };
 
   const inPublicRoute = useMemo(() => isPublicRoute(pathname), [pathname]);
+  const isLoginRoute = pathname.includes('/login');
 
   return (
     <>
-      <MainAppBar handleOpenMenu={handleOpenMenu} />
+      {isLoginRoute ? null : <MainAppBar handleOpenMenu={handleOpenMenu} />}
       <Box className="leftNavigationContainer" sx={{ 
         marginLeft: open ? '260px' : 0, 
         transition: 'margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
