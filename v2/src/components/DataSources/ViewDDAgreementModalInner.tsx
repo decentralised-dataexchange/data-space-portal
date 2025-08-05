@@ -9,6 +9,7 @@ import { DataAttributeCardForDDA } from "./dataAttributeCardForDDA";
 import { DDAPolicyCard } from "./dataPolicyCard";
 import RightSidebar from "../common/RightSidebar";
 import VerifiedBadge from "../common/VerifiedBadge";
+import { useAppSelector } from "@/custom-hooks/store";
 
 interface Props {
   open: boolean;
@@ -25,7 +26,7 @@ interface Props {
 export default function ViewDataAgreementModalInner(props: Props) {
   const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage } = props;
   const t = useTranslations();
-
+  const isVerified = selectedData?.verification?.presentationState === "verified";
   // Custom header content showing purpose and template ID
   const headerContent = (
     <Box sx={{ width: "100%" }}>
@@ -128,9 +129,9 @@ export default function ViewDataAgreementModalInner(props: Props) {
             {dataSourceName || 'Unknown Organization'}
           </Typography>
         </Box>
-        <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
-          Trusted Service Provider
-          <VerifiedBadge trusted={true} />
+        <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
+          {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+          <VerifiedBadge trusted={isVerified} />
         </Typography>
         <Typography variant="subtitle1" mt={2}>
           {"OVERVIEW"}

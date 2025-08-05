@@ -111,7 +111,7 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                     <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1 }}>
                         {dataSource?.name}
                     </Typography>
-                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px" }}>
+                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: dataSource?.trusted ? '#2e7d32' : '#d32f2f' }}>
                         {dataSource?.trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                         <VerifiedBadge trusted={dataSource?.trusted} />
                     </Typography>

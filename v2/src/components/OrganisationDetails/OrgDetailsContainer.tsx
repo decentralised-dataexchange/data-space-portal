@@ -249,7 +249,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                       {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential'))}
                     </p>
                   </Box>
-                  <Typography color="text.secondary" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: 'black' }}>
+                  <Typography color="text.secondary" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>
                     {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                     <VerifiedBadge trusted={isVerify} />
                   </Typography>
