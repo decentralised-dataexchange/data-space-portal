@@ -18,8 +18,7 @@ const VerifiedBadge: React.FC<VerifiedBadgeProps> = ({
   trusted = false,
   size = 'medium',
 }) => {
-  const t = useTranslations('common');
-  
+
   const sizeMap = {
     small: 14,
     medium: 19,
@@ -28,7 +27,7 @@ const VerifiedBadge: React.FC<VerifiedBadgeProps> = ({
 
   const iconSize = sizeMap[size] || 19;
 
-  return trusted ? <VerifiedUser sx={{ fontSize: iconSize, color: '#2e7d32' }} /> : <Gppbad sx={{ fontSize: iconSize, color: '#d32f2f' }} />;
+  return trusted ? <VerifiedUser sx={{ fontSize: iconSize, color: '#2e7d32' }} /> : <Gppbad sx={{ fontSize: iconSize + 2, color: '#d32f2f' }} />;
 };
 
 // const VerifiedIcon: React.FC<{ size: number }> = ({ size }) => (
