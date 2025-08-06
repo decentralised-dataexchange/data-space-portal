@@ -155,8 +155,7 @@
     "businessWalletLabel": "Företagsplånboksnamn",
     "connectedOn": "Ansluten",
     "connectionId": "Anslutnings-ID",
-    "addDataDisclosureAgreement": "Lägg till datautlämningsavtal",
-    "noBannerImageAvailable": "Ingen bannerbild tillgänglig"
+    "addDataDisclosureAgreement": "Lägg till datautlämningsavtal"
   },
   "errors": {
     "generic": "Något gick fel."

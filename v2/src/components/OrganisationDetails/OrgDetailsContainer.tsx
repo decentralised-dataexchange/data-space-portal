@@ -147,7 +147,7 @@ const OrganisationDetailsContainer = (props: Props) => {
               fontSize: '14px'
             }}
           >
-            No banner image available
+            {t('noBannerImageAvailable')}
           </Box>
         }
         showBanner={true}

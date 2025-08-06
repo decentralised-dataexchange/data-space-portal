@@ -155,8 +155,7 @@
     "businessWalletLabel": "Yrityslompakon nimi",
     "connectedOn": "Yhdistetty",
     "connectionId": "Yhteystunnus",
-    "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus",
-    "noBannerImageAvailable": "Ei bannerikuvaa saatavilla"
+    "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -290,5 +289,6 @@
   },
   "error": {
     "generic": "Jokin meni pieleen."
-  }
+  },
+  "noBannerImageAvailable": "Ei bannerikuvaa saatavilla"
 }
