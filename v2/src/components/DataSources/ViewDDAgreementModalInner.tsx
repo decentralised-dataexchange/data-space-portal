@@ -144,7 +144,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           <VerifiedBadge trusted={isVerified} />
         </Typography>
         <Typography variant="subtitle1" mt={2}>
-          {"OVERVIEW"}
+          {t('common.usagePurpose')}
         </Typography>
         <Typography
           variant="subtitle2"
@@ -156,7 +156,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
         </Typography>
 
         <Typography color="black" mt={2} variant="subtitle1">
-          {"DATASET"}
+          {t('common.dataset')}
         </Typography>
 
         <Box sx={{ marginTop: '16px' }}>

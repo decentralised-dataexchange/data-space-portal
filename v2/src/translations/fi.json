@@ -132,6 +132,8 @@
     "home": "Koti",
     "edit": "Muokkaa",
     "overView": "Yleiskatsaus",
+    "usagePurpose": "Käyttötarkoitus",
+    "dataset": "Tietojoukko",
     "policyUrl": "Käytäntö URL",
     "cancel": "Peruuta",
     "confirm": "Vahvista",
