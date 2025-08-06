@@ -49,9 +49,9 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 </Box> */}
                                 <CardContent sx={{ minHeight: "229px" }}>
                                     <Box sx={{
-                                        marginLeft: { xs: 0, sm: "px" },
+                                        marginLeft: { xs: 0, sm: "180px" },
                                         paddingTop: { xs: "40px", sm: "0px" },
-                                        transform: { xs: 0, sm: "translateY(-25px)" }
+                                        transform: { xs: 0, sm: "translateY(-40px)" }
                                     }}>
                                         <Typography variant="h6" fontWeight="bold">
                                             {dataSourceItem?.dataSource?.name}
