@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography, IconButton } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAppSelector } from '@/custom-hooks/store';
@@ -6,7 +6,6 @@ import { defaultCoverImage, defaultLogoImg } from '@/constants/defalultImages';
 import { DataAttributeCardForDDA } from './dataAttributeCardCredentials';
 import { PresentationRecord } from '@/types/verification';
 import VerifiedBadge from '@/components/common/VerifiedBadge';
-import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react';
 
 interface ConfirmComponentProps {
   showValues?: boolean;
@@ -52,32 +51,8 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
     })
   );
 
-  // Define banner content
-  const bannerContent = (
-    <>
-      <Box sx={{ position: "relative" }}>
-        <IconButton
-          onClick={() => setShowValues(!showValues)}
-          sx={{
-            position: 'absolute',
-            right: 16,
-            top: 16,
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-            zIndex: 10,
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 1)',
-            }
-          }}
-        >
-          {showValues ? <EyeSlashIcon size={20} /> : <EyeIcon size={20} />}
-        </IconButton>
-      </Box>
-    </>
-  );
-
   return (
     <Box>
-      {bannerContent}
       <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '20px' }}>
         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
           {name}

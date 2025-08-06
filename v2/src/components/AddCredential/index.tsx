@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { useCreateVerification, useReadVerificationWithPolling, useVerificationTemplates } from '@/custom-hooks/verification'
 import Loader from "@/components/common/Loader";
 import './style.scss'
-import { X, Eye, EyeClosed } from '@phosphor-icons/react';
+import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react';
 import RightSidebar from '@/components/common/RightSidebar';
 import { useAppSelector } from '@/custom-hooks/store';
 import { defaultCoverImage, defaultLogoImg } from '@/constants/defalultImages';
@@ -139,12 +139,29 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
   // Define banner content
   const bannerContent = (
     <>
-      <Box
-        component="img"
-        alt="Banner"
-        src={coverImageUrl || defaultCoverImage}
-        sx={{ height: 194, width: '100%', objectFit: 'cover' }}
-      />
+      <Box sx={{ position: "relative" }}>
+        <Box
+          component="img"
+          alt="Banner"
+          src={coverImageUrl || defaultCoverImage}
+          sx={{ height: 194, width: '100%', objectFit: 'cover' }}
+        />
+        <IconButton
+          onClick={() => setShowValues(!showValues)}
+          sx={{
+            position: 'absolute',
+            right: 10,
+            top: 10,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            zIndex: 10,
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            }
+          }}
+        >
+          {showValues ? <EyeSlashIcon size={20} color="white" /> : <EyeIcon size={20} color="white" />}
+        </IconButton>
+      </Box>
       <Box sx={{ position: "relative", height: '65px', marginTop: '-65px', left: -25 }}>
         <Avatar
           src={logoUrl || defaultLogoImg}
