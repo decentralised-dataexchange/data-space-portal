@@ -6,7 +6,7 @@ import { defaultCoverImage, defaultLogoImg } from '@/constants/defalultImages';
 import { DataAttributeCardForDDA } from './dataAttributeCardCredentials';
 import { PresentationRecord } from '@/types/verification';
 import VerifiedBadge from '@/components/common/VerifiedBadge';
-import { Eye, EyeClosed, EyeSlashIcon } from '@phosphor-icons/react';
+import { EyeIcon, EyeSlashIcon } from '@phosphor-icons/react';
 
 interface ConfirmComponentProps {
   showValues?: boolean;
@@ -69,7 +69,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
             }
           }}
         >
-          {showValues ? <EyeSlashIcon size={20} /> : <Eye size={20} />}
+          {showValues ? <EyeSlashIcon size={20} /> : <EyeIcon size={20} />}
         </IconButton>
       </Box>
     </>
