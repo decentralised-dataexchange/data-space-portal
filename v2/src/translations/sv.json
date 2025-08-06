@@ -289,5 +289,6 @@
   "error": {
     "generic": "Något gick fel."
   },
-  "noBannerImageAvailable": "Ingen bannerbild tillgänglig"
+  "noBannerImageAvailable": "Ingen bannerbild tillgänglig",
+  "unknownOrganization": "Okänd organisation"
 }

@@ -290,5 +290,7 @@
   "error": {
     "generic": "Jokin meni pieleen."
   },
-  "noBannerImageAvailable": "Ei bannerikuvaa saatavilla"
+  "addDataDisclosureAgreement": "Lisää tietojen luovutus -sopimus",
+  "noBannerImageAvailable": "Bannerikuvaa ei saatavilla",
+  "unknownOrganization": "Tuntematon organisaatio"
 }

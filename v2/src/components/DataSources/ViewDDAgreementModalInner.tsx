@@ -136,7 +136,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
       <Box sx={{ marginTop: '20px' }}>
         <Box display="flex" alignItems="center" gap={1}>
           <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
-            {dataSourceName || 'Unknown Organization'}
+            {dataSourceName || t('unknownOrganization')}
           </Typography>
         </Box>
         <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f', fontSize: '12px' }}>
