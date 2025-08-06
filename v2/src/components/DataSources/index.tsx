@@ -7,11 +7,27 @@ import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
 import VerifiedBadge from '../common/VerifiedBadge';
 
-export default async function DataSourceListingPage({ params }: { params: Promise<{ id: string }> }) {
+import ClientPagination from '../Home/ClientPagination';
+
+type Props = {
+    params: Promise<{ id: string }>;
+    searchParams?: Promise<{ page?: string }>;
+};
+
+export default async function DataSourceListingPage({ params, searchParams }: Props) {
     const { id } = await params;
     const t = await getTranslations();
     const dataSourceItem = ((await apiService.dataSourceList())?.dataSources ?? []).find(item => item.dataSource.id === id);
     const isVerified = dataSourceItem?.verification?.presentationState === "verified";
+    // pagination setup
+    const itemsPerPage = 4;
+    const totalItems = dataSourceItem?.dataDisclosureAgreements?.length ?? 0;
+    const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+    const pageParam = (await searchParams)?.page;
+    const currentPage = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+    const currentDdas = dataSourceItem?.dataDisclosureAgreements?.slice(startIndex, endIndex) ?? [];
 
     return (
         <Box className="dataListContainer" sx={{ width: '100%' }}>
@@ -61,7 +77,7 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                         </Grid>
                         <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
                             <Grid container spacing={2}>
-                                {dataSourceItem?.dataDisclosureAgreements?.map((dataDisclosureAgreement, index) => {
+                                {currentDdas.map((dataDisclosureAgreement, index) => {
                                     return (
                                         <Grid key={index} size={{ xs: 12, sm: 4, md: 3 }} sx={{ minWidth: 400 }}>
                                             <Card className='cardContainerList' sx={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
@@ -83,6 +99,12 @@ export default async function DataSourceListingPage({ params }: { params: Promis
                                 })}
                             </Grid>
                         </Grid>
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 2, width: '100%' }}>
+                                <ClientPagination currentPage={currentPage} totalPages={totalPages} />
+                            </Box>
+                        )}
                     </Grid>
                 </Grid>
                 <DDAModalController
