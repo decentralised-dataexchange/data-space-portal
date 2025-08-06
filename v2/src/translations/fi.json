@@ -24,11 +24,11 @@
     "manage-admin": "Hallitse ylläpitäjää",
     "developer-apis": "Kehittäjä-API:t",
     "disp-connections": "DISP-yhteydet",
-    "business-wallet": "Business Wallet Connections",
+    "business-wallet": "Yrityslompakoiden yhteydet",
     "data-source": "Tietolähde",
     "dd-agreements": "Markkinapaikkailmoitukset",
     "open-api": "OpenAPI-dokumentaatio",
-    "businessWallet": "Business Wallet"
+    "businessWallet": "Yrityslompakko"
   },
   "home": {
     "header": "KOTI",
@@ -152,11 +152,11 @@
     "status": "Tila",
     "name": "Nimi",
     "businessWallet": "business-wallet",
-    "businessWalletLabel": "Business Wallet Label",
-    "connectedOn": "Connected on",
-    "connectionId": "Connection ID",
-    "addDataDisclosureAgreement": "Add Data Disclosure Agreement",
-    "noBannerImageAvailable": "No banner image available"
+    "businessWalletLabel": "Yrityslompakon nimi",
+    "connectedOn": "Yhdistetty",
+    "connectionId": "Yhteystunnus",
+    "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus",
+    "noBannerImageAvailable": "Ei bannerikuvaa saatavilla"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
