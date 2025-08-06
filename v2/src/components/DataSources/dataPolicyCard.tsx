@@ -37,10 +37,10 @@ export const DDAPolicyCard = (props: Props) => {
   return (
     <>
       <Box style={titleAttrRestrictionStyle} onClick={handleCardClick}>
-        <Typography color="grey" variant="subtitle2">
+        <Typography color="black" variant="subtitle2">
           {t("dataAgreements.dataAgreementPolicy")}
         </Typography>
-        <CaretRightIcon style={{ color: "grey" }} size={20}/>
+        <CaretRightIcon style={{ color: "black" }} size={20}/>
       </Box>
       <DataAgreementPolicyCardModal
         open={openDataAgreementPolicyModal}
