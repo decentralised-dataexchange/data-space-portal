@@ -219,7 +219,6 @@ const DDAgreements = () => {
                 <PlusCircleIcon size={25} />
               </IconButton>
               <IconButton
-                onClick={() => console.log('Save changes')}
                 aria-label={t('dataAgreements.saveButton')}
                 className={styles.actionButton}
               >
