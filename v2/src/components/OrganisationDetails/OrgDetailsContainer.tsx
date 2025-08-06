@@ -16,7 +16,6 @@ import VerifiedBadge from "../common/VerifiedBadge";
 const DetailsContainer = styled("div")({
   height: "auto",
   width: "100%",
-  borderRadius: 7,
   backgroundColor: "#FFFFF",
   padding: 10,
 });
