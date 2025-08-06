@@ -130,7 +130,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
   // Define header content
   const headerContentValue = (
     <Box sx={{ width: "100%" }}>
-      <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '20px', color: '#F3F3F6' }}>
+      <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
         {currentIndex > 0 ? `${t('gettingStarted.viewCredential')}` : `${t('gettingStarted.connectWalletTitle')} ${contentArray[currentIndex].headerName}`}
       </Typography>
     </Box>

@@ -54,7 +54,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
   return (
     <Box>
       <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '20px' }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
+        <Typography variant="h6" sx={{ fontSize: '16px' }}>
           {name}
         </Typography>
       </Box>

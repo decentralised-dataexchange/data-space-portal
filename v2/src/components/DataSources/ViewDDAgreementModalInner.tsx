@@ -30,11 +30,11 @@ export default function ViewDataAgreementModalInner(props: Props) {
   // Custom header content showing purpose and template ID
   const headerContent = (
     <Box sx={{ width: "100%" }}>
-      <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '20px' }}>
+      <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
         {selectedData?.purpose}
       </Typography>
       {mode !== "Create" && (
-        <Typography color="#F3F3F6" variant="body2" noWrap>
+        <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
           {selectedData?.templateId}
         </Typography>
       )}
@@ -139,7 +139,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
             {dataSourceName || 'Unknown Organization'}
           </Typography>
         </Box>
-        <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
+        <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f', fontSize: '12px' }}>
           {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
           <VerifiedBadge trusted={isVerified} />
         </Typography>

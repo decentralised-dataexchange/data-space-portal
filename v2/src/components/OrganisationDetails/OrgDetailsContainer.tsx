@@ -127,7 +127,7 @@ const OrganisationDetailsContainer = (props: Props) => {
         height="100%"
         headerContent={
           <Box sx={{ width: "100%" }}>
-            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '20px' }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
               {isVerify ? 
                 t('gettingStarted.viewCredential') : 
                 `${t('gettingStarted.connectWalletTitle')} ${t('gettingStarted.choose')}`}
