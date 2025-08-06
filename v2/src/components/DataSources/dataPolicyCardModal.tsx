@@ -90,7 +90,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
       >
 
         <Box className="dd-modal-container">
-          <Box className="dd-modal-header">
+          <Box className="dd-modal-header" sx={{paddingRight: 2}}>
             <Box pl={2} display={"flex"} alignItems={"center"}>
               <CaretLeftIcon
                 size={22}
@@ -121,6 +121,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                 backgroundColor: '#FFFFFF',
                 borderRadius: '7px',
                 border: '1px solid #DFE0E1',
+                padding: '12px',
               }}
             >
               {SSIpolicyDetailsForContainer?.map((policyDetail, index) => (

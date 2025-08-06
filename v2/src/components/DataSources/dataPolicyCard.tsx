@@ -45,7 +45,7 @@ export const DDAPolicyCard = (props: Props) => {
       <DataAgreementPolicyCardModal
         open={openDataAgreementPolicyModal}
         setOpen={setOpenDataAgreementPolicyModal}
-        headerText={"Data Disclosure Agreement Policy"}
+        headerText={t("dataAgreements.dataDisclosureAgreementPolicy")}
         selectedData={selectedData}
         handleCloseViewDDAModal={handleCloseViewDDAModal}
       />

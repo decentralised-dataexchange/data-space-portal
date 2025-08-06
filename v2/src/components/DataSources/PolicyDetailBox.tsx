@@ -29,3 +29,4 @@ const PolicyDetailsBox = (props: Props) => {
 };
 
 export default PolicyDetailsBox;
+ 

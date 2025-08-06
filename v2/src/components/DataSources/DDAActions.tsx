@@ -30,7 +30,7 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl }: DDAA
   };
 
   return (
-    <Box className="actionListingBtn" sx={{ display: "flex", flexDirection: "column", gap: 2, marginTop: "auto" }}>
+    <Box className="actionListingBtn" sx={{ display: "flex", flexDirection: "column", gap: 0.75, marginTop: "auto" }}>
       <Button
         variant="outlined"
         size="medium"
