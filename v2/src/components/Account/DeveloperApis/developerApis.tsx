@@ -273,8 +273,7 @@ export default function DeveloperAPIs () {
           </Grid>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
             <TextField
-              autoFocus
-              variant="outlined"
+              placeholder={t("developerAPIs.openApiUrlPlaceholder")}
               fullWidth
               value={openApiUrl}
               onChange={handleUpdateUrl}

@@ -291,6 +291,7 @@
     "openApiUpdateFailed": "Updating open API specification URL failed",
     "configureOpenApi": "Configure OpenAPI Specification",
     "openApiUrlLabel": "OpenAPI Specification URL:",
+    "openApiUrlPlaceholder": "Enter OpenAPI URL",
     "uploadButton": "Upload"
   },
   "dispConnection": {
