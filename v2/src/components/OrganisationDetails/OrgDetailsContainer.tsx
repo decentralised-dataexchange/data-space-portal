@@ -188,7 +188,6 @@ const OrganisationDetailsContainer = (props: Props) => {
                 <Box sx={{ display: "flex", alignItems: 'center' }} mb={"11px"} mt={"-2px"}>
                   <TextField
                     autoFocus
-                    value={formValue.name}
                     onChange={handleChange}
                     variant="standard"
                     placeholder={t("gettingStarted.organisationName")}
@@ -200,9 +199,10 @@ const OrganisationDetailsContainer = (props: Props) => {
                       fontSize: "0.875rem !important"
                     }}
                     InputProps={{
-                      disableUnderline: true,
+                      disableUnderline: false,
                       style: { fontSize: 20, fontWeight: "bold", marginTop: "-4px" },
                     }}
+                    value={formValue.name}
                   />
                 </Box>
                 <Typography variant="body2" height="23px" sx={{ marginTop: '10px', color: '#9F9F9F' }}>

@@ -9,6 +9,7 @@ import { defaultLogoImg } from "@/constants/defalultImages";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { logout } from "@/store/reducers/authReducer";
 import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
+import { useGetGettingStartData, useGetLogoImage } from "@/custom-hooks/gettingStarted";
 
 type Props = {
   firstName?: string;
@@ -22,15 +23,20 @@ export const MainAppBarMenu = (props: Props) => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const adminDetails = useAppSelector((state) => state.auth.adminDetails);
+  const organisationDetails = useAppSelector((state) => state.gettingStart.data);
+  const orgImages = useAppSelector((state) => state.gettingStart.imageSet);
 
   // Use admin details from Redux first, fallback to props
   const userEmail = adminDetails?.email || props.email || '';
   const userName = adminDetails?.name || props.firstName || '';
-  
-  // Get user avatar from localStorage
-  const [userAvatar, setUserAvatar] = useState<any>(
-    LocalStorageService.getUserProfilePic()
-  );
+
+  const { data: gettingStartData } = useGetGettingStartData();
+  const { data: logoImage } = useGetLogoImage();
+
+  const orgName = gettingStartData?.dataSource?.name || organisationDetails?.name || 'Organisation';
+  const orgLocation = gettingStartData?.dataSource?.location || organisationDetails?.location || 'Location';
+  const orgAvatarUrl = logoImage || orgImages?.logo || defaultLogoImg;
+
 
   const handleClickLogOut = () => {
     dispatch(logout());
@@ -48,18 +54,27 @@ export const MainAppBarMenu = (props: Props) => {
 
   return (
     <>
-      <IconButton
-        edge="end"
-        color="inherit"
-        onClick={handleMenu}
-        sx={{ marginLeft: "auto" }}
-      >
+      <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column', ml: 1, justifyContent: 'center', gap: 1 }}>
+          <Typography noWrap sx={{ fontSize: '16px', color: 'white', lineHeight: 1, marginBottom: '2px' }}>
+            {orgName}
+          </Typography>
+          <Typography noWrap sx={{ fontSize: '12px', color: 'white', lineHeight: 1 }}>
+            {orgLocation}
+          </Typography>
+        </Box>
+        <IconButton
+          edge="end"
+          color="inherit"
+          onClick={handleMenu}
+        >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={defaultLogoImg}
-            alt="img"
+            src={orgAvatarUrl}
+            alt={`Logo of ${orgName}`}
           />
-      </IconButton>
+        </IconButton>
+      </Box>
       <Menu
         sx={{ mt: "65px" }}
         id="menu-appbar"
@@ -85,12 +100,12 @@ export const MainAppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={defaultLogoImg}
-            alt="img"
+            src={orgAvatarUrl}
+            alt={`Logo of ${orgName}`}
           />
           <Typography
             variant="body2"
-            style={{ fontWeight: "bold", marginBottom: "4px" }}
+            style={{ fontWeight: "bold", margin: "0.5rem 4px" }}
           >
             {userName || props.firstName}
           </Typography>
@@ -109,7 +124,7 @@ export const MainAppBarMenu = (props: Props) => {
             }}
             onClick={() => router.push("/account/manage-admin")}
           >
-            <GearSixIcon size={24}/>
+            <GearSixIcon size={24} />
             <Typography ml={1} variant="body2">
               {t("appBar.settings")}
             </Typography>
@@ -125,7 +140,7 @@ export const MainAppBarMenu = (props: Props) => {
             }}
             onClick={handleClickLogOut}
           >
-            <SignOutIcon size={24}/>
+            <SignOutIcon size={24} />
             <Typography ml={1} variant="body2">
               {t("appBar.signout")}
             </Typography>

@@ -268,6 +268,7 @@
     "openApiUpdateFailed": "OpenAPI-määrittelyn URL-osoitteen päivitys epäonnistui",
     "configureOpenApi": "Määritä OpenAPI-määrittely",
     "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite:",
+    "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
     "uploadButton": "Lataa"
   },
   "dispConnection": {

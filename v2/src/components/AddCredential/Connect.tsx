@@ -52,13 +52,17 @@ const ConnectComponent = ({ onNext, onBack }: ConnectProps) => {
             </Typography>
             <TextField
               className="businessJustifiation"
+              label={t('verification.connect.justification')}
               fullWidth
               multiline
               rows={4}
               value={justification}
               onChange={handleJustificationChange}
-              variant="outlined"
               margin="normal"
+              variant="standard"
+              InputProps={{
+                disableUnderline: false,
+              }}
             />
           </Box>
         </Box>

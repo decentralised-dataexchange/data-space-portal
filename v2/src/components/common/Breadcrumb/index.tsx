@@ -17,7 +17,12 @@ const customStyles: React.CSSProperties = {
   fontSize: "1.1rem",
   fontWeight: 500,
   fontFamily: "openSansSemiBold",
-  padding: '0 0.5rem', // Add small horizontal padding
+  padding: '0.75rem 1rem',
+  margin: '1rem 0',
+  backgroundColor: 'transparent',
+  borderRadius: '4px',
+  display: 'flex',
+  alignItems: 'center',
 };
 
 const Breadcrumb: React.FC<BreadCrumbProps> = ({

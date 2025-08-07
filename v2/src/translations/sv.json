@@ -267,6 +267,7 @@
     "openApiUpdateFailed": "Uppdatering av OpenAPI-specifikations-URL misslyckades",
     "configureOpenApi": "Konfigurera OpenAPI-specifikation",
     "openApiUrlLabel": "OpenAPI-specifikations-URL:",
+    "openApiUrlPlaceholder": "Ange OpenAPI-URL",
     "uploadButton": "Ladda upp"
   },
   "dispConnection": {
