@@ -2,7 +2,6 @@ import { Box, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAppSelector } from '@/custom-hooks/store';
-import { defaultCoverImage, defaultLogoImg } from '@/constants/defalultImages';
 import { DataAttributeCardForDDA } from './dataAttributeCardCredentials';
 import { PresentationRecord } from '@/types/verification';
 import VerifiedBadge from '@/components/common/VerifiedBadge';
