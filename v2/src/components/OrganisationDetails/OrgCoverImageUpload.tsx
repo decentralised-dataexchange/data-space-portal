@@ -5,7 +5,7 @@ import Image from "next/image";
 import { apiService } from "@/lib/apiService/apiService";
 import { useGetCoverImage, useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
 import { defaultCoverImage } from "@/constants/defalultImages";
-import BannerCamera from "@/assets/img/camera_photo1.png";
+import { PencilSimpleIcon } from "@phosphor-icons/react";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -88,20 +88,27 @@ const OrgCoverImageUpload = (props: Props) => {
         <Box style={{ position: "absolute", right: 20, top: 10 }}>
           <div>
             <form>
-              <label className="uptext" htmlFor="uploadCoverImage">
-                <Image
-                  style={{
-                    opacity: 0.45,
-                  }}
-                  src={BannerCamera}
-                  alt="editcover"
-                />
+              <label className="uptext" htmlFor="uploadCoverImage" style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transform: 'translate(50%, -50%)'
+              }}>
+                <PencilSimpleIcon size={20} color="white" />
               </label>
               <input
                 type="file"
                 id="uploadCoverImage"
                 name="uploadCoverImage"
-                accept="image/jpeg,image/jpg"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
                 hidden={true}
                 onChange={handleFile}
               />

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Avatar, Box } from "@mui/material";
 import { apiService } from "@/lib/apiService/apiService";
-import LogoCamera from "@/assets/img/camera_photo2.png";
+import { PencilSimpleIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 
 // Temporary default logo image
@@ -97,14 +97,21 @@ const OrgLogoImageUpload = (props: Props) => {
         >
           <div>
             <form>
-              <label className="uptext" htmlFor="uploadLogoImage">
-                <Image
-                  style={{
-                    opacity: 0.45,
-                  }}
-                  src={LogoCamera}
-                  alt="img"
-                />
+              <label className="uptext" htmlFor="uploadLogoImage" style={{
+                position: 'absolute',
+                top: '45px',
+                right: '45px',
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transform: 'translate(50%, -50%)'
+              }}>
+                <PencilSimpleIcon size={20} color="white" />
               </label>
               <input
                 type="file"
