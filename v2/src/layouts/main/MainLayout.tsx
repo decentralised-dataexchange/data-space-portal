@@ -39,11 +39,11 @@ const MainLayout = ({ children }: Props) => {
             display: 'flex', 
             flexDirection: 'column', 
             minHeight: 'calc(100vh - 80px)',
-            '& > *:first-of-type': {
-              marginLeft: '15px', // Match container padding
-              marginBottom: '1rem',
-              marginTop: '10px' // Original top spacing
-            }
+            // '& > *:first-child': {
+            //   marginLeft: '15px', // Match container padding
+            //   marginBottom: '1rem',
+            //   marginTop: '10px' // Original top spacing
+            // }
           }}
         >
           {!inPublicRoute && <Breadcrumb />}

@@ -202,21 +202,21 @@ const GettingStarted = () => {
       <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>
         <Grid container spacing={2}>
           <Grid size={{lg: 4, md: 6, sm: 6, xs:12}}>
-            <Item onClick={() => router.push(`/${t("route.dd-agreements")}`)}>
+            <Item as="button" onClick={() => router.push(`/${t("route.dd-agreements")}`)}>
               <Typography variant="body1">
                 {t('gettingStarted.manageDDA')}
               </Typography>
             </Item>
           </Grid>
           <Grid size={{lg: 4, md: 6, sm: 6, xs:12}}>
-            <Item onClick={() => router.push(`/${t("route.manageAdmin")}`)}>
+            <Item as="button" onClick={() => router.push(`/${t("route.manageAdmin")}`)}>
               <Typography variant="body1">
                 {t('gettingStarted.manageAdminUser')}
               </Typography>
             </Item>
           </Grid>
           <Grid size={{lg: 4, md: 6, sm: 6, xs: 12}}>
-            <Item onClick={() => router.push(`/${t("route.developerApis")}`)}>
+            <Item as="button" onClick={() => router.push(`/${t("route.developerApis")}`)}>
               <Typography variant="body1">
                 {t('gettingStarted.developerDocumentation')}
               </Typography>

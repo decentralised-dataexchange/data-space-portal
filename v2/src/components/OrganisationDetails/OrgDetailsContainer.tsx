@@ -16,7 +16,6 @@ import VerifiedBadge from "../common/VerifiedBadge";
 const DetailsContainer = styled("div")({
   height: "auto",
   width: "100%",
-  borderRadius: 7,
   backgroundColor: "#FFFFF",
   padding: 10,
 });
@@ -127,7 +126,7 @@ const OrganisationDetailsContainer = (props: Props) => {
         height="100%"
         headerContent={
           <Box sx={{ width: "100%" }}>
-            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '20px' }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
               {isVerify ? 
                 t('gettingStarted.viewCredential') : 
                 `${t('gettingStarted.connectWalletTitle')} ${t('gettingStarted.choose')}`}
@@ -147,7 +146,7 @@ const OrganisationDetailsContainer = (props: Props) => {
               fontSize: '14px'
             }}
           >
-            No banner image available
+            {t('noBannerImageAvailable')}
           </Box>
         }
         showBanner={true}

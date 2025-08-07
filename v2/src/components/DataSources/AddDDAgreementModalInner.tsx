@@ -22,7 +22,7 @@ export default function AddDDAgreementModalInner({ open, setOpen, coverImage, lo
       <Box className="dd-modal-container">
         <Box className="dd-modal-header">
           <Box pl={2} style={{ width: "90%" }}>
-            <Typography className="dd-modal-header-text">
+            <Typography className="dd-modal-header-text" sx={{ fontSize: '16px'}}>
               {t('addDataDisclosureAgreement')}
             </Typography>
           </Box>

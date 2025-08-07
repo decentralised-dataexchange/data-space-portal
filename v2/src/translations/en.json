@@ -117,6 +117,8 @@
     "poweredby": "Powered by",
     "home": "Home",
     "overView": "Overview",
+    "usagePurpose": "Usage Purpose",
+    "dataset": "Dataset",
     "policyUrl": "Policy URL",
     "all": "All",
     "noResultsFound": "No results found",
@@ -312,5 +314,6 @@
     "noConnections": "No wallet connections found"
   },
   "addDataDisclosureAgreement": "Add Data Disclosure Agreement",
-  "noBannerImageAvailable": "No banner image available"
+  "noBannerImageAvailable": "No banner image available",
+  "unknownOrganization": "Unknown Organization"
 }

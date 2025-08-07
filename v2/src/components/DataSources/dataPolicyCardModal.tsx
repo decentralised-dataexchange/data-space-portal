@@ -99,7 +99,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                   setOpen(false);
                 }}
               />
-              <Typography color="#F3F3F6" >{headerText}</Typography>
+              <Typography color="#F3F3F6" sx={{ fontSize: '16px' }}>{headerText}</Typography>
             </Box>
             <XIcon
               size={22}

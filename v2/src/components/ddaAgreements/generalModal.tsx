@@ -77,7 +77,7 @@ export default function GeneralModal({
     >
       <Box className={styles['dd-modal-container']}>
         <Box className={styles['dd-modal-header']}>
-          <Typography variant="h6" className={styles['dd-modal-header-text']}>
+          <Typography sx={{ fontSize: '16px' }}>
             {headerText}{selectedData?.purpose ? `: ${selectedData.purpose}` : ''}
           </Typography>
           <Button onClick={handleClose} className={styles['close-btn']}>

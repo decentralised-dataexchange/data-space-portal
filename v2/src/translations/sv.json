@@ -24,11 +24,11 @@
     "manage-admin": "Hantera admin",
     "developer-apis": "Utvecklar-API:er",
     "disp-connections": "DISP-anslutningar",
-    "business-wallet": "Business Wallet Connections",
+    "business-wallet": "Företagsplånboksanslutningar",
     "data-source": "Datakälla",
     "dd-agreements": "Marknadsplatslistning",
     "open-api": "OpenAPI-dokumentation",
-    "businessWallet": "Business Wallet"
+    "businessWallet": "Företagsplånbok"
   },
   "home": {
     "header": "HEM",
@@ -132,6 +132,8 @@
     "home": "Hem",
     "edit": "Redigera",
     "overView": "Översikt",
+    "usagePurpose": "Användningssyfte",
+    "dataset": "Datamängd",
     "policyUrl": "Policy URL",
     "cancel": "Avbryt",
     "confirm": "Bekräfta",
@@ -149,7 +151,11 @@
     "timestamp": "Tidsstämpel",
     "status": "Status",
     "name": "Namn",
-    "businessWallet": "business-wallet"
+    "businessWallet": "business-wallet",
+    "businessWalletLabel": "Företagsplånboksnamn",
+    "connectedOn": "Ansluten",
+    "connectionId": "Anslutnings-ID",
+    "addDataDisclosureAgreement": "Lägg till datautlämningsavtal"
   },
   "errors": {
     "generic": "Något gick fel."
@@ -282,5 +288,7 @@
   },
   "error": {
     "generic": "Något gick fel."
-  }
+  },
+  "noBannerImageAvailable": "Ingen bannerbild tillgänglig",
+  "unknownOrganization": "Okänd organisation"
 }
