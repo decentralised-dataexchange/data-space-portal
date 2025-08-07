@@ -93,9 +93,12 @@ export default function GeneralModal({
               fullWidth
               value={confirmationTextInput}
               onChange={handleCancelConfirmationText}
-              placeholder={getPlaceholderText()}
-              variant="outlined"
+              placeholder={`Type "${confirmText}" to confirm`}
+              variant="standard"
               size="small"
+              InputProps={{
+                disableUnderline: false,
+              }}
             />
           </Box>
         </Box>

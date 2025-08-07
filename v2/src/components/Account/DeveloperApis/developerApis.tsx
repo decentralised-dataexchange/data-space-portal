@@ -274,12 +274,14 @@ export default function DeveloperAPIs () {
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
             <TextField
               placeholder={t("developerAPIs.openApiUrlPlaceholder")}
+              variant="standard"
+              size="small"
               fullWidth
               value={openApiUrl}
               onChange={handleUpdateUrl}
-              size="small"
-              disabled={isUpdating}
-              sx={{ marginTop: "5px", borderRadius: '0px' }}
+              InputProps={{
+                disableUnderline: false,
+              }}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 3 }}>
