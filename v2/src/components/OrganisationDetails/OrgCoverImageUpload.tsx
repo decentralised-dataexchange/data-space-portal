@@ -1,11 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
 import { apiService } from "@/lib/apiService/apiService";
 import { useGetCoverImage, useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
 import { defaultCoverImage } from "@/constants/defalultImages";
-import { PencilSimpleIcon } from "@phosphor-icons/react";
+import { GenericImageUpload } from "@/components/common/ImageUpload";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -31,91 +30,53 @@ const OrgCoverImageUpload = (props: Props) => {
 
   // Use the update cover image mutation hook
   const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
-  
-  const myFile: { file: string; imagePreviewUrl: any } = {
-    file: "",
-    imagePreviewUrl: "",
-  };
 
-  const handleFile = async (e: any) => {
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    
-    reader.onloadend = () => {
-      myFile.file = file;
-      myFile.imagePreviewUrl = reader.result;
-    };
-
-    reader.readAsDataURL(file);
-
+  const handleImageUpdate = async (file: File, imageBase64: string): Promise<void> => {
     try {
+      console.log('Starting banner image upload...');
+      console.log('File details:', {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified
+      });
+      
       const formData = new FormData();
-      if (file) {
-        formData.append('orgimage', file);
-        
-        // Update the cover image using the mutation hook
-        await updateCoverImage(formData);
-        
-        // Get the updated cover image
-        const imageBase64 = await apiService.getCoverImage();
-        
-        // Update state and local storage
-        handleEdit();
-        setCoverImageBase64(imageBase64);
-        localStorage.setItem('cachedCoverImage', imageBase64);
-      }
+      formData.append('orgimage', file);
+      
+      console.log('Form data prepared successfully');
+      console.log('Using endpoint:', '/config/data-source/coverimage/');
+      
+      // Simple approach - just call the mutation directly
+      const result = await updateCoverImage(formData);
+      console.log('Banner upload successful:', result);
+      
+      // Update state and local storage
+      handleEdit();
+      setCoverImageBase64(imageBase64);
+      localStorage.setItem('cachedCoverImage', imageBase64);
+      
+      console.log('Banner image update completed successfully');
+      // Don't return the result, just complete the Promise<void>
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.error('Error updating cover image:', error);
+      throw error; // Re-throw to allow modal to handle the error
     }
   };
 
   return (
     <BannerContainer>
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        <img
-          style={{ 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'cover',
-            opacity: editMode ? 0.25 : 1,
-          }}
-          alt="Banner"
-          src={!coverImage ? defaultCoverImage : coverImage}
-        />
-      </div>
-
-      {editMode && (
-        <Box style={{ position: "absolute", right: 20, top: 10 }}>
-          <div>
-            <form>
-              <label className="uptext" htmlFor="uploadCoverImage" style={{
-                position: 'absolute',
-                top: '24px',
-                right: '24px',
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transform: 'translate(50%, -50%)'
-              }}>
-                <PencilSimpleIcon size={20} color="white" />
-              </label>
-              <input
-                type="file"
-                id="uploadCoverImage"
-                name="uploadCoverImage"
-                accept="image/jpeg,image/jpg,image/png,image/webp"
-                hidden={true}
-                onChange={handleFile}
-              />
-            </form>
-          </div>
-        </Box>
-      )}
+      <GenericImageUpload
+        editMode={editMode}
+        imageUrl={coverImage || ''}
+        defaultImage={defaultCoverImage}
+        onImageUpdate={handleImageUpdate}
+        aspectRatio={3} // 1500/500 = 3
+        minWidth={1500}
+        minHeight={500}
+        recommendedSize="Recommended size is 1500x500px"
+        containerStyle={{ width: '100%', height: '100%' }}
+      />
     </BannerContainer>
   );
 };
