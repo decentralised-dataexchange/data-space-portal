@@ -4,13 +4,11 @@ import { useUpdateDataSource } from "@/custom-hooks/gettingStarted";
 import { Box, Grid, Typography, TextField, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "@/components/OrganisationDetails/OrgLogoImageUpload";
-import DrawerComponent from "@/components/common/Drawer";
 import AddCredentialComponent from "@/components/AddCredential";
 import RightSidebar from "@/components/common/RightSidebar";
 import './style.scss';
 import { useTranslations } from "next-intl";
-import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
-import { apiService } from "@/lib/apiService/apiService";
+import { useAppSelector } from "@/custom-hooks/store";
 import VerifiedBadge from "../common/VerifiedBadge";
 
 const DetailsContainer = styled("div")({
@@ -36,11 +34,9 @@ const buttonStyle = {
 
 type Props = {
   editMode: boolean;
-  logoImageBase64: string | undefined;
   organisationDetails: any;
   handleEdit: () => void;
   setOganisationDetails: (field: string, value: string) => void;
-  setLogoImageBase64: (image: string) => void;
   isEnableAddCredential: boolean;
 };
 
@@ -55,8 +51,6 @@ const OrganisationDetailsContainer = (props: Props) => {
     setOganisationDetails
   } = props;
   const [coverImageBase64, setCoverImageBase64] = useState();
-  const [logoImageBase64, setLogoImageBase64] = useState();
-  const dispatch = useAppDispatch();
   const [formValue, setFormValue] = useState({
     'name': '',
     'location': '',
@@ -73,11 +67,6 @@ const OrganisationDetailsContainer = (props: Props) => {
       'description': organisationDetails?.description || '',
       'sector': organisationDetails?.sector || ''
     })
-    // Use apiService to get logo image
-    apiService.getLogoImage().then((logoImage) => {
-      setLogoImageBase64(logoImage);
-      localStorage.setItem('cachedLogoImage', logoImage)
-    });
   }, [organisationDetails])
 
   const verifyConnectionObj = useAppSelector(
@@ -169,8 +158,6 @@ const OrganisationDetailsContainer = (props: Props) => {
         >
           <OrgLogoImageUpload
             editMode={editMode}
-            logoImageBase64={logoImageBase64}
-            setLogoImageBase64={setLogoImageBase64}
             handleEdit={handleEdit}
           />
 

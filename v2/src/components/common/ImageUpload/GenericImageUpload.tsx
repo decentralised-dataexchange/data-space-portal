@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { Box, Snackbar, Alert } from '@mui/material';
 import { PencilSimpleIcon } from '@phosphor-icons/react';
 import ImageCropModal from './ImageCropModal';
-import Resizer from 'react-image-file-resizer';
 import { useDispatch, useSelector } from 'react-redux';
 import { setError, setMessage } from '@/store/reducers/authReducer';
 
@@ -15,6 +14,12 @@ interface GenericImageUploadProps {
   minWidth: number;
   minHeight: number;
   recommendedSize: string;
+  // Optional explicit output dimensions and quality for the optimized upload
+  outputWidth?: number;
+  outputHeight?: number;
+  outputQuality?: number; // 0-1 (default handled in modal)
+  // Optional modal size variant
+  modalSize?: 'small' | 'medium' | 'large' | 'full';
   containerStyle?: React.CSSProperties;
   imageStyle?: React.CSSProperties;
   iconPosition?: {
@@ -33,10 +38,14 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   minWidth,
   minHeight,
   recommendedSize,
+  outputWidth,
+  outputHeight,
+  outputQuality,
   containerStyle,
   imageStyle,
   iconPosition = { top: '24px', right: '24px' },
-  acceptedFileTypes = 'image/jpeg,image/jpg,image/png,image/webp'
+  modalSize,
+  acceptedFileTypes = 'image/jpeg,image/jpg,image/png'
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -50,6 +59,8 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   const handleIconClick = (e: React.MouseEvent) => {
     e.preventDefault();
     // Open the modal directly instead of clicking the file input
+    // Reset any previously selected image so the modal starts clean
+    setSelectedImage(null);
     setModalOpen(true);
   };
 
@@ -79,10 +90,10 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
 
   const handleCropComplete = async (croppedBlob: Blob) => {
     try {
-      // Convert blob to File
-      const file = new File([croppedBlob], 'cropped-image.webp', { 
-        type: 'image/webp',
-        lastModified: Date.now()
+      // Always convert cropped blob to JPEG File for backend compatibility
+      const file = new File([croppedBlob], 'cropped-image.jpg', {
+        type: 'image/jpeg',
+        lastModified: Date.now(),
       });
       
       // Convert to base64 for preview
@@ -101,8 +112,9 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
             dispatch(setError(false));
             dispatch(setMessage('Image updated successfully'));
             
-            // Close modal and resolve promise
+            // Close modal, clear previous selection, and resolve promise
             setModalOpen(false);
+            setSelectedImage(null);
             resolve();
           } catch (error) {
             console.error('Error updating image:', error);
@@ -176,7 +188,11 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
           
           <ImageCropModal
             open={modalOpen}
-            onClose={() => setModalOpen(false)}
+            onClose={() => {
+              // Reset state on close so reopening the modal doesn't show previous image
+              setModalOpen(false);
+              setSelectedImage(null);
+            }}
             imageUrl={selectedImage}
             onCropComplete={handleCropComplete}
             aspectRatio={aspectRatio}
@@ -184,6 +200,10 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
             minHeight={minHeight}
             recommendedSize={recommendedSize}
             onFileSelect={handleFileSelect}
+            outputWidth={outputWidth}
+            outputHeight={outputHeight}
+            outputQuality={outputQuality}
+            modalSize={modalSize ?? (aspectRatio === 1 ? 'medium' : 'large')}
           />
         </>
       )}

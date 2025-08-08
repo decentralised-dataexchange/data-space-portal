@@ -55,17 +55,11 @@ export const apiService = {
       const formData = new FormData();
       formData.append('orgimage', file);
       
-      // Create headers with the correct content type for file upload
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-      };
-      
       // Make the API call; backend returns updated organization object, but we
-      // don’t need it here – calling code can rely on its local base64 copy.
+      // don’t need it here – letting Axios set the multipart boundary automatically.
       await api.put(
         ENDPOINTS.getLogoImage(),
-        formData,
-        { headers }
+        formData
       );
     } catch (error) {
       console.error('Error updating logo image:', error);

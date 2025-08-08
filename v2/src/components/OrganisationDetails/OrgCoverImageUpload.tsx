@@ -1,10 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { apiService } from "@/lib/apiService/apiService";
-import { useGetCoverImage, useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
+import { useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
 import { defaultCoverImage } from "@/constants/defalultImages";
 import { GenericImageUpload } from "@/components/common/ImageUpload";
+import { useQueryClient } from "@tanstack/react-query";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -20,16 +20,15 @@ const BannerContainer = styled("div")({
 type Props = {
   editMode: boolean;
   coverImageBase64: string | undefined;
-  setCoverImageBase64: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => void
 };
 
 const OrgCoverImageUpload = (props: Props) => {
-  const { editMode, handleEdit, setCoverImageBase64 } = props;
-  let coverImage = props.coverImageBase64 ? props.coverImageBase64 : localStorage.getItem('cachedCoverImage');
+  const { editMode, handleEdit } = props;
 
   // Use the update cover image mutation hook
   const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
+  const queryClient = useQueryClient();
 
   const handleImageUpdate = async (file: File, imageBase64: string): Promise<void> => {
     try {
@@ -47,14 +46,16 @@ const OrgCoverImageUpload = (props: Props) => {
       console.log('Form data prepared successfully');
       console.log('Using endpoint:', '/config/data-source/coverimage/');
       
-      // Simple approach - just call the mutation directly
+      // Upload first
       const result = await updateCoverImage(formData);
+      // Optimistically set the new cover image so UI updates immediately
+      queryClient.setQueryData(['coverImage'], imageBase64 || '');
+      // Invalidate in background to ensure fresh image is fetched
+      queryClient.invalidateQueries({ queryKey: ['coverImage'] });
       console.log('Banner upload successful:', result);
       
-      // Update state and local storage
+      // Toggle edit mode; React Query invalidates cover image and updates UI
       handleEdit();
-      setCoverImageBase64(imageBase64);
-      localStorage.setItem('cachedCoverImage', imageBase64);
       
       console.log('Banner image update completed successfully');
       // Don't return the result, just complete the Promise<void>
@@ -68,13 +69,16 @@ const OrgCoverImageUpload = (props: Props) => {
     <BannerContainer>
       <GenericImageUpload
         editMode={editMode}
-        imageUrl={coverImage || ''}
+        imageUrl={props.coverImageBase64 || ''}
         defaultImage={defaultCoverImage}
         onImageUpdate={handleImageUpdate}
         aspectRatio={3} // 1500/500 = 3
         minWidth={1500}
         minHeight={500}
         recommendedSize="Recommended size is 1500x500px"
+        outputWidth={1500}
+        outputHeight={500}
+        outputQuality={0.82}
         containerStyle={{ width: '100%', height: '100%' }}
       />
     </BannerContainer>

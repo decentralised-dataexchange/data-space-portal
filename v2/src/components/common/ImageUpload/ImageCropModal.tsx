@@ -1,37 +1,21 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { Modal, Box, Typography, Button, Tooltip, CircularProgress } from '@mui/material';
 import ReactCrop, { type Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 // Styles
-const modalStyle = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: { xs: '95%', sm: '80%' },
-  maxWidth: '800px',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 0,
-  borderRadius: 0,
-  outline: 'none',
-};
-
-const cropContainerStyle = {
-  position: 'relative',
-  width: '100%',
-  height: '400px',
-  backgroundColor: '#000',
-};
 
 const buttonContainerStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   padding: '16px',
   backgroundColor: '#fff',
+  borderTop: '1px solid #e5e5e5',
   gap: 8,
   flexWrap: { xs: 'wrap', sm: 'nowrap' },
+  position: 'relative' as const,
+  zIndex: 2 as const,
+  isolation: 'isolate' as const,
 };
 
 const buttonStyle = {
@@ -63,6 +47,12 @@ interface ImageCropModalProps {
   minHeight: number;
   recommendedSize: string;
   onFileSelect: (file: File) => void;
+  // Optional output size and quality for the final cropped image
+  outputWidth?: number;
+  outputHeight?: number;
+  outputQuality?: number; // 0-1, default 0.82
+  // Optional modal size variant
+  modalSize?: 'small' | 'medium' | 'large' | 'full';
 }
 
 // Helper function to create an initial crop with the correct aspect ratio
@@ -130,8 +120,14 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
 
 const getCroppedImg = async (
   image: HTMLImageElement,
-  pixelCrop: PixelCrop
+  pixelCrop: PixelCrop,
+  targetW?: number,
+  targetH?: number,
+  quality: number = 0.82
 ): Promise<Blob> => {
+  const outW = targetW ?? pixelCrop.width;
+  const outH = targetH ?? pixelCrop.height;
+
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -139,11 +135,15 @@ const getCroppedImg = async (
     throw new Error('Could not get canvas context');
   }
 
-  // Set canvas dimensions to match the cropped image
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  // Set canvas to desired output size
+  canvas.width = outW;
+  canvas.height = outH;
 
-  // Draw the cropped image onto the canvas
+  // Fill background with white to avoid black background when exporting JPEG
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, outW, outH);
+
+  // Then draw the cropped area scaled to fit on top of the white background
   ctx.drawImage(
     image,
     pixelCrop.x,
@@ -152,18 +152,17 @@ const getCroppedImg = async (
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height
+    outW,
+    outH
   );
 
-  // Convert canvas to blob
   return new Promise((resolve) => {
     canvas.toBlob((blob) => {
       if (!blob) {
         throw new Error('Canvas is empty');
       }
       resolve(blob);
-    }, 'image/webp', 0.95); // Convert to WebP with 95% quality
+    }, 'image/jpeg', quality);
   });
 };
 
@@ -193,6 +192,10 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   minHeight,
   recommendedSize,
   onFileSelect,
+  outputWidth,
+  outputHeight,
+  outputQuality,
+  modalSize = 'large',
 }) => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
@@ -201,6 +204,102 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
+
+  // Compute modal and crop container sizing variants (inside component)
+  const modalSx = useMemo(() => {
+    switch (modalSize) {
+      case 'small':
+        return {
+          position: 'absolute' as const,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '95%', sm: '60%', md: '50%' },
+          maxWidth: '520px',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 0,
+          borderRadius: 0,
+          outline: 'none',
+        };
+      case 'medium':
+        return {
+          position: 'absolute' as const,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '95%', sm: '70%', md: '60%' },
+          maxWidth: '720px',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 0,
+          borderRadius: 0,
+          outline: 'none',
+        };
+      case 'full':
+        return {
+          position: 'absolute' as const,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '96%', sm: '96%', md: '96%' },
+          maxWidth: 'none',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 0,
+          borderRadius: 0,
+          outline: 'none',
+        };
+      case 'large':
+      default:
+        return {
+          position: 'absolute' as const,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: { xs: '95%', sm: '80%' },
+          maxWidth: '900px',
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 0,
+          borderRadius: 0,
+          outline: 'none',
+        };
+    }
+  }, [modalSize]);
+
+  const cropContainerSx = useMemo(() => {
+    // Square presentation for avatar (aspectRatio === 1)
+    if (aspectRatio === 1) {
+      return {
+        position: 'relative',
+        width: '100%',
+        aspectRatio: '1 / 1',
+        maxHeight: '75vh',
+        backgroundColor: '#000',
+        overflow: 'hidden',
+      } as const;
+    }
+    // Non-square (e.g., banners): vary height by modal size
+    const base = {
+      position: 'relative',
+      width: '100%',
+      backgroundColor: '#000',
+      maxHeight: '75vh',
+      overflow: 'hidden',
+    } as const;
+    switch (modalSize) {
+      case 'small':
+        return { ...base, height: 320 } as const;
+      case 'medium':
+        return { ...base, height: 400 } as const;
+      case 'full':
+        return { ...base, height: '70vh' } as const;
+      case 'large':
+      default:
+        return { ...base, height: 460 } as const;
+    }
+  }, [aspectRatio, modalSize]);
 
   // Keep track of whether the crop has been initialized
   const cropInitializedRef = useRef(false);
@@ -245,7 +344,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
       // Convert to percentage-based crop for ReactCrop
       const percentCrop: Crop = {
-        unit: '%' as '%',
+        unit: '%' as const,
         x: (initialCrop.x / naturalWidth) * 100,
         y: (initialCrop.y / naturalHeight) * 100,
         width: (initialCrop.width / naturalWidth) * 100,
@@ -306,17 +405,34 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       console.log('Starting image crop and upload...');
       
       const pixelCrop = completedCrop;
-      const croppedImage = await getCroppedImg(
+      const targetW = outputWidth ?? pixelCrop.width;
+      const targetH = outputHeight ?? pixelCrop.height;
+      const quality = outputQuality ?? 0.82;
+      let croppedImage = await getCroppedImg(
         imgRef.current,
-        pixelCrop
+        pixelCrop,
+        targetW,
+        targetH,
+        quality
       );
+      // Fallback: if still too large (>1.5MB), re-encode at a lower quality
+      const MAX_BYTES = 1.5 * 1024 * 1024;
+      if (croppedImage.size > MAX_BYTES) {
+        const fallbackQuality = Math.max(0.6, quality - 0.2);
+        console.warn(`Cropped image size ${croppedImage.size} > ${MAX_BYTES}. Retrying with quality=${fallbackQuality}`);
+        croppedImage = await getCroppedImg(
+          imgRef.current,
+          pixelCrop,
+          targetW,
+          targetH,
+          fallbackQuality
+        );
+      }
       
       // Wait for the upload to complete before closing the modal
       await onCropComplete(croppedImage);
       console.log('Upload completed successfully');
-      
-      // Only close the modal after successful upload
-      onClose();
+      // Do not close here; parent will close the modal after it finishes refetching
     } catch (e) {
       console.error('Error during crop or upload:', e);
       // Keep modal open but disable loading state
@@ -332,9 +448,18 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box sx={modalStyle}>
-        <Box sx={cropContainerStyle}>
+    <Modal
+      open={open}
+      onClose={(_, reason) => {
+        // Prevent closing while uploading to avoid premature modal closure
+        if (!isUploading) {
+          onClose();
+        }
+      }}
+      disableEscapeKeyDown={isUploading}
+    >
+      <Box sx={modalSx}>
+        <Box sx={cropContainerSx}>
           {imageUrl ? (
             <Box sx={{
               position: 'relative',
@@ -343,12 +468,19 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#000'
+              // Checkerboard background to indicate transparency and avoid black bleed
+              backgroundColor: '#fff',
+              backgroundImage:
+                'linear-gradient(45deg, #f0f0f0 25%, transparent 25%),\
+                 linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),\
+                 linear-gradient(45deg, transparent 75%, #f0f0f0 75%),\
+                 linear-gradient(-45deg, transparent 75%, #f0f0f0 75%)',
+              backgroundSize: '16px 16px',
+              backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px'
             }}>
               <ReactCrop
                 crop={crop}
                 onChange={(c) => {
-                  // Reset cropInitializedRef to allow manual resizing
                   setCrop(c);
                 }}
                 onComplete={(c) => {
@@ -370,7 +502,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                   onLoad={onImageLoad}
                   style={{
                     maxWidth: '100%',
-                    maxHeight: '400px',
+                    maxHeight: '100%',
                     objectFit: 'contain'
                   }}
                 />
@@ -390,7 +522,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               </Typography>
               <input
                 type="file"
-                accept="image/jpeg,image/jpg,image/png,image/webp"
+                accept="image/jpeg,image/jpg,image/png"
                 id="browse-image"
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
@@ -423,6 +555,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           <Box>
             <Button
               onClick={onClose}
+              disabled={isUploading}
               sx={{
                 ...buttonStyle,
                 color: '#000',
@@ -441,7 +574,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
             {/* Always show Browse button */}
             <input
               type="file"
-              accept="image/jpeg,image/jpg,image/png,image/webp"
+              accept="image/jpeg,image/jpg,image/png"
               id="browse-image-bottom"
               style={{ display: 'none' }}
               onChange={handleFileChange}
@@ -450,6 +583,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               <Button
                 variant="contained"
                 component="span"
+                disabled={isUploading}
                 sx={{
                   ...buttonStyle,
                   backgroundColor: '#000',

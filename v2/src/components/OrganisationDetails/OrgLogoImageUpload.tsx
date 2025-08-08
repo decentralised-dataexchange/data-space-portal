@@ -10,13 +10,11 @@ const defaultLogoImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCA
 
 type Props = {
   editMode: boolean;
-  logoImageBase64: string | undefined;
-  setLogoImageBase64: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => void
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const {editMode, handleEdit, setLogoImageBase64 } = props;
+  const {editMode, handleEdit } = props;
   const { data: logoImageBase64 = '' } = useGetLogoImage();
   const queryClient = useQueryClient();
 
@@ -25,7 +23,7 @@ const OrgLogoImageUpload = (props: Props) => {
     imagePreviewUrl: "",
   };
 
-  const handleImageUpdate = async (file: File, imageBase64: string) => {
+  const handleImageUpdate = async (file: File, _imageBase64: string) => {
     try {
       // Update the logo image directly with the file
       await apiService.updateLogoImage(file);
@@ -34,10 +32,6 @@ const OrgLogoImageUpload = (props: Props) => {
       // This will trigger a refetch of the logo image everywhere it's used
       handleEdit();
       queryClient.invalidateQueries({ queryKey: ['logoImage'] });
-      
-      // We also update the parent component's state for immediate feedback
-      // while the query refetches in the background
-      setLogoImageBase64(imageBase64);
     } catch (error) {
       console.log(`Error: ${error}`);
     }
@@ -70,12 +64,16 @@ const OrgLogoImageUpload = (props: Props) => {
             minWidth={400}
             minHeight={400}
             recommendedSize="Recommended size is 400x400px"
+            outputWidth={400}
+            outputHeight={400}
+            outputQuality={0.82}
+            modalSize="medium"
             // Place overlay over the inner image area (exclude the white ring)
             containerStyle={{ position: 'absolute', top: 6, left: 6, width: '158px', height: '158px' }}
             // Fully hide the overlay image to avoid any visual seams over the white border
             imageStyle={{ display: 'none' }}
             iconPosition={{ top: '45px', right: '45px' }}
-            acceptedFileTypes="image/jpeg,image/jpg,image/png,image/webp"
+            acceptedFileTypes="image/jpeg,image/jpg,image/png"
           />
         )}
       </Box>
