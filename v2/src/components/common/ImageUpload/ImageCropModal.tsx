@@ -228,8 +228,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: { xs: '95%', sm: '70%', md: '60%' },
-          maxWidth: '720px',
+          // Shrink avatar modal to ~70% of previous size
+          width: { xs: '90%', sm: '50%', md: '42%' },
+          maxWidth: '504px',
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 0,
