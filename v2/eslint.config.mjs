@@ -26,7 +26,8 @@ const eslintConfig = [
       "no-unreachable": "error",
       "no-unsafe-finally": "error",
       "no-unsafe-optional-chaining": "error",
-      "no-unsafe-return": "error",
+      // Disabled for now since typed linting (parserOptions.project) is not configured
+      "@typescript-eslint/no-unsafe-return": "off",
     }
   },
 ];

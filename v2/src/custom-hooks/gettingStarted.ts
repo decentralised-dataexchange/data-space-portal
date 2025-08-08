@@ -229,7 +229,7 @@ export const useGetLogoImage = () => {
 export const useUpdateLogoImage = () => {
   const queryClient = useQueryClient();
   
-  return useMutation<{ logoImage: string }, Error, File>({
+  return useMutation<void, Error, File>({
     mutationFn: (file: File) => {
       return apiService.updateLogoImage(file);
     },

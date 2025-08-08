@@ -50,25 +50,17 @@ export const apiService = {
     return api.put<any>(ENDPOINTS.updateOpenApiUrl(), payload)
       .then(res => res.data);
   },
-  updateLogoImage: async (file: File): Promise<{ logoImage: string }> => {
+  updateLogoImage: async (file: File): Promise<void> => {
     try {
       const formData = new FormData();
-      formData.append('logo', file);
+      formData.append('orgimage', file);
       
-      // Create headers with the correct content type for file upload
-      const headers = {
-        'Content-Type': 'multipart/form-data',
-      };
-      
-      // Make the API call
-      const response = await api.put<{ Organization: { logoImage: string } }>(
+      // Make the API call; backend returns updated organization object, but we
+      // don’t need it here – letting Axios set the multipart boundary automatically.
+      await api.put(
         ENDPOINTS.getLogoImage(),
-        formData,
-        { headers }
+        formData
       );
-      
-      // Return the logo image URL
-      return { logoImage: response.data.Organization.logoImage };
     } catch (error) {
       console.error('Error updating logo image:', error);
       throw error;

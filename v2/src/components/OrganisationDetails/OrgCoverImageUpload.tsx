@@ -1,11 +1,10 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
-import { apiService } from "@/lib/apiService/apiService";
-import { useGetCoverImage, useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
+import { useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
 import { defaultCoverImage } from "@/constants/defalultImages";
-import BannerCamera from "@/assets/img/camera_photo1.png";
+import { GenericImageUpload } from "@/components/common/ImageUpload";
+import { useQueryClient } from "@tanstack/react-query";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -21,94 +20,70 @@ const BannerContainer = styled("div")({
 type Props = {
   editMode: boolean;
   coverImageBase64: string | undefined;
-  setCoverImageBase64: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => void
 };
 
 const OrgCoverImageUpload = (props: Props) => {
-  const { editMode, handleEdit, setCoverImageBase64 } = props;
-  let coverImage = props.coverImageBase64 ? props.coverImageBase64 : localStorage.getItem('cachedCoverImage');
+  const { editMode, handleEdit } = props;
 
   // Use the update cover image mutation hook
   const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
-  
-  const myFile: { file: string; imagePreviewUrl: any } = {
-    file: "",
-    imagePreviewUrl: "",
-  };
+  const queryClient = useQueryClient();
 
-  const handleFile = async (e: any) => {
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    
-    reader.onloadend = () => {
-      myFile.file = file;
-      myFile.imagePreviewUrl = reader.result;
-    };
-
-    reader.readAsDataURL(file);
-
+  const handleImageUpdate = async (file: File, imageBase64: string): Promise<void> => {
     try {
+      console.log('Starting banner image upload...');
+      console.log('File details:', {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified
+      });
+      
       const formData = new FormData();
-      if (file) {
-        formData.append('orgimage', file);
-        
-        // Update the cover image using the mutation hook
-        await updateCoverImage(formData);
-        
-        // Get the updated cover image
-        const imageBase64 = await apiService.getCoverImage();
-        
-        // Update state and local storage
-        handleEdit();
-        setCoverImageBase64(imageBase64);
-        localStorage.setItem('cachedCoverImage', imageBase64);
-      }
+      formData.append('orgimage', file);
+      
+      console.log('Form data prepared successfully');
+      console.log('Using endpoint:', '/config/data-source/coverimage/');
+      
+      // Upload first
+      const result = await updateCoverImage(formData);
+      // Optimistically set the new cover image so UI updates immediately
+      queryClient.setQueryData(['coverImage'], imageBase64 || '');
+      // Invalidate in background to ensure fresh image is fetched
+      queryClient.invalidateQueries({ queryKey: ['coverImage'] });
+      console.log('Banner upload successful:', result);
+      
+      // Toggle edit mode; React Query invalidates cover image and updates UI
+      handleEdit();
+      
+      console.log('Banner image update completed successfully');
+      // Don't return the result, just complete the Promise<void>
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.error('Error updating cover image:', error);
+      throw error; // Re-throw to allow modal to handle the error
     }
   };
 
   return (
     <BannerContainer>
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        <img
-          style={{ 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'cover',
-            opacity: editMode ? 0.25 : 1,
-          }}
-          alt="Banner"
-          src={!coverImage ? defaultCoverImage : coverImage}
-        />
-      </div>
-
-      {editMode && (
-        <Box style={{ position: "absolute", right: 20, top: 10 }}>
-          <div>
-            <form>
-              <label className="uptext" htmlFor="uploadCoverImage">
-                <Image
-                  style={{
-                    opacity: 0.45,
-                  }}
-                  src={BannerCamera}
-                  alt="editcover"
-                />
-              </label>
-              <input
-                type="file"
-                id="uploadCoverImage"
-                name="uploadCoverImage"
-                accept="image/jpeg,image/jpg"
-                hidden={true}
-                onChange={handleFile}
-              />
-            </form>
-          </div>
-        </Box>
-      )}
+      <GenericImageUpload
+        editMode={editMode}
+        imageUrl={props.coverImageBase64 || ''}
+        defaultImage={defaultCoverImage}
+        onImageUpdate={handleImageUpdate}
+        aspectRatio={3} // 1500/500 = 3
+        minWidth={1500}
+        minHeight={500}
+        recommendedSize="Recommended size is 1500x500px"
+        outputWidth={1500}
+        outputHeight={500}
+        outputQuality={0.82}
+        successMessage="Banner updated successfully"
+        containerStyle={{ width: '100%', height: '100%' }}
+        // Keep banner fully opaque in edit mode; avoid washed-out look
+        imageStyle={{ opacity: 1 }}
+      />
     </BannerContainer>
   );
 };
