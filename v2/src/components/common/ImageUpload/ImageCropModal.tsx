@@ -9,7 +9,7 @@ const modalStyle = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '80%',
+  width: { xs: '95%', sm: '80%' },
   maxWidth: '800px',
   bgcolor: 'background.paper',
   boxShadow: 24,
@@ -30,13 +30,15 @@ const buttonContainerStyle = {
   justifyContent: 'space-between',
   padding: '16px',
   backgroundColor: '#fff',
+  gap: 8,
+  flexWrap: { xs: 'wrap', sm: 'nowrap' },
 };
 
 const buttonStyle = {
   borderRadius: 0,
   textTransform: 'uppercase',
   padding: '8px 16px',
-  minWidth: '100px',
+  minWidth: { xs: 'auto', sm: '100px' },
 };
 
 const tooltipStyle = {

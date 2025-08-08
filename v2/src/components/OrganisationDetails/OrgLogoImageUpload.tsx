@@ -47,16 +47,17 @@ const OrgLogoImageUpload = (props: Props) => {
 
   return (
     <Box>
-      <Box style={{ position: 'relative' }}>
+      <Box sx={{ position: 'relative', mt: { xs: '-85px', sm: '-100px' } }}>
         <Avatar
+          variant="circular"
           src={!logoImageBase64 ? defaultLogoImg : logoImageBase64}
           alt="logo"
-          style={{
-            opacity: editMode ? 0.75 : 1,
-            marginTop: "-100px",
-            width: "170px",
-            height: "170px",
-            border: "solid white 6px",
+          sx={{
+            width: '170px',
+            height: '170px',
+            // Use an outer ring via box-shadow to eliminate inner seam artifacts from CSS borders
+            boxShadow: '0 0 0 6px #fff',
+            bgcolor: '#fff',
           }}
         />
         {editMode && (
@@ -69,7 +70,10 @@ const OrgLogoImageUpload = (props: Props) => {
             minWidth={400}
             minHeight={400}
             recommendedSize="Recommended size is 400x400px"
-            containerStyle={{ position: 'absolute', top: 0, left: 0, width: '170px', height: '170px' }}
+            // Place overlay over the inner image area (exclude the white ring)
+            containerStyle={{ position: 'absolute', top: 6, left: 6, width: '158px', height: '158px' }}
+            // Fully hide the overlay image to avoid any visual seams over the white border
+            imageStyle={{ display: 'none' }}
             iconPosition={{ top: '45px', right: '45px' }}
             acceptedFileTypes="image/jpeg,image/jpg,image/png,image/webp"
           />

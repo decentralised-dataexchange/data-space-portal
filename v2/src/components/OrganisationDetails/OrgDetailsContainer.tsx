@@ -177,10 +177,8 @@ const OrganisationDetailsContainer = (props: Props) => {
           <Box
             sx={{
               marginLeft: { xs: "0", sm: "30px" },
-              marginTop:
-                editMode === true
-                  ? { xs: "-150px", sm: "0px" }
-                  : { xs: "9px", sm: "0px" },
+              // Small spacing below avatar on mobile; keep content high
+              marginTop: editMode ? { xs: "8px", sm: "0px" } : { xs: "9px", sm: "0px" },
             }}
           >
             {editMode ? (
