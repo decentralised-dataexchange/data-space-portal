@@ -205,6 +205,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
             outputHeight={outputHeight}
             outputQuality={outputQuality}
             modalSize={modalSize ?? (aspectRatio === 1 ? 'medium' : 'large')}
+            acceptedFileTypes={acceptedFileTypes}
           />
         </>
       )}

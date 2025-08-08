@@ -58,6 +58,8 @@ interface ImageCropModalProps {
   outputQuality?: number; // 0-1, default 0.82
   // Optional modal size variant
   modalSize?: 'small' | 'medium' | 'large' | 'full';
+  // Accepted MIME types for browse and drag/drop validation
+  acceptedFileTypes?: string;
 }
 
 // Helper function to create an initial crop with the correct aspect ratio
@@ -201,6 +203,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   outputHeight,
   outputQuality,
   modalSize = 'large',
+  acceptedFileTypes,
 }) => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
@@ -431,13 +434,22 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
     const files = e.dataTransfer?.files;
     if (!files || files.length === 0) return;
     const file = files[0];
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if (!validTypes.includes(file.type)) {
-      showToast('Only JPEG/PNG images are supported', 'warning');
+    const types = (acceptedFileTypes || 'image/jpeg,image/jpg,image/png')
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+    const label = (() => {
+      const labels = types.map((t) =>
+        t.includes('png') ? 'PNG' : (t.includes('jpeg') || t.includes('jpg')) ? 'JPEG' : (t.split('/').pop()?.toUpperCase() || t.toUpperCase())
+      );
+      return Array.from(new Set(labels)).join('/');
+    })();
+    if (!types.includes(file.type)) {
+      showToast(`Only ${label} images are supported`, 'warning');
       return;
     }
     onFileSelect(file);
-  }, [isUploading, onFileSelect, showToast]);
+  }, [isUploading, onFileSelect, showToast, acceptedFileTypes]);
 
   const handleSave = async () => {
     if (!imageUrl || !imgRef.current) return;
@@ -500,9 +512,18 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-      if (!validTypes.includes(file.type)) {
-        showToast('Only JPEG/PNG images are supported', 'warning');
+      const types = (acceptedFileTypes || 'image/jpeg,image/jpg,image/png')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean);
+      const label = (() => {
+        const labels = types.map((t) =>
+          t.includes('png') ? 'PNG' : (t.includes('jpeg') || t.includes('jpg')) ? 'JPEG' : (t.split('/').pop()?.toUpperCase() || t.toUpperCase())
+        );
+        return Array.from(new Set(labels)).join('/');
+      })();
+      if (!types.includes(file.type)) {
+        showToast(`Only ${label} images are supported`, 'warning');
         return;
       }
       onFileSelect(file);
@@ -595,12 +616,21 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 Select an image
               </Typography>
               <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
-                Use Browse below, or drag & drop here (JPEG/PNG).
+                {`Use Browse below, or drag & drop here (${(() => {
+                  const types = (acceptedFileTypes || 'image/jpeg,image/jpg,image/png')
+                    .split(',')
+                    .map((t) => t.trim())
+                    .filter(Boolean);
+                  const labels = types.map((t) =>
+                    t.includes('png') ? 'PNG' : (t.includes('jpeg') || t.includes('jpg')) ? 'JPEG' : (t.split('/').pop()?.toUpperCase() || t.toUpperCase())
+                  );
+                  return Array.from(new Set(labels)).join('/');
+                })()}).`}
               </Typography>
             </Box>
           )}
           <Box sx={tooltipStyle}>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>
               {recommendedSize}
             </Typography>
           </Box>
@@ -630,7 +660,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
             {/* Always show Browse button */}
             <input
               type="file"
-              accept="image/jpeg,image/jpg,image/png"
+              accept={(acceptedFileTypes || 'image/jpeg,image/jpg,image/png')}
               id="browse-image-bottom"
               style={{ display: 'none' }}
               onChange={handleFileChange}
