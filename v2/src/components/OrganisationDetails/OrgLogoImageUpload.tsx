@@ -54,28 +54,35 @@ const OrgLogoImageUpload = (props: Props) => {
             bgcolor: '#fff',
           }}
         />
-        {editMode && (
-          <GenericImageUpload
-            editMode={editMode}
-            imageUrl={logoImageBase64 || ''}
-            defaultImage={defaultLogoImg}
-            onImageUpdate={handleImageUpdate}
-            aspectRatio={1} // Square aspect ratio for logo
-            minWidth={400}
-            minHeight={400}
-            recommendedSize="Recommended size is 400x400px"
-            outputWidth={400}
-            outputHeight={400}
-            outputQuality={0.82}
-            modalSize="medium"
-            // Place overlay over the inner image area (exclude the white ring)
-            containerStyle={{ position: 'absolute', top: 6, left: 6, width: '158px', height: '158px' }}
-            // Fully hide the overlay image to avoid any visual seams over the white border
-            imageStyle={{ display: 'none' }}
-            iconPosition={{ top: '45px', right: '45px' }}
-            acceptedFileTypes="image/jpeg,image/jpg,image/png"
-          />
-        )}
+        <GenericImageUpload
+          editMode={editMode}
+          imageUrl={logoImageBase64 || ''}
+          defaultImage={defaultLogoImg}
+          onImageUpdate={handleImageUpdate}
+          aspectRatio={1} // Square aspect ratio for logo
+          minWidth={400}
+          minHeight={400}
+          recommendedSize="Recommended size is 400x400px"
+          outputWidth={400}
+          outputHeight={400}
+          outputQuality={0.82}
+          modalSize="medium"
+          successMessage="Logo updated successfully"
+          // Place overlay over the inner image area (exclude the white ring)
+          containerStyle={{
+            position: 'absolute',
+            top: 6,
+            left: 6,
+            width: '158px',
+            height: '158px',
+            // Keep mounted at all times so Toast remains visible; disable interactions when not editing
+            pointerEvents: editMode ? 'auto' : 'none'
+          }}
+          // Fully hide the overlay image to avoid any visual seams over the white border
+          imageStyle={{ display: 'none' }}
+          iconPosition={{ top: '45px', right: '45px' }}
+          acceptedFileTypes="image/jpeg,image/jpg,image/png"
+        />
       </Box>
     </Box>
   );

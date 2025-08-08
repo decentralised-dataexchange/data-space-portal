@@ -22,6 +22,7 @@ const Toast: React.FC<ToastProps> = ({
       autoHideDuration={autoHideDuration}
       onClose={onClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      sx={{ zIndex: 1700 }}
     >
       <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
         {message}

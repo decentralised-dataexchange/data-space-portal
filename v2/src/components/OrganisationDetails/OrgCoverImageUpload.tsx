@@ -79,7 +79,10 @@ const OrgCoverImageUpload = (props: Props) => {
         outputWidth={1500}
         outputHeight={500}
         outputQuality={0.82}
+        successMessage="Banner updated successfully"
         containerStyle={{ width: '100%', height: '100%' }}
+        // Keep banner fully opaque in edit mode; avoid washed-out look
+        imageStyle={{ opacity: 1 }}
       />
     </BannerContainer>
   );
