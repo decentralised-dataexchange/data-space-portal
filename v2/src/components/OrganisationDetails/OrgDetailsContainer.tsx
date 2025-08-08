@@ -106,7 +106,18 @@ const OrganisationDetailsContainer = (props: Props) => {
 
   const addCredentialClass = isVerify ? 'view-credential' : !isEnableAddCredential ? 'add-credential cursorNotAllowed' : 'add-credential';
   return (
-    <DetailsContainer sx={{ flexGrow: 1 }} className="gettingStarted">
+    <DetailsContainer
+      sx={{
+        flexGrow: 1,
+        // Ensure the visual height is 229px by default; allow expansion on mobile when editing
+        boxSizing: 'border-box',
+        height: {
+          xs: editMode ? 'auto' : '229px',
+          sm: '229px',
+        },
+      }}
+      className="gettingStarted"
+    >
       <RightSidebar
         open={openRightSideDrawer}
         onClose={callRightSideDrawer}
