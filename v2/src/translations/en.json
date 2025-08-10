@@ -112,7 +112,7 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "success": "Success",
-    "certificateOfRegistration": "CERTIFICATION OF REGISTRATION",
+    "certificateOfRegistration": "Certificate of registration",
     "language": "Language",
     "poweredby": "Powered by",
     "home": "Home",
@@ -305,7 +305,7 @@
     "generic": "Something went wrong."
   },
   "businessWallet": {
-    "title": "Business Wallet Connections",
+    "title": "Business Wallet connections",
     "subtitle": "Manage your organization's business wallet connections",
     "label": "Connection Name",
     "connectedOn": "Connected on",
@@ -314,7 +314,7 @@
     "searchPlaceholder": "Search connections...",
     "noConnections": "No wallet connections found"
   },
-  "addDataDisclosureAgreement": "Add Data Disclosure Agreement",
+  "addDataDisclosureAgreement": "Add data disclosure agreement",
   "noBannerImageAvailable": "No banner image available",
   "unknownOrganization": "Unknown Organization"
 }
