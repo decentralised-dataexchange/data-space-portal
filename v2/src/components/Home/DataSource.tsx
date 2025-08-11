@@ -6,6 +6,7 @@ import {
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Avatar from '@mui/material/Avatar';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import './style.scss';
@@ -90,21 +91,19 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                         backgroundPosition: 'center'
                     }}
                 >
-                    <CardMedia
-                        component="img"
-                        image={dataSource?.logoUrl}
+                    <Avatar
+                        src={dataSource?.logoUrl}
                         alt={dataSource?.name || 'Data Source'}
-                        className='logo'
                         sx={{
-                            width: '100px',
-                            height: '100px',
-                            objectFit: 'cover',
-                            borderRadius: '50%',
                             position: 'absolute',
                             top: '40px',
                             left: '10px',
-                            border: '5px solid white'
+                            width: '100px',
+                            height: '100px',
+                            backgroundColor: 'white',
+                            boxShadow: '0 0 0 5px white'
                         }}
+                        imgProps={{ style: { objectFit: 'cover', width: '100%', height: '100%', display: 'block' } }}
                     />
                 </CardMedia>
                 <CardContent sx={{ padding: "20px" }}>
@@ -134,7 +133,7 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
 
                     <Box className="actionBtn">
                         {dataDisclosureAgreements.length > 0 ? (
-                            <Link href={`/data-source/read/${dataSource.id}`}>{signDataLabel}</Link>
+                            <Link href={`/data-source/read/${dataSource.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}>{signDataLabel}</Link>
                         ) : (
                             <span className="disabled">{signDataLabel}</span>
                         )}

@@ -64,6 +64,7 @@ export default function AddDDAgreementModalInner({ open, setOpen, coverImage, lo
               width: "110px",
               height: "110px",
               border: "solid white 6px",
+              backgroundColor: "white",
             }}
           />
         </Box>

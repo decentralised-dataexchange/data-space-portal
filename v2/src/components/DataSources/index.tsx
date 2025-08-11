@@ -1,6 +1,6 @@
-import { Box, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Grid, Typography, Button } from '@mui/material';
 import React from 'react';
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { gridSpacing } from '@/constants/grid';
 import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
@@ -8,26 +8,51 @@ import DDAModalController from '@/components/DataSources/DDAModalController';
 import VerifiedBadge from '../common/VerifiedBadge';
 
 import ClientPagination from '../Home/ClientPagination';
+import ApiDoc from '@/components/DataSources/ApiDoc';
+import Link from 'next/link';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 type Props = {
-    params: Promise<{ id: string }>;
-    searchParams?: Promise<{ page?: string }>;
+    params: Promise<{ id?: string; slug?: string }>;
+    searchParams?: Promise<{ page?: string; viewApiFor?: string }>;
 };
 
 export default async function DataSourceListingPage({ params, searchParams }: Props) {
-    const { id } = await params;
+    const { id, slug } = await params;
     const t = await getTranslations();
-    const dataSourceItem = ((await apiService.dataSourceList())?.dataSources ?? []).find(item => item.dataSource.id === id);
+    const locale = await getLocale();
+    const slugify = (s: string) => s
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    const list = ((await apiService.dataSourceList())?.dataSources ?? []);
+    // Try to match by exact ID first, then fall back to slug match if needed
+    let dataSourceItem = list.find(item => (id ? item.dataSource.id === id : false));
+    if (!dataSourceItem) {
+        const paramSlug = slug ?? id ?? '';
+        if (paramSlug) {
+            dataSourceItem = list.find(item => slugify(item.dataSource.name) === paramSlug);
+        }
+    }
     const isVerified = dataSourceItem?.verification?.presentationState === "verified";
-    // pagination setup
+    const sp = await searchParams;
+    const ddas = dataSourceItem?.dataDisclosureAgreements ?? [];
+    const viewApiFor = sp?.viewApiFor;
+    const dataSourceSlug = slugify(dataSourceItem?.dataSource?.name || '');
+    // pagination setup (disabled when viewing API for a specific DDA)
     const itemsPerPage = 4;
-    const totalItems = dataSourceItem?.dataDisclosureAgreements?.length ?? 0;
+    const totalItems = ddas.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-    const pageParam = (await searchParams)?.page;
+    const pageParam = sp?.page;
     const currentPage = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-    const currentDdas = dataSourceItem?.dataDisclosureAgreements?.slice(startIndex, endIndex) ?? [];
+    const currentDdas = (viewApiFor
+        ? ddas.filter(dda => dda.templateId === viewApiFor)
+        : ddas.slice(startIndex, endIndex)
+    );
 
     return (
         <Box className="dataListContainer" sx={{ width: '100%' }}>
@@ -76,10 +101,29 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                             </Card>
                         </Grid>
                         <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
+                            {viewApiFor && (
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, textAlign: 'center' }}>
+                                    <Button
+                                        component={Link}
+                                        href={`/${locale}/data-source/read/${dataSourceSlug}`}
+                                        variant="text"
+                                        sx={{ color: '#000', "&:hover": { color: "rgba(0, 0, 0, 0.8)" }, display: 'flex', alignItems: 'center', gap: 1 }}
+                                    >
+                                        <KeyboardArrowLeftIcon fontSize="small" />
+                                        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', paddingTop: '3px' }}>
+                                            {t('common.back')}
+                                        </Typography>
+                                    </Button>
+                                </Box>
+                            )}
                             <Grid container spacing={2}>
                                 {currentDdas.map((dataDisclosureAgreement, index) => {
                                     return (
-                                        <Grid key={index} size={{ xs: 12, sm: 4, md: 3 }} sx={{ minWidth: 400 }}>
+                                        <Grid
+                                            key={index}
+                                            size={viewApiFor ? { xs: 12 } : { xs: 12, sm: 4, md: 3 }}
+                                            sx={{ minWidth: viewApiFor ? 'auto' : 400, width: '100%' }}
+                                        >
                                             <Card className='cardContainerList' sx={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                                 <CardContent sx={{ padding: '24px' }}>
                                                     <Typography variant="h6" sx={{ fontSize: "20px", paddingBottom: "20px", fontWeight: 'bold' }}>
@@ -91,6 +135,8 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
                                                         openApiUrl={dataSourceItem?.dataSource.openApiUrl || ''}
+                                                        dataSourceSlug={dataSourceSlug}
+                                                        apiViewMode={!!viewApiFor}
                                                     />
                                                 </CardContent>
                                             </Card>
@@ -98,9 +144,15 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                     )
                                 })}
                             </Grid>
+                            {/* Render API docs below the selected card when viewApiFor is present */}
+                            {viewApiFor && (dataSourceItem?.dataSource?.openApiUrl) && (
+                                <Box sx={{ mt: 2 }}>
+                                    <ApiDoc openApiUrl={dataSourceItem.dataSource.openApiUrl} />
+                                </Box>
+                            )}
                         </Grid>
                         {/* Pagination */}
-                        {totalPages > 1 && (
+                        {!viewApiFor && totalPages > 1 && (
                             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 2, width: '100%' }}>
                                 <ClientPagination currentPage={currentPage} totalPages={totalPages} />
                             </Box>

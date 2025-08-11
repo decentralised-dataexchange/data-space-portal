@@ -85,6 +85,7 @@ const OrgLogoImageUpload = (props: Props) => {
           width: "170px",
           height: "170px",
           border: "solid white 6px",
+          backgroundColor: "white",
         }}
       />
       {editMode && (
