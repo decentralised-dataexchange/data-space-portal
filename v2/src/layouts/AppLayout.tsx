@@ -4,10 +4,10 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import MainLayout from './main/MainLayout';
 import MinimalLayout from './minimal/MinimalLayout';
-import { useAppSelector } from '@/custom-hooks/store';
+import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
 import Loader from '@/components/common/Loader';
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import SnackbarComponent from '@/components/notification';
+import { setSuccessMessage } from '@/store/reducers/authReducer';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -17,6 +17,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isLoading = useAppSelector((state) => state.auth.loading);
   const successMessage = useAppSelector((state) => state.auth.successMessage);
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
   const [currentLayout, setCurrentLayout] = useState<'main' | 'minimal'>('minimal');
   const [isClient, setIsClient] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -30,6 +32,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   
   const handleCloseSuccess = () => {
     setShowSuccess(false);
+    // Clear the global success message so it doesn't re-open
+    dispatch(setSuccessMessage(''));
   };
   
   // Effect to handle client-side hydration
@@ -38,6 +42,12 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     
     // Check client-side auth state
     const checkClientAuth = () => {
+      // Always use MinimalLayout on the login route to avoid layout flip/remount
+      if (pathname && pathname.includes('/login')) {
+        setCurrentLayout('minimal');
+        return;
+      }
+
       if (isAuthenticated) {
         setCurrentLayout('main');
         return;
@@ -61,7 +71,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     };
     
     checkClientAuth();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, pathname]);
   
   // Show loading state during server-side rendering
   if (!isClient) {
@@ -76,22 +86,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   // Render the appropriate layout based on authentication state
   return (
     <>
-      {/* Global success message */}
-      <Snackbar
+      {/* Global success message using custom SnackbarComponent */}
+      <SnackbarComponent
         open={showSuccess}
-        autoHideDuration={6000}
-        onClose={handleCloseSuccess}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        style={{ top: 100 }}
-      >
-        <Alert
-          onClose={handleCloseSuccess}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          {successMessage}
-        </Alert>
-      </Snackbar>
+        setOpen={(open) => {
+          if (!open) {
+            handleCloseSuccess();
+          } else {
+            setShowSuccess(open);
+          }
+        }}
+        successMessage={successMessage}
+      />
       
       {currentLayout === 'main' ? 
         <MainLayout>{children}</MainLayout> : 

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiService } from "@/lib/apiService/apiService";
 import { useAppDispatch } from "./store";
-import { setAdminDetails, setAuthenticated, setError, setMessage, setLoading } from "@/store/reducers/authReducer";
+import { setAdminDetails, setAuthenticated, setError, setMessage, setLoading, setSuccessMessage } from "@/store/reducers/authReducer";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LocalStorageService } from "@/utils/localStorageService";
@@ -39,6 +39,8 @@ export const useLogin = () => {
 
       // Update auth state in Redux immediately
       dispatch(setAuthenticated(true));
+      // Set a global success message so AppLayout can show a toast after navigation
+      dispatch(setSuccessMessage('Login successful'));
       // dispatch(setLoading(false));
       
       // Delay navigation to allow notification to be seen
