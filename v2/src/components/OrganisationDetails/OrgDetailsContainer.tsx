@@ -194,7 +194,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                       fontSize: "0.875rem !important"
                     }}
                     InputProps={{
-                      disableUnderline: false,
+                      disableUnderline: true,
                       style: { fontSize: 20, fontWeight: "bold", marginTop: "-4px" },
                     }}
                     value={formValue.name}
