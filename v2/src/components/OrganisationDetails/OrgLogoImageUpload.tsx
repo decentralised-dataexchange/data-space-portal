@@ -1,124 +1,89 @@
-import React, { useEffect } from "react";
-import { Avatar, Box } from "@mui/material";
-import { apiService } from "@/lib/apiService/apiService";
-import LogoCamera from "@/assets/img/camera_photo2.png";
-import Image from "next/image";
+import React from 'react';
+import { Box, Avatar } from '@mui/material';
+import { apiService } from '@/lib/apiService/apiService';
+import { GenericImageUpload } from '@/components/common/ImageUpload';
+import { useQueryClient } from '@tanstack/react-query';
+import { useGetLogoImage } from '@/custom-hooks/gettingStarted';
 
 // Temporary default logo image
 const defaultLogoImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 
-
 type Props = {
   editMode: boolean;
-  logoImageBase64: string | undefined;
-  setLogoImageBase64: React.Dispatch<React.SetStateAction<any>>;
   handleEdit: () => void
 };
 
 const OrgLogoImageUpload = (props: Props) => {
-  const {editMode, handleEdit, setLogoImageBase64, logoImageBase64: propLogoImage } = props;
-  const logoImageBase64 = propLogoImage || localStorage.getItem('cachedLogoImage');
+  const {editMode, handleEdit } = props;
+  const { data: logoImageBase64 = '' } = useGetLogoImage();
+  const queryClient = useQueryClient();
 
   const myFile: { file: string; imagePreviewUrl: any } = {
     file: "",
     imagePreviewUrl: "",
   };
 
-  const handleFile = async (e: any) => {
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    let image = /image.jpeg/;
-    reader.onloadend = () => {
-      myFile.file = file;
-      myFile.imagePreviewUrl = reader.result;
-    };
-    reader.readAsDataURL(file);
-
+  const handleImageUpdate = async (file: File, _imageBase64: string) => {
     try {
       // Update the logo image directly with the file
-      if (file) {
-        await apiService.updateLogoImage(file);
-      }
-      
-      // Get the newly uploaded image from the server
-      const imageBase64 = await apiService.getLogoImage();
-      
+      await apiService.updateLogoImage(file);
+
+      // Update the UI by invalidating the React Query cache
+      // This will trigger a refetch of the logo image everywhere it's used
       handleEdit();
-      setLogoImageBase64(imageBase64);
-      localStorage.setItem('cachedLogoImage', imageBase64);
+      queryClient.invalidateQueries({ queryKey: ['logoImage'] });
     } catch (error) {
       console.log(`Error: ${error}`);
     }
   };
 
-  useEffect(() => {
-    const cachedImage = localStorage.getItem('cachedLogoImage');
-    if (cachedImage) {
-      setLogoImageBase64(cachedImage);
-    } else {
-      const fetchLogoImage = async () => {
-        try {
-          const imageBase64 = await apiService.getLogoImage();
-          setLogoImageBase64(imageBase64);
-          localStorage.setItem('cachedLogoImage', imageBase64);
-        } catch (error) {
-          console.log(`Error fetching logo image: ${error}`);
-        }
-      };
-      fetchLogoImage();
-    }
-  }, []);
+  // No need for useEffect to load the logo - React Query handles this now
 
   return (
     <Box>
-      <Avatar
-        src={
-          !logoImageBase64
-            ? defaultLogoImg
-            : logoImageBase64
-        }
-        alt="logo"
-        style={{
-          // position: "absolute",
-          opacity: editMode ? 0.75 : 1,
-          marginTop: "-100px",
-          width: "170px",
-          height: "170px",
-          border: "solid white 6px",
-          backgroundColor: "white",
-        }}
-      />
-      {editMode && (
-        <Box
-          style={{
-            position: "relative",
-            top: "-160px",
-            marginLeft: "10px",
+      <Box sx={{ position: 'relative', mt: { xs: '-85px', sm: '-100px' } }}>
+        <Avatar
+          variant="circular"
+          src={!logoImageBase64 ? defaultLogoImg : logoImageBase64}
+          alt="logo"
+          sx={{
+            width: '170px',
+            height: '170px',
+            // Use an outer ring via box-shadow to eliminate inner seam artifacts from CSS borders
+            boxShadow: '0 0 0 6px #fff',
+            bgcolor: '#fff',
           }}
-        >
-          <div>
-            <form>
-              <label className="uptext" htmlFor="uploadLogoImage">
-                <Image
-                  style={{
-                    opacity: 0.45,
-                  }}
-                  src={LogoCamera}
-                  alt="img"
-                />
-              </label>
-              <input
-                type="file"
-                accept="image/jpeg,image/jpg"
-                id="uploadLogoImage"
-                name="uploadLogoImage"
-                hidden={true}
-                onChange={handleFile}
-              />
-            </form>
-          </div>
-        </Box>
-      )}
+        />
+        <GenericImageUpload
+          editMode={editMode}
+          imageUrl={logoImageBase64 || ''}
+          defaultImage={defaultLogoImg}
+          onImageUpdate={handleImageUpdate}
+          aspectRatio={1} // Square aspect ratio for logo
+          minWidth={400}
+          minHeight={400}
+          recommendedSize="Recommended size is 400x400px"
+          outputWidth={400}
+          outputHeight={400}
+          outputQuality={0.82}
+          modalSize="medium"
+          successMessage="Logo updated successfully"
+          // Place overlay over the inner image area (exclude the white ring)
+          containerStyle={{
+            position: 'absolute',
+            top: 6,
+            left: 6,
+            width: '158px',
+            height: '158px',
+            // Keep mounted at all times so Toast remains visible; disable interactions when not editing
+            pointerEvents: editMode ? 'auto' : 'none'
+          }}
+          // Fully hide the overlay image to avoid any visual seams over the white border
+          imageStyle={{ display: 'none' }}
+          iconPosition={{ top: '45px', right: '45px' }}
+          acceptedFileTypes="image/jpeg,image/jpg,image/png"
+        />
+      </Box>
     </Box>
   );
 };

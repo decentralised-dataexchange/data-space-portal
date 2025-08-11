@@ -13,10 +13,8 @@ import {
   useGetGettingStartData, 
   useListConnections, 
   useGetCoverImage,
-  useGetLogoImage,
   
   useUpdateDataSource,
-  useUpdateLogoImage,
   useUpdateCoverImage,
   useGetVerificationTemplate,
 } from '@/custom-hooks/gettingStarted';
@@ -77,7 +75,6 @@ const GettingStarted = () => {
   const { data: gettingStartData, isLoading: isGettingStartLoading } = useGetGettingStartData();
   const { data: listConnections } = useListConnections(10, 0, false);
   const { data: coverImageBase64, isLoading: isCoverImageLoading } = useGetCoverImage();
-  const { data: logoImageBase64, isLoading: isLogoImageLoading } = useGetLogoImage();
   
   const isEnableAddCredential = listConnections?.connections && listConnections?.connections.length > 0 && 
     listConnections?.connections[0]?.connectionState === 'active';
@@ -110,29 +107,9 @@ const GettingStarted = () => {
 
   // Mutation hooks
   const { mutateAsync: updateDataSource } = useUpdateDataSource();
-  const { mutateAsync: updateLogoImage } = useUpdateLogoImage();
   const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
 
-  const handleLogoImageChange = async (newImage: string) => {
-    try {
-      // Convert base64 string to a File object
-      const byteString = atob(newImage.split(',')[1]);
-      const mimeString = newImage.split(',')[0].split(':')[1].split(';')[0];
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-      
-      const blob = new Blob([ab], { type: mimeString });
-      const file = new File([blob], 'logo.png', { type: mimeString });
-      
-      await updateLogoImage(file);
-    } catch (error) {
-      console.error('Error updating logo image:', error);
-    }
-  };
+  // Logo image upload is fully handled inside OrgLogoImageUpload via React Query
 
   const handleCoverImageChange = async (newImage: string) => {
     try {
@@ -145,9 +122,9 @@ const GettingStarted = () => {
   };
 
   const isLoading = useMemo(() => {
-    const loading = isGettingStartLoading || isCoverImageLoading || isLogoImageLoading;
+    const loading = isGettingStartLoading || isCoverImageLoading;
     return loading;
-  }, [isGettingStartLoading, isCoverImageLoading, isLogoImageLoading]);
+  }, [isGettingStartLoading, isCoverImageLoading]);
 
   const hasError = useMemo(() => {
     const error = !isLoading && (!gettingStartData || !gettingStartData.dataSource);
@@ -186,17 +163,14 @@ const GettingStarted = () => {
       <OrgCoverImageUpload
         editMode={editMode}
         coverImageBase64={coverImageBase64 || ''}
-        setCoverImageBase64={() => {}}
         handleEdit={handleEdit}
       />
       <OrganisationDetailsContainer
         editMode={editMode}
-        logoImageBase64={logoImageBase64}
         handleEdit={handleEdit}
         isEnableAddCredential={isEnableAddCredential ?? false}
         organisationDetails={formData}
         setOganisationDetails={handleFormChange}
-        setLogoImageBase64={handleLogoImageChange}
       />
 
       <DetailsContainer sx={{ flexGrow: 1, marginTop: "15px" }}>
