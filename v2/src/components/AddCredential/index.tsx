@@ -171,7 +171,8 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
             top: 0,
             width: 110,
             height: 110,
-            border: '6px solid white'
+            border: '6px solid white',
+            backgroundColor: 'white'
           }}
         />
       </Box>

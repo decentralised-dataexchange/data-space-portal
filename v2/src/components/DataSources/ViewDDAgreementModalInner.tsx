@@ -70,6 +70,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
             width: "110px",
             height: "110px",
             border: "solid white 6px",
+            backgroundColor: "white",
           }}
         />
       </Box>

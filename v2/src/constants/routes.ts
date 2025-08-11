@@ -6,5 +6,5 @@ export const publicRoutes = new Set([
   '/reset-password',
   '/data-source/read',
   '/data-source/read/[id]',
-  '/data-source/open-api'
+  // '/data-source/open-api' // removed
 ])

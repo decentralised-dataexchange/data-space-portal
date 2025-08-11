@@ -63,7 +63,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
             height: isMobile ? '110px' : '130px',
             border: "solid white 6px",
             borderRadius:"50%",
-            objectFit: "cover"
+            objectFit: "cover",
+            backgroundColor: "white",
           }}
         />
       )}
@@ -77,7 +78,8 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           height: isMobile ? '110px' : '130px',
           border: "solid white 6px",
           borderRadius:"50%",
-          objectFit: "cover"
+          objectFit: "cover",
+          backgroundColor: "white",
         }}
       />
       {editMode && (
