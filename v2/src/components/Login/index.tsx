@@ -52,11 +52,7 @@ const Login = () => {
         setErrorMessage('Login failed');
       }
     }
-
-    if (success) {
-      setOpenSnackBar(true);
-      setErrorMessage('');
-    }
+    // Do not show success toast here; AppLayout shows a global success toast
   }, [error, success, data]);
 
   const handleSubmit = (e: React.FormEvent) => {
