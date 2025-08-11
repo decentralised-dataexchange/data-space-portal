@@ -109,10 +109,9 @@ const OrganisationDetailsContainer = (props: Props) => {
     <DetailsContainer
       sx={{
         flexGrow: 1,
-        // Ensure the visual height is 229px by default; allow expansion on mobile when editing
         boxSizing: 'border-box',
         height: {
-          xs: editMode ? 'auto' : '229px',
+          xs: 'auto',
           sm: '229px',
         },
       }}
@@ -317,7 +316,14 @@ const OrganisationDetailsContainer = (props: Props) => {
           </Typography>}
         </Grid>
       </Grid>
-      <Box sx={{ minHeight: 100, maxHeight: 160, overflow: "auto", marginTop: "50px" }}>
+      <Box
+        sx={{
+          minHeight: 100,
+          maxHeight: { xs: 'none', sm: 160 },
+          overflow: { xs: 'visible', sm: 'auto' },
+          marginTop: { xs: '24px', sm: '50px' }
+        }}
+      >
         <Typography variant="h6" fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
         {editMode ? (
           <TextField
