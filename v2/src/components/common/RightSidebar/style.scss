@@ -61,9 +61,9 @@
     padding: 12px 16px;
     border-radius: 0 0 7px 0;
     
-    // Align buttons to the right with consistent spacing
+    // Align cancel left and confirm right with consistent spacing
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 16px;
     
     // Ensure buttons have consistent height

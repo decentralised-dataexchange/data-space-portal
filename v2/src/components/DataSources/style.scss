@@ -116,7 +116,7 @@
     height: 65px;
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: space-between;
     background-color: white;
     z-index: 1;
     @include breakpoints.tabletAndDown {

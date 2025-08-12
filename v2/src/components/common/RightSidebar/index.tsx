@@ -96,7 +96,7 @@ const Footer = styled('div')(({ theme }) => ({
   bottom: 0,
   zIndex: 1,
   display: 'flex',
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
   gap: theme.spacing(1.5),
 }));
 
