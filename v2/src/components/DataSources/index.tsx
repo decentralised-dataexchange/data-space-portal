@@ -27,7 +27,14 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '');
 
-    const list = ((await apiService.dataSourceList())?.dataSources ?? []);
+    // Fetch list; be resilient to local/dev timeouts
+    let listResp: Awaited<ReturnType<typeof apiService.dataSourceList>> | null = null;
+    try {
+        listResp = await apiService.dataSourceList();
+    } catch (err) {
+        console.error('Failed to fetch data sources on DataSources page:', err);
+    }
+    const list = ((listResp)?.dataSources ?? []);
     // Try to match by exact ID first, then fall back to slug match if needed
     let dataSourceItem = list.find(item => (id ? item.dataSource.id === id : false));
     if (!dataSourceItem) {

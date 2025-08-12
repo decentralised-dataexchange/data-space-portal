@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
 import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import VersionDropdown from "../VersionDropDown";
-import { TablePagination, Tooltip } from "@mui/material";
+import { TablePagination, Tooltip, Pagination, Box } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import { getStatus } from "@/utils/dda";
@@ -211,6 +211,19 @@ const DDATable: React.FC<DDATableProps> = ({
             },
           }}
         />
+      )}
+
+      {tabledata?.dataDisclosureAgreements?.length > 0 && (tabledata?.pagination?.totalPages || 0) > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+          <Pagination
+            count={tabledata?.pagination?.totalPages || Math.ceil((tabledata?.pagination?.totalItems || 0) / (limit || 1))}
+            page={Math.floor(offset / limit) + 1}
+            onChange={(_, value) => onPageChange(null, value - 1)}
+            showFirstButton
+            showLastButton
+            size="medium"
+          />
+        </Box>
       )}
     </RootTableContainer>
   );
