@@ -148,10 +148,10 @@ const GettingStarted = () => {
   if (hasError) {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <Typography variant="h6" color="error" gutterBottom>
+        <Typography variant="h6" color="error" gutterBottom sx={{ fontSize: '20px' }}>
           {t('errors.generic')}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{ fontSize: '14px' }}>
           {t('errors.generic')}
         </Typography>
       </Box>

@@ -78,10 +78,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                         paddingTop: { xs: "40px", sm: "0px" },
                                         transform: { xs: 0, sm: "translateY(-40px)" }
                                     }}>
-                                        <Typography variant="h6" fontWeight="bold">
+                                        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                                             {dataSourceItem?.dataSource?.name}
                                         </Typography>
-                                        <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
+                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
                                             {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                             <VerifiedBadge trusted={isVerified} />
                                         </Typography>
