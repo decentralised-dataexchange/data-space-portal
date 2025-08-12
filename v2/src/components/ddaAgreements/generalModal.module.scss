@@ -9,6 +9,13 @@
       overflow: hidden;
     }
   }
+
+  // Ensure any disabled button inside footer shows not-allowed cursor
+  :global(.MuiButtonBase-root.Mui-disabled),
+  button.MuiButtonBase-root.Mui-disabled {
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
+  }
 }
 
 .dd-modal-container {
@@ -132,6 +139,20 @@
     &:disabled {
       background-color: rgba(0, 0, 0, 0.12);
       color: rgba(0, 0, 0, 0.26);
+      cursor: not-allowed !important;
+      pointer-events: auto !important; // allow cursor to show even when disabled
+    }
+
+    // Ensure MUI's disabled class also reflects the cursor style
+    &.Mui-disabled {
+      cursor: not-allowed !important;
+      pointer-events: auto !important;
+    }
+
+    // Apply cursor to all descendants when disabled so hovering icons/text shows correctly
+    &:disabled *,
+    &.Mui-disabled * {
+      cursor: not-allowed !important;
     }
   }
 }
