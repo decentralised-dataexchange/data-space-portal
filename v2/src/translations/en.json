@@ -199,7 +199,7 @@
     "signWithBusinessWallet": "Sign with Business Wallet",
     "publishModal": {
       "title": "Publish to Marketplace",
-      "confirmButton": "Submit"
+      "confirmButton": "Publish"
     },
     "dataAgreementPolicy": "Data Agreement Policy",
     "all": "All",
