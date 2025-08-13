@@ -201,6 +201,9 @@
       "title": "Publish to Marketplace",
       "confirmButton": "Publish"
     },
+    "viewModal": {
+      "title": "View Data Agreement"
+    },
     "dataAgreementPolicy": "Data Agreement Policy",
     "all": "All",
     "list": "Listed",

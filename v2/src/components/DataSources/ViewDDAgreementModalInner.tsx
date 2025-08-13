@@ -31,7 +31,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
   const headerContent = (
     <Box sx={{ width: "100%" }}>
       <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
-        {selectedData?.purpose}
+        {t('dataAgreements.viewModal.title')}: {selectedData?.purpose}
       </Typography>
       {mode !== "Create" && (
         <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>

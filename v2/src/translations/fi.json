@@ -179,6 +179,9 @@
       "title": "Julkaise markkinapaikalla",
       "confirmButton": "Julkaise"
     },
+    "viewModal": {
+      "title": "Näytä tietosopimus"
+    },
     "all": "Kaikki",
     "list": "Listatut",
     "underReview": "Arvioitavana",

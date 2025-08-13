@@ -178,6 +178,9 @@
       "title": "Publicera på marknadsplatsen",
       "confirmButton": "Publicera"
     },
+    "viewModal": {
+      "title": "Visa dataavtal"
+    },
     "all": "Alla",
     "list": "Listade",
     "underReview": "Under granskning",
