@@ -139,6 +139,7 @@
     "confirm": "Vahvista",
     "next": "Seuraava",
     "save": "Tallenna",
+    "add": "Lisää",
     "all": "Kaikki",
     "noResultsFound": "Ei tuloksia",
     "noData": "Ei yhteyksiä näytettäväksi",
@@ -288,7 +289,7 @@
     "connectedOn": "Yhdistetty",
     "connectionId": "Yhteystunnus",
     "addButton": "Lisää uusi yhteys",
-    "searchPlaceholder": "Etsi yhteyksiä...",
+    "searchPlaceholder": "Hae haltijoiden mukaan",
     "noConnections": "Yhteyksiä ei löytynyt"
   },
   "error": {

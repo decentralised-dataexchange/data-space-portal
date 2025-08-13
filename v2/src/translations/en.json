@@ -104,6 +104,7 @@
     "cancel": "Cancel",
     "submit": "Submit",
     "save": "Save",
+    "add": "Add",
     "delete": "Delete",
     "edit": "Edit",
     "close": "Close",
@@ -314,7 +315,7 @@
     "connectedOn": "Connected on",
     "connectionId": "Connection ID",
     "addButton": "Add New Connection",
-    "searchPlaceholder": "Search connections...",
+    "searchPlaceholder": "Search by holders",
     "noConnections": "No wallet connections found"
   },
   "addDataDisclosureAgreement": "Add data disclosure agreement",

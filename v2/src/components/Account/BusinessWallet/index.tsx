@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { Box, Typography, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { useTranslations } from "next-intl";
 import IconButton from '@mui/material/IconButton';
-import { PlusCircleIcon, TrashSimpleIcon } from '@phosphor-icons/react';
+import { PlusCircleIcon, TrashSimpleIcon, MagnifyingGlassIcon } from '@phosphor-icons/react';
 import '../style.scss';
 
 const Container = styled("div")(({ theme }) => ({
@@ -56,13 +57,18 @@ const StyledTableRow = styled(TableRow)({
   border: "1px solid #D7D6D6",
 });
 
-const SearchBox = styled(TextField)({
+const SearchBox = styled(TextField)(({ theme }) => ({
   width: "300px",
   marginLeft: "auto",
   "& .MuiOutlinedInput-root": {
-    borderRadius: "20px",
+    borderRadius: "7px",
   },
-});
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    marginLeft: 0,
+    marginTop: "8px",
+  },
+}));
 
 const BusinessWallet = () => {
   const t = useTranslations();
@@ -99,26 +105,36 @@ const BusinessWallet = () => {
       <HeaderContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: "0.5rem" }}>
-            <Typography variant="h5" fontWeight="bold" sx={{ fontSize: '20px' }}>
+            <Typography variant="h5" fontWeight="bold" sx={{ fontSize: '20px', lineHeight: '24px' }}>
               {t('breadcrumbs.businessWallet')}
             </Typography>
-            <IconButton onClick={handleAddNewConnection} aria-label={t('common.add')} sx={{ padding: 0}}>
-              <PlusCircleIcon size={22} color="black" />
+            <IconButton
+              size="small"
+              onClick={handleAddNewConnection}
+              aria-label={t('common.add')}
+              sx={{ p: 0, cursor: 'not-allowed', display: 'inline-flex', alignSelf: 'center', width: 24, height: 24 }}
+            >
+              <PlusCircleIcon size={22} color="black" style={{ transform: "translateY(-2px)" }} />
             </IconButton>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' }, width: '100%', justifyContent: 'space-between', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 0 }, mt: { xs: 1, md: 0 } }}>
             <Typography variant="body2" color="textSecondary" sx={{ fontSize: '14px' }}>
               {t('businessWallet.subtitle')}
             </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-end' }, width: { xs: '100%', sm: 'auto' } }}>
               <SearchBox
-                placeholder="Search"
+                placeholder={t('businessWallet.searchPlaceholder')}
                 variant="outlined"
                 size="small"
                 value={searchTerm}
                 onChange={handleSearch}
                 InputProps={{
-                  sx: { paddingRight: 1 }
+                  sx: { paddingRight: 1 },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <MagnifyingGlassIcon size={18} color="black" />
+                    </InputAdornment>
+                  )
                 }}
               />
             </Box>
@@ -165,7 +181,7 @@ const BusinessWallet = () => {
               ) : (
                 <TableRow>
                   <StyledTableCell colSpan={3} align="center">
-                    {searchTerm ? t('common.noResultsFound') : t('common.noData', { fallback: "No connections available" })}
+                    {t('common.noData', { fallback: "No connections to show" })}
                   </StyledTableCell>
                 </TableRow>
               )}
