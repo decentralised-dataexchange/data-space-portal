@@ -9,7 +9,7 @@ import { defaultLogoImg } from "@/constants/defalultImages";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { logout } from "@/store/reducers/authReducer";
 import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
-import { useGetGettingStartData, useGetLogoImage } from "@/custom-hooks/gettingStarted";
+import { useGetGettingStartData } from "@/custom-hooks/gettingStarted";
 
 type Props = {
   firstName?: string;
@@ -31,11 +31,12 @@ export const MainAppBarMenu = (props: Props) => {
   const userName = adminDetails?.name || props.firstName || '';
 
   const { data: gettingStartData } = useGetGettingStartData();
-  const { data: logoImage } = useGetLogoImage();
 
   const orgName = gettingStartData?.dataSource?.name || organisationDetails?.name || 'Organisation';
   const orgLocation = gettingStartData?.dataSource?.location || organisationDetails?.location || 'Location';
-  const orgAvatarUrl = logoImage || orgImages?.logo || defaultLogoImg;
+  // Prefer user avatar over organization logo for the navbar avatar
+  const localUserAvatar = LocalStorageService.getUserProfilePic();
+  const userAvatarUrl = (adminDetails as any)?.avatarImageUrl || localUserAvatar || defaultLogoImg;
 
 
   const handleClickLogOut = () => {
@@ -70,8 +71,8 @@ export const MainAppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={orgAvatarUrl}
-            alt={`Logo of ${orgName}`}
+            src={userAvatarUrl}
+            alt={`User avatar`}
           />
         </IconButton>
       </Box>
@@ -100,8 +101,8 @@ export const MainAppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={orgAvatarUrl}
-            alt={`Logo of ${orgName}`}
+            src={userAvatarUrl}
+            alt={`User avatar`}
           />
           <Typography
             variant="body2"

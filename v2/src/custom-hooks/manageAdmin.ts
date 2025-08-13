@@ -44,6 +44,21 @@ export const useUpdateAdminDetails = () => {
 };
 
 /**
+ * Hook to upload/update admin avatar image
+ */
+export const useUpdateAdminAvatar = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (formData: FormData) => apiService.updateAdminAvatar(formData),
+    onSuccess: () => {
+      // Invalidate admin details query so new avatarImageUrl is fetched
+      queryClient.invalidateQueries({ queryKey: [ADMIN_QUERY_KEYS.ADMIN_DETAILS] });
+    },
+  });
+};
+
+/**
  * Hook to reset admin password
  */
 export const useResetPassword = () => {

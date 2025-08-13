@@ -156,6 +156,17 @@ export const apiService = {
         throw error;
       });
   },
+  
+  // Upload admin avatar image
+  updateAdminAvatar: async (formData: FormData): Promise<any> => {
+    try {
+      const response = await api.put<any>(ENDPOINTS.adminAvatarImage(), formData);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating admin avatar image:', error);
+      throw error;
+    }
+  },
 
   // Admin profile management
   updateAdminDetails: async (payload: { name: string }): Promise<any> => {
