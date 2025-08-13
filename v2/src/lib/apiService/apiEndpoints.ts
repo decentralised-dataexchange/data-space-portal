@@ -29,6 +29,7 @@ export const ENDPOINTS = {
 
     // Admin avatar image
     adminAvatarImage: () => {
+        // placeholder
         return "/config/admin/avatarimage/"
     },
 
