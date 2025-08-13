@@ -1,9 +1,12 @@
+"use client";
+
 import React from "react";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 import { defaultLogoImg } from "@/constants/defalultImages";
 import { LocalStorageService } from "@/utils/localStorageService";
-import { PencilSimpleIcon } from "@phosphor-icons/react";
+import { GenericImageUpload } from "@/components/common/ImageUpload";
+import { useUpdateAdminAvatar } from "@/custom-hooks/manageAdmin";
 
 
 type Props = {
@@ -24,33 +27,22 @@ const ManageAdminProfilePicUpload = (props: Props) => {
     logoImageBase64
   } = props;
 
-  const myFile: { file: string; imagePreviewUrl: any } = {
-    file: "",
-    imagePreviewUrl: "",
-  };
+  const updateAdminAvatarMutation = useUpdateAdminAvatar();
 
-  const handleChangeImage = async (e: any) => {
-    const reader = new FileReader();
-    const file = e.target.files[0];
+  // Image selection and upload are handled by GenericImageUpload
 
-    if (file && file.type && file.type.startsWith("image/")) {
-      reader.onloadend = () => {
-        myFile.file = file;
-        myFile.imagePreviewUrl = reader.result;
-        setPreviewImage(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-
-      const formData = new FormData();
-      formData.append("avatarimage", file);
-      setFormDataForImageUpload(formData);
-    }
+  const handleImageUpdate = async (file: File, imageBase64: string) => {
+    const formData = new FormData();
+    formData.append("avatarimage", file);
+    await updateAdminAvatarMutation.mutateAsync(formData);
+    setPreviewImage(imageBase64);
+    LocalStorageService.updateProfilePic(imageBase64);
+    setFormDataForImageUpload("");
   };
 
   // Use MUI breakpoints instead of getDevice
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'), { noSsr: true });
   const avatarSize = isMobile ? 110 : 130;
   const whiteRing = 6; // matches border width used below
   const innerSize = avatarSize - whiteRing * 2;
@@ -96,49 +88,35 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           backgroundColor: "#fff",
         }}
       />
-      {editMode && (
-        <Box sx={{ position: 'absolute', top: `${whiteRing}px`, left: `${whiteRing}px`, width: `${innerSize}px`, height: `${innerSize}px`, pointerEvents: 'none' }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: `${iconOffset}px`,
-              right: `${iconOffset}px`,
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              borderRadius: '50%',
-              width: '32px',
-              height: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              zIndex: 2,
-              pointerEvents: 'none',
-              transform: 'translate(50%, -50%)'
-            }}
-          >
-            <PencilSimpleIcon size={20} color="#fff" />
-          </Box>
-        </Box>
-      )}
-      {editMode && (
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleChangeImage}
-          aria-label="Upload profile picture"
-          title="Upload profile picture"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: `${avatarSize}px`,
-            height: `${avatarSize}px`,
-            opacity: 0,
-            cursor: "pointer",
-            zIndex: 3
-          }}
-        />
-      )}
+      <GenericImageUpload
+        // Temporarily disabled: backend avatar upload endpoint not implemented in this repo
+        // Force editMode to false to prevent opening the crop modal
+        editMode={false}
+        imageUrl={baseAvatar}
+        defaultImage={defaultLogoImg}
+        onImageUpdate={handleImageUpdate}
+        aspectRatio={1}
+        minWidth={256}
+        minHeight={256}
+        recommendedSize="Recommended size is 256x256px"
+        outputWidth={256}
+        outputHeight={256}
+        outputQuality={0.82}
+        modalSize="medium"
+        successMessage="Avatar updated successfully"
+        containerStyle={{
+          position: 'absolute',
+          top: `${whiteRing}px`,
+          left: `${whiteRing}px`,
+          width: `${innerSize}px`,
+          height: `${innerSize}px`,
+          // Ensure no click-through while disabled
+          pointerEvents: 'none'
+        }}
+        imageStyle={{ display: 'none' }}
+        iconPosition={{ top: `${iconOffset}px`, right: `${iconOffset}px` }}
+        acceptedFileTypes="image/jpeg,image/jpg,image/png"
+      />
     </Box>
   );
 };

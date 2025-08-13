@@ -9,7 +9,7 @@ import SnackbarComponent from "@/components/notification";
 import { useTranslations } from "next-intl";
 import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
 import { setAdminDetails } from "@/store/reducers/authReducer";
-import { useGetAdminDetails, useUpdateAdminDetails, useResetPassword, useUpdateAdminAvatar } from "@/custom-hooks/manageAdmin";
+import { useGetAdminDetails, useUpdateAdminDetails, useResetPassword } from "@/custom-hooks/manageAdmin";
 import { LocalStorageService } from "@/utils/localStorageService";
 import '../style.scss'
 
@@ -67,7 +67,6 @@ const ManageAdmin = () => {
   // React Query hooks
   const { data: adminQueryData } = useGetAdminDetails();
   const updateAdminMutation = useUpdateAdminDetails();
-  const updateAdminAvatarMutation = useUpdateAdminAvatar();
   const resetPasswordMutation = useResetPassword();
   const dispatch = useAppDispatch();
   
@@ -119,16 +118,7 @@ const ManageAdmin = () => {
     };
 
     try {
-      // 1) Upload avatar if user selected a new file
-      if (formDataForImageUpload) {
-        await updateAdminAvatarMutation.mutateAsync(formDataForImageUpload);
-        // Optimistically update LocalStorage so navbar reflects immediately
-        if (previewImage) {
-          LocalStorageService.updateProfilePic(previewImage);
-        }
-      }
-
-      // 2) Update admin details (e.g., name)
+      // Update admin details (avatar uploads immediately on crop)
       const updatedUser = await updateAdminMutation.mutateAsync(payload as any);
 
       // 3) Immediately sync Redux and LocalStorage so navbar text updates
