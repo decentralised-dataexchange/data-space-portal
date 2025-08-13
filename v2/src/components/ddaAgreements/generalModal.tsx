@@ -78,7 +78,7 @@ export default function GeneralModal({
       <Box className={styles['dd-modal-container']}>
         <Box className={styles['dd-modal-header']}>
           <Typography sx={{ fontSize: '16px' }}>
-            {headerText}{selectedData?.purpose ? `: ${selectedData.purpose}` : ''}
+            {headerText}{selectedData?.purpose ? `: ${selectedData.purpose}` : ''}{selectedData?.templateId ? ` - ${selectedData.templateId}` : ''}
           </Typography>
           <Button onClick={handleClose} className={styles['close-btn']}>
             <XIcon size={24} />
@@ -108,22 +108,44 @@ export default function GeneralModal({
             onClick={handleClose}
             className={styles['cancel-btn']}
             disabled={isPending}
+            sx={{
+              '&.Mui-disabled': {
+                cursor: 'not-allowed',
+                pointerEvents: 'auto'
+              }
+            }}
           >
             {t("common.cancel")}
           </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleSubmit}
-            disabled={!isOk || isPending}
-            className={styles['confirm-btn']}
-          >
-            {isPending ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              confirmButtonText
+          <Box sx={{ position: 'relative', display: 'inline-block', cursor: (!isOk || isPending) ? 'not-allowed' : 'auto' }}>
+            {(!isOk || isPending) && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  cursor: 'not-allowed',
+                  zIndex: 1,
+                  // ensure overlay captures hover to show cursor, but doesn't need to block since button is disabled
+                  pointerEvents: 'auto'
+                }}
+              />
             )}
-          </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleSubmit}
+              disabled={!isOk || isPending}
+              className={styles['confirm-btn']}
+              sx={{
+                '&.Mui-disabled': {
+                  cursor: 'not-allowed',
+                  pointerEvents: 'auto'
+                }
+              }}
+            >
+              {confirmButtonText}
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Drawer>

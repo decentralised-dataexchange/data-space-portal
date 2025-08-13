@@ -17,7 +17,9 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
   const config: AxiosRequestConfig = {
     baseURL,
     withCredentials: true,
-    headers: {}
+    headers: {},
+    // Fail fast if upstream API is slow/unreachable
+    timeout: 15000
   };
 
   // Add response type if needed

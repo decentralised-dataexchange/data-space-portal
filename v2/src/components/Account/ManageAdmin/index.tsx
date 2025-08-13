@@ -182,12 +182,12 @@ const ManageAdmin = () => {
         successMessage={success}
       />
       <HeaderContainer>
-        <Typography variant="h6" fontWeight="bold">
+        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
           {t("manageAdmin.adminUser")}
         </Typography>
       </HeaderContainer>
       <DetailsContainer sx={{ flexGrow: 1 }}>
-        <Typography variant="body2" mt={1.25} mb={1.5}>
+        <Typography variant="body2" mt={1.25} mb={1.5} sx={{ fontSize: '14px' }}>
           {t("manageAdmin.pageDescription")}
         </Typography>
         <Grid container spacing={2}>
