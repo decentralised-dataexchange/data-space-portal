@@ -89,9 +89,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
         }}
       />
       <GenericImageUpload
-        // Temporarily disabled: backend avatar upload endpoint not implemented in this repo
-        // Force editMode to false to prevent opening the crop modal
-        editMode={false}
+        editMode={editMode}
         imageUrl={baseAvatar}
         defaultImage={defaultLogoImg}
         onImageUpdate={handleImageUpdate}
@@ -110,8 +108,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           left: `${whiteRing}px`,
           width: `${innerSize}px`,
           height: `${innerSize}px`,
-          // Ensure no click-through while disabled
-          pointerEvents: 'none'
+          pointerEvents: editMode ? 'auto' : 'none'
         }}
         imageStyle={{ display: 'none' }}
         iconPosition={{ top: `${iconOffset}px`, right: `${iconOffset}px` }}

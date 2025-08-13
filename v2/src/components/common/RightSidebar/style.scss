@@ -88,8 +88,9 @@
         color: #000000;
         
         &:hover {
-          background-color: rgba(0, 0, 0, 0.04);
-          border-color: #BDBDBD;
+          background-color: black;
+          color: white;
+          border-color: black;
         }
       }
     }
@@ -129,3 +130,4 @@
 .MuiDrawer-paperAnchorRight {
   animation: slideInRight 0.3s ease-out;
 }
+

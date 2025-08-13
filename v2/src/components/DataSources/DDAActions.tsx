@@ -56,7 +56,11 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
             textTransform: "none",
             fontWeight: "medium",
             minWidth: "120px",
-            "&:hover": { backgroundColor: "rgba(25, 118, 210, 0.04)" },
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+              borderColor: "black",
+            },
           }}
           onClick={handleViewApiClick}
           disabled={!openApiUrl}
@@ -74,6 +78,11 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
           textTransform: "none",
           fontWeight: "medium",
           minWidth: "120px",
+          "&:hover": {
+            backgroundColor: "black",
+            color: "white",
+            borderColor: "black",
+          },
         }}
         onClick={handleDDAClick}
       >
