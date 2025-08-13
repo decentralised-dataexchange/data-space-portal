@@ -109,10 +109,9 @@ const OrganisationDetailsContainer = (props: Props) => {
     <DetailsContainer
       sx={{
         flexGrow: 1,
-        // Ensure the visual height is 229px by default; allow expansion on mobile when editing
         boxSizing: 'border-box',
         height: {
-          xs: editMode ? 'auto' : '229px',
+          xs: 'auto',
           sm: '229px',
         },
       }}
@@ -195,7 +194,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                       fontSize: "0.875rem !important"
                     }}
                     InputProps={{
-                      disableUnderline: false,
+                      disableUnderline: true,
                       style: { fontSize: 20, fontWeight: "bold", marginTop: "-4px" },
                     }}
                     value={formValue.name}
@@ -237,14 +236,14 @@ const OrganisationDetailsContainer = (props: Props) => {
             ) :
               <>
                 <Box sx={{ display: "flex", alignItems: 'center' }} mt={"-7px"} >
-                    <Typography variant="h6" fontWeight="bold">
+                    <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                       {organisationDetails?.name}
                     </Typography>
                     <p style={{marginLeft: '0.5rem'}}className={addCredentialClass} onClick={callRightSideDrawer}>
                       {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential'))}
                     </p>
                   </Box>
-                  <Typography color="text.secondary" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>
+                  <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>
                     {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                     <VerifiedBadge trusted={isVerify} />
                   </Typography>
@@ -317,8 +316,15 @@ const OrganisationDetailsContainer = (props: Props) => {
           </Typography>}
         </Grid>
       </Grid>
-      <Box sx={{ minHeight: 100, maxHeight: 160, overflow: "auto", marginTop: "50px" }}>
-        <Typography variant="h6" fontWeight="bold" >{t('gettingStarted.overView')}</Typography>
+      <Box
+        sx={{
+          minHeight: 100,
+          maxHeight: { xs: 'none', sm: 160 },
+          overflow: { xs: 'visible', sm: 'auto' },
+          marginTop: { xs: '24px', sm: '50px' }
+        }}
+      >
+        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>{t('gettingStarted.overView')}</Typography>
         {editMode ? (
           <TextField
             variant="standard"

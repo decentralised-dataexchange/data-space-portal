@@ -84,6 +84,22 @@ export default function ViewDataAgreementModalInner(props: Props) {
       width: "100%",
       justifyContent: "space-between",
     }}>
+      <Button
+        onClick={() => {
+          setOpen(false);
+        }}
+        className="delete-btn"
+        sx={{
+          color: "black",
+          "&:hover": {
+            backgroundColor: "black",
+            color: "white",
+          },
+        }}
+        variant="outlined"
+      >
+        {t("common.close")}
+      </Button>
       {mode === "public" && (
         <Button
           onClick={() => {
@@ -104,22 +120,6 @@ export default function ViewDataAgreementModalInner(props: Props) {
           {t("dataAgreements.signWithBusinessWallet")}
         </Button>
       )}
-      <Button
-        onClick={() => {
-          setOpen(false);
-        }}
-        className="delete-btn"
-        sx={{
-          color: "black",
-          "&:hover": {
-            backgroundColor: "black",
-            color: "white",
-          },
-        }}
-        variant="outlined"
-      >
-        {t("common.close")}
-      </Button>
     </Box>
   );
 

@@ -22,7 +22,13 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   const t = await getTranslations();
 
-  const dataSourceList = await apiService.dataSourceList();
+  // Fetch data sources; be resilient to network timeouts in local/dev
+  let dataSourceList: Awaited<ReturnType<typeof apiService.dataSourceList>> | null = null;
+  try {
+    dataSourceList = await apiService.dataSourceList();
+  } catch (err) {
+    console.error('Failed to fetch data sources on Home page:', err);
+  }
   const dataSourceItems = (dataSourceList?.dataSources ?? []).map(item => ({
     ...item,
     dataSource: {

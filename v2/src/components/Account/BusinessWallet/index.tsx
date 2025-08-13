@@ -99,7 +99,7 @@ const BusinessWallet = () => {
       <HeaderContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: "0.5rem" }}>
-            <Typography variant="h5" fontWeight="bold">
+            <Typography variant="h5" fontWeight="bold" sx={{ fontSize: '20px' }}>
               {t('breadcrumbs.businessWallet')}
             </Typography>
             <IconButton onClick={handleAddNewConnection} aria-label={t('common.add')} sx={{ padding: 0}}>
@@ -107,7 +107,7 @@ const BusinessWallet = () => {
             </IconButton>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between' }}>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="textSecondary" sx={{ fontSize: '14px' }}>
               {t('businessWallet.subtitle')}
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

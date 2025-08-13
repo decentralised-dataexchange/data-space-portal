@@ -27,7 +27,14 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '');
 
-    const list = ((await apiService.dataSourceList())?.dataSources ?? []);
+    // Fetch list; be resilient to local/dev timeouts
+    let listResp: Awaited<ReturnType<typeof apiService.dataSourceList>> | null = null;
+    try {
+        listResp = await apiService.dataSourceList();
+    } catch (err) {
+        console.error('Failed to fetch data sources on DataSources page:', err);
+    }
+    const list = ((listResp)?.dataSources ?? []);
     // Try to match by exact ID first, then fall back to slug match if needed
     let dataSourceItem = list.find(item => (id ? item.dataSource.id === id : false));
     if (!dataSourceItem) {
@@ -78,10 +85,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                         paddingTop: { xs: "40px", sm: "0px" },
                                         transform: { xs: 0, sm: "translateY(-40px)" }
                                     }}>
-                                        <Typography variant="h6" fontWeight="bold">
+                                        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                                             {dataSourceItem?.dataSource?.name}
                                         </Typography>
-                                        <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
+                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
                                             {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                             <VerifiedBadge trusted={isVerified} />
                                         </Typography>

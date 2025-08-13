@@ -111,7 +111,7 @@ export default function DeveloperAPIs () {
     return (
       <Container>
         <HeaderContainer>
-          <Typography variant="h6" fontWeight="bold">
+          <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
             {t("developerAPIs.headerText")}
           </Typography>
         </HeaderContainer>
@@ -127,15 +127,15 @@ export default function DeveloperAPIs () {
     return (
       <Container>
         <HeaderContainer>
-          <Typography variant="h6" fontWeight="bold">
+          <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
             {t("developerAPIs.headerText")}
           </Typography>
         </HeaderContainer>
         <Box sx={{ p: 2, color: 'error.main' }}>
-          <Typography variant="h6">
+          <Typography variant="h6" sx={{ fontSize: '20px' }}>
             {t("common.errorOccurred") || "An error occurred"}
           </Typography>
-          <Typography variant="body1">
+          <Typography variant="body1" sx={{ fontSize: '14px' }}>
             {t("common.tryAgainLater") || "Please try again later"}
           </Typography>
         </Box>
@@ -153,12 +153,12 @@ export default function DeveloperAPIs () {
           topStyle={100}
           successMessage={success}
         />
-        <Typography variant="h6" fontWeight="bold">
+        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
           {t("developerAPIs.headerText")}
         </Typography>
       </HeaderContainer>
       <DetailsContainer>
-        <Typography variant="body2" mt={1.25} mb={1}>
+        <Typography variant="body2" mt={1.25} mb={1} sx={{ fontSize: '14px' }}>
           {t("developerAPIs.pageDescription")}
         </Typography>
         <Grid container spacing={2}>
