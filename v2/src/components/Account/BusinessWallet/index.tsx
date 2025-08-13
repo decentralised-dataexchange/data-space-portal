@@ -1,8 +1,9 @@
 "use client"
 
 import React, { useState } from "react";
-import { Box, Typography, TextField } from "@mui/material";
+import { Box, Typography, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { tableCellClasses } from "@mui/material/TableCell";
 import { useTranslations } from "next-intl";
 import IconButton from '@mui/material/IconButton';
 import { PlusCircleIcon, TrashSimpleIcon } from '@phosphor-icons/react';
@@ -28,27 +29,31 @@ const HeaderContainer = styled("div")({
 const BusinessWalletTable = styled("div")({
   marginTop: "20px",
   width: "100%",
-  backgroundColor: "#FFFFFF",
-  borderRadius: "7px",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.05)",
 });
 
-const TableHeader = styled("div")({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr",
-  padding: "15px",
-  borderBottom: "1px solid #DFDFDF",
-  backgroundColor: "#F7F7F7",
-});
-
-const TableRow = styled("div")({
-  display: "grid",
-  gridTemplateColumns: "1fr 1fr 1fr",
-  padding: "15px",
-  borderBottom: "1px solid #DFDFDF",
-  "&:last-child": {
-    borderBottom: "none",
+// Match DDA table cell styling
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    fontSize: "0.875rem",
+    fontWeight: "bold",
+    color: "rgba(0, 0, 0, 0.87)",
+    padding: "6px 16px",
+    border: "1px solid #D7D6D6",
+    backgroundColor: "#e5e4e4",
+    whiteSpace: 'nowrap',
   },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: "0.875rem",
+    fontWeight: "lighter",
+    color: "rgba(0, 0, 0, 0.87)",
+    padding: "6px 16px",
+    border: "1px solid #D7D6D6",
+    whiteSpace: 'nowrap',
+  },
+}));
+
+const StyledTableRow = styled(TableRow)({
+  border: "1px solid #D7D6D6",
 });
 
 const SearchBox = styled(TextField)({
@@ -124,39 +129,49 @@ const BusinessWallet = () => {
 
 
       <BusinessWalletTable>
-        <TableHeader>
-          <Typography variant="subtitle2" fontWeight="bold">
-            {t('businessWallet.label')}
-          </Typography>
-          <Typography variant="subtitle2" fontWeight="bold">
-            {t('businessWallet.connectedOn')}
-          </Typography>
-          <Typography variant="subtitle2" fontWeight="bold">
-            {t('businessWallet.connectionId')}
-          </Typography>
-        </TableHeader>
-
-        {filteredConnections.length > 0 ? (
-          filteredConnections.map((connection) => (
-            <TableRow key={connection.id}>
-              <Typography variant="body2">{connection.label}</Typography>
-              <Typography variant="body2">{formatDate(connection.connectedOn)}</Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="body2">{connection.id}</Typography>
-                <TrashSimpleIcon
-                  className="delete-icon"
-                  onClick={() => handleDelete(connection.id)}
-                />
-              </Box>
-            </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <Typography variant="body2" sx={{ gridColumn: '1 / span 3', textAlign: 'center' }}>
-              {searchTerm ? t('common.noResultsFound') : t('common.noData', { fallback: "No connections available" })}
-            </Typography>
-          </TableRow> 
-        )}
+        <TableContainer sx={{ backgroundColor: '#FFFF', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
+          <Table size="small" aria-label="business wallet table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>{t('businessWallet.label')}</StyledTableCell>
+                <StyledTableCell>{t('businessWallet.connectedOn')}</StyledTableCell>
+                <StyledTableCell>{t('businessWallet.connectionId')}</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredConnections.length > 0 ? (
+                filteredConnections.map((connection) => (
+                  <StyledTableRow key={connection.id}>
+                    <StyledTableCell>{connection.label}</StyledTableCell>
+                    <StyledTableCell>{formatDate(connection.connectedOn)}</StyledTableCell>
+                    <StyledTableCell
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        border: 'none',
+                      }}
+                    >
+                      <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>{connection.id}</Typography>
+                      <TrashSimpleIcon
+                        className="delete-icon"
+                        onClick={() => handleDelete(connection.id)}
+                        style={{ cursor: 'pointer' }}
+                        size={17}
+                      />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <StyledTableCell colSpan={3} align="center">
+                    {searchTerm ? t('common.noResultsFound') : t('common.noData', { fallback: "No connections available" })}
+                  </StyledTableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </BusinessWalletTable>
     </Container>
   );
