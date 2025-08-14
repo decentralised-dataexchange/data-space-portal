@@ -93,6 +93,9 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           sx={{
             color: active ? activeTextColor : inactiveTextColor,
             fontWeight: active ? 'bold' : 'normal',
+            display: 'flex',
+            width: '100%',
+            py: 1,
           }}
         >
           <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
@@ -109,14 +112,15 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
               return (
                 <MenuItem 
                   key={subItem.name}
+                  component={Link}
+                  href={`${list.link}/${subItem.link}`}
                   sx={{
                     color: subItemActive ? activeTextColor : inactiveTextColor,
-                    fontWeight: subItemActive ? 'bold' : 'normal'
+                    fontWeight: subItemActive ? 'bold' : 'normal',
+                    display: 'flex', width: '100%', py: 1
                   }}
                 >
-                  <Link href={`${list.link}/${subItem.link}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
-                    <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{subItem.name}</Typography>
-                  </Link>
+                  <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{subItem.name}</Typography>
                 </MenuItem>
               );
             })}
@@ -163,17 +167,19 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
         const active = isActive(list.link);
         
         return (
-          <Box key={list.name} sx={{ p: 1 }}>
+          <Box key={list.name} sx={{ px: 1, py: 0 }}>
             {!list.subMenu.length ? (
-              <MenuItem sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal' }}>
-                <Link href={list.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%', alignItems: 'center' }}>
-                  <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
-                    <list.icon size={22} weight={active ? "fill" : "regular"} />
-                  </ListItemIcon>
-                  <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
-                  </ListItemText>
-                </Link>
+              <MenuItem
+                component={Link}
+                href={list.link}
+                sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal', display: 'flex', width: '100%', alignItems: 'center', py: 1 }}
+              >
+                <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
+                  <list.icon size={22} weight={active ? "fill" : "regular"} />
+                </ListItemIcon>
+                <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
+                </ListItemText>
               </MenuItem>
             ) : (
               <SubMenuComponent 
