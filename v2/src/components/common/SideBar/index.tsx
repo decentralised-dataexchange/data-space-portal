@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Drawer, 
     ListItemIcon, 
@@ -76,6 +76,19 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
       [menuName]: !prev[menuName]
     }));
   }
+
+  // When route changes, keep only the submenu whose parent matches the current path open; collapse others
+  useEffect(() => {
+    const nextOpen: Record<string, boolean> = {};
+    sidebarMenuItems.forEach((item) => {
+      if (isActive(item.link)) {
+        // Use translated name key since we store state by displayed name
+        const translatedName = t(`sideBar.${item.translationKey}`, { fallback: item.name });
+        nextOpen[translatedName] = true;
+      }
+    });
+    setOpenSubMenus(nextOpen);
+  }, [pathname]);
 
   interface SubMenuComponentProps {
     list: SidebarMenuItem;
