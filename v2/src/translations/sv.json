@@ -202,6 +202,8 @@
     "tooltipView": "Visa datautlämningsavtal",
     "tooltipEdit": "Redigera datautlämningsavtal",
     "tooltipDelete": "Radera datautlämningsavtal",
+    "tooltipAddNew": "Lägg till nytt datautlämningsavtal",
+    "tooltipDownload": "Ladda ner datautlämningsavtal",
     "pageDescription": "Hantera datautlämningsavtal (DDA) för din organisation.",
     "usagePurpose": "Användningsändamål",
     "version": "Version",
@@ -288,7 +290,8 @@
     "connectionId": "Anslutnings-ID",
     "addButton": "Lägg till ny anslutning",
     "searchPlaceholder": "Sök efter innehavare",
-    "noConnections": "Inga plånboksanslutningar hittades"
+    "noConnections": "Inga plånboksanslutningar hittades",
+    "tooltipAddNewConnection": "Lägg till ny företagsplånboksanslutning"
   },
   "error": {
     "generic": "Något gick fel."

@@ -204,6 +204,8 @@
     "tooltipView": "Näytä tietojen luovutussopimus",
     "tooltipEdit": "Muokkaa tietojen luovutussopimusta",
     "tooltipDelete": "Poista tietojen luovutussopimus",
+    "tooltipAddNew": "Lisää uusi tietojen luovutussopimus",
+    "tooltipDownload": "Lataa tietojen luovutussopimus",
     "pageDescription": "Hallitse organisaatiosi tietojen luovutussopimuksia (DDA).",
     "usagePurpose": "Käyttötarkoitus",
     "version": "Versio",
@@ -290,7 +292,8 @@
     "connectionId": "Yhteystunnus",
     "addButton": "Lisää uusi yhteys",
     "searchPlaceholder": "Hae haltijoiden mukaan",
-    "noConnections": "Yhteyksiä ei löytynyt"
+    "noConnections": "Yhteyksiä ei löytynyt",
+    "tooltipAddNewConnection": "Lisää uusi yrityslompakon yhteys"
   },
   "error": {
     "generic": "Jokin meni pieleen."

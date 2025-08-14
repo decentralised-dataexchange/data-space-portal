@@ -227,6 +227,8 @@
     "tooltipView": "View Data Disclosure Agreement",
     "tooltipEdit": "Edit Data Disclosure Agreement",
     "tooltipDelete": "Delete Data Disclosure Agreement",
+    "tooltipAddNew": "Add new Data Disclosure Agreement",
+    "tooltipDownload": "Download Data Disclosure Agreement",
     "pageDescription": "Manage listing using Data Disclosure Agreements (DDAs) for your organisation.",
     "usagePurpose": "Usage Purpose",
     "version": "Version",
@@ -316,7 +318,8 @@
     "connectionId": "Connection ID",
     "addButton": "Add New Connection",
     "searchPlaceholder": "Search by holders",
-    "noConnections": "No wallet connections found"
+    "noConnections": "No wallet connections found",
+    "tooltipAddNewConnection": "Add new Business Wallet connection"
   },
   "addDataDisclosureAgreement": "Add data disclosure agreement",
   "noBannerImageAvailable": "No banner image available",

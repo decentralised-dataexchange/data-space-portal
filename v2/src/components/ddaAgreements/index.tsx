@@ -12,6 +12,7 @@ import {
   Alert,
   IconButton,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import { DownloadSimpleIcon, PlusCircleIcon } from "@phosphor-icons/react"
 import "../DataSources/style.scss";
@@ -211,19 +212,25 @@ const DDAgreements = () => {
           <div className={styles.headerRow}>
             <h1 className={styles.title}>{t("dataAgreements.title")}</h1>
             <div className={styles.actions}>
-              <IconButton
-                onClick={handleAddNewListing}
-                aria-label={t('dataAgreements.addButton')}
-                className={styles.actionButton}
-              >
-                <PlusCircleIcon size={25} />
-              </IconButton>
-              <IconButton
-                aria-label={t('dataAgreements.saveButton')}
-                className={styles.actionButton}
-              >
-                <DownloadSimpleIcon size={25} />
-              </IconButton>
+              <Tooltip title={t('dataAgreements.tooltipAddNew')} arrow>
+                <IconButton
+                  onClick={handleAddNewListing}
+                  aria-label={t('dataAgreements.addButton')}
+                  className={styles.actionButton}
+                  sx={{ cursor: 'not-allowed' }}
+                >
+                  <PlusCircleIcon size={25} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t('dataAgreements.tooltipDownload')} arrow>
+                <IconButton
+                  aria-label={t('dataAgreements.saveButton')}
+                  className={styles.actionButton}
+                  sx={{ cursor: 'not-allowed' }}
+                >
+                  <DownloadSimpleIcon size={25} />
+                </IconButton>
+              </Tooltip>
             </div>
           </div>
           <div className={styles.subtitleContainer}>

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import { Box, Typography, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Typography, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment';
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
@@ -108,14 +108,16 @@ const BusinessWallet = () => {
             <Typography variant="h5" fontWeight="bold" sx={{ fontSize: '20px', lineHeight: '24px' }}>
               {t('breadcrumbs.businessWallet')}
             </Typography>
-            <IconButton
-              size="small"
-              onClick={handleAddNewConnection}
-              aria-label={t('common.add')}
-              sx={{ p: 0, cursor: 'not-allowed', display: 'inline-flex', alignSelf: 'center', width: 24, height: 24 }}
-            >
-              <PlusCircleIcon size={22} color="black" style={{ transform: "translateY(-2px)" }} />
-            </IconButton>
+            <Tooltip title={t('businessWallet.tooltipAddNewConnection')} arrow>
+              <IconButton
+                size="small"
+                onClick={handleAddNewConnection}
+                aria-label={t('common.add')}
+                sx={{ p: 0, cursor: 'not-allowed', display: 'inline-flex', alignSelf: 'center', width: 24, height: 24 }}
+              >
+                <PlusCircleIcon size={22} color="black" style={{ transform: "translateY(-2px)" }} />
+              </IconButton>
+            </Tooltip>
           </Box>
           <Box sx={{ display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' }, width: '100%', justifyContent: 'space-between', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 0 }, mt: { xs: 1, md: 0 } }}>
             <Typography variant="body2" color="textSecondary" sx={{ fontSize: '14px' }}>
