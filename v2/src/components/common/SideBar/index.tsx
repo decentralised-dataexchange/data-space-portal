@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Drawer, 
     ListItemIcon, 
@@ -77,6 +77,19 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
     }));
   }
 
+  // When route changes, keep only the submenu whose parent matches the current path open; collapse others
+  useEffect(() => {
+    const nextOpen: Record<string, boolean> = {};
+    sidebarMenuItems.forEach((item) => {
+      if (isActive(item.link)) {
+        // Use translated name key since we store state by displayed name
+        const translatedName = t(`sideBar.${item.translationKey}`, { fallback: item.name });
+        nextOpen[translatedName] = true;
+      }
+    });
+    setOpenSubMenus(nextOpen);
+  }, [pathname]);
+
   interface SubMenuComponentProps {
     list: SidebarMenuItem;
     isOpen: boolean;
@@ -93,6 +106,9 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           sx={{
             color: active ? activeTextColor : inactiveTextColor,
             fontWeight: active ? 'bold' : 'normal',
+            display: 'flex',
+            width: '100%',
+            py: 1,
           }}
         >
           <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
@@ -103,20 +119,25 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           </ListItemText>
         </MenuItem>
         {isOpen && (
-          <Box sx={{ ml: 8 }}>
+          <Box>
             {list.subMenu.map((subItem) => {
               const subItemActive = pathname.includes(subItem.link);
               return (
                 <MenuItem 
                   key={subItem.name}
+                  component={Link}
+                  href={`${list.link}/${subItem.link}`}
                   sx={{
                     color: subItemActive ? activeTextColor : inactiveTextColor,
-                    fontWeight: subItemActive ? 'bold' : 'normal'
+                    fontWeight: subItemActive ? 'bold' : 'normal',
+                    display: 'flex',
+                    width: '100%',
+                    py: 1,
+                    pl: 8, // indent inside the item so hover covers full width
+                    mx: 0
                   }}
                 >
-                  <Link href={`${list.link}/${subItem.link}`} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
-                    <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{subItem.name}</Typography>
-                  </Link>
+                  <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{subItem.name}</Typography>
                 </MenuItem>
               );
             })}
@@ -145,13 +166,17 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
               backgroundColor: 'rgb(247, 246, 246) !important'
             }
           }
-        },
-        '& .MuiBackdrop-root': {
-          display: 'none'
         }
       }}
       ModalProps={{
         keepMounted: true,
+        BackdropProps: {
+          sx: { 
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            top: '80px',
+            height: 'calc(100% - 80px)'
+          }
+        }
       }}
       variant={isMobile || isTablet ? 'temporary' : 'persistent'}
       anchor="left"
@@ -163,17 +188,19 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
         const active = isActive(list.link);
         
         return (
-          <Box key={list.name} sx={{ p: 1 }}>
+          <Box key={list.name} sx={{ px: 1, py: 0 }}>
             {!list.subMenu.length ? (
-              <MenuItem sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal' }}>
-                <Link href={list.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%', alignItems: 'center' }}>
-                  <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
-                    <list.icon size={22} weight={active ? "fill" : "regular"} />
-                  </ListItemIcon>
-                  <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
-                  </ListItemText>
-                </Link>
+              <MenuItem
+                component={Link}
+                href={list.link}
+                sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal', display: 'flex', width: '100%', alignItems: 'center', py: 1 }}
+              >
+                <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
+                  <list.icon size={22} weight={active ? "fill" : "regular"} />
+                </ListItemIcon>
+                <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
+                </ListItemText>
               </MenuItem>
             ) : (
               <SubMenuComponent 

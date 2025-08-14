@@ -8,12 +8,18 @@ import Toast from '@/components/common/Toast';
 
 const buttonContainerStyle = {
   display: 'flex',
-  justifyContent: 'space-between',
+  flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+  justifyContent: { xs: 'flex-start', sm: 'flex-start', md: 'space-between' },
+  alignItems: { xs: 'stretch', sm: 'stretch', md: 'center' },
   padding: '16px',
   backgroundColor: '#fff',
   borderTop: '1px solid #E9ECEF',
-  gap: 8,
-  flexWrap: { xs: 'wrap', sm: 'nowrap' },
+  gap: { xs: 1, sm: 1.5, md: 2 },
+  rowGap: { xs: 1, sm: 1.5, md: 1 },
+  // Allow wrapping on xs and sm to prevent overflow when Save shows up
+  flexWrap: { xs: 'nowrap', sm: 'nowrap', md: 'nowrap' },
+  width: '100%',
+  boxSizing: 'border-box' as const,
   position: 'relative' as const,
   zIndex: 2 as const,
   isolation: 'isolate' as const,
@@ -610,12 +616,14 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               height: '100%',
-              color: 'white'
+              color: 'white',
+              textAlign: 'center',
+              px: 2,
             }}>
               <Typography variant="h6" sx={{ mb: 1 }}>
                 Select an image
               </Typography>
-              <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
+              <Typography variant="body2" sx={{ mt: 1, opacity: 0.9, maxWidth: '100%' }}>
                 {`Use Browse below, or drag & drop here (${(() => {
                   const types = (acceptedFileTypes || 'image/jpeg,image/jpg,image/png')
                     .split(',')
@@ -630,33 +638,46 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
             </Box>
           )}
           <Box sx={tooltipStyle}>
-            <Typography variant="body2" sx={{ whiteSpace: 'nowrap' }}>
+            <Typography variant="body2" sx={{ whiteSpace: 'normal', textAlign: 'center' }}>
               {recommendedSize}
             </Typography>
           </Box>
         </Box>
         <Box sx={buttonContainerStyle}>
           {/* Left side - Cancel button */}
-          <Box>
+          <Box sx={{ width: { xs: '100%', sm: '100%', md: 'auto' } }}>
             <Button
               onClick={onClose}
               variant="outlined"
               disabled={isUploading}
               sx={{
                 ...buttonStyle,
+                minWidth: { xs: 88, sm: 104, md: 120 },
+                px: { xs: 1.25, sm: 1.75, md: 2 },
+                width: { xs: '100%', sm: '100%', md: 'auto' },
                 '&:hover': {
                   backgroundColor: '#000',
                   color: '#fff',
                   borderColor: '#000',
                 }
               }}
+              size="small"
             >
               CANCEL
             </Button>
           </Box>
 
           {/* Right side - Browse and Save buttons */}
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+            gap: { xs: 1, sm: 1.5, md: 2 },
+            justifyContent: { xs: 'flex-start', sm: 'flex-start', md: 'flex-end' },
+            alignItems: { xs: 'stretch', sm: 'stretch', md: 'center' },
+            flex: 1,
+            flexBasis: { xs: '100%', sm: '100%', md: 'auto' },
+            width: { xs: '100%', sm: '100%', md: 'auto' },
+          }}>
             {/* Always show Browse button */}
             <input
               type="file"
@@ -673,19 +694,23 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 disabled={isUploading}
                 sx={{
                   ...buttonStyle,
+                  minWidth: { xs: 88, sm: 104, md: 120 },
+                  px: { xs: 1.25, sm: 1.75, md: 2 },
+                  width: { xs: '100%', sm: '100%', md: 'auto' },
                   '&:hover': {
                     backgroundColor: '#000',
                     color: '#fff',
                     borderColor: '#000',
                   }
                 }}
+                size="small"
               >
                 BROWSE
               </Button>
             </label>
 
-            {/* Show Save button only when image is loaded */}
-            {imageUrl && (
+            {/* Show Save button when image is selected; disabled until crop is valid */}
+            {Boolean(imageUrl) && (
               <Tooltip
                 title={!isCropValid ? `Image must be at least ${minWidth}x${minHeight}px` : ''}
                 arrow
@@ -699,6 +724,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     disabled={!isCropValid || isUploading}
                     sx={{
                       ...buttonStyle,
+                      minWidth: { xs: 88, sm: 104, md: 120 },
+                      px: { xs: 1.25, sm: 1.75, md: 2 },
+                      width: { xs: '100%', sm: '100%', md: 'auto' },
                       '&:hover': {
                         backgroundColor: '#000',
                         color: '#fff',
@@ -709,11 +737,12 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                         color: 'rgba(0, 0, 0, 0.26)'
                       }
                     }}
+                    size="small"
                   >
                     {isUploading ? (
                       <>
                         <CircularProgress size={20} color="inherit" sx={{ mr: 1 }} />
-                        UPLOADING...
+                        SAVING...
                       </>
                     ) : 'SAVE'}
                   </Button>

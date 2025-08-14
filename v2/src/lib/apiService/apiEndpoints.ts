@@ -27,6 +27,12 @@ export const ENDPOINTS = {
         return "/config/data-source/coverimage/"
     },
 
+    // Admin avatar image
+    adminAvatarImage: () => {
+        // placeholder
+        return "/config/admin/avatarimage/"
+    },
+
     listConnections: (limit: number, offsetValue: number) => {
         return `/config/connections/?limit=${limit}&offset=${offsetValue}`
     },

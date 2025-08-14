@@ -139,6 +139,7 @@
     "confirm": "Vahvista",
     "next": "Seuraava",
     "save": "Tallenna",
+    "add": "Lisää",
     "all": "Kaikki",
     "noResultsFound": "Ei tuloksia",
     "noData": "Ei yhteyksiä näytettäväksi",
@@ -179,6 +180,9 @@
       "title": "Julkaise markkinapaikalla",
       "confirmButton": "Julkaise"
     },
+    "viewModal": {
+      "title": "Näytä tietosopimus"
+    },
     "all": "Kaikki",
     "list": "Listatut",
     "underReview": "Arvioitavana",
@@ -200,6 +204,8 @@
     "tooltipView": "Näytä tietojen luovutussopimus",
     "tooltipEdit": "Muokkaa tietojen luovutussopimusta",
     "tooltipDelete": "Poista tietojen luovutussopimus",
+    "tooltipAddNew": "Lisää uusi tietojen luovutussopimus",
+    "tooltipDownload": "Lataa tietojen luovutussopimus",
     "pageDescription": "Hallitse organisaatiosi tietojen luovutussopimuksia (DDA).",
     "usagePurpose": "Käyttötarkoitus",
     "version": "Versio",
@@ -285,8 +291,9 @@
     "connectedOn": "Yhdistetty",
     "connectionId": "Yhteystunnus",
     "addButton": "Lisää uusi yhteys",
-    "searchPlaceholder": "Etsi yhteyksiä...",
-    "noConnections": "Yhteyksiä ei löytynyt"
+    "searchPlaceholder": "Hae haltijoiden mukaan",
+    "noConnections": "Yhteyksiä ei löytynyt",
+    "tooltipAddNewConnection": "Lisää uusi yrityslompakon yhteys"
   },
   "error": {
     "generic": "Jokin meni pieleen."

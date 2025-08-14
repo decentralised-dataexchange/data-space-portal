@@ -5,12 +5,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Popper from "@mui/material/Popper";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 const LanguageSelector: React.FC = () => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
+  const locale = useLocale();
   const t = useTranslations();
   const router = useRouter();
   const handleToggle = () => {
@@ -41,7 +42,7 @@ const LanguageSelector: React.FC = () => {
         onClick={handleToggle}
         sx={{ textTransform: "none", padding: 0, color: "#808080", fontSize: "12px" }}
       >
-        {t("common.language")}
+        {locale === 'en' ? 'English' : t('common.language')}
       </Button>
       <Popper
         open={open}

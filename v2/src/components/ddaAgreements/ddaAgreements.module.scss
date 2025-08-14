@@ -56,6 +56,7 @@
 .actionButton {
   color: #000 !important;
   padding: 4px !important;
+  cursor: not-allowed;
   
   &:hover {
     background-color: rgba(0, 0, 0, 0.05) !important;

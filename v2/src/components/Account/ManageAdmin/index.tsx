@@ -7,8 +7,10 @@ import { styled } from "@mui/material/styles";
 import ManageAdminProfilePicUpload from "./manageProfileAdmin";
 import SnackbarComponent from "@/components/notification";
 import { useTranslations } from "next-intl";
-import { useAppSelector } from "@/custom-hooks/store";
+import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
+import { setAdminDetails } from "@/store/reducers/authReducer";
 import { useGetAdminDetails, useUpdateAdminDetails, useResetPassword } from "@/custom-hooks/manageAdmin";
+import { LocalStorageService } from "@/utils/localStorageService";
 import '../style.scss'
 
 const Container = styled("div")(({ theme }) => ({
@@ -37,12 +39,9 @@ const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
   padding: 10,
   paddingLeft: 30,
-  height: "215px",
+  height: "100%",
   borderRadius: 2,
   border: "1px solid #CECECE",
-  [theme.breakpoints.down("md")]: {
-    height: "auto",
-  },
 }));
 
 const buttonStyle = {
@@ -69,6 +68,7 @@ const ManageAdmin = () => {
   const { data: adminQueryData } = useGetAdminDetails();
   const updateAdminMutation = useUpdateAdminDetails();
   const resetPasswordMutation = useResetPassword();
+  const dispatch = useAppDispatch();
   
   // Use admin data from either Redux or React Query
   const currentAdminData = adminQueryData || adminData;
@@ -97,29 +97,50 @@ const ManageAdmin = () => {
     setEditMode(false);
   }, [currentAdminData]);
 
+  // Seed the avatar preview with the current user's avatar URL when data loads
+  useEffect(() => {
+    if (currentAdminData?.avatarImageUrl) {
+      setLogoImageBase64(currentAdminData.avatarImageUrl as any);
+    }
+  }, [currentAdminData?.avatarImageUrl]);
+
   const handleEdit = (event: React.MouseEvent<HTMLElement>) => {
     setEditMode(!editMode);
     setFormDataForImageUpload("");
     setPreviewImage("");
   };
 
-  const onClickSave = () => {
+  const onClickSave = async () => {
+    setSuccess("");
+    setError("");
     const payload = {
       name: adminName ? adminName : currentAdminData.name,
     };
-    
-    updateAdminMutation.mutate(payload, {
-      onSuccess: () => {
-        setEditMode(false);
-        setSuccess(t("common.saved"));
-        setOpenSnackBar(true);
-      },
-      onError: (error) => {
-        const errorMessage = error instanceof Error ? error.message : t("manageAdmin.error");
-        setError(errorMessage);
-        setOpenSnackBar(true);
+
+    try {
+      // Update admin details (avatar uploads immediately on crop)
+      const updatedUser = await updateAdminMutation.mutateAsync(payload as any);
+
+      // 3) Immediately sync Redux and LocalStorage so navbar text updates
+      if (updatedUser) {
+        try {
+          dispatch(setAdminDetails(updatedUser));
+          LocalStorageService.updateUser(updatedUser);
+        } catch (_) {
+          // non-fatal
+        }
       }
-    });
+
+      setEditMode(false);
+      setSuccess(t("common.saved"));
+      setOpenSnackBar(true);
+      setFormDataForImageUpload("");
+      // keep preview so user sees updated image; it will be replaced once query refetches
+    } catch (e: any) {
+      const errorMessage = e instanceof Error ? e.message : t("manageAdmin.error");
+      setError(errorMessage);
+      setOpenSnackBar(true);
+    }
   };
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,9 +211,9 @@ const ManageAdmin = () => {
         <Typography variant="body2" mt={1.25} mb={1.5} sx={{ fontSize: '14px' }}>
           {t("manageAdmin.pageDescription")}
         </Typography>
-        <Grid container spacing={2}>
-          <Grid size={{lg: 7, md:6, sm:12, xs:12}}>
-            <Item>
+        <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
+          <Grid size={{lg: 7, md:6, sm:12, xs:12}} sx={{ display: 'flex' }}>
+            <Item sx={{ height: '100%', flex: 1, minHeight: { sm: 215 } }}>
               <Typography
                 color="black"
                 variant="subtitle1"
@@ -204,7 +225,7 @@ const ManageAdmin = () => {
               <Grid container spacing={2}>
                 <Grid
                   size={{lg: 3, md: 4, sm: 12, xs: 12}}
-                  sx={{ height: "95px", paddingBottom: "1rem" }}
+                  sx={{ height: "auto", paddingBottom: "1rem" }}
                 >
                   <Box
                     sx={{
@@ -227,7 +248,7 @@ const ManageAdmin = () => {
                   size={{lg: 9, md: 8, sm: 12, xs: 12}}
                   sx={{ display: "grid", alignContent: "center" }}
                 >
-                  <Grid container height={"20px"}>
+                  <Grid container>
                     <Grid size={{lg: 2, md: 5, sm: 5, xs: 5}}>
                       <Typography variant="body2">
                         {t("common.name")}:
@@ -249,18 +270,19 @@ const ManageAdmin = () => {
                             disableUnderline: true,
                             style: { fontSize: 14 },
                           }}
+                          fullWidth
                         />
                       ) : (
                         <Typography
                           variant="body2"
-                          sx={{ wordWrap: "break-word" }}
+                          sx={{ wordWrap: "break-word", overflowWrap: 'anywhere' }}
                         >
                           {currentAdminData?.name}
                         </Typography>
                       )}
                     </Grid>
                   </Grid>
-                  <Grid container height={"20px"}>
+                  <Grid container>
                     <Grid size={{lg: 2, md: 5, sm: 5, xs: 5}}>
                       <Typography variant="body2">
                         {t("manageAdmin.email")}:
@@ -269,14 +291,14 @@ const ManageAdmin = () => {
                     <Grid size={{lg: 9, md: 7, sm: 7, xs: 7}}>
                         <Typography
                         variant="body2"
-                        sx={{ wordWrap: "break-word" }}
+                        sx={{ wordWrap: "break-word", overflowWrap: 'anywhere' }}
                       >
                         {currentAdminData?.email}
                       </Typography>
                       {/* )} */}
                     </Grid>
                   </Grid>
-                  <Grid container height={"20px"}>
+                  <Grid container>
                     <Grid size={{lg: 2, md: 5, sm: 5, xs: 5}}>
                       <Typography variant="body2">
                         {t("login.userId")}:
@@ -285,7 +307,7 @@ const ManageAdmin = () => {
                     <Grid size={{lg: 9, md: 7, sm: 7, xs: 7}}>
                       <Typography
                         variant="body2"
-                        sx={{ wordWrap: "break-word" }}
+                        sx={{ wordWrap: "break-word", overflowWrap: 'anywhere' }}
                       >
                        {currentAdminData?.id}
                       </Typography>
@@ -293,7 +315,15 @@ const ManageAdmin = () => {
                   </Grid>
                 </Grid>
                 {editMode ? (
-                  <Box style={{ textAlign: "right", width: "100%" }}>
+                  <Box 
+                    sx={{ 
+                      width: '100%', 
+                      display: 'flex', 
+                      justifyContent: 'flex-end', 
+                      flexWrap: 'wrap', 
+                      gap: 1,
+                    }}
+                  >
                     <Button
                       onClick={handleEdit}
                       style={buttonStyle}
@@ -347,17 +377,20 @@ const ManageAdmin = () => {
               </Grid>
             </Item>
           </Grid>
-          <Grid size={{lg: 5, md:6, sm:12, xs:12}}>
-            <Item sx={{ display: "grid", alignContent: "space-between" }}>
+          <Grid size={{lg: 5, md:6, sm:12, xs:12}} sx={{ display: 'flex' }}>
+            <Item sx={{ display: "grid", alignContent: "space-between", height: '100%', flex: 1, minHeight: { sm: 215 } }}>
               <Typography color="black" variant="subtitle1" fontWeight="bold">
                 {t("manageAdmin.userCredentials")}
               </Typography>
               <Box
                 sx={{
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  alignItems: { xs: "stretch", sm: "center" },
+                  justifyContent: { xs: "flex-start", sm: "space-between" },
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 1.25, sm: 0 },
                   width: "100%",
+                  mb: { xs: 2, sm: 0 },
                 }}
               >
                 <Typography variant="body2">
@@ -374,14 +407,18 @@ const ManageAdmin = () => {
                   value={currentPassword}
                   name={'currentPassword'}
                   onChange={onChangePassword}
+                  fullWidth
                 />
               </Box>
               <Box
                 sx={{
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  alignItems: { xs: "stretch", sm: "center" },
+                  justifyContent: { xs: "flex-start", sm: "space-between" },
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 1.25, sm: 0 },
                   width: "100%",
+                  mb: { xs: 2, sm: 0 },
                 }}
               >
                 <Typography variant="body2">
@@ -395,13 +432,16 @@ const ManageAdmin = () => {
                   value={newPassword}
                   name="newPassword"
                   onChange={onChangePassword}
+                  fullWidth
                 />
               </Box>
               <Box
                 sx={{
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  alignItems: { xs: "stretch", sm: "center" },
+                  justifyContent: { xs: "flex-start", sm: "space-between" },
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 1.25, sm: 0 },
                   width: "100%",
                 }}
               >
@@ -414,6 +454,7 @@ const ManageAdmin = () => {
                   value={confirmPassword}
                   name='confirmPassword'
                   onChange={onChangePassword}
+                  fullWidth
                 />
               </Box>
 

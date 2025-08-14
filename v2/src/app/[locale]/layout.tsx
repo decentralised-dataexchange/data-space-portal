@@ -4,7 +4,6 @@ import { setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
 import { routing } from '@/i18n/routing';
 import ClientProviders from '@/components/common/Providers';
-import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import AppLayout from '@/layouts/AppLayout';
 
 type Props = {
@@ -31,13 +30,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <ClientProviders>
-      <ThemeRegistry>
-        <NextIntlClientProvider>
-          <AppLayout>
-            {children}
-          </AppLayout>
-        </NextIntlClientProvider>
-      </ThemeRegistry>
+      <NextIntlClientProvider>
+        <AppLayout>
+          {children}
+        </AppLayout>
+      </NextIntlClientProvider>
     </ClientProviders>
   );
 }

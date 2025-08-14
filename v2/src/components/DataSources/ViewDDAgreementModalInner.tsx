@@ -31,7 +31,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
   const headerContent = (
     <Box sx={{ width: "100%" }}>
       <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
-        {selectedData?.purpose}
+        {t('dataAgreements.viewModal.title')}: {selectedData?.purpose}
       </Typography>
       {mode !== "Create" && (
         <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
@@ -89,13 +89,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           setOpen(false);
         }}
         className="delete-btn"
-        sx={{
-          color: "black",
-          "&:hover": {
-            backgroundColor: "black",
-            color: "white",
-          },
-        }}
+        sx={{ color: "black" }}
         variant="outlined"
       >
         {t("common.close")}
@@ -105,15 +99,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           onClick={() => {
             navigator.clipboard.writeText(selectedData?.connection?.invitationUrl);
           }}
-          sx={{
-            color: "black",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-              width: "fit-content",
-              borderRadius: "none"
-            },
-          }}
+          sx={{ color: "black" }}
           className="delete-btn"
           variant="outlined"
         >

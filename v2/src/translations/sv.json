@@ -137,15 +137,15 @@
     "policyUrl": "Policy URL",
     "cancel": "Avbryt",
     "confirm": "Bekräfta",
-    "next": "Nästa",
+    "submit": "Skicka",
     "save": "Spara",
-    "all": "Alla",
+    "add": "Lägg till",
+    "delete": "Ta bort",
     "noResultsFound": "Inga resultat hittades",
     "noData": "Inga anslutningar att visa",
     "description": "Beskrivning",
     "true": "Sant",
     "false": "Falskt",
-    "delete": "RADERA",
     "close": "STÄNG",
     "viewAll": "Visa alla",
     "timestamp": "Tidsstämpel",
@@ -178,6 +178,9 @@
       "title": "Publicera på marknadsplatsen",
       "confirmButton": "Publicera"
     },
+    "viewModal": {
+      "title": "Visa dataavtal"
+    },
     "all": "Alla",
     "list": "Listade",
     "underReview": "Under granskning",
@@ -199,6 +202,8 @@
     "tooltipView": "Visa datautlämningsavtal",
     "tooltipEdit": "Redigera datautlämningsavtal",
     "tooltipDelete": "Radera datautlämningsavtal",
+    "tooltipAddNew": "Lägg till nytt datautlämningsavtal",
+    "tooltipDownload": "Ladda ner datautlämningsavtal",
     "pageDescription": "Hantera datautlämningsavtal (DDA) för din organisation.",
     "usagePurpose": "Användningsändamål",
     "version": "Version",
@@ -284,8 +289,9 @@
     "connectedOn": "Ansluten",
     "connectionId": "Anslutnings-ID",
     "addButton": "Lägg till ny anslutning",
-    "searchPlaceholder": "Sök anslutningar...",
-    "noConnections": "Inga plånboksanslutningar hittades"
+    "searchPlaceholder": "Sök efter innehavare",
+    "noConnections": "Inga plånboksanslutningar hittades",
+    "tooltipAddNewConnection": "Lägg till ny företagsplånboksanslutning"
   },
   "error": {
     "generic": "Något gick fel."

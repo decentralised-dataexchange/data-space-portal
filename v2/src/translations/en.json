@@ -104,6 +104,7 @@
     "cancel": "Cancel",
     "submit": "Submit",
     "save": "Save",
+    "add": "Add",
     "delete": "Delete",
     "edit": "Edit",
     "close": "Close",
@@ -201,6 +202,9 @@
       "title": "Publish to Marketplace",
       "confirmButton": "Publish"
     },
+    "viewModal": {
+      "title": "View Data Agreement"
+    },
     "dataAgreementPolicy": "Data Agreement Policy",
     "all": "All",
     "list": "Listed",
@@ -223,6 +227,8 @@
     "tooltipView": "View Data Disclosure Agreement",
     "tooltipEdit": "Edit Data Disclosure Agreement",
     "tooltipDelete": "Delete Data Disclosure Agreement",
+    "tooltipAddNew": "Add new Data Disclosure Agreement",
+    "tooltipDownload": "Download Data Disclosure Agreement",
     "pageDescription": "Manage listing using Data Disclosure Agreements (DDAs) for your organisation.",
     "usagePurpose": "Usage Purpose",
     "version": "Version",
@@ -311,8 +317,9 @@
     "connectedOn": "Connected on",
     "connectionId": "Connection ID",
     "addButton": "Add New Connection",
-    "searchPlaceholder": "Search connections...",
-    "noConnections": "No wallet connections found"
+    "searchPlaceholder": "Search by holders",
+    "noConnections": "No wallet connections found",
+    "tooltipAddNewConnection": "Add new Business Wallet connection"
   },
   "addDataDisclosureAgreement": "Add data disclosure agreement",
   "noBannerImageAvailable": "No banner image available",
