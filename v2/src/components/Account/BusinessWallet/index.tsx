@@ -58,12 +58,12 @@ const StyledTableRow = styled(TableRow)({
 });
 
 const SearchBox = styled(TextField)(({ theme }) => ({
-  width: "300px",
+  width: "440px",
   marginLeft: "auto",
   "& .MuiOutlinedInput-root": {
     borderRadius: "7px",
   },
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
     width: "100%",
     marginLeft: 0,
     marginTop: "8px",
@@ -101,7 +101,7 @@ const BusinessWallet = () => {
   };
 
   return (
-    <Container className="pageContainer">
+    <Container>
       <HeaderContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: "0.5rem" }}>
