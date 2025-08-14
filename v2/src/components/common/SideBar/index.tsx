@@ -106,7 +106,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           </ListItemText>
         </MenuItem>
         {isOpen && (
-          <Box sx={{ ml: 8 }}>
+          <Box>
             {list.subMenu.map((subItem) => {
               const subItemActive = pathname.includes(subItem.link);
               return (
@@ -117,7 +117,11 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
                   sx={{
                     color: subItemActive ? activeTextColor : inactiveTextColor,
                     fontWeight: subItemActive ? 'bold' : 'normal',
-                    display: 'flex', width: '100%', py: 1
+                    display: 'flex',
+                    width: '100%',
+                    py: 1,
+                    pl: 8, // indent inside the item so hover covers full width
+                    mx: 0
                   }}
                 >
                   <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{subItem.name}</Typography>
