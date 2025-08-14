@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
-import { Box } from '@mui/material';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import MainAppBar from '@/components/common/AppBar/MainAppBar';
 import Footer from '@/components/common/Footer';
 import SideBar from '@/components/common/SideBar';
@@ -17,6 +17,8 @@ interface Props {
 const MainLayout = ({ children }: Props) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const handleOpenMenu = () => {
     setOpen(!open);
@@ -25,11 +27,18 @@ const MainLayout = ({ children }: Props) => {
   const inPublicRoute = useMemo(() => isPublicRoute(pathname), [pathname]);
   const isLoginRoute = pathname.includes('/login');
 
+  // Close sidebar on route change for non-desktop (temporary drawer overlay)
+  useEffect(() => {
+    if (!isDesktop && open) {
+      setOpen(false);
+    }
+  }, [pathname]);
+
   return (
     <>
       {isLoginRoute ? null : <MainAppBar handleOpenMenu={handleOpenMenu} />}
       <Box className="leftNavigationContainer" sx={{ 
-        marginLeft: open ? '260px' : 0, 
+        marginLeft: isDesktop && open ? '260px' : 0, 
         transition: 'margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
       }}>
         <SideBar open={open} handleDrawerClose={handleOpenMenu} />

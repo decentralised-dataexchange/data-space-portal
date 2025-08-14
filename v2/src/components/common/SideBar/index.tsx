@@ -149,13 +149,17 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
               backgroundColor: 'rgb(247, 246, 246) !important'
             }
           }
-        },
-        '& .MuiBackdrop-root': {
-          display: 'none'
         }
       }}
       ModalProps={{
         keepMounted: true,
+        BackdropProps: {
+          sx: { 
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            top: '80px',
+            height: 'calc(100% - 80px)'
+          }
+        }
       }}
       variant={isMobile || isTablet ? 'temporary' : 'persistent'}
       anchor="left"
