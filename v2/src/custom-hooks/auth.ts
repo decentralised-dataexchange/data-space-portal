@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiService } from "@/lib/apiService/apiService";
 import { useAppDispatch } from "./store";
-import { setAdminDetails, setAuthenticated, setError, setMessage, setLoading, setSuccessMessage } from "@/store/reducers/authReducer";
+import { setAdminDetails, setAuthenticated, setMessage, setSuccessMessage } from "@/store/reducers/authReducer";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LocalStorageService } from "@/utils/localStorageService";
@@ -39,6 +39,8 @@ export const useLogin = () => {
 
       // Update auth state in Redux immediately
       dispatch(setAuthenticated(true));
+      // Clear any previous global error to avoid showing error after success
+      dispatch(setMessage(''));
       // Set a global success message so AppLayout can show a toast after navigation
       dispatch(setSuccessMessage('Login successful'));
       // dispatch(setLoading(false));
@@ -63,8 +65,19 @@ export const useLogin = () => {
       }, 500);
     },
     onError: (error: unknown) => {
+      // Send a global error message so AppLayout can display it
+      let errText = 'Login failed';
+      // Try to extract a server-provided message
+      try {
+        const anyErr = error as any;
+        const data = anyErr?.response?.data;
+        if (typeof data === 'string') errText = data;
+        else if (data?.detail) errText = data.detail;
+        else if (anyErr?.message) errText = anyErr.message;
+      } catch {}
+      dispatch(setSuccessMessage(''));
+      dispatch(setMessage(errText));
       // dispatch(setLoading(false));
-      // Error handling is now done in the component using the returned error
     }
   });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Divider,
@@ -14,10 +14,8 @@ import { ArrowCircleRightIcon, UserIcon, LockOpenIcon } from "@phosphor-icons/re
 import Logo from '@/assets/img/logo.jpg';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import SnackbarComponent from '@/components/notification';
 import { useLogin } from '@/custom-hooks/auth';
 import Image from 'next/image';
-import axios, { AxiosError } from 'axios';
 import './style.scss';
 
 interface FormValue {
@@ -27,39 +25,13 @@ interface FormValue {
 
 const Login = () => {
   const t = useTranslations();
-  const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
   const [formValue, setFormValue] = useState<FormValue>({ email: '', password: '' });
   const { email, password } = formValue;
-  const { login, error, success, isLoading, data } = useLogin();
-
-  // Handle errors from login attempt
-  useEffect(() => {
-    if (error) {
-      setOpenSnackBar(true);
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        // Extract error message from response if available
-        const responseData = axiosError.response?.data as any;
-        const errorMsg = responseData?.detail ||
-          responseData ||
-          axiosError.message ||
-          t("errors.generic");
-        setErrorMessage(errorMsg);
-      } else if (error instanceof Error) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage('Login failed');
-      }
-    }
-    // Do not show success toast here; AppLayout shows a global success toast
-  }, [error, success, data]);
+  const { login } = useLogin();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      setOpenSnackBar(true);
-      setErrorMessage('Please enter email and password');
       return;
     }
 
@@ -83,12 +55,7 @@ const Login = () => {
 
   return (
     <Box className="loginWrapper">
-      <SnackbarComponent
-        open={openSnackBar}
-        setOpen={setOpenSnackBar}
-        message={errorMessage}
-        successMessage={success ? "Login Successful" : ""}
-      />
+      {/* No local Snackbar; using global Snackbar in AppLayout */}
       <Box className='loginContainer'>
         <Box className='d-flex-center'>
           <Link href="/">

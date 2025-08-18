@@ -7,7 +7,7 @@ import MinimalLayout from './minimal/MinimalLayout';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
 import Loader from '@/components/common/Loader';
 import SnackbarComponent from '@/components/notification';
-import { setSuccessMessage } from '@/store/reducers/authReducer';
+import { setSuccessMessage, setMessage } from '@/store/reducers/authReducer';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -17,23 +17,25 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isLoading = useAppSelector((state) => state.auth.loading);
   const successMessage = useAppSelector((state) => state.auth.successMessage);
+  const errorMessage = useAppSelector((state) => state.auth.message);
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const [currentLayout, setCurrentLayout] = useState<'main' | 'minimal'>('minimal');
   const [isClient, setIsClient] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Show success message when it changes
+  // Show toast when success or error message changes
   useEffect(() => {
-    if (successMessage) {
+    if (successMessage || errorMessage) {
       setShowSuccess(true);
     }
-  }, [successMessage]);
+  }, [successMessage, errorMessage]);
   
   const handleCloseSuccess = () => {
     setShowSuccess(false);
     // Clear the global success message so it doesn't re-open
     dispatch(setSuccessMessage(''));
+    dispatch(setMessage(''));
   };
   
   // Effect to handle client-side hydration
@@ -97,6 +99,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           }
         }}
         successMessage={successMessage}
+        message={!successMessage ? errorMessage : undefined}
       />
       
       {currentLayout === 'main' ? 

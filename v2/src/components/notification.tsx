@@ -19,6 +19,10 @@ export default function SnackbarComponent(props: Props) {
     setOpen(false);
   };
 
+  // Compute text to display. If none, render nothing to avoid empty/error flicker.
+  const text = successMessage || message || '';
+  if (!open || !text) return null;
+
   return (
     <Snackbar
       open={open}
@@ -32,7 +36,7 @@ export default function SnackbarComponent(props: Props) {
         severity={successMessage ? "success" : "error"}
         sx={{ width: "100%" }}
       >
-        {successMessage ? successMessage : message}
+        {text}
       </Alert>
     </Snackbar>
   );
