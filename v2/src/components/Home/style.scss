@@ -3,9 +3,13 @@
 
 
 .datasources-header-container {
-    gap: 0.5em;
+    // Avoid adding horizontal gap which can force wrapping at 6+6 columns
+    gap: 0;
+    column-gap: 0;
+    row-gap: 0.5rem;
     width: 100%;
     padding-bottom: 1rem;
+    align-items: center;
     .datasources-filter-container {
         padding-bottom: 0px;
         justify-content: flex-end;
@@ -230,7 +234,7 @@
 
 
 .homeContainer {
-    padding: 15px 25px 25px 25px;
+    padding: 15px 20px 25px 20px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;

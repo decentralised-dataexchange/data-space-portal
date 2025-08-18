@@ -60,7 +60,11 @@ export default async function HomePage({ params, searchParams }: Props) {
                     <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
                         <Typography gutterBottom component="div" className="title">{t('home.title')}</Typography>
                     </Grid>
-                    <Grid className='datasources-filter-container' size={{ xs: 12, sm: 12, md: 6, lg: 6 }} container>
+                    <Grid 
+                        className='datasources-filter-container' 
+                        size={{ xs: 12, sm: 12, md: 6, lg: 6 }}
+                        sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'flex-end' }, alignItems: 'center', ml: { md: 'auto' }, justifySelf: { md: 'end' } }}
+                    >
                         <Box component="div">
                             <FormControl component="fieldset">
                                 <RadioGroup row value={1}>
