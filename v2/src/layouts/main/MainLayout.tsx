@@ -55,7 +55,7 @@ const MainLayout = ({ children }: Props) => {
             // }
           }}
         >
-          {!inPublicRoute && <Breadcrumb />}
+          <Breadcrumb />
           {children}
         </Box>
         <Box className="footerContainer d-flex-center">

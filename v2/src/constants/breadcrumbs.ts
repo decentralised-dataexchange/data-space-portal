@@ -48,7 +48,7 @@ export const BREADCRUMB_ROUTES: Record<string, BreadcrumbItem> = {
   'data-source': {
     path: '/data-source',
     translationKey: 'breadcrumbs.data-source',
-    isClickable: true
+    isClickable: false
   },
   'dd-agreements': {
     path: '/dd-agreements',

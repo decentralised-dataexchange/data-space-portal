@@ -47,19 +47,41 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
     routesPath.forEach((segment, index) => {
       currentPath += `/${segment}`;
       const routeKey = segment as BreadcrumbKey;
-      
-      // Skip if this is not a known breadcrumb route
-      if (!BREADCRUMB_ROUTES[routeKey]) return;
-      
-      const isLast = index === routesPath.length - 1;
       const route = BREADCRUMB_ROUTES[routeKey];
-      
+
+      // Only add if segment is known AND the accumulated path exactly matches the route path
+      if (!route || currentPath !== route.path) return;
+
+      const isLast = index === routesPath.length - 1;
+
       breadcrumbs.push({
-        path: currentPath,
+        path: route.path, // use canonical route path
         name: t(route.translationKey as any),
         isClickable: route.isClickable && !isLast
       });
     });
+
+    // Handle dynamic segment for /data-source/read/:id -> add org slug as the final, unclickable crumb
+    if (
+      routesPath.length >= 3 &&
+      routesPath[0] === 'data-source' &&
+      routesPath[1] === 'read'
+    ) {
+      const slug = routesPath[2];
+      if (slug) {
+        const display = decodeURIComponent(slug)
+          .replace(/-/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLowerCase()
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+        breadcrumbs.push({
+          path: `${pathWithoutLocale}`,
+          name: display || slug,
+          isClickable: false,
+        });
+      }
+    }
 
     return breadcrumbs;
   };
