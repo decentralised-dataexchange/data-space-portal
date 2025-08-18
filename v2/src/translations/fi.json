@@ -172,7 +172,7 @@
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",
-      "description": "Haluatko varmasti poistaa tämän tietosopimuksen? Tätä toimintoa ei voi peruuttaa.",
+      "description": "Olet poistamassa olemassa olevaa tietosopimusta. Kirjoita POISTA vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
       "confirmButton": "Poista",
       "confirmText": "POISTA"
     },
