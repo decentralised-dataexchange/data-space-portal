@@ -37,17 +37,17 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
             {
               name: 'Manage Admin',
               translationKey: 'manageAdmin',
-              link: '/manage-admin',
+              link: 'manage-admin',
             },
             {
               name: 'Developer APIs',
               translationKey: 'developerApis',
-              link: '/developer-apis',
+              link: 'developer-apis',
             },
             {
               name: 'Business Wallet',
               translationKey: 'businessWallet',
-              link: '/business-wallet',
+              link: 'business-wallet',
             }
           ]
 }
