@@ -61,6 +61,44 @@ textarea {
   font-family: inherit;
 }
 
+/* Standardize input text size */
+input,
+textarea,
+.MuiInputBase-input {
+  font-size: 0.875rem; /* 14px */
+}
+
+/* Consistent placeholder styling across inputs */
+input::placeholder,
+textarea::placeholder,
+.MuiInputBase-input::placeholder,
+.MuiOutlinedInput-input::placeholder,
+.MuiInput-input::placeholder {
+  font-size: 0.875rem; /* 14px */
+  color: #9c9c9c;
+  opacity: 1; /* Ensure color is applied consistently */
+}
+
+/* Vendor-prefixed placeholder selectors for broader coverage */
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+.MuiInputBase-input::-webkit-input-placeholder,
+.MuiOutlinedInput-input::-webkit-input-placeholder,
+.MuiInput-input::-webkit-input-placeholder {
+  font-size: 0.875rem; /* 14px */
+  color: #9c9c9c;
+  opacity: 1;
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+.MuiInputBase-input::-moz-placeholder,
+.MuiOutlinedInput-input::-moz-placeholder,
+.MuiInput-input::-moz-placeholder {
+  font-size: 0.875rem;
+  color: #9c9c9c;
+  opacity: 1;
+}
+
 main {
   flex: 1;
   padding-top: 80px;

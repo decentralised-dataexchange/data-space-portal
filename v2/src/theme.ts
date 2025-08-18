@@ -37,6 +37,41 @@ const theme = createTheme({
         root: {
           fontFamily: 'inherit',
         },
+        input: {
+          fontFamily: 'inherit',
+          fontSize: '0.875rem', // 14px
+          '::placeholder': {
+            fontSize: '0.875rem',
+            color: '#9c9c9c',
+            opacity: 1,
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          fontFamily: 'inherit',
+          fontSize: '0.875rem',
+          '::placeholder': {
+            fontSize: '0.875rem',
+            color: '#9c9c9c',
+            opacity: 1,
+          },
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        input: {
+          fontFamily: 'inherit',
+          fontSize: '0.875rem',
+          '::placeholder': {
+            fontSize: '0.875rem',
+            color: '#9c9c9c',
+            opacity: 1,
+          },
+        },
       },
     },
     MuiFormLabel: {
