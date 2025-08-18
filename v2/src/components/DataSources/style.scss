@@ -166,3 +166,30 @@
     cursor: pointer;
     color: #F3F3F6;
 }
+
+// Match older card button styling on DataSource read page
+.dataListContainer {
+    .cardContainerList {
+        .actionListingBtn {
+            @include breakpoints.mobileOnly {
+                flex-direction: column;
+            }
+
+            .MuiButtonBase-root {
+                text-transform: unset;
+                border: 1px solid rgb(223, 223, 223);
+                background: white;
+                border-radius: 0px;
+                color: #000;
+                margin-top: 8px;
+                padding: 5px 30px;
+            }
+
+            .MuiButtonBase-root:hover {
+                background: black;
+                color: white;
+                border-color: black;
+            }
+        }
+    }
+}

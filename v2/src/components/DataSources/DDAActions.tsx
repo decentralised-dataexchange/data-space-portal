@@ -39,9 +39,11 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
       className="actionListingBtn"
       sx={{
         display: "flex",
-        flexDirection: apiViewMode ? "row" : "column",
-        justifyContent: apiViewMode ? "flex-end" : "initial",
-        gap: apiViewMode ? 1 : 0.75,
+        // Match older layout: row on desktop, stack on mobile
+        flexDirection: { xs: "column", sm: "row" },
+        justifyContent: "flex-end",
+        alignItems: "center",
+        gap: 1,
         marginTop: "auto",
       }}
     >
@@ -51,16 +53,8 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
           size="medium"
           sx={{
             fontSize: "14px",
-            padding: "8px 16px",
-            borderRadius: "6px",
             textTransform: "none",
             fontWeight: "medium",
-            minWidth: "120px",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-              borderColor: "black",
-            },
           }}
           onClick={handleViewApiClick}
           disabled={!openApiUrl}
@@ -73,16 +67,8 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
         size="medium"
         sx={{
           fontSize: "14px",
-          padding: apiViewMode ? "8px 20px" : "4px 16px",
-          borderRadius: "6px",
           textTransform: "none",
           fontWeight: "medium",
-          minWidth: "120px",
-          "&:hover": {
-            backgroundColor: "black",
-            color: "white",
-            borderColor: "black",
-          },
         }}
         onClick={handleDDAClick}
       >
