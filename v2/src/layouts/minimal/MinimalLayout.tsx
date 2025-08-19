@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import MinimalAppBar from '@/components/common/AppBar/MinimalAppBar';
 import Box from '@mui/material/Box';
 import Footer from '@/components/common/Footer';
@@ -14,7 +14,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       {isLoginRoute ? null : <MinimalAppBar />}
       <Box className="leftNavigationContainer">
         <Box component="main" sx={{ paddingTop: isLoginRoute ? 0 : '80px', flex: 1 }}>
-          {!isLoginRoute && <Breadcrumb />}
+          {!isLoginRoute && (
+            <Suspense fallback={null}>
+              <Breadcrumb />
+            </Suspense>
+          )}
           {children}
         </Box>
         <Box className="footerContainer d-flex-center">

@@ -338,11 +338,9 @@ export default function ScalarImpl({ openApiUrl }: { openApiUrl: string }) {
         const node = stack.pop()!
         if (seen.has(node)) continue
         seen.add(node)
-        // @ts-ignore - ShadowRoot extends DocumentFragment and supports querySelectorAll
         const found = (node.querySelectorAll ? Array.from(node.querySelectorAll(selector)) : []) as HTMLElement[]
         results.push(...found)
         // Explore children that host shadow roots
-        // @ts-ignore
         const allEls: Element[] = node.querySelectorAll ? Array.from(node.querySelectorAll('*')) : []
         for (const el of allEls) {
           const sr = (el as any).shadowRoot as ShadowRoot | null

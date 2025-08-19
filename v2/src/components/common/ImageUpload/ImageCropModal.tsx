@@ -2,7 +2,8 @@ import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { Modal, Box, Typography, Button, Tooltip, CircularProgress } from '@mui/material';
 import ReactCrop, { type Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import Toast from '@/components/common/Toast';
+import { useAppDispatch } from '@/custom-hooks/store';
+import { setMessage } from '@/store/reducers/authReducer';
 
 // Styles
 
@@ -219,15 +220,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastSeverity, setToastSeverity] = useState<'success' | 'info' | 'warning' | 'error'>('info');
-
-  const showToast = useCallback((message: string, severity: 'success' | 'info' | 'warning' | 'error' = 'info') => {
-    setToastMessage(message);
-    setToastSeverity(severity);
-    setToastOpen(true);
-  }, []);
+  const dispatch = useAppDispatch();
 
   // Compute modal and crop container sizing variants (inside component)
   const modalSx = useMemo(() => {
@@ -451,11 +444,11 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       return Array.from(new Set(labels)).join('/');
     })();
     if (!types.includes(file.type)) {
-      showToast(`Only ${label} images are supported`, 'warning');
+      dispatch(setMessage(`Only ${label} images are supported`));
       return;
     }
     onFileSelect(file);
-  }, [isUploading, onFileSelect, showToast, acceptedFileTypes]);
+  }, [isUploading, onFileSelect, acceptedFileTypes, dispatch]);
 
   const handleSave = async () => {
     if (!imageUrl || !imgRef.current) return;
@@ -470,7 +463,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
     // Double-check validity after potentially setting completedCrop
     if (!completedCrop || !isCropValid) {
       console.log('Crop is invalid or not completed');
-      showToast(`Crop must be at least ${minWidth}x${minHeight}px`, 'warning');
+      dispatch(setMessage(`Crop must be at least ${minWidth}x${minHeight}px`));
       return;
     }
 
@@ -529,7 +522,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
         return Array.from(new Set(labels)).join('/');
       })();
       if (!types.includes(file.type)) {
-        showToast(`Only ${label} images are supported`, 'warning');
+        dispatch(setMessage(`Only ${label} images are supported`));
         return;
       }
       onFileSelect(file);
@@ -686,28 +679,30 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               style={{ display: 'none' }}
               onChange={handleFileChange}
             />
-            <label htmlFor="browse-image-bottom">
-              <Button
-                variant="outlined"
-                color="primary"
-                component="span"
-                disabled={isUploading}
-                sx={{
-                  ...buttonStyle,
-                  minWidth: { xs: 88, sm: 104, md: 120 },
-                  px: { xs: 1.25, sm: 1.75, md: 2 },
-                  width: { xs: '100%', sm: '100%', md: 'auto' },
-                  '&:hover': {
-                    backgroundColor: '#000',
-                    color: '#fff',
-                    borderColor: '#000',
-                  }
-                }}
-                size="small"
-              >
-                BROWSE
-              </Button>
-            </label>
+            <Tooltip title={recommendedSize} arrow placement="top">
+              <label htmlFor="browse-image-bottom">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  component="span"
+                  disabled={isUploading}
+                  sx={{
+                    ...buttonStyle,
+                    minWidth: { xs: 88, sm: 104, md: 120 },
+                    px: { xs: 1.25, sm: 1.75, md: 2 },
+                    width: { xs: '100%', sm: '100%', md: 'auto' },
+                    '&:hover': {
+                      backgroundColor: '#000',
+                      color: '#fff',
+                      borderColor: '#000',
+                    }
+                  }}
+                  size="small"
+                >
+                  BROWSE
+                </Button>
+              </label>
+            </Tooltip>
 
             {/* Show Save button when image is selected; disabled until crop is valid */}
             {Boolean(imageUrl) && (
@@ -751,13 +746,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
             )}
           </Box>
         </Box>
-        {/* Standardized top-right toast */}
-        <Toast
-          open={toastOpen}
-          message={toastMessage}
-          severity={toastSeverity}
-          onClose={() => setToastOpen(false)}
-        />
       </Box>
     </Modal>
   );

@@ -5,8 +5,9 @@ import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import SnackbarComponent from "@/components/notification";
 import { useGetAdminDetails, useGetOrganizationDetails, useUpdateOpenApiUrl, useGetApiToken } from "@/custom-hooks/developerApis";
+import { useAppDispatch } from "@/custom-hooks/store";
+import { setMessage } from "@/store/reducers/authReducer";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -42,13 +43,11 @@ const Item = styled("div")(({ theme }) => ({
 export default function DeveloperAPIs () {
   const [showAPI, setShowAPI] = useState(false);
   const t = useTranslations();
+  const dispatch = useAppDispatch();
   const { getFormattedToken } = useGetApiToken();
   const token = getFormattedToken();
   const [openApiUrl, setOpenApiUrl] = useState("");
   const [isOk, setIsOk] = useState(false);
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   // Fetch admin details using React Query
   const { data: adminData, isLoading: adminLoading, isError: adminError } = useGetAdminDetails();
@@ -70,8 +69,7 @@ export default function DeveloperAPIs () {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(token);
-    setOpenSnackBar(true);
-    setSuccess(t("developerAPIs.apiKeyCopied"));
+    // Success toasts suppressed globally; no local snackbar on copy
   };
 
   const handleUpdateUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,13 +92,11 @@ export default function DeveloperAPIs () {
       
       updateOpenApiUrl(payload, {
         onSuccess: () => {
-          setOpenSnackBar(true);
-          setSuccess(t("developerAPIs.openApiUpdated"));
+          // Success toasts suppressed globally; do not open snackbar
           setIsOk(false);
         },
         onError: () => {
-          setOpenSnackBar(true);
-          setError(t("developerAPIs.openApiUpdateFailed"));
+          dispatch(setMessage(t("developerAPIs.openApiUpdateFailed")));
         }
       });
     }
@@ -146,13 +142,6 @@ export default function DeveloperAPIs () {
   return (
     <Container className='pageContainer'>
       <HeaderContainer>
-        <SnackbarComponent
-          open={openSnackBar}
-          setOpen={setOpenSnackBar}
-          message={error}
-          topStyle={100}
-          successMessage={success}
-        />
         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
           {t("developerAPIs.headerText")}
         </Typography>

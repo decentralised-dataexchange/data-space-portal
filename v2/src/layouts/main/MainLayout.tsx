@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import MainAppBar from '@/components/common/AppBar/MainAppBar';
 import Footer from '@/components/common/Footer';
@@ -55,7 +55,9 @@ const MainLayout = ({ children }: Props) => {
             // }
           }}
         >
-          <Breadcrumb />
+          <Suspense fallback={null}>
+            <Breadcrumb />
+          </Suspense>
           {children}
         </Box>
         <Box className="footerContainer d-flex-center">

@@ -441,7 +441,6 @@ export default function SwaggerDoc({ openApiUrl }: SwaggerDocProps) {
         // Keep reference if needed for future cleanup
         (containerRef.current as any).__swaggerUI__ = ui;
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error(e);
       }
     };

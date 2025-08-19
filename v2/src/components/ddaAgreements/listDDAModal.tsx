@@ -5,10 +5,11 @@ import { Drawer, Typography, Button, Box, CircularProgress } from "@mui/material
 import { CustomSelect } from "@/components/common";
 import { XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import SnackbarComponent from "@/components/notification";
 import { useUpdateDDAStatus } from "@/custom-hooks/dataDisclosureAgreements";
 import styles from "./listDDAModal.module.scss";
 import { getStatus } from "@/utils/dda";
+import { useAppDispatch } from "@/custom-hooks/store";
+import { setMessage } from "@/store/reducers/authReducer";
 
 interface DDAItem {
   id: string;
@@ -36,8 +37,7 @@ export default function ListDDAModal({
   onSuccess,
 }: Props) {
   const t = useTranslations();
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
   const { mutate: updateStatus, isPending } = useUpdateDDAStatus();
 
   const getOptionValue = () => {
@@ -80,8 +80,7 @@ export default function ListDDAModal({
           onSuccess?.();
         },
         onError: (err: Error) => {
-          setError(err.message || "Failed to update status");
-          setOpenSnackBar(true);
+          dispatch(setMessage(err.message || "Failed to update status"));
         },
       }
     );
@@ -113,12 +112,6 @@ export default function ListDDAModal({
       >
         <Box className={styles['dd-modal-container']}>
           <Box className={styles['dd-modal-header']}>
-            <SnackbarComponent
-              open={openSnackBar}
-              setOpen={setOpenSnackBar}
-              message={error}
-              topStyle={100}
-            />
             <Box className={styles['header-content']}>
               <Typography variant="h6" className={styles['header-text']}>
                 {headerText}: {selectedData?.purpose || 'N/A'}

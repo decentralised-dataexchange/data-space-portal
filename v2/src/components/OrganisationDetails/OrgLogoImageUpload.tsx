@@ -67,7 +67,6 @@ const OrgLogoImageUpload = (props: Props) => {
           outputHeight={400}
           outputQuality={0.82}
           modalSize="medium"
-          successMessage="Logo updated successfully"
           // Place overlay over the inner image area (exclude the white ring)
           containerStyle={{
             position: 'absolute',

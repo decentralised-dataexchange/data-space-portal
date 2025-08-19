@@ -101,7 +101,6 @@ const ManageAdminProfilePicUpload = (props: Props) => {
         outputHeight={256}
         outputQuality={0.82}
         modalSize="medium"
-        successMessage="Avatar updated successfully"
         containerStyle={{
           position: 'absolute',
           top: `${whiteRing}px`,

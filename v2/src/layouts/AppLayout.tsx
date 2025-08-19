@@ -24,12 +24,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [isClient, setIsClient] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Show toast when success or error message changes
+  // Only show toast when an error message is present. Suppress success toasts.
   useEffect(() => {
-    if (successMessage || errorMessage) {
-      setShowSuccess(true);
+    // Proactively clear any success messages so they don't linger
+    if (successMessage) {
+      dispatch(setSuccessMessage(''));
     }
-  }, [successMessage, errorMessage]);
+    if (errorMessage) {
+      setShowSuccess(true);
+    } else {
+      setShowSuccess(false);
+    }
+  }, [successMessage, errorMessage, dispatch]);
   
   const handleCloseSuccess = () => {
     setShowSuccess(false);
@@ -88,7 +94,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   // Render the appropriate layout based on authentication state
   return (
     <>
-      {/* Global success message using custom SnackbarComponent */}
+      {/* Global error message only using custom SnackbarComponent */}
       <SnackbarComponent
         open={showSuccess}
         setOpen={(open) => {
@@ -98,8 +104,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             setShowSuccess(open);
           }
         }}
-        successMessage={successMessage}
-        message={!successMessage ? errorMessage : undefined}
+        message={errorMessage}
       />
       
       {currentLayout === 'main' ? 
