@@ -3,7 +3,7 @@ import React from "react";
 import { Breadcrumbs, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { BREADCRUMB_ROUTES, BreadcrumbKey } from "@/constants/breadcrumbs";
 
 type BreadCrumbProps = {
@@ -32,6 +32,8 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
 }) => {
   const t = useTranslations();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const viewApiFor = searchParams?.get('viewApiFor');
   
   // Remove locale from pathname (e.g., /en/start -> /start)
   const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '');
@@ -61,7 +63,7 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
       });
     });
 
-    // Handle dynamic segment for /data-source/read/:id -> add org slug as the final, unclickable crumb
+    // Handle dynamic segment for /data-source/read/:id
     if (
       routesPath.length >= 3 &&
       routesPath[0] === 'data-source' &&
@@ -75,11 +77,22 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
           .trim()
           .toLowerCase()
           .replace(/\b\w/g, (c) => c.toUpperCase());
+        const isViewingApi = Boolean(viewApiFor)
+        // Slug crumb: clickable when viewing API (acts as back link), not clickable otherwise
         breadcrumbs.push({
-          path: `${pathWithoutLocale}`,
+          path: pathname,
           name: display || slug,
-          isClickable: false,
+          isClickable: isViewingApi,
         });
+
+        // API crumb: present when viewing API, not clickable
+        if (isViewingApi) {
+          breadcrumbs.push({
+            path: `${pathname}?viewApiFor=${encodeURIComponent(viewApiFor!)}`,
+            name: 'API',
+            isClickable: false,
+          })
+        }
       }
     }
 
