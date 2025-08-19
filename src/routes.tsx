@@ -9,7 +9,6 @@ import DeveloperApis from './container/Account/DeveloperApis/developerApis';
 import DispConnections from './container/Account/DISPconnections/dispConnection';
 import { useTranslation } from 'react-i18next';
 import DataSourceListing from './container/Home/DataSourceListing';
-import ApiDoc from './container/Home/ApiDoc';
 
 const AppRouter = () => {
   const { t } = useTranslation("translation");
@@ -29,7 +28,7 @@ const AppRouter = () => {
             <Route path="/" element={<Home />} />
             <Route path="/data-source/read" element={<DataSourceListing />} />
             <Route path={`/${t("route.login")}`} element={<Login />} />
-            <Route path={`/${t("route.apiDoc")}`} element={<ApiDoc />} />
+            {/* Legacy ApiDoc route removed; v2 Next.js renders API docs via v2/src/components/ApiDocs */}
           </>
     </Routes>
   );

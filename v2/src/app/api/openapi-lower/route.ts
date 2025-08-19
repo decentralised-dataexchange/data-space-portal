@@ -153,6 +153,136 @@ function lowercaseSpec(input: any): any {
   return data
 }
 
+// Alias component schema keys and rewrite $ref to existing keys.
+// Handles both OAS3 components.schemas and Swagger2 definitions.
+function aliasAndRewriteSpec(root: any): any {
+  try {
+    const containers: Array<{ map: any; base: string }> = []
+    const schemas = root && root.components && root.components.schemas
+    const definitions = root && root.definitions
+    if (schemas && typeof schemas === 'object') containers.push({ map: schemas, base: '#/components/schemas/' })
+    if (definitions && typeof definitions === 'object') containers.push({ map: definitions, base: '#/definitions/' })
+
+    // Ensure both containers exist so refs to either path resolve
+    if (!schemas && definitions && typeof definitions === 'object') {
+      if (!root.components || typeof root.components !== 'object') root.components = {}
+      if (!root.components.schemas || typeof root.components.schemas !== 'object') root.components.schemas = {}
+      const target = root.components.schemas
+      for (const [k, v] of Object.entries<any>(definitions)) if (!target[k]) target[k] = v
+    }
+    if (!definitions && schemas && typeof schemas === 'object') {
+      root.definitions = root.definitions && typeof root.definitions === 'object' ? root.definitions : {}
+      const target = root.definitions
+      for (const [k, v] of Object.entries<any>(schemas)) if (!target[k]) target[k] = v
+    }
+
+    if (containers.length) {
+      // 1) Alias keys in each container across '+', '.', and '_' variants
+      for (const { map } of containers) {
+        const keys = Object.keys(map)
+        for (const k of keys) {
+          const variants = new Set<string>()
+          variants.add(k.replace(/\+/g, '.'))
+          variants.add(k.replace(/\./g, '+'))
+          variants.add(k.replace(/\+/g, '_'))
+          variants.add(k.replace(/\./g, '_'))
+          for (const v of variants) if (v && v !== k && !map[v]) map[v] = map[k]
+        }
+      }
+
+      // 2) Build global key set and suffix map to help choose a best match
+      const allKeys = new Set<string>()
+      for (const { map } of containers) for (const k of Object.keys(map)) allKeys.add(k)
+      const suffixMap = new Map<string, string[]>()
+      const getSuffix = (name: string) => {
+        const norm = String(name).replace(/\+/g, '.')
+        const idx = norm.lastIndexOf('.')
+        return idx >= 0 ? norm.slice(idx + 1) : norm
+      }
+      for (const k of allKeys) {
+        const sfx = getSuffix(k)
+        const arr = suffixMap.get(sfx) || []
+        arr.push(k)
+        suffixMap.set(sfx, arr)
+      }
+
+      const pick = (name: string) => {
+        // Prefer dot variant if the ref uses '+' to avoid any JSON Pointer decoding quirks
+        if (name.includes('+')) {
+          const dotName = name.replace(/\+/g, '.')
+          if (allKeys.has(dotName)) return dotName
+        }
+        if (allKeys.has(name)) return name
+        const alts = [name.replace(/\+/g, '.'), name.replace(/\./g, '+'), name.replace(/\+/g, '_'), name.replace(/\./g, '_')]
+        for (const a of alts) if (allKeys.has(a)) return a
+        const sfx = getSuffix(name)
+        const matches = suffixMap.get(sfx) || []
+        if (matches.length === 1) return matches[0]
+        return name
+      }
+
+      const hasInSchemas = (n: string) => !!(schemas && typeof schemas === 'object' && Object.prototype.hasOwnProperty.call(schemas, n))
+      const hasInDefinitions = (n: string) => !!(definitions && typeof definitions === 'object' && Object.prototype.hasOwnProperty.call(definitions, n))
+
+      // 3) Walk the document and rewrite $ref
+      const missing = new Set<string>()
+      const encountered = new Set<string>()
+      const walk = (node: any) => {
+        if (!node || typeof node !== 'object') return
+        if (typeof node.$ref === 'string') {
+          const s = String(node.$ref)
+          const mComp = s.match(/^#\/components\/schemas\/(.+)$/)
+          const mDef = !mComp && s.match(/^#\/definitions\/(.+)$/)
+          const target = mComp ? mComp[1] : mDef ? mDef[1] : null
+          if (target) {
+            encountered.add(target)
+            const fixed = pick(target)
+            // Choose the correct base depending on where the fixed key actually exists
+            let base: '#/components/schemas/' | '#/definitions/' = mComp ? '#/components/schemas/' : '#/definitions/'
+            if (mComp) {
+              if (!hasInSchemas(fixed) && hasInDefinitions(fixed)) base = '#/definitions/'
+            } else if (mDef) {
+              if (!hasInDefinitions(fixed) && hasInSchemas(fixed)) base = '#/components/schemas/'
+            }
+            node.$ref = base + fixed
+            if (!allKeys.has(fixed)) missing.add(fixed)
+          }
+        }
+        for (const key of Object.keys(node)) walk(node[key])
+      }
+      walk(root)
+      // 4) Create placeholders for any still-missing refs so Swagger won't error out
+      if (missing.size) {
+        for (const name of missing) {
+          for (const { map } of containers) {
+            if (!map[name]) map[name] = { type: 'object', description: 'Auto-generated placeholder for unresolved schema' }
+          }
+          allKeys.add(name)
+        }
+      }
+      // 5) Ensure the spec also contains exact keys for every originally encountered ref target (e.g., '+' variant)
+      if (encountered.size) {
+        for (const name of encountered) {
+          if (allKeys.has(name)) continue
+          // Try to alias from a best alternative
+          const best = pick(name)
+          for (const { map } of containers) {
+            if (!map[name]) {
+              if (map[best]) {
+                map[name] = map[best]
+              } else {
+                map[name] = { type: 'object', description: 'Auto-generated placeholder for unresolved schema' }
+              }
+            }
+          }
+          allKeys.add(name)
+        }
+      }
+    }
+  } catch {}
+  return root
+}
+
 async function fetchJsonSpec(target: string, headers: Headers): Promise<any | null> {
   const baseHeaders: Record<string, string> = {
     Accept: 'application/json, text/yaml;q=0.9, */*;q=0.8',
@@ -245,7 +375,8 @@ export async function GET(req: Request) {
             const parsed = YAML.parse(text)
             if (parsed && typeof parsed === 'object') {
               const lowered = lowercaseSpec(parsed)
-              return new Response(JSON.stringify(lowered), {
+              const aliased = aliasAndRewriteSpec(lowered)
+              return new Response(JSON.stringify(aliased), {
                 status: 200,
                 headers: {
                   'content-type': 'application/json; charset=utf-8',
@@ -272,7 +403,8 @@ export async function GET(req: Request) {
           try { parsed = JSON.parse(text) } catch { /* pass */ }
           if (parsed) {
             const lowered = lowercaseSpec(parsed)
-            return new Response(JSON.stringify(lowered), {
+            const aliased = aliasAndRewriteSpec(lowered)
+            return new Response(JSON.stringify(aliased), {
               status: 200,
               headers: {
                 'content-type': 'application/json; charset=utf-8',
@@ -301,7 +433,8 @@ export async function GET(req: Request) {
       return new Response(JSON.stringify({ error: 'Could not obtain OpenAPI document' }), { status: 502, headers: { 'content-type': 'application/json' } })
     }
     const lowered = lowercaseSpec(parsed)
-    return new Response(JSON.stringify(lowered), {
+    const aliased = aliasAndRewriteSpec(lowered)
+    return new Response(JSON.stringify(aliased), {
       status: 200,
       headers: {
         'content-type': 'application/json; charset=utf-8',

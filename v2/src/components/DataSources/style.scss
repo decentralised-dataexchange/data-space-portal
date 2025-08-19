@@ -23,6 +23,60 @@
     }
 }
 
+// Align the two top boxes (left info card and right list) on desktop
+// The Home styles introduce a 24px top margin on the right column; remove it on desktop
+// and keep it only on tablet/mobile to avoid misalignment.
+.dataListContainer {
+  .rightContainer {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    @include breakpoints.tabletAndDown {
+      margin-top: 24px !important;
+    }
+  }
+}
+
+/* Left panel: responsive header/logo sizing */
+.dataListContainer {
+  .leftSection {
+    .card-header {
+      position: relative;
+      height: 200px; /* Match reference banner height */
+      background-size: cover;
+      background-position: center;
+    }
+    .logo {
+      /* Fixed avatar size across all view/read states */
+      width: 158px;
+      height: 158px;
+      object-fit: cover;
+      border-radius: 50%;
+      position: absolute;
+      /* Center of the circle (including 5px border) sits on the bottom edge of the 200px banner:
+         outerHeight = 158 + 10 = 168; top = 200 - (168 / 2) = 116px */
+      top: 116px;
+      left: 10px;
+      border: 5px solid white;
+      background-color: white;
+      /* Keep 158px on tablet/mobile as requested */
+      @include breakpoints.tabletOnly { top: 116px; }
+      @include breakpoints.mobileOnly { top: 116px; }
+    }
+  }
+}
+
+/* Right panel: ensure cards and Swagger container span full width */
+.dataListContainer {
+  .rightContainer {
+    .cardContainerList {
+      width: 100%;
+    }
+    .swagger-doc {
+      width: 100%;
+    }
+  }
+}
+
 .dd-container {
     .dd-titleTxt {
         font-weight: 700;
@@ -169,7 +223,7 @@
 
 // Match older card button styling on DataSource read page
 .dataListContainer {
-    .cardContainerList {
+  .cardContainerList {
         .actionListingBtn {
             @include breakpoints.mobileOnly {
                 flex-direction: column;

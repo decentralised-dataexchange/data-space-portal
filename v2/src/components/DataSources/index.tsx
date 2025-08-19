@@ -8,7 +8,7 @@ import DDAModalController from '@/components/DataSources/DDAModalController';
 import VerifiedBadge from '../common/VerifiedBadge';
 
 import ClientPagination from '../Home/ClientPagination';
-import ApiDoc from '@/components/DataSources/ApiDoc';
+import ApiDoc from '@/components/ApiDocs';
 import './style.scss';
 
 type Props = {
@@ -65,7 +65,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                 <Grid size={{ xs: 12 }}>
                     <Grid container spacing={gridSpacing} justifyContent="center">
                         {/* Left info box */}
-                        <Grid size={{ lg: 4, md: 4, sm: 12, xs: 12 }} className='leftContainer'>
+                        <Grid size={{ lg: 4, md: 12, sm: 12, xs: 12 }} className='leftContainer'>
                             <Card className='leftSection'>
                                 <CardMedia component="div" className='card-header' image={dataSourceItem?.dataSource?.coverImageUrl}>
                                     <CardMedia
@@ -80,9 +80,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 </Box> */}
                                 <CardContent sx={{ minHeight: "229px" }}>
                                     <Box sx={{
-                                        marginLeft: { xs: 0, sm: "180px" },
-                                        paddingTop: { xs: "40px", sm: "0px" },
-                                        transform: { xs: 0, sm: "translateY(-40px)" }
+                                        // Always use compact (mobile) styling regardless of screen size
+                                        marginLeft: 0,
+                                        paddingTop: "48px",
+                                        transform: "none"
                                     }}>
                                         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                                             {dataSourceItem?.dataSource?.name}
@@ -107,7 +108,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                             </Card>
                         </Grid>
                         {/* Right wide cards list */}
-                        <Grid size={{ lg: 8, md: 8, sm: 12, xs: 12 }} className='rightContainer'>
+                        <Grid size={{ lg: 8, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
                             <Grid container spacing={2}>
                                 {currentDdas.map((dataDisclosureAgreement, index) => {
                                     return (
@@ -139,7 +140,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                             {/* Render API docs below the selected card when viewApiFor is present */}
                             {viewApiFor && (dataSourceItem?.dataSource?.openApiUrl) && (
                                 <Box sx={{ mt: 2 }}>
-                                    <ApiDoc openApiUrl={dataSourceItem.dataSource.openApiUrl} />
+                                    <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                                        <CardContent sx={{ padding: '24px' }}>
+                                            <ApiDoc openApiUrl={dataSourceItem.dataSource.openApiUrl} />
+                                        </CardContent>
+                                    </Card>
                                 </Box>
                             )}
                         </Grid>
