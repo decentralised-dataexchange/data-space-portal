@@ -193,7 +193,7 @@
     "dataDisclosureAgreementPolicy": "Data Disclosure Agreement Policy",
     "deleteModal": {
       "title": "Delete Data Agreement",
-      "description": "Are you sure you want to delete this data agreement? This action cannot be undone.",
+      "description": "You are about to delete an existing data disclosure agreement. Please type DELETE to confirm and click DELETE. This action is not reversible.",
       "confirmButton": "Delete",
       "confirmText": "DELETE"
     },

@@ -170,7 +170,7 @@
     "dataDisclosureAgreementPolicy": "Policy för datautlämningsavtal",
     "deleteModal": {
       "title": "Ta bort dataavtal",
-      "description": "Är du säker på att du vill ta bort detta dataavtal? Denna åtgärd kan inte ångras.",
+      "description": "Du är på väg att radera ett befintligt datautlämningsavtal. Skriv RADERA för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
       "confirmButton": "Ta bort",
       "confirmText": "RADERA"
     },

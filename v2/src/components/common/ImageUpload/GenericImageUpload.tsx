@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { Box } from '@mui/material';
 import { PencilSimpleIcon } from '@phosphor-icons/react';
 import ImageCropModal from './ImageCropModal';
-import Toast from '@/components/common/Toast';
+import { useAppDispatch } from '@/custom-hooks/store';
+import { setMessage } from '@/store/reducers/authReducer';
 
 interface GenericImageUploadProps {
   editMode: boolean;
@@ -26,8 +27,6 @@ interface GenericImageUploadProps {
     right: string;
   };
   acceptedFileTypes?: string;
-  // Optional: customize the success toast copy (e.g., "Logo updated successfully")
-  successMessage?: string;
 }
 
 const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
@@ -47,20 +46,11 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   iconPosition = { top: '24px', right: '24px' },
   modalSize,
   acceptedFileTypes = 'image/jpeg,image/jpg,image/png',
-  successMessage,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastSeverity, setToastSeverity] = useState<'success' | 'info' | 'warning' | 'error'>('info');
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const showToast = (message: string, severity: 'success' | 'info' | 'warning' | 'error' = 'info') => {
-    setToastMessage(message);
-    setToastSeverity(severity);
-    setToastOpen(true);
-  };
+  const dispatch = useAppDispatch();
 
   const handleIconClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -80,7 +70,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
       img.onload = () => {
         if (img.width < minWidth || img.height < minHeight) {
           // Show toast for invalid size
-          showToast(`Image must be at least ${minWidth}x${minHeight}px`, 'error');
+          dispatch(setMessage(`Image must be at least ${minWidth}x${minHeight}px`));
           return;
         }
         
@@ -113,8 +103,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
             // Call the update function provided by parent
             await onImageUpdate(file, base64data);
             
-            // Show success message (top-right)
-            showToast(successMessage || 'Image updated successfully', 'success');
+            // Success toasts are suppressed globally; do not show a success toast here
             
             // Close modal, clear previous selection, and resolve promise
             setModalOpen(false);
@@ -122,28 +111,23 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
             resolve();
           } catch (error) {
             console.error('Error updating image:', error);
-            showToast('Error updating image. Please try again.', 'error');
+            dispatch(setMessage('Error updating image. Please try again.'));
             reject(error);
           }
         };
         
         reader.onerror = () => {
-          showToast('Error reading image data', 'error');
+          dispatch(setMessage('Error reading image data'));
           reject(new Error('Error reading image data'));
         };
       });
     } catch (error) {
       console.error('Error processing cropped image:', error);
-      showToast('Error processing cropped image', 'error');
+      dispatch(setMessage('Error processing cropped image')); 
       throw error;
     }
   };
   
-  const handleCloseToast = () => {
-    setToastOpen(false);
-    setToastMessage('');
-  };
-
   return (
     <Box style={{ position: 'relative', ...containerStyle }}>
       <img
@@ -210,13 +194,6 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
         </>
       )}
       
-      {/* Standardized top-right toast */}
-      <Toast
-        open={toastOpen}
-        message={toastMessage}
-        severity={toastSeverity}
-        onClose={handleCloseToast}
-      />
     </Box>
   );
 };

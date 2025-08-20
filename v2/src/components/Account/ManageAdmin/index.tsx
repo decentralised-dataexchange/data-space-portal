@@ -5,13 +5,13 @@ import React, { useEffect, useState } from "react";
 import { Grid, Typography, Box, Button, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ManageAdminProfilePicUpload from "./manageProfileAdmin";
-import SnackbarComponent from "@/components/notification";
 import { useTranslations } from "next-intl";
 import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
 import { setAdminDetails } from "@/store/reducers/authReducer";
 import { useGetAdminDetails, useUpdateAdminDetails, useResetPassword } from "@/custom-hooks/manageAdmin";
 import { LocalStorageService } from "@/utils/localStorageService";
 import '../style.scss'
+import { setMessage } from "@/store/reducers/authReducer";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -83,9 +83,6 @@ const ManageAdmin = () => {
     confirmPassword: ''
   });
   const { currentPassword, newPassword, confirmPassword } = passwordValue
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [formDataForImageUpload, setFormDataForImageUpload] = useState<any>();
   const [previewImage, setPreviewImage] = useState<any>();
   const t = useTranslations();
@@ -111,8 +108,7 @@ const ManageAdmin = () => {
   };
 
   const onClickSave = async () => {
-    setSuccess("");
-    setError("");
+    // clear any prior local error (now using global snackbar)
     const payload = {
       name: adminName ? adminName : currentAdminData.name,
     };
@@ -132,14 +128,12 @@ const ManageAdmin = () => {
       }
 
       setEditMode(false);
-      setSuccess(t("common.saved"));
-      setOpenSnackBar(true);
+      // Success toasts suppressed globally; do not open snackbar on success
       setFormDataForImageUpload("");
       // keep preview so user sees updated image; it will be replaced once query refetches
     } catch (e: any) {
       const errorMessage = e instanceof Error ? e.message : t("manageAdmin.error");
-      setError(errorMessage);
-      setOpenSnackBar(true);
+      dispatch(setMessage(errorMessage));
     }
   };
 
@@ -152,12 +146,10 @@ const ManageAdmin = () => {
   }
 
   const onClickRestPassWord = () => {
-    setSuccess("");
-    setError("");
+    // clear any prior local error (now using global snackbar)
     
     if (newPassword !== confirmPassword) {
-      setError(t("manageAdmin.samePassword"));
-      setOpenSnackBar(true);
+      dispatch(setMessage(t("manageAdmin.samePassword")));
       return;
     } 
     
@@ -181,13 +173,11 @@ const ManageAdmin = () => {
             confirmPassword: ''
           });
           
-          setSuccess(t("manageAdmin.passwordChanged"));
-          setOpenSnackBar(true);
+          // Success toasts suppressed globally; do not open snackbar on success
         },
         onError: (error) => {
           const errorMessage = error instanceof Error ? error.message : t("manageAdmin.error");
-          setError(errorMessage);
-          setOpenSnackBar(true);
+          dispatch(setMessage(errorMessage));
         }
       });
     }
@@ -195,13 +185,6 @@ const ManageAdmin = () => {
 
   return (
     <Container className="pageContainer manageAdmin-container">
-      <SnackbarComponent
-        open={openSnackBar}
-        setOpen={setOpenSnackBar}
-        message={error}
-        topStyle={100}
-        successMessage={success}
-      />
       <HeaderContainer>
         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
           {t("manageAdmin.adminUser")}

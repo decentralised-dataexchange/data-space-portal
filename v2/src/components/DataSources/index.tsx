@@ -1,6 +1,6 @@
-import { Box, Card, CardContent, CardMedia, Grid, Typography, Button } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { getTranslations, getLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { gridSpacing } from '@/constants/grid';
 import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
@@ -8,9 +8,8 @@ import DDAModalController from '@/components/DataSources/DDAModalController';
 import VerifiedBadge from '../common/VerifiedBadge';
 
 import ClientPagination from '../Home/ClientPagination';
-import ApiDoc from '@/components/DataSources/ApiDoc';
-import Link from 'next/link';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import ApiDoc from '@/components/ApiDocs';
+import './style.scss';
 
 type Props = {
     params: Promise<{ id?: string; slug?: string }>;
@@ -20,7 +19,6 @@ type Props = {
 export default async function DataSourceListingPage({ params, searchParams }: Props) {
     const { id, slug } = await params;
     const t = await getTranslations();
-    const locale = await getLocale();
     const slugify = (s: string) => s
         .toLowerCase()
         .trim()
@@ -66,7 +64,8 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
             <Grid container spacing={gridSpacing} sx={{ width: '100%', margin: 0 }}>
                 <Grid size={{ xs: 12 }}>
                     <Grid container spacing={gridSpacing} justifyContent="center">
-                        <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }} className='leftContainer'>
+                        {/* Left info box */}
+                        <Grid size={{ lg: 4, md: 12, sm: 12, xs: 12 }} className='leftContainer'>
                             <Card className='leftSection'>
                                 <CardMedia component="div" className='card-header' image={dataSourceItem?.dataSource?.coverImageUrl}>
                                     <CardMedia
@@ -81,9 +80,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 </Box> */}
                                 <CardContent sx={{ minHeight: "229px" }}>
                                     <Box sx={{
-                                        marginLeft: { xs: 0, sm: "180px" },
-                                        paddingTop: { xs: "40px", sm: "0px" },
-                                        transform: { xs: 0, sm: "translateY(-40px)" }
+                                        // Always use compact (mobile) styling regardless of screen size
+                                        marginLeft: 0,
+                                        paddingTop: "48px",
+                                        transform: "none"
                                     }}>
                                         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                                             {dataSourceItem?.dataSource?.name}
@@ -107,29 +107,15 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid size={{ lg: 12, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
-                            {viewApiFor && (
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, textAlign: 'center' }}>
-                                    <Button
-                                        component={Link}
-                                        href={`/${locale}/data-source/read/${dataSourceSlug}`}
-                                        variant="text"
-                                        sx={{ color: '#000', "&:hover": { color: "rgba(0, 0, 0, 0.8)" }, display: 'flex', alignItems: 'center', gap: 1 }}
-                                    >
-                                        <KeyboardArrowLeftIcon fontSize="small" />
-                                        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', paddingTop: '3px' }}>
-                                            {t('common.back')}
-                                        </Typography>
-                                    </Button>
-                                </Box>
-                            )}
+                        {/* Right wide cards list */}
+                        <Grid size={{ lg: 8, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
                             <Grid container spacing={2}>
                                 {currentDdas.map((dataDisclosureAgreement, index) => {
                                     return (
                                         <Grid
                                             key={index}
-                                            size={viewApiFor ? { xs: 12 } : { xs: 12, sm: 4, md: 3 }}
-                                            sx={{ minWidth: viewApiFor ? 'auto' : 400, width: '100%' }}
+                                            size={{ xs: 12 }}
+                                            sx={{ width: '100%' }}
                                         >
                                             <Card className='cardContainerList' sx={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                                 <CardContent sx={{ padding: '24px' }}>
@@ -154,7 +140,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                             {/* Render API docs below the selected card when viewApiFor is present */}
                             {viewApiFor && (dataSourceItem?.dataSource?.openApiUrl) && (
                                 <Box sx={{ mt: 2 }}>
-                                    <ApiDoc openApiUrl={dataSourceItem.dataSource.openApiUrl} />
+                                    <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                                        <CardContent sx={{ padding: '24px' }}>
+                                            <ApiDoc openApiUrl={dataSourceItem.dataSource.openApiUrl} />
+                                        </CardContent>
+                                    </Card>
                                 </Box>
                             )}
                         </Grid>

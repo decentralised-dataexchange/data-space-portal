@@ -7,7 +7,7 @@ import MinimalLayout from './minimal/MinimalLayout';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
 import Loader from '@/components/common/Loader';
 import SnackbarComponent from '@/components/notification';
-import { setSuccessMessage } from '@/store/reducers/authReducer';
+import { setSuccessMessage, setMessage } from '@/store/reducers/authReducer';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -17,23 +17,31 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isLoading = useAppSelector((state) => state.auth.loading);
   const successMessage = useAppSelector((state) => state.auth.successMessage);
+  const errorMessage = useAppSelector((state) => state.auth.message);
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const [currentLayout, setCurrentLayout] = useState<'main' | 'minimal'>('minimal');
   const [isClient, setIsClient] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   
-  // Show success message when it changes
+  // Only show toast when an error message is present. Suppress success toasts.
   useEffect(() => {
+    // Proactively clear any success messages so they don't linger
     if (successMessage) {
-      setShowSuccess(true);
+      dispatch(setSuccessMessage(''));
     }
-  }, [successMessage]);
+    if (errorMessage) {
+      setShowSuccess(true);
+    } else {
+      setShowSuccess(false);
+    }
+  }, [successMessage, errorMessage, dispatch]);
   
   const handleCloseSuccess = () => {
     setShowSuccess(false);
     // Clear the global success message so it doesn't re-open
     dispatch(setSuccessMessage(''));
+    dispatch(setMessage(''));
   };
   
   // Effect to handle client-side hydration
@@ -86,7 +94,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   // Render the appropriate layout based on authentication state
   return (
     <>
-      {/* Global success message using custom SnackbarComponent */}
+      {/* Global error message only using custom SnackbarComponent */}
       <SnackbarComponent
         open={showSuccess}
         setOpen={(open) => {
@@ -96,7 +104,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             setShowSuccess(open);
           }
         }}
-        successMessage={successMessage}
+        message={errorMessage}
       />
       
       {currentLayout === 'main' ? 

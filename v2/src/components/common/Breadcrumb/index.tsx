@@ -3,7 +3,7 @@ import React from "react";
 import { Breadcrumbs, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { BREADCRUMB_ROUTES, BreadcrumbKey } from "@/constants/breadcrumbs";
 
 type BreadCrumbProps = {
@@ -32,6 +32,8 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
 }) => {
   const t = useTranslations();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const viewApiFor = searchParams?.get('viewApiFor');
   
   // Remove locale from pathname (e.g., /en/start -> /start)
   const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '');
@@ -47,19 +49,52 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
     routesPath.forEach((segment, index) => {
       currentPath += `/${segment}`;
       const routeKey = segment as BreadcrumbKey;
-      
-      // Skip if this is not a known breadcrumb route
-      if (!BREADCRUMB_ROUTES[routeKey]) return;
-      
-      const isLast = index === routesPath.length - 1;
       const route = BREADCRUMB_ROUTES[routeKey];
-      
+
+      // Only add if segment is known AND the accumulated path exactly matches the route path
+      if (!route || currentPath !== route.path) return;
+
+      const isLast = index === routesPath.length - 1;
+
       breadcrumbs.push({
-        path: currentPath,
+        path: route.path, // use canonical route path
         name: t(route.translationKey as any),
         isClickable: route.isClickable && !isLast
       });
     });
+
+    // Handle dynamic segment for /data-source/read/:id
+    if (
+      routesPath.length >= 3 &&
+      routesPath[0] === 'data-source' &&
+      routesPath[1] === 'read'
+    ) {
+      const slug = routesPath[2];
+      if (slug) {
+        const display = decodeURIComponent(slug)
+          .replace(/-/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLowerCase()
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+        const isViewingApi = Boolean(viewApiFor)
+        // Slug crumb: clickable when viewing API (acts as back link), not clickable otherwise
+        breadcrumbs.push({
+          path: pathname,
+          name: display || slug,
+          isClickable: isViewingApi,
+        });
+
+        // API crumb: present when viewing API, not clickable
+        if (isViewingApi) {
+          breadcrumbs.push({
+            path: `${pathname}?viewApiFor=${encodeURIComponent(viewApiFor!)}`,
+            name: 'API',
+            isClickable: false,
+          })
+        }
+      }
+    }
 
     return breadcrumbs;
   };
