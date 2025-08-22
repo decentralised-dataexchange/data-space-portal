@@ -13,6 +13,7 @@ interface Props {
   coverImage: string;
   logoImage: string;
   dataDisclosureAgreements: DataDisclosureAgreement[];
+  trusted?: boolean;
 }
 
 export default function DDAModalController({
@@ -22,6 +23,7 @@ export default function DDAModalController({
   coverImage,
   logoImage,
   dataDisclosureAgreements,
+  trusted,
 }: Props) {
   const dispatch = useAppDispatch();
   const selectedDDAId = useAppSelector((state) => state.dataSources.selectedDDAId);
@@ -45,6 +47,7 @@ export default function DDAModalController({
       dataSourceDescription={dataSourceDescription}
       coverImage={coverImage}
       logoImage={logoImage}
+      trusted={trusted}
     />
   );
 }

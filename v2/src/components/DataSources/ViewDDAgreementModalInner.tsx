@@ -21,12 +21,16 @@ interface Props {
   dataSourceDescription: any;
   coverImage: any;
   logoImage: any;
+  trusted?: boolean;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
   const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage } = props;
   const t = useTranslations();
-  const isVerified = selectedData?.verification?.presentationState === "verified";
+  const isVerified =
+    typeof props.trusted === 'boolean'
+      ? props.trusted
+      : selectedData?.verification?.presentationState === "verified";
   // Custom header content showing purpose and template ID
   const headerContent = (
     <Box sx={{ width: "100%" }}>
@@ -126,23 +130,22 @@ export default function ViewDataAgreementModalInner(props: Props) {
             {dataSourceName || t('unknownOrganization')}
           </Typography>
         </Box>
-        <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f', fontSize: '12px' }}>
+        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
           {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
           <VerifiedBadge trusted={isVerified} />
         </Typography>
-        <Typography variant="subtitle1" mt={2}>
+        <Typography variant="subtitle1" mt={2} sx={{ fontSize: '12px' }}>
           {t('common.usagePurpose')}
         </Typography>
         <Typography
-          variant="subtitle2"
-          color="black"
+          variant="body2"
           mt={0.5}
-          sx={{ wordWrap: "break-word" }}
+          sx={{ wordWrap: "break-word", fontSize: '14px' }}
         >
           {dataSourceDescription}
         </Typography>
 
-        <Typography color="black" mt={2} variant="subtitle1">
+        <Typography mt={2} variant="subtitle1" sx={{ fontSize: '12px' }}>
           {t('common.dataset')}
         </Typography>
 

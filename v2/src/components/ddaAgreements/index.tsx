@@ -61,7 +61,8 @@ const DDAgreements = () => {
       coverImage: "",
       logoImage: defaultLogoImg,
       dataSourceName: "",
-      dataSourceLocation: ""
+      dataSourceLocation: "",
+      trusted: false,
     };
 
     if (!dataAgreement || !dataSources) {
@@ -89,24 +90,35 @@ const DDAgreements = () => {
       );
 
       if (matchingDDA) {
+        const computedTrusted =
+          typeof item.dataSource?.trusted === 'boolean'
+            ? (item.dataSource.trusted as boolean)
+            : item?.verification?.presentationState === 'verified';
         // Return the cover image, logo, name, and location from the matched data source
         return {
           coverImage: item.dataSource.coverImageUrl || "",
           logoImage: item.dataSource.logoUrl || defaultLogoImg,
           dataSourceName: item.dataSource.name || "",
-          dataSourceLocation: item.dataSource.location || ""
+          dataSourceLocation: item.dataSource.location || "",
+          trusted: computedTrusted,
         };
       }
     }
 
     // If no matching DDA found, try to use the first available data source's images
-    const firstDataSource = dataSourcesList[0]?.dataSource;
+    const firstItem = dataSourcesList[0];
+    const firstDataSource = firstItem?.dataSource;
     if (firstDataSource) {
+      const computedTrusted =
+        typeof firstDataSource.trusted === 'boolean'
+          ? (firstDataSource.trusted as boolean)
+          : firstItem?.verification?.presentationState === 'verified';
       return {
         coverImage: firstDataSource.coverImageUrl || "",
         logoImage: firstDataSource.logoUrl || defaultLogoImg,
         dataSourceName: firstDataSource.name || "",
-        dataSourceLocation: firstDataSource.location || ""
+        dataSourceLocation: firstDataSource.location || "",
+        trusted: computedTrusted,
       };
     }
 
@@ -284,6 +296,7 @@ const DDAgreements = () => {
           dataSourceDescription={selectedDDA.purposeDescription || ''}
           coverImage={getDataSourceDetails(selectedDDA).coverImage}
           logoImage={getDataSourceDetails(selectedDDA).logoImage}
+          trusted={getDataSourceDetails(selectedDDA).trusted}
         />
       )}
       {selectedDDA && (
