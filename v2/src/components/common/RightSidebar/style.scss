@@ -26,13 +26,28 @@
       }
     }
   }
+
+  // When a banner (with avatar overlay) is present, add extra gap before content
+  .right-sidebar-banner + .right-sidebar-content {
+    margin-top: 12px;
+  }
+  
+  // Ensure consistent avatar size only within right sidebars
+  .right-sidebar-banner {
+    .MuiAvatar-root {
+      width: 110px !important;
+      height: 110px !important;
+    }
+  }
   
   // Content area
-  .right-sidebar-content {
-    // Scrollable content area
+  .right-sidebar-scroller {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    
+    background-color: #F7F6F6;
+  }
+
+  .right-sidebar-content {
     // Add some breathing room for content
     padding: 16px;
     background-color: #F7F6F6;
@@ -70,7 +85,7 @@
     .MuiButton-root {
       min-width: 120px;
       text-transform: none;
-      border-radius: 7px;
+      border-radius: 7px; // restore original rounded buttons for RightSidebar
       
       // Primary button style
       &.MuiButton-contained {

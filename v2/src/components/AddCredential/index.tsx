@@ -162,13 +162,13 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
           {showValues ? <EyeSlashIcon size={20} color="white" /> : <EyeIcon size={20} color="white" />}
         </IconButton>
       </Box>
-      <Box sx={{ position: "relative", height: '65px', marginTop: '-65px', left: -25 }}>
+      <Box sx={{ position: "relative", height: '65px', left: -25 }}>
         <Avatar
           src={logoUrl || defaultLogoImg}
           sx={{
             position: 'absolute',
             left: 50,
-            top: 0,
+            top: -65,
             width: 110,
             height: 110,
             border: '6px solid white',

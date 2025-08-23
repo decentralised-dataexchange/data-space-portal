@@ -93,7 +93,6 @@ export default function ViewDataAgreementModalInner(props: Props) {
           setOpen(false);
         }}
         className="delete-btn"
-        sx={{ color: "black" }}
         variant="outlined"
       >
         {t("common.close")}
@@ -103,7 +102,6 @@ export default function ViewDataAgreementModalInner(props: Props) {
           onClick={() => {
             navigator.clipboard.writeText(selectedData?.connection?.invitationUrl);
           }}
-          sx={{ color: "black" }}
           className="delete-btn"
           variant="outlined"
         >
@@ -134,7 +132,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
           <VerifiedBadge trusted={isVerified} />
         </Typography>
-        <Typography variant="subtitle1" mt={2} sx={{ fontSize: '12px' }}>
+        <Typography variant="subtitle1" mt={2} sx={{ fontSize: '16px' }}>
           {t('common.usagePurpose')}
         </Typography>
         <Typography
@@ -145,7 +143,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           {dataSourceDescription}
         </Typography>
 
-        <Typography mt={2} variant="subtitle1" sx={{ fontSize: '12px' }}>
+        <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
           {t('common.dataset')}
         </Typography>
 

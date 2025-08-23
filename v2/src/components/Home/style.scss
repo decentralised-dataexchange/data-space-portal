@@ -51,6 +51,11 @@
             position: relative;
         }
 
+        // Ensure a bit of extra space below the avatar by shifting the content down
+        .card-header + .MuiCardContent-root {
+            margin-top: 16px;
+        }
+
 
         .MuiCardContent-root {
             padding: 15px;

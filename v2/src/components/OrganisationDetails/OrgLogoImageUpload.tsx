@@ -47,8 +47,8 @@ const OrgLogoImageUpload = (props: Props) => {
           src={!logoImageBase64 ? defaultLogoImg : logoImageBase64}
           alt="logo"
           sx={{
-            width: '170px',
-            height: '170px',
+            width: '158px',
+            height: '158px',
             // Use an outer ring via box-shadow to eliminate inner seam artifacts from CSS borders
             boxShadow: '0 0 0 6px #fff',
             bgcolor: '#fff',
@@ -72,8 +72,8 @@ const OrgLogoImageUpload = (props: Props) => {
             position: 'absolute',
             top: 6,
             left: 6,
-            width: '158px',
-            height: '158px',
+            width: '146px',
+            height: '146px',
             // Keep mounted at all times so Toast remains visible; disable interactions when not editing
             pointerEvents: editMode ? 'auto' : 'none'
           }}
