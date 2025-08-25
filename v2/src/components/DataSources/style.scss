@@ -163,19 +163,36 @@
 }
 
 .modal-footer {
-    position: fixed;
-    bottom: 0px;
-    width: 594px;
-    border-top: 1px solid #E9ECEF;
-    height: 65px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    z-index: 1;
-    @include breakpoints.tabletAndDown {
-        width: 100%;
+  position: fixed;
+  bottom: 0px;
+  width: 594px;
+  border-top: 1px solid #E9ECEF;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  z-index: 1;
+  padding: 0 24px;
+  @include breakpoints.tabletAndDown {
+      width: 100%;
+  }
+
+  // Standardize footer button look like other modals
+  .MuiButton-root {
+    min-width: 120px;
+    text-transform: unset;
+    border: 1px solid rgb(223, 223, 223);
+    background: white;
+    border-radius: 0px;
+    color: #000;
+
+    &:hover {
+      background: black;
+      color: white;
+      border-color: black;
     }
+  }
 }
 
 .delete-btn {

@@ -52,7 +52,7 @@ export const DataAttributeCardForDDA = (props: Props) => {
                   }}
                 >
                   <td style={{ border: 0, width: '100%' }}>
-                    <Typography variant="subtitle2">
+                    <Typography variant="subtitle2" sx={{ fontSize: '14px' }}>
                       {attribute.attributeName}
                     </Typography>
                   </td>

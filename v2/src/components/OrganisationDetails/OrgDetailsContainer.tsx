@@ -309,7 +309,8 @@ const OrganisationDetailsContainer = (props: Props) => {
               cursor: "pointer",
               textAlign: { xs: "left", sm: "right" },
               marginTop: { xs: "14px", sm: "0px" },
-              padding: "10px"
+              padding: "10px",
+              marginRight: "0.7rem"
             }}
           >
             {t("common.edit")}

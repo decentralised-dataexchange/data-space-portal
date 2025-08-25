@@ -58,6 +58,8 @@ const StyledDrawer = styled(Drawer, {
 }>(({ theme, width = 480, maxWidth = 594, height = '100%' }) => ({
   zIndex: theme.zIndex.modal,
   '& .MuiDrawer-paper': {
+    display: 'flex',
+    flexDirection: 'column',
     width: typeof width === 'number' ? `${width}px` : width,
     maxWidth: typeof maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
     height: typeof height === 'number' ? `${height}px` : height,
@@ -82,9 +84,13 @@ const Header = styled('div')(({ theme }) => ({
 }));
 
 const Content = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
+  backgroundColor: '#F7F6F6',
+}));
+
+const Scroller = styled('div')(({ theme }) => ({
   flex: 1,
   overflow: 'auto',
-  padding: theme.spacing(2),
   backgroundColor: '#F7F6F6',
 }));
 
@@ -192,17 +198,18 @@ const RightSidebar = ({
         </Header>
       )}
       
-      {/* Banner - Optional section for organization details or other info */}
-      {showBanner && bannerContent && (
-        <Banner className="right-sidebar-banner" style={bannerProps?.style} sx={bannerProps?.sx}>
-          {bannerContent}
-        </Banner>
-      )}
+      {/* Scrollable area containing banner (if any) and content */}
+      <Scroller className="right-sidebar-scroller">
+        {showBanner && bannerContent && (
+          <Banner className="right-sidebar-banner" style={bannerProps?.style} sx={bannerProps?.sx}>
+            {bannerContent}
+          </Banner>
+        )}
 
-      {/* Content */}
-      <Content className="right-sidebar-content" style={contentProps?.style} sx={contentProps?.sx}>
-        {children}
-      </Content>
+        <Content className="right-sidebar-content" style={contentProps?.style} sx={contentProps?.sx}>
+          {children}
+        </Content>
+      </Scroller>
 
       {/* Footer */}
       {showFooter && footerContent && (

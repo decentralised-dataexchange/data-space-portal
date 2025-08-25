@@ -151,14 +151,6 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                 handleCloseViewDDAModal(false);
               }}
               className="delete-btn"
-              sx={{
-                marginRight: "15px",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
               variant="outlined"
             >
               {t("common.close")}

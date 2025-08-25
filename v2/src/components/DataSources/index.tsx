@@ -41,7 +41,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
             dataSourceItem = list.find(item => slugify(item.dataSource.name) === paramSlug);
         }
     }
-    const isVerified = dataSourceItem?.verification?.presentationState === "verified";
+    const trusted =
+        typeof dataSourceItem?.dataSource?.trusted === 'boolean'
+            ? (dataSourceItem?.dataSource?.trusted as boolean)
+            : dataSourceItem?.verification?.presentationState === "verified";
     const sp = await searchParams;
     const ddas = dataSourceItem?.dataDisclosureAgreements ?? [];
     const viewApiFor = sp?.viewApiFor;
@@ -88,9 +91,9 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                                             {dataSourceItem?.dataSource?.name}
                                         </Typography>
-                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
-                                            {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-                                            <VerifiedBadge trusted={isVerified} />
+                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
+                                            {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+                                            <VerifiedBadge trusted={trusted} />
                                         </Typography>
                                         <Typography className='datasource-location'>
                                             {dataSourceItem?.dataSource?.location}
@@ -163,6 +166,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                     coverImage={dataSourceItem?.dataSource?.coverImageUrl || ''}
                     logoImage={dataSourceItem?.dataSource?.logoUrl || ''}
                     dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
+                    trusted={trusted}
                 />
             </Grid>
         </Box>
