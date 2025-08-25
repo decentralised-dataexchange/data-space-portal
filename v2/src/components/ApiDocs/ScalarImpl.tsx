@@ -2,6 +2,7 @@
 import { ApiReferenceConfiguration, ApiReferenceReact } from '@scalar/api-reference-react'
 import { useEffect, useRef, useState } from "react"
 import '@scalar/api-reference-react/style.css'
+import './ScalarImpl.scss'
 
 export default function ScalarImpl({ openApiUrl }: { openApiUrl: string }) {
   const [auth, setAuth] = useState<Required<ApiReferenceConfiguration>['authentication']>({
@@ -1074,36 +1075,6 @@ export default function ScalarImpl({ openApiUrl }: { openApiUrl: string }) {
               forceDarkModeState: "light",
               hideDarkModeToggle: true,
               authentication: auth,
-              customCss: `
-                /* Smooth scrolling inside the API doc area */
-                .api-doc-root { scroll-behavior: smooth; }
-
-                /* Ensure anchors don't hide behind the fixed header */
-                .api-doc-root h1, .api-doc-root h2, .api-doc-root h3,
-                .api-doc-root h4, .api-doc-root h5, .api-doc-root h6 {
-                  scroll-margin-top: 92px;
-                }
-
-                /* Aggressively collapse any spacing before first visible content */
-                .api-doc-root > *:first-child {
-                  margin-top: 0 !important;
-                  padding-top: 0 !important;
-                  border-top: none !important;
-                }
-
-                /* Remove renderer-added top padding on main content */
-                .api-doc-root main.references-rendered,
-                .api-doc-root [role="main"].references-rendered,
-                .api-doc-root main[role="main"] {
-                  padding-top: 0 !important;
-                }
-
-                /* Remove top padding on the sidebar search box */
-                .api-doc-root .scalar-api-references-standalone-search {
-                  padding-top: 0 !important;
-                  margin-top: 0 !important;
-                }
-              `,
             }}
           />
         </div>
