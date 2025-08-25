@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
+import 'swagger-ui-dist/swagger-ui.css';
+import './SwaggerDoc.scss';
 
 declare global {
   interface Window {
@@ -16,17 +18,7 @@ export default function SwaggerDoc({ openApiUrl }: SwaggerDocProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const specLoadingRef = useRef<boolean>(true);
 
-  // Ensure CSS is present once
-  useEffect(() => {
-    const id = 'swagger-ui-css';
-    if (!document.getElementById(id)) {
-      const link = document.createElement('link');
-      link.id = id;
-      link.rel = 'stylesheet';
-      link.href = 'https://unpkg.com/swagger-ui-dist@4.19.1/swagger-ui.css';
-      document.head.appendChild(link);
-    }
-  }, []);
+  // CSS is bundled via import above; no dynamic injection needed
 
   // Load the Swagger UI bundle script (CDN) and initialize
   useEffect(() => {
@@ -449,7 +441,7 @@ export default function SwaggerDoc({ openApiUrl }: SwaggerDocProps) {
   }, [openApiUrl]);
 
   return (
-    <div className="api-doc-root swagger-doc" style={{ width: '100%' }}>
+    <div className="api-doc-root swagger-doc">
       <div ref={containerRef} />
     </div>
   );
