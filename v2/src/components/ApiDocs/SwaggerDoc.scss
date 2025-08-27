@@ -126,9 +126,27 @@
   font-size: 0.875rem !important;
 }
 
-/* Hide Swagger UI info header (title, version badges, spec URL) */
-.swagger-doc .swagger-ui .info,
-.swagger-doc .swagger-ui .download-url-wrapper {
+/* Visually lowercase displayed URLs and paths (do not alter underlying requests) */
+/* Target summary path, Request URL display, and base URL text only */
+.swagger-doc .swagger-ui .opblock-summary-path,
+.swagger-doc .swagger-ui .request-url,
+.swagger-doc .swagger-ui .request-url pre,
+.swagger-doc .swagger-ui .info .base-url {
+  text-transform: lowercase !important;
+}
+
+/* Show the info container; optionally hide bulky sub-sections when tweaks-hide-info is set */
+.swagger-doc .swagger-ui .info { display: block !important; }
+.swagger-doc .swagger-ui .info { margin: 0 !important; padding: 0 !important; }
+.swagger-doc .swagger-ui .download-url-wrapper { display: none !important; }
+.swagger-doc.tweaks-hide-info .swagger-ui .info .title,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .base-url,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .description,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .external-docs,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .contact,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .license,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .version,
+.swagger-doc.tweaks-hide-info .swagger-ui .info .url {
   display: none !important;
 }
 
@@ -139,6 +157,13 @@
 }
 .swagger-doc .swagger-ui,
 .swagger-doc .swagger-ui .wrapper,
+.swagger-doc .swagger-ui .info,
+.swagger-doc .swagger-ui .information-container,
+.swagger-doc .swagger-ui .information-container.wrapper,
+.swagger-doc .swagger-ui .information-container .wrapper {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
 .swagger-doc .swagger-ui .opblock-tag-section,
 .swagger-doc .swagger-ui .content,
 .swagger-doc .swagger-ui .models,
@@ -157,6 +182,554 @@
 .swagger-doc .swagger-ui .opblock .opblock-summary {
   padding-left: 16px !important;
   padding-right: 16px !important;
+}
+
+/* Servers dropdown + Authorize button bar (OAS3 and OAS2) */
+.swagger-doc .swagger-ui .information-container {
+  display: block !important;
+  margin: 0 !important; /* remove extra top gap */
+  padding: 0 !important; /* reset padding; row handles its own */
+}
+/* Flatten internal block wrappers to remove built-in gutters */
+.swagger-doc .swagger-ui .information-container .block,
+.swagger-doc .swagger-ui .information-container .block.col-12 {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+/* Handle both DOM variants: `.information-container.wrapper` and `.information-container .wrapper` */
+.swagger-doc .swagger-ui .information-container.wrapper,
+.swagger-doc .swagger-ui .information-container .wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important; /* Servers group left, Authorize right */
+  gap: 16px !important;
+  padding: 0 !important; /* base: no padding to avoid gaps on empty rows */
+  margin: 0 !important;  /* base: no margin to avoid gaps on empty rows */
+  width: 100% !important;
+}
+/* Only add spacing when Servers/Auth are present */
+.swagger-doc .swagger-ui .information-container.wrapper:has(.servers, .auth-wrapper),
+.swagger-doc .swagger-ui .information-container .wrapper:has(.servers, .auth-wrapper) {
+  padding: 0 16px !important;
+  margin: 0 0 12px 0 !important;
+}
+/* Hide truly empty wrappers/blocks */
+.swagger-doc .swagger-ui .information-container .wrapper:empty,
+.swagger-doc .swagger-ui .information-container.wrapper:empty,
+.swagger-doc .swagger-ui .information-container .block:empty,
+.swagger-doc .swagger-ui .information-container .block.col-12:empty {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+/* Ensure the right block actually sticks to the right */
+.swagger-doc .swagger-ui .information-container.wrapper > .auth-wrapper,
+.swagger-doc .swagger-ui .information-container .wrapper > .auth-wrapper {
+  margin-left: auto !important;
+}
+/* Use scheme-container as the primary flex row for Servers + Authorize */
+.swagger-doc.tweaks-no-border .swagger-ui .information-container {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.swagger-doc .swagger-ui .scheme-container,
+.swagger-doc .swagger-ui .schemes-wrapper,
+.swagger-doc .swagger-ui .schemes.wrapper {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  align-items: stretch !important;
+  justify-content: space-between !important; /* Left group and Authorize at the extremes */
+  gap: 16px !important;
+  width: 100% !important;
+  padding: 0 16px !important;
+  margin: 0 0 12px 0 !important; /* remove extra top gap */
+}
+/* Make the inner section flex to fill available space */
+.swagger-doc .swagger-ui .scheme-container .schemes.wrapper {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+/* Highly specific fallback to enforce row and far-right auth in the exact DOM variant provided */
+.swagger-doc .swagger-ui .scheme-container > section.schemes.wrapper.block.col-12 {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+.swagger-doc .swagger-ui .scheme-container > section.schemes.wrapper.block.col-12 > .auth-wrapper {
+  margin-left: auto !important;
+}
+/* Stretch only the scheme-container row so right column (.auth-wrapper) can bottom-align its content */
+.swagger-doc .swagger-ui .scheme-container {
+  align-items: stretch !important;
+}
+.swagger-doc .swagger-ui .servers {
+  display: block; /* stack label (title above) and select container */
+}
+/* Stack the servers title above the dropdown: flex the inner left wrapper as a column */
+.swagger-doc .swagger-ui .scheme-container .schemes.wrapper > div:not(.auth-wrapper) {
+  display: flex !important;
+  flex-direction: column !important; /* title above dropdown */
+  align-items: flex-start !important;
+  gap: 8px !important; /* clearer gap between label and dropdown */
+  flex: 1 1 auto; /* take remaining space so auth sits at far right */
+  min-width: 0; /* allow select to shrink if needed */
+}
+/* Ensure the auth wrapper is pinned to the far right */
+.swagger-doc .swagger-ui .scheme-container .schemes.wrapper > .auth-wrapper {
+  margin-left: auto !important;
+}
+/* Broadened selectors for servers title across SwaggerUI variants */
+/* Exact DOM: .scheme-container > section.schemes.wrapper > div > span.servers-title */
+.swagger-doc .swagger-ui .scheme-container .schemes.wrapper > div > .servers-title {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 1.6 !important;
+  margin: 0 0 12px 0 !important; /* increased gap below title */
+}
+/* Remove broad variants; rely on the exact servers-title target above */
+/* Remove older broad servers title variants */
+/* No generic fallbacks to avoid accidental scaling of non-title nodes */
+/* Remove aggressive fallbacks to avoid duplicate labels or unintended scaling */
+/* Do not affect the dropdown/select font-size */
+.swagger-doc .swagger-ui .servers > select,
+.swagger-doc .swagger-ui .servers select {
+  font-size: 0.875rem; /* 14px */
+}
+
+/* OAS2 schemes: rely on explicit labels/titsles only; avoid pseudo-element injection */
+.swagger-doc .swagger-ui .schemes > select,
+.swagger-doc .swagger-ui .schemes select { font-size: 0.875rem;  }
+/* Remove pseudo-element injection fallback */
+.swagger-doc.tweaks-no-border .swagger-ui .scheme-container,
+.swagger-doc.tweaks-no-border .swagger-ui .schemes-wrapper,
+.swagger-doc.tweaks-no-border .swagger-ui .schemes.wrapper {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Remove broad label overrides to avoid unintended side effects */
+
+.swagger-doc .swagger-ui .servers select,
+.swagger-doc .swagger-ui .schemes select {
+  min-width: 280px; /* keep layout stable */
+  font-size: 0.875rem; /* 14px */
+  height: 32px; /* match Authorize button height */
+  padding: 6px 10px; /* align with button padding */
+}
+
+/* Make sure .schemes container text is also large when present (OAS2) */
+.swagger-doc .swagger-ui .schemes {
+  font-size: 20px !important;
+}
+
+/* Targeted: ensure options list uses app colors */
+/* Trimmed option styling to reduce overrides */
+
+/* Hover/focus states similar to MUI OutlinedInput */
+/* Revert to native hover/focus styling for select */
+/* Rely on native hover/focus styles for selects */
+
+/* Disabled state to mirror app feel */
+/* Disabled: rely on native styles */
+/* Rely on native disabled styles for selects */
+
+.swagger-doc .swagger-ui .auth-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important; /* bottom align within column */
+  align-items: flex-end !important; /* align button to the right within its column */
+  align-self: stretch !important; /* take full row height */
+  margin-left: auto !important; /* push column to the right */
+}
+
+/* Responsive: stack left group and place Authorize below on small screens and small tablets */
+@media (max-width: 768px) {
+  /* Turn the header row into a column */
+  .swagger-doc .swagger-ui .scheme-container,
+  .swagger-doc .swagger-ui .schemes-wrapper,
+  .swagger-doc .swagger-ui .schemes.wrapper {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 0 12px !important;
+  }
+
+  /* Target the exact DOM to guarantee column layout and spacing */
+  .swagger-doc .swagger-ui .scheme-container > section.schemes.wrapper.block.col-12 {
+    display: flex !important;
+    flex-direction: column !important;
+    row-gap: 8px !important;
+  }
+  .swagger-doc .swagger-ui .scheme-container > section.schemes.wrapper.block.col-12 > div:not(.auth-wrapper) {
+    order: 1 !important;
+    width: 100% !important;
+  }
+  .swagger-doc .swagger-ui .scheme-container > section.schemes.wrapper.block.col-12 > .auth-wrapper {
+    order: 2 !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    align-self: stretch !important;
+    align-items: stretch !important;
+  }
+
+  /* Left group fills width */
+  .swagger-doc .swagger-ui .scheme-container .schemes.wrapper {
+    flex: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .swagger-doc .swagger-ui .scheme-container .schemes.wrapper > div:not(.auth-wrapper) {
+    width: 100% !important;
+    gap: 12px !important; /* clearer gap between label and dropdown on mobile */
+  }
+
+  /* Title spacing a bit larger on mobile */
+  .swagger-doc .swagger-ui .scheme-container .schemes.wrapper > div > .servers-title {
+    margin: 0 0 12px 0 !important; /* more space below title on mobile */
+  }
+
+  /* Make the select full-width on mobile */
+  .swagger-doc .swagger-ui .servers {
+    width: 100% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .swagger-doc .swagger-ui .servers > *,
+  .swagger-doc .swagger-ui .servers .wrapper,
+  .swagger-doc .swagger-ui .servers .select-wrapper {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .swagger-doc .swagger-ui .servers label {
+    display: block !important;
+    width: 100% !important;
+  }
+  .swagger-doc .swagger-ui .servers select,
+  .swagger-doc .swagger-ui .schemes select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important; /* override Swagger's fixed caps */
+    display: block !important;
+    height: 40px !important;
+    padding: 8px 12px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+  }
+
+  /* Make every inner wrapper of Servers full-width so it matches the button */
+  .swagger-doc .swagger-ui .servers > *,
+  .swagger-doc .swagger-ui .servers .wrapper,
+  .swagger-doc .swagger-ui .servers .dropdown,
+  .swagger-doc .swagger-ui .servers .schemes,
+  .swagger-doc .swagger-ui .servers .select,
+  .swagger-doc .swagger-ui .servers .select-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Place Authorize on its own line, aligned to the right */
+  .swagger-doc .swagger-ui .scheme-container > section.schemes.wrapper.block.col-12 > .auth-wrapper,
+  .swagger-doc .swagger-ui .scheme-container .schemes.wrapper > .auth-wrapper {
+    margin-left: 0 !important;
+    align-self: stretch !important; /* take full width in column */
+    align-items: stretch !important; /* allow button to stretch */
+    margin-top: 8px !important;
+  }
+
+  /* Make the authorize button full-width and centered text */
+  .swagger-doc .swagger-ui .scheme-container .schemes.wrapper > .auth-wrapper .authorize,
+  .swagger-doc .swagger-ui .scheme-container .schemes.wrapper > .auth-wrapper .btn.authorize {
+    width: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 40px !important;
+    box-sizing: border-box !important;
+    gap: 8px !important; /* space between text and icon */
+    margin: 0 !important; /* remove leftover default margins */
+    padding: 8px 12px !important; /* match select padding */
+    line-height: 1 !important; /* avoid extra vertical space around text */
+  }
+  /* Ensure icon and text align nicely inside the button */
+  .swagger-doc .swagger-ui .authorize svg,
+  .swagger-doc .swagger-ui .btn.authorize svg {
+    margin-left: 0 !important; /* prevent icon from being pushed to far right */
+    margin-right: 0 !important;
+    position: static !important;
+    top: 0 !important;
+    transform: none !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    width: 16px !important;
+    height: 16px !important;
+    pointer-events: none !important; /* avoid odd alignment when icon becomes focusable */
+  }
+  .swagger-doc .swagger-ui .authorize,
+  .swagger-doc .swagger-ui .btn.authorize {
+    text-align: center !important;
+    margin: 0 !important;
+  }
+  /* Hide any lock icons that are not inside the button */
+  .swagger-doc .swagger-ui .auth-wrapper > :not(.authorize):not(.btn.authorize) svg {
+    display: none !important;
+  }
+  /* Fallback: enforce full-width authorize button even if DOM varies */
+  .swagger-doc .swagger-ui .authorize,
+  .swagger-doc .swagger-ui .btn.authorize {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  /* Ensure the wrapper itself spans full width and remove stray icon siblings */
+  .swagger-doc .swagger-ui .auth-wrapper {
+    width: 100% !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+  .swagger-doc .swagger-ui .auth-wrapper > * {
+    width: 100% !important;
+  }
+  /* Some Swagger builds render a separate lock icon as a sibling of the button */
+  .swagger-doc .swagger-ui .auth-wrapper > svg {
+    display: none !important;
+  }
+  /* In authorize modal, keep button compact on small screens */
+  .swagger-doc .swagger-ui .dialog-ux .modal-ux-content .authorize,
+  .swagger-doc .swagger-ui .dialog-ux .modal-ux-content .btn.authorize {
+    width: auto !important;
+    max-width: none !important;
+    align-self: flex-start !important;
+    justify-content: center !important;
+    padding: 8px 16px !important;
+    height: 40px !important;
+  }
+}
+
+.swagger-doc .swagger-ui .authorize, /* v4 */
+.swagger-doc .swagger-ui .btn.authorize { /* older builds */
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 32px !important; /* align with native select height */
+  padding: 6px 12px !important;
+  background: #fff !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+  text-transform: none !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease !important;
+  gap: 6px !important; /* spacing between text and icon */
+  cursor: pointer !important;
+}
+
+/* Modal: do not stretch the Authorize button to full width */
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content .authorize,
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content .btn.authorize {
+  width: auto !important;
+  max-width: none !important;
+  align-self: flex-start !important;
+  height: 32px !important;
+  padding: 6px 12px !important;
+}
+
+.swagger-doc .swagger-ui .authorize:hover,
+.swagger-doc .swagger-ui .btn.authorize:hover {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+.swagger-doc .swagger-ui .authorize:active,
+.swagger-doc .swagger-ui .btn.authorize:active {
+  background: #111 !important;
+  border-color: #111 !important;
+}
+.swagger-doc .swagger-ui .authorize:focus,
+.swagger-doc .swagger-ui .btn.authorize:focus {
+  outline-color: #000 !important;
+  outline-style: auto !important;
+  outline-width: 2px !important;
+}
+
+/* Make lock icon inherit text color so it follows hover */
+.swagger-doc .swagger-ui .authorize svg,
+.swagger-doc .swagger-ui .btn.authorize svg {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Authorize modal accessibility/typography */
+.swagger-doc .swagger-ui .dialog-ux {
+  font-family: inherit !important;
+  color: var(--text-color) !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-header h3 {
+  font-size: 1.125rem !important; /* 18px */
+  font-weight: 600 !important;
+  color: var(--text-color) !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content h4,
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content h5,
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content h6 {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--text-color) !important;
+}
+.swagger-doc .swagger-ui .dialog-ux label {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: var(--text-color) !important;
+  margin-bottom: 6px !important;
+}
+.swagger-doc .swagger-ui .dialog-ux input[type="text"],
+.swagger-doc .swagger-ui .dialog-ux input[type="password"],
+.swagger-doc .swagger-ui .dialog-ux input[type="search"],
+.swagger-doc .swagger-ui .dialog-ux textarea {
+  height: 32px !important;
+  padding: 6px 10px !important;
+  background: #fff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0 !important;
+  color: var(--text-color) !important;
+  font-size: 0.875rem !important;
+  box-shadow: none !important;
+}
+.swagger-doc .swagger-ui .dialog-ux input::placeholder,
+.swagger-doc .swagger-ui .dialog-ux textarea::placeholder {
+  color: #9c9c9c !important;
+}
+.swagger-doc .swagger-ui .dialog-ux input:focus,
+.swagger-doc .swagger-ui .dialog-ux textarea:focus,
+.swagger-doc .swagger-ui .dialog-ux input:focus-visible,
+.swagger-doc .swagger-ui .dialog-ux textarea:focus-visible {
+  outline-color: #000 !important;
+  outline-style: auto !important;
+  outline-width: 2px !important;
+  box-shadow: none !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer .btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 32px !important;
+  padding: 6px 12px !important;
+  background: #fff !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+  text-transform: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer .btn:hover {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer .btn:focus,
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer .btn:focus-visible {
+  outline-color: #000 !important;
+  outline-style: auto !important;
+  outline-width: 2px !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer .btn:active {
+  background: #111 !important;
+  border-color: #111 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-footer .btn svg {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Auth scheme title row inside the modal (e.g., "bearerAuth (http, Bearer)") */
+/* Try to cover common classnames across SwaggerUI versions, plus a safe fallback */
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .name,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .auth__title,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .scheme-title,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .scopes__title {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #000 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .type,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .scheme-type {
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  color: #000 !important;
+}
+/* Fallback: if the title is rendered without specific classes, style the first inline block */
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper > *:first-child {
+  font-size: 1rem !important;
+  color: #000 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper {
+  row-gap: 6px !important;
+}
+
+/* Fallback: enforce readable size/contrast on the entire scheme title row */
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper {
+  font-size: 1rem !important;
+  color: #000 !important;
+  line-height: 1.5 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper strong,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper b {
+  font-weight: 600 !important;
+  color: #000 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper small,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .hint,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .description {
+  color: #000 !important;
+  opacity: 1 !important; /* avoid low-contrast dimming */
+}
+
+/* Ensure scheme title and its parts are readable (covers various SwaggerUI classnames) */
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .scopes__title,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .scopes__title *,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .auth__title,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .auth__title *,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .api-key__title,
+.swagger-doc .swagger-ui .dialog-ux .auth-container .wrapper .api-key__title * {
+  font-size: 1rem !important;
+  font-weight: 600 !important; /* emphasize scheme name */
+  color: #000 !important;
+  letter-spacing: normal !important;
+  opacity: 1 !important;
+}
+
+/* Exact DOM from modal: <h4><code>bearerAuth</code> (http, Bearer)</h4> */
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content .auth-container h4 {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #000 !important;
+  opacity: 1 !important;
+  margin: 0 0 8px 0 !important;
+}
+.swagger-doc .swagger-ui .dialog-ux .modal-ux-content .auth-container h4 code {
+  color: #000 !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+  opacity: 1 !important;
 }
 
 /* Inner content padding for submenu accordions (request/response sections) */
