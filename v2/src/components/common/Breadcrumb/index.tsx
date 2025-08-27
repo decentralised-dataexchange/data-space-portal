@@ -78,21 +78,12 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
           .toLowerCase()
           .replace(/\b\w/g, (c) => c.toUpperCase());
         const isViewingApi = Boolean(viewApiFor)
-        // Slug crumb: clickable when viewing API (acts as back link), not clickable otherwise
+        // Always show the specific item name as the last crumb; do not append a generic "API" crumb
         breadcrumbs.push({
           path: pathname,
           name: display || slug,
-          isClickable: isViewingApi,
+          isClickable: false,
         });
-
-        // API crumb: present when viewing API, not clickable
-        if (isViewingApi) {
-          breadcrumbs.push({
-            path: `${pathname}?viewApiFor=${encodeURIComponent(viewApiFor!)}`,
-            name: 'API',
-            isClickable: false,
-          })
-        }
       }
     }
 
