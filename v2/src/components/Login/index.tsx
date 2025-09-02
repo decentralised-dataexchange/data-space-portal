@@ -65,11 +65,14 @@ const Login = () => {
         <Box
           sx={{
             margin: "1rem",
-            justifyContent: "center",
-            alignItems: "center"
+            textAlign: "center", 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: "1rem"
           }}
         >
-          <p className='titleTxt'>{t('login.header')}</p>
+          <p className='titleTxt'>{t('common.orgDashboardTitle')}</p>
+          <p className='titleTxt'>{t('login.title')}</p>
         </Box>
         <form onSubmit={handleSubmit}>
           <Box className='text-field'>
@@ -150,6 +153,13 @@ const Login = () => {
             }
             style={{ color: "#A1A1A1" }}
           />
+        </Box>
+        <Box sx={{ width: "100%", marginTop: ".5em", display: "flex", justifyContent: "center" }}>
+          <Typography variant="body2" style={{ color: "#A1A1A1" }}>
+            {t('login.noAccount')}
+            {' '}
+            <Link href="/signup">{t('login.signup')}</Link>
+          </Typography>
         </Box>
       </Box>
     </Box>
