@@ -10,11 +10,22 @@
     "apiDoc": "/data-source/open-api"
   },
   "login": {
-    "header": "CRANE dHDSI - Organisaation hallintapaneeli",
+    "header": "CRANE dHDSI - Organisaation hallintapaneeli - Kirjaudu",
     "userId": "Käyttäjätunnus",
     "password": "Salasana",
     "rememberMe": "Muista minut",
-    "errorMessage": "Virheelliset kirjautumistiedot. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen."
+    "errorMessage": "Virheelliset kirjautumistiedot. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen.",
+    "title": "Kirjaudu",
+    "noAccount": "Eikö sinulla ole tiliä?",
+    "signup": "Luo tili"
+  },
+  "signup": {
+    "header": "CRANE dHDSI - Organisaation hallintapaneeli - Luo tili",
+    "name": "Nimi",
+    "confirmPassword": "Vahvista salasana",
+    "haveAccount": "Onko sinulla jo tili?",
+    "login": "Kirjaudu sisään",
+    "title": "Luo tili"
   },
   "breadcrumbs" : {
     "home": "Koti",
@@ -123,6 +134,7 @@
     "industry": "Toimiala"
   },
   "common": {
+    "orgDashboardTitle": "CRANE dHDSI - Organisaation hallintapaneeli",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
     "untrustedServiceProvider": "Luottamaton palveluntarjoaja",
     "continue": "Jatka",

@@ -10,11 +10,23 @@
     "apiDoc": "/data-source/open-api"
   },
   "login": {
-    "header": "CRANE dHDSI - Organisation dashboard",
+    "header": "CRANE dHDSI - Organisation dashboard - Login",
     "userId": "User ID",
     "password": "Password",
     "rememberMe": "Remember Me",
-    "errorMessage": "Invalid login credentials. Please double-check your username and password and try again."
+    "errorMessage": "Invalid login credentials. Please double-check your username and password and try again.",
+    "title": "Login",
+    "noAccount": "Don't have an account?",
+    "signup": "Signup"
+  },
+  "signup": {
+    "header": "CRANE dHDSI - Organisation dashboard - Signup",
+    "name": "Name",
+    "email": "Email",
+    "confirmPassword": "Confirm Password",
+    "haveAccount": "Already have an account?",
+    "login": "Log in",
+    "title": "Signup"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -96,6 +108,7 @@
     "industry": "Industry"
   },
   "common": {
+    "orgDashboardTitle": "CRANE dHDSI - Organisation dashboard",
     "trustedServiceProvider": "Trusted Service Provider",
     "untrustedServiceProvider": "Untrusted Service Provider",
     "continue": "Continue",

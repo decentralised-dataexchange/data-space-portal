@@ -10,11 +10,22 @@
     "apiDoc": "/data-source/open-api"
   },
   "login": {
-    "header": "CRANE dHDSI - Organisationspanel",
+    "header": "CRANE dHDSI - Organisationspanel - Logga in",
     "userId": "Användar-ID",
     "password": "Lösenord",
     "rememberMe": "Kom ihåg mig",
-    "errorMessage": "Ogiltiga inloggningsuppgifter. Dubbelkolla ditt användarnamn och lösenord och försök igen."
+    "errorMessage": "Ogiltiga inloggningsuppgifter. Dubbelkolla ditt användarnamn och lösenord och försök igen.",
+    "title": "Logga in",
+    "noAccount": "Har du inget konto?",
+    "signup": "Skapa konto"
+  },
+  "signup": {
+    "header": "CRANE dHDSI - Organisationspanel - Skapa konto",
+    "name": "Namn",
+    "confirmPassword": "Bekräfta lösenord",
+    "haveAccount": "Har du redan ett konto?",
+    "login": "Logga in",
+    "title": "Skapa konto"
   },
   "breadcrumbs": {
     "home": "Hem",
@@ -123,6 +134,7 @@
     }
   },
   "common": {
+    "orgDashboardTitle": "CRANE dHDSI - Organisationspanel",
     "trustedServiceProvider": "Pålitlig tjänsteleverantör",
     "untrustedServiceProvider": "Opålitlig tjänsteleverantör",
     "continue": "Fortsätt",
