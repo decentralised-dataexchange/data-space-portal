@@ -23,6 +23,8 @@
     "header": "CRANE dHDSI - Organisaation hallintapaneeli - Luo tili",
     "name": "Nimi",
     "confirmPassword": "Vahvista salasana",
+    "userId": "Käyttäjätunnus",
+    "passwordMismatch": "Salasanat eivät täsmää",
     "haveAccount": "Onko sinulla jo tili?",
     "login": "Kirjaudu sisään",
     "title": "Luo tili"

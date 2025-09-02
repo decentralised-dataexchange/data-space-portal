@@ -23,6 +23,8 @@
     "header": "CRANE dHDSI - Organisationspanel - Skapa konto",
     "name": "Namn",
     "confirmPassword": "Bekräfta lösenord",
+    "passwordMismatch": "Lösenorden matchar inte",
+    "userId": "Användar-ID",
     "haveAccount": "Har du redan ett konto?",
     "login": "Logga in",
     "title": "Skapa konto"

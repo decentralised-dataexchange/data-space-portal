@@ -23,7 +23,9 @@
     "header": "CRANE dHDSI - Organisation dashboard - Signup",
     "name": "Name",
     "email": "Email",
+    "userId": "User ID",
     "confirmPassword": "Confirm Password",
+    "passwordMismatch": "Passwords do not match",
     "haveAccount": "Already have an account?",
     "login": "Log in",
     "title": "Signup"
