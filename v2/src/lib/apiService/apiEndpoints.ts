@@ -3,6 +3,9 @@ export const ENDPOINTS = {
     login: () => {
         return "/onboard/login/";
     },
+    signup: () => {
+        return "/onboard/register/";
+    },
     logout: () => { return "/onboard/logout" },
     refreshToken: () => {
         return "/onboard/token/refresh";
