@@ -9,6 +9,8 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import './style.scss';
 import { useSignup } from '@/custom-hooks/auth';
+import { useAppDispatch } from '@/custom-hooks/store';
+import { setMessage } from '@/store/reducers/authReducer';
 
 interface FormValue {
   name: string;
@@ -22,12 +24,17 @@ const Signup = () => {
   const [formValue, setFormValue] = useState<FormValue>({ name: '', email: '', password: '', confirmPassword: '' });
   const { name, email, password, confirmPassword } = formValue;
   const { signup: doSignup, isLoading } = useSignup();
+  const dispatch = useAppDispatch();
+  const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Basic validations
     if (!email || !password) return;
-    if (password !== confirmPassword) return;
+    if (password !== confirmPassword) {
+      dispatch(setMessage(t('signup.passwordMismatch')));
+      return;
+    }
 
     doSignup({ email, password, name: name || undefined });
   };
@@ -87,7 +94,7 @@ const Signup = () => {
               onChange={handleChange}
               variant="standard"
               label={false}
-              placeholder={t('signup.email')}
+              placeholder={t('signup.userId')}
               fullWidth
               slotProps={{
                 input: {
@@ -127,17 +134,18 @@ const Signup = () => {
               label={false}
               placeholder={t('signup.confirmPassword')}
               fullWidth
+              error={passwordsMismatch}
+              helperText={passwordsMismatch ? t('signup.passwordMismatch') : ''}
               slotProps={{
                 input: {
                   startAdornment: <LockOpenIcon size={22} style={{ color: "#777", marginRight: "0.5rem", transform: "translateY(-2px)" }} />,
                   disableUnderline: true,
                   onKeyPress: handleKeyPress,
                   endAdornment: (
-                    <IconButton type="submit" disabled={isLoading}>
+                    <IconButton type="submit" disabled={isLoading || passwordsMismatch}>
                       <ArrowCircleRightIcon
                         size={22}
-                        style={{ color: "#888", cursor: "pointer", transform: "translateY(-2px)" }}
-                      />
+                        style={{ color: "#888", cursor: "pointer", transform: "translateY(-2px)" }} />
                     </IconButton>
                   ),
                 }
