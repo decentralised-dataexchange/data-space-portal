@@ -66,14 +66,13 @@ export const useLogin = () => {
       }, 500);
     },
     onError: (error: unknown) => {
-      // Send a global error message so AppLayout can display it
       let errText = 'Login failed';
-      // Try to extract a server-provided message
       try {
         const anyErr = error as any;
         const data = anyErr?.response?.data;
         if (typeof data === 'string') errText = data;
         else if (data?.detail) errText = data.detail;
+        else if (data?.message) errText = data.message;
         else if (anyErr?.message) errText = anyErr.message;
       } catch {}
       dispatch(setSuccessMessage(''));
@@ -101,10 +100,9 @@ export const useSignup = () => {
       return apiService.signup(email, password, name);
     },
     onSuccess: () => {
-      // Clear any previous errors
+      // Clear any previous messages and suppress success toast
       dispatch(setMessage(''));
-      // Optionally set success (AppLayout suppresses success toasts)
-      dispatch(setSuccessMessage('Signup successful'));
+      dispatch(setSuccessMessage(''));
       // Navigate to login
       setTimeout(() => {
         router.push('/login');
@@ -117,6 +115,8 @@ export const useSignup = () => {
         const data = anyErr?.response?.data;
         if (typeof data === 'string') errText = data;
         else if (data?.detail) errText = data.detail;
+        else if (data?.message) errText = data.message;
+        else if (data?.email?.length) errText = data.email.join(", ");
         else if (anyErr?.message) errText = anyErr.message;
       } catch {}
       dispatch(setSuccessMessage(''));
