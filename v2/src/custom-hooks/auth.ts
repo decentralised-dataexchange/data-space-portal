@@ -10,6 +10,7 @@ import { AccessToken } from "@/types/auth";
 declare module "@/lib/apiService/apiService" {
   interface ApiService {
     login: (email: string, password: string) => Promise<{ access: string; refresh: string }>;
+    signup: (email: string, password: string, name?: string) => Promise<{ id: string; email: string; name?: string }>;
     getAdminDetails: () => Promise<any>;
   }
 }
@@ -33,7 +34,7 @@ export const useLogin = () => {
         refresh_expires_in: 86400, // Default refresh expiration time
         token_type: 'Bearer'
       };
-
+      
       // First update the token in localStorage and cookies
       LocalStorageService.updateToken(token);
 
@@ -86,6 +87,48 @@ export const useLogin = () => {
     error: error,
     success: isSuccess,
     isLoading: isPending,
+    data
+  };
+};
+
+// Signup hook
+export const useSignup = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { mutate, isPending, isSuccess, error, data } = useMutation({
+    mutationFn: ({ email, password, name }: { email: string; password: string; name?: string }) => {
+      return apiService.signup(email, password, name);
+    },
+    onSuccess: () => {
+      // Clear any previous errors
+      dispatch(setMessage(''));
+      // Optionally set success (AppLayout suppresses success toasts)
+      dispatch(setSuccessMessage('Signup successful'));
+      // Navigate to login
+      setTimeout(() => {
+        router.push('/login');
+      }, 0);
+    },
+    onError: (error: unknown) => {
+      let errText = 'Signup failed';
+      try {
+        const anyErr = error as any;
+        const data = anyErr?.response?.data;
+        if (typeof data === 'string') errText = data;
+        else if (data?.detail) errText = data.detail;
+        else if (anyErr?.message) errText = anyErr.message;
+      } catch {}
+      dispatch(setSuccessMessage(''));
+      dispatch(setMessage(errText));
+    }
+  });
+
+  return {
+    signup: mutate,
+    isLoading: isPending,
+    success: isSuccess,
+    error,
     data
   };
 };
