@@ -18,6 +18,12 @@ export const apiService = {
       { email, password }
     ).then(res => res.data);
   },
+  signup: async (email: string, password: string, name?: string): Promise<{ id: string; email: string; name?: string }> => {
+    return api.post<{ id: string; email: string; name?: string }>(
+      ENDPOINTS.signup(),
+      { email, password, name }
+    ).then(res => res.data);
+  },
   dataSourceList: async (): Promise<DataSourceListResponse> => {
     return api.get<DataSourceListResponse>(ENDPOINTS.dataSourceList())
       .then(res => res.data);

@@ -34,7 +34,15 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
   instance.interceptors.request.use((config) => {
     // Check if we're in a logged out state and this is an API request
     // Skip this check for login/authentication endpoints
-    const isAuthEndpoint = config.url?.includes('/auth/') || config.url?.includes('/login');
+    const isAuthEndpoint = (
+      config.url?.includes('/auth/') ||
+      config.url?.includes('/login') ||
+      // Frontend route alias
+      config.url?.includes('/signup') ||
+      // Backend signup endpoint
+      config.url?.includes('/onboard/register') ||
+      config.url?.includes('/token/refresh')
+    );
     
     if (!isAuthenticated && !isAuthEndpoint && config.url?.startsWith('/')) {
       // Cancel the request if we're not authenticated

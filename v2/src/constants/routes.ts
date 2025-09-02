@@ -1,7 +1,7 @@
 export const publicRoutes = new Set([
   '/',
   '/login',
-  '/register',
+  '/signup',
   '/forgot-password',
   '/reset-password',
   '/data-source/read',

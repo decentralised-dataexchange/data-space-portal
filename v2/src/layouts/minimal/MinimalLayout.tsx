@@ -8,13 +8,13 @@ import Breadcrumb from '@/components/common/Breadcrumb';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const isLoginRoute = pathname.includes('/login');
+  const isAuthRoute = pathname.includes('/login') || pathname.includes('/signup');
   return (
     <>
-      {isLoginRoute ? null : <MinimalAppBar />}
+      {isAuthRoute ? null : <MinimalAppBar />}
       <Box className="leftNavigationContainer">
-        <Box component="main" sx={{ paddingTop: isLoginRoute ? 0 : '80px', flex: 1 }}>
-          {!isLoginRoute && (
+        <Box component="main" sx={{ paddingTop: isAuthRoute ? 0 : '80px', flex: 1 }}>
+          {!isAuthRoute && (
             <Suspense fallback={null}>
               <Breadcrumb />
             </Suspense>
