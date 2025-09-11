@@ -17,9 +17,8 @@ export const ENDPOINTS = {
     dataSourceList: () => {
         return "/service/data-sources/"
     },
-    // api for getting start page
-    gettingStart: () => {
-        return "/config/data-source/"
+    organisationList: () => {
+        return "/service/organisation/";
     },
 
     getLogoImage: () => {
@@ -64,6 +63,9 @@ export const ENDPOINTS = {
     getOrganizationVerification: () => {
         return "/config/organization/verification/"
     },
+    organisationsDetails: () => {
+        return "/config/organisation/"
+    },
     listDataDisclosureAgreements: (filter: any, limit: number, offsetValue: number) => {
         return `config/data-disclosure-agreements/?limit=${limit}&offset=${offsetValue}${filter === "listed" ? `&status=${filter}` : ""}`;
     },
@@ -73,6 +75,7 @@ export const ENDPOINTS = {
     deleteDDA: (id: any) => {
         return `config/data-disclosure-agreement/${id}`
     },
+    // Organisation details used across pages
     getOrganisationsDetails: () => {
         return "/config/data-source/";
     },
@@ -81,5 +84,12 @@ export const ENDPOINTS = {
     },
     passwordReset: () => {
         return "/config/admin/reset-password/"
+    },
+    // OAuth2 Clients
+    getOAuth2Clients: () => {
+        return "/config/organisation/oauth2-clients";
+    },
+    createOAuth2Client: () => {
+        return "/config/organisation/oauth2-client/";
     }
 };

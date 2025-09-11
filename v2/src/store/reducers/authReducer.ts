@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { OAuth2Client } from '@/types/oauth2';
 
 export interface AdminDetails {
   id: string;
@@ -14,6 +15,7 @@ export interface AuthState {
   error: boolean;
   message: string;
   successMessage: string;
+  oauth2Client: OAuth2Client | null;
 }
 
 // Helper function to check if token exists and is valid
@@ -47,7 +49,8 @@ const initialState: AuthState = {
   loading: false,
   message: "",
   error: false,
-  successMessage: ""
+  successMessage: "",
+  oauth2Client: null
 };
 
 const authSlice = createSlice({
@@ -72,11 +75,15 @@ const authSlice = createSlice({
     setSuccessMessage: (state, action: PayloadAction<string>) => {
       state.successMessage = action.payload;
     },
+    setOAuth2Client: (state, action: PayloadAction<OAuth2Client | null>) => {
+      state.oauth2Client = action.payload;
+    },
     logout: (state) => {
       state.isAuthenticated = false;
       state.adminDetails = null;
       state.error = false;
       state.message = '';
+      state.oauth2Client = null;
       if (typeof window !== 'undefined') {
         // Clear tokens in new format
         localStorage.removeItem('access_token');
@@ -97,6 +104,7 @@ export const {
   setError, 
   setMessage, 
   setSuccessMessage,
+  setOAuth2Client,
   logout 
 } = authSlice.actions;
 

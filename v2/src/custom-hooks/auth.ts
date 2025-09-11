@@ -5,7 +5,7 @@ import { setAdminDetails, setAuthenticated, setMessage, setSuccessMessage } from
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LocalStorageService } from "@/utils/localStorageService";
-import { AccessToken } from "@/types/auth";
+import { AccessToken, SignupPayload } from "@/types/auth";
 
 declare module "@/lib/apiService/apiService" {
   interface ApiService {
@@ -96,8 +96,9 @@ export const useSignup = () => {
   const router = useRouter();
 
   const { mutate, isPending, isSuccess, error, data } = useMutation({
-    mutationFn: ({ email, password, name }: { email: string; password: string; name?: string }) => {
-      return apiService.signup(email, password, name);
+    mutationFn: (payload: SignupPayload) => {
+      console.log("payload", payload);
+      return apiService.signup(payload);
     },
     onSuccess: () => {
       // Clear any previous messages and suppress success toast

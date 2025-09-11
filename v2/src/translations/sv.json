@@ -17,17 +17,28 @@
     "errorMessage": "Ogiltiga inloggningsuppgifter. Dubbelkolla ditt användarnamn och lösenord och försök igen.",
     "title": "Logga in",
     "noAccount": "Har du inget konto?",
-    "signup": "Skapa konto"
+    "signup": "Skapa konto",
+    "createNow": "Skapa ditt nu."
   },
   "signup": {
     "header": "CRANE dHDSI - Organisationspanel - Skapa konto",
     "name": "Namn",
+    "email": "E-post",
     "confirmPassword": "Bekräfta lösenord",
     "passwordMismatch": "Lösenorden matchar inte",
     "userId": "Användar-ID",
     "haveAccount": "Har du redan ett konto?",
     "login": "Logga in",
-    "title": "Skapa konto"
+    "title": "Skapa konto",
+    "sector": "Sektor",
+    "location": "Plats",
+    "policyUrl": "Policy-URL",
+    "description": "Beskrivning",
+    "owsBaseUrl": "OWS Base URL",
+    "optional": "Valfritt",
+    "required": "Obligatorisk",
+    "requiredFieldsMissing": "Fyll i alla obligatoriska fält",
+    "passwordLength": "Lösenordet måste vara 8 till 20 tecken"
   },
   "breadcrumbs": {
     "home": "Hem",
@@ -169,7 +180,10 @@
     "businessWalletLabel": "Företagsplånboksnamn",
     "connectedOn": "Ansluten",
     "connectionId": "Anslutnings-ID",
-    "addDataDisclosureAgreement": "Lägg till datautlämningsavtal"
+    "addDataDisclosureAgreement": "Lägg till datautlämningsavtal",
+    "generic": "Något gick fel.",
+    "errorOccurred": "Ett fel inträffade.",
+    "tryAgainLater": "Försök igen senare."
   },
   "errors": {
     "generic": "Något gick fel."
@@ -268,6 +282,7 @@
     "yourUserID": "Ditt användar-ID",
     "configuredBaseURL": "Konfigurerad bas-URL",
     "apiKey": "API-nyckel",
+    "noTokenAvailable": "Ingen token tillgänglig",
     "createConnection": "Skapa anslutning",
     "scope": "Omfattning",
     "scopes": "Omfattningar",
@@ -287,7 +302,19 @@
     "configureOpenApi": "Konfigurera OpenAPI-specifikation",
     "openApiUrlLabel": "OpenAPI-specifikations-URL:",
     "openApiUrlPlaceholder": "Ange OpenAPI-URL",
-    "uploadButton": "Ladda upp"
+    "uploadButton": "Ladda upp",
+    "oauth2ClientTitle": "OAuth2-klient",
+    "oauth2ClientNameLabel": "Namn",
+    "oauth2ClientNamePlaceholder": "Namn för OAuth2-klient",
+    "createOAuth2Client": "Skapa",
+    "clientNameLabel": "Klientnamn",
+    "clientIdLabel": "Client ID",
+    "clientSecretLabel": "Client Secret",
+    "organisationWalletTitle": "Organisationsplånbok",
+    "owsBaseUrlLabel": "Bas-URL:",
+    "owsBaseUrlPlaceholder": "Ange bas-URL för organisationsplånbok",
+    "saveButton": "Spara",
+    "owsBaseUrlUpdateFailed": "Uppdatering av organisationsplånbokens bas-URL misslyckades"
   },
   "dispConnection": {
     "copy": "KOPIERA",

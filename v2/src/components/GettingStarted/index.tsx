@@ -106,7 +106,6 @@ const GettingStarted = () => {
   };
 
   // Mutation hooks
-  const { mutateAsync: updateDataSource } = useUpdateDataSource();
   const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
 
   // Logo image upload is fully handled inside OrgLogoImageUpload via React Query
