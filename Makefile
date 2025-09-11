@@ -81,7 +81,7 @@ deploy/staging: $(DEPLOY_VERSION_FILE) ## Deploy to K8s cluster (e.g. make deplo
 	kubectl set image deployment/dataspace-frontend dataspace-frontend=$(DEPLOY_VERSION) -n dataspace 
 
 deploy/staging/v2: $(DEPLOY_VERSION_FILE) ## Deploy Next.js v2 to K8s cluster
-	kubectl set image deployment/dataspace-frontend dataspace-frontend=$(DEPLOY_VERSION) -n dataspace
+	kubectl set image deployment/staging-dataspacefrontend staging-dataspacefrontend=$(DEPLOY_VERSION) -n dataspace
 
 $(DEPLOY_VERSION_FILE):
 	@echo "Missing '$(DEPLOY_VERSION_FILE)' file. Run 'make build/docker/deployable'" >&2
