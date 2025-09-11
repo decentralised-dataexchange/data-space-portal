@@ -83,7 +83,7 @@ const OrganisationDetailsContainer = (props: Props) => {
     (state) => state?.gettingStart?.data
   );
   
-  const isVerify = verifyConnectionObj?.verification?.presentationState === 'verified';
+  const isVerify = verifyConnectionObj?.verification?.presentationState !== 'verified';
 
   const callRightSideDrawer = () => {
     setOpenRightSideDrawer(!openRightSideDrawer)

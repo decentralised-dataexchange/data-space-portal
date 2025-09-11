@@ -5,9 +5,10 @@ import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import { useGetAdminDetails, useGetOrganizationDetails, useUpdateOpenApiUrl, useGetApiToken } from "@/custom-hooks/developerApis";
-import { useAppDispatch } from "@/custom-hooks/store";
-import { setMessage } from "@/store/reducers/authReducer";
+import { useGetAdminDetails, useGetOrganizationDetails, useUpdateOpenApiUrl, useGetApiToken, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation } from "@/custom-hooks/developerApis";
+import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
+import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
+import { baseURL } from "@/constants/url";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -40,14 +41,23 @@ const Item = styled("div")(({ theme }) => ({
   border: "1px solid #CECECE",
 }));
 
-export default function DeveloperAPIs () {
+export default function DeveloperAPIs() {
   const [showAPI, setShowAPI] = useState(false);
+  const [showClientName, setShowClientName] = useState(false);
+  const [showClientId, setShowClientId] = useState(false);
+  const [showClientSecret, setShowClientSecret] = useState(false);
+  const [clientName, setClientName] = useState("");
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const { getFormattedToken } = useGetApiToken();
   const token = getFormattedToken();
   const [openApiUrl, setOpenApiUrl] = useState("");
   const [isOk, setIsOk] = useState(false);
+  const [owsBaseUrl, setOwsBaseUrl] = useState("");
+  const [isOwsDirty, setIsOwsDirty] = useState(false);
+  const { data: oauth2List, isLoading: oauth2Loading } = useGetOAuth2Clients();
+  const { mutate: createOAuth2Client, isPending: isCreating } = useCreateOAuth2Client();
+  const oauth2Client = useAppSelector((state) => state.auth.oauth2Client);
 
   // Fetch admin details using React Query
   const { data: adminData, isLoading: adminLoading, isError: adminError } = useGetAdminDetails();
@@ -55,21 +65,80 @@ export default function DeveloperAPIs () {
 
   // Fetch organization details using React Query
   const { data: orgData, isLoading: orgLoading, isError: orgError } = useGetOrganizationDetails();
-  const orgDetails = orgData?.dataSource;
+  const orgDetails = (orgData?.organisation ?? orgData?.dataSource);
 
   // Update OpenAPI URL mutation
   const { mutate: updateOpenApiUrl, isPending: isUpdating } = useUpdateOpenApiUrl();
+  const { mutate: updateOrganisation, isPending: isSavingOws } = useUpdateOrganisation();
 
   // Set the OpenAPI URL when organization data is loaded
   useEffect(() => {
     if (orgDetails?.openApiUrl) {
       setOpenApiUrl(orgDetails.openApiUrl);
     }
+    if (orgDetails?.owsBaseUrl) {
+      setOwsBaseUrl(orgDetails.owsBaseUrl);
+    }
   }, [orgDetails]);
+
+  // Store first OAuth2 client in Redux when fetched
+  useEffect(() => {
+    const first = oauth2List?.oAuth2Clients?.[0];
+    if (first) {
+      dispatch(setOAuth2Client(first));
+    }
+  }, [oauth2List, dispatch]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(token);
     // Success toasts suppressed globally; no local snackbar on copy
+  };
+
+  const handleOwsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const val = event.target.value;
+    setOwsBaseUrl(val);
+    setIsOwsDirty(val !== (orgDetails?.owsBaseUrl ?? ""));
+  };
+
+  const handleSaveOws = () => {
+    if (!orgDetails?.id) return;
+    if (!isOwsDirty) return;
+    const payload = {
+      organisation: {
+        ...orgDetails,
+        owsBaseUrl: owsBaseUrl,
+      }
+    } as unknown as { organisation: any };
+    updateOrganisation(payload as any, {
+      onSuccess: () => {
+        setIsOwsDirty(false);
+      },
+      onError: () => {
+        dispatch(setMessage(t("developerAPIs.owsBaseUrlUpdateFailed")));
+      }
+    });
+  };
+
+  const handleCopyValue = (value: string) => {
+    navigator.clipboard.writeText(value);
+  };
+
+  const handleCreateClient = () => {
+    if (!clientName.trim()) return;
+    createOAuth2Client(
+      { name: clientName.trim() },
+      {
+        onSuccess: (res) => {
+          if (res?.oAuth2Client) {
+            dispatch(setOAuth2Client(res.oAuth2Client));
+            setClientName("");
+          }
+        },
+        onError: () => {
+          dispatch(setMessage(t("error.generic")));
+        }
+      }
+    );
   };
 
   const handleUpdateUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +158,7 @@ export default function DeveloperAPIs () {
           openApiUrl: openApiUrl,
         },
       };
-      
+
       updateOpenApiUrl(payload, {
         onSuccess: () => {
           // Success toasts suppressed globally; do not open snackbar
@@ -103,7 +172,7 @@ export default function DeveloperAPIs () {
   };
 
   // Show loading state if any data is loading
-  if (adminLoading || orgLoading) {
+  if (adminLoading || orgLoading || oauth2Loading) {
     return (
       <Container>
         <HeaderContainer>
@@ -151,7 +220,7 @@ export default function DeveloperAPIs () {
           {t("developerAPIs.pageDescription")}
         </Typography>
         <Grid container spacing={2}>
-        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
             <Item>
               <Typography
                 color="black"
@@ -192,7 +261,7 @@ export default function DeveloperAPIs () {
                 {t("developerAPIs.configuredBaseURL")}
               </Typography>
               <Typography color="grey" variant="body2">
-                https://api.nxd.foundation{" "}
+                {baseURL}
               </Typography>
             </Item>
           </Grid>
@@ -246,20 +315,23 @@ export default function DeveloperAPIs () {
       <Box className="apiKey">
         <Grid container spacing={1} alignItems={"center"}>
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-              <Typography
-                color="black"
-                variant="subtitle1"
-                fontWeight="bold"
-                mb={0.5}
-              >
-                {t("developerAPIs.configureOpenApi")}
-              </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 2 }}>
-            <Typography color="grey" variant="body1" className="description">
-              {t("developerAPIs.openApiUrlLabel")} 
+            <Typography
+              color="black"
+              variant="subtitle1"
+              fontWeight="bold"
+              mb={0.5}
+            >
+              {t("developerAPIs.configureOpenApi")}
             </Typography>
           </Grid>
+          {(openApiUrl) && (
+            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+              <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+                {t("developerAPIs.openApiUrlLabel")}
+              </Typography>
+            </Grid>
+          )}
+
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
             <TextField
               placeholder={t("developerAPIs.openApiUrlPlaceholder")}
@@ -293,6 +365,169 @@ export default function DeveloperAPIs () {
               }}
             >
               {isUpdating ? <CircularProgress size={20} /> : t("developerAPIs.uploadButton")}
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* OAuth2 Client Section */}
+      <Box className="apiKey">
+        <Grid container spacing={1} alignItems={"center"}>
+          <Grid size={{ xs: 12 }}>
+            <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+              {t("developerAPIs.oauth2ClientTitle")}
+            </Typography>
+          </Grid>
+
+          {/* If no client, show create form */}
+          {!oauth2Client ? (
+            <>
+              <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+                <TextField
+                  placeholder={t("developerAPIs.oauth2ClientNamePlaceholder")}
+                  variant="standard"
+                  size="small"
+                  fullWidth
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  InputProps={{ disableUnderline: false }}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
+                <Button
+                  variant="outlined"
+                  onClick={handleCreateClient}
+                  disabled={isCreating || !clientName.trim()}
+                  sx={{
+                    width: { xs: '100%', sm: 'auto' },
+                    marginRight: { xs: 0, sm: '20px' },
+                    cursor: (isCreating || !clientName.trim()) ? "not-allowed" : "pointer",
+                    color: (isCreating || !clientName.trim()) ? "#6D7676" : "black",
+                    height: '40px',
+                    border: "1px solid #DFDFDF",
+                    borderRadius: "0px",
+                    "&:hover": { backgroundColor: "black", color: "white" },
+                  }}
+                >
+                  {isCreating ? <CircularProgress size={20} /> : t("developerAPIs.createOAuth2Client")}
+                </Button>
+              </Grid>
+            </>
+          ) : (
+            <>
+              {/* Client Name */}
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+                  {t("developerAPIs.clientNameLabel")}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
+                <Typography color="grey" variant="body1" className="description">
+                  {showClientName ? oauth2Client.name : "************************************************************************************************************************************************************************************"}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
+                <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
+                  {showClientName ? (
+                    <EyeIcon onClick={() => setShowClientName(false)} size={24} />
+                  ) : (
+                    <EyeSlashIcon onClick={() => setShowClientName(true)} size={24} />
+                  )}
+                  <CopyIcon size={24} onClick={() => handleCopyValue(oauth2Client.name)} />
+                </Box>
+              </Grid>
+
+              {/* Client ID */}
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+                  {t("developerAPIs.clientIdLabel")}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
+                <Typography color="grey" variant="body1" className="description">
+                  {showClientId ? oauth2Client.client_id : "************************************************************************************************************************************************************************************"}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
+                <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
+                  {showClientId ? (
+                    <EyeIcon onClick={() => setShowClientId(false)} size={24} />
+                  ) : (
+                    <EyeSlashIcon onClick={() => setShowClientId(true)} size={24} />
+                  )}
+                  <CopyIcon size={24} onClick={() => handleCopyValue(oauth2Client.client_id)} />
+                </Box>
+              </Grid>
+
+              {/* Client Secret */}
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+                <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+                  {t("developerAPIs.clientSecretLabel")}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
+                <Typography color="grey" variant="body1" className="description">
+                  {showClientSecret ? oauth2Client.client_secret : "************************************************************************************************************************************************************************************"}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
+                <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
+                  {showClientSecret ? (
+                    <EyeIcon onClick={() => setShowClientSecret(false)} size={24} />
+                  ) : (
+                    <EyeSlashIcon onClick={() => setShowClientSecret(true)} size={24} />
+                  )}
+                  <CopyIcon size={24} onClick={() => handleCopyValue(oauth2Client.client_secret)} />
+                </Box>
+              </Grid>
+            </>
+          )}
+        </Grid>
+      </Box>
+
+      {/* Organisation Wallet Section */}
+      <Box className="apiKey">
+        <Grid container spacing={1} alignItems={"center"}>
+          <Grid size={{ xs: 12 }}>
+            <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+              {t("developerAPIs.organisationWalletTitle")}
+            </Typography>
+          </Grid>
+          {(owsBaseUrl) && (
+            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
+              <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
+                {t("developerAPIs.owsBaseUrlLabel")}
+              </Typography>
+            </Grid>
+          )}
+
+          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
+            <TextField
+              placeholder={t("developerAPIs.owsBaseUrlPlaceholder")}
+              variant="standard"
+              size="small"
+              fullWidth
+              value={owsBaseUrl}
+              onChange={handleOwsChange}
+              InputProps={{ disableUnderline: false }}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 3 }}>
+            <Button
+              variant="outlined"
+              onClick={handleSaveOws}
+              disabled={!isOwsDirty || isSavingOws}
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                cursor: (!isOwsDirty || isSavingOws) ? 'not-allowed' : 'pointer',
+                color: (!isOwsDirty || isSavingOws) ? '#6D7676' : 'black',
+                height: '40px',
+                border: '1px solid #DFDFDF',
+                borderRadius: '0px',
+                '&:hover': { backgroundColor: 'black', color: 'white' },
+              }}
+            >
+              {isSavingOws ? <CircularProgress size={20} /> : t("developerAPIs.saveButton")}
             </Button>
           </Grid>
         </Grid>

@@ -22,20 +22,28 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   const t = await getTranslations();
 
-  // Fetch data sources; be resilient to network timeouts in local/dev
-  let dataSourceList: Awaited<ReturnType<typeof apiService.dataSourceList>> | null = null;
+  // Fetch organisations; be resilient to network timeouts in local/dev
+  let organisationList: Awaited<ReturnType<typeof apiService.organisationList>> | null = null;
   try {
-    dataSourceList = await apiService.dataSourceList();
+    organisationList = await apiService.organisationList();
   } catch (err) {
-    console.error('Failed to fetch data sources on Home page:', err);
+    console.error('Failed to fetch organisations on Home page:', err);
   }
-  const dataSourceItems = (dataSourceList?.dataSources ?? []).map(item => ({
-    ...item,
+  // Map organisations into the card's expected shape
+  const dataSourceItems = (organisationList?.organisations ?? []).map(item => ({
     dataSource: {
-      ...item.dataSource,
-      // Map verification status to trusted property
-      trusted: item.verification?.presentationRecord?.verified === 'true' || false
-    }
+      description: item.organisation?.description ?? '',
+      logoUrl: item.organisation?.logoUrl ?? '',
+      id: item.organisation?.id ?? '',
+      coverImageUrl: item.organisation?.coverImageUrl ?? '',
+      name: item.organisation?.name ?? '',
+      sector: item.organisation?.sector ?? '',
+      location: item.organisation?.location ?? '',
+      policyUrl: item.organisation?.policyUrl ?? '',
+      // Map org verification to trusted
+      trusted: item.organisationIdentity?.isPresentationVerified ?? false,
+    },
+    dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
   }));
 
   // Server-side pagination

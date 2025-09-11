@@ -29,6 +29,9 @@ const Login = () => {
   const { email, password } = formValue;
   const { login } = useLogin();
 
+  // Determine if form is valid for enabling submit
+  const isFormValid = !!email && !!password;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -113,11 +116,11 @@ const Login = () => {
                   disableUnderline: true,
                   onKeyPress: handleKeyPress,
                   endAdornment: (
-                    <IconButton type="submit">
+                    <IconButton type="submit" disabled={!isFormValid} sx={{ '&.Mui-disabled': { pointerEvents: 'all', cursor: 'not-allowed' } }}>
                       <ArrowCircleRightIcon
                         size={22}
 
-                        style={{ color: "#888", cursor: "pointer", transform: "translateY(-2px)" }}
+                        style={{ color: "#888", transform: "translateY(-2px)" }}
                       />
                     </IconButton>
                   ),
@@ -158,7 +161,7 @@ const Login = () => {
           <Typography variant="body2" style={{ color: "#A1A1A1" }}>
             {t('login.noAccount')}
             {' '}
-            <Link href="/signup">{t('login.signup')}</Link>
+            <Link className="appLink" href="/signup">{t('login.createNow')}</Link>
           </Typography>
         </Box>
       </Box>

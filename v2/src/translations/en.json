@@ -17,7 +17,8 @@
     "errorMessage": "Invalid login credentials. Please double-check your username and password and try again.",
     "title": "Login",
     "noAccount": "Don't have an account?",
-    "signup": "Signup"
+    "signup": "Signup",
+    "createNow": "Create yours now."
   },
   "signup": {
     "header": "CRANE dHDSI - Organisation dashboard - Signup",
@@ -28,7 +29,16 @@
     "passwordMismatch": "Passwords do not match",
     "haveAccount": "Already have an account?",
     "login": "Log in",
-    "title": "Signup"
+    "title": "Signup",
+    "sector": "Sector",
+    "location": "Location",
+    "policyUrl": "Policy URL",
+    "description": "Description",
+    "owsBaseUrl": "OWS Base URL",
+    "optional": "Optional",
+    "required": "Required",
+    "requiredFieldsMissing": "Please fill in all required fields",
+    "passwordLength": "Password must be 8 to 20 characters"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -149,7 +159,10 @@
     "manageAdmin": "manage-admin",
     "developerApis": "developer-apis",
     "disp-connections": "disp-connections",
-    "businessWallet": "business-wallet"
+    "businessWallet": "business-wallet",
+    "generic": "Something went wrong.",
+    "errorOccurred": "An error occurred.",
+    "tryAgainLater": "Please try again later."
   },
   "errors": {
     "generic": "Something went wrong."
@@ -294,6 +307,7 @@
     "yourUserID": "Your User ID",
     "configuredBaseURL": "Configured Base URL",
     "apiKey": "API Key",
+    "noTokenAvailable": "No token available",
     "createConnection": "Create Connection",
     "scope": "Scope",
     "scopes": "Scopes",
@@ -313,7 +327,19 @@
     "configureOpenApi": "Configure OpenAPI Specification",
     "openApiUrlLabel": "OpenAPI Specification URL:",
     "openApiUrlPlaceholder": "Enter OpenAPI URL",
-    "uploadButton": "Upload"
+    "uploadButton": "Upload",
+    "oauth2ClientTitle": "OAuth2 Client",
+    "oauth2ClientNameLabel": "Name",
+    "oauth2ClientNamePlaceholder": "Name for OAuth2 Client",
+    "createOAuth2Client": "Create",
+    "clientNameLabel": "Client Name",
+    "clientIdLabel": "Client ID",
+    "clientSecretLabel": "Client Secret",
+    "organisationWalletTitle": "Organisation Wallet",
+    "owsBaseUrlLabel": "Base URL:",
+    "owsBaseUrlPlaceholder": "Enter Base URL for Organisation Wallet",
+    "saveButton": "Save",
+    "owsBaseUrlUpdateFailed": "Updating Organisation Wallet Base URL failed"
   },
   "dispConnection": {
     "copy": "COPY",
