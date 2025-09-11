@@ -3,23 +3,44 @@ import { ENDPOINTS } from "./apiEndpoints";
 import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
 import { DataSourceListResponse } from "@/types/dataDisclosureAgreement";
-import { 
-  Verification, 
-  VerificationTemplate, 
+import { OrganisationListResponse } from "@/types/organisation";
+import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from "@/types/oauth2";
+import {
+  Verification,
+  VerificationTemplate,
   OrganizationVerificationResponse,
-  PresentationRecord 
+  PresentationRecord
 } from "@/types/verification";
+import { SignupPayload } from "@/types/auth";
 
 // API Service implementation with real API calls
 export const apiService = {
   login: async (email: string, password: string): Promise<{ access: string; refresh: string }> => {
     return api.post<{ access: string; refresh: string }>(
-      ENDPOINTS.login(), 
+      ENDPOINTS.login(),
       { email, password }
+    ).then(res => res.data);
+  },
+  signup: async (payload: SignupPayload): Promise<SignupPayload> => {
+    return api.post<SignupPayload>(
+      ENDPOINTS.signup(),
+      payload
     ).then(res => res.data);
   },
   dataSourceList: async (): Promise<DataSourceListResponse> => {
     return api.get<DataSourceListResponse>(ENDPOINTS.dataSourceList())
+      .then(res => res.data);
+  },
+  organisationList: async (): Promise<OrganisationListResponse> => {
+    return api.get<OrganisationListResponse>(ENDPOINTS.organisationList())
+      .then(res => res.data);
+  },
+  getOAuth2Clients: async (): Promise<OAuth2ClientsListResponse> => {
+    return api.get<OAuth2ClientsListResponse>(ENDPOINTS.getOAuth2Clients())
+      .then(res => res.data);
+  },
+  createOAuth2Client: async (payload: { name: string }): Promise<OAuth2ClientCreateResponse> => {
+    return api.post<OAuth2ClientCreateResponse>(ENDPOINTS.createOAuth2Client(), payload)
       .then(res => res.data);
   },
   listDataDisclosureAgreements: async (
@@ -43,7 +64,7 @@ export const apiService = {
       .then(res => res.data);
   },
   getOrganisationsDetails: async (): Promise<any> => {
-    return api.get<any>(ENDPOINTS.getOrganisationsDetails())
+    return api.get<any>(ENDPOINTS.organisationsDetails())
       .then(res => res.data);
   },
   updateOpenApiUrl: async (payload: unknown): Promise<any> => {
@@ -54,7 +75,7 @@ export const apiService = {
     try {
       const formData = new FormData();
       formData.append('orgimage', file);
-      
+
       // Make the API call; backend returns updated organization object, but we
       // don’t need it here – letting Axios set the multipart boundary automatically.
       await api.put(
@@ -86,7 +107,7 @@ export const apiService = {
   },
   getVerificationTemplates: async (restrictTemplate: boolean = false): Promise<VerificationTemplate[]> => {
     try {
-      const response = await api.get(ENDPOINTS.verificationTemplates(restrictTemplate)) as 
+      const response = await api.get(ENDPOINTS.verificationTemplates(restrictTemplate)) as
         { data: { verificationTemplates: VerificationTemplate[] } };
       return response.data.verificationTemplates;
     } catch (error) {
@@ -109,7 +130,7 @@ export const apiService = {
   createVerification: async (templateId: string): Promise<Verification> => {
     try {
       const response = await api.post<Verification>(
-        ENDPOINTS.createVerification(), 
+        ENDPOINTS.createVerification(),
         { template_id: templateId }
       );
       return response.data;
@@ -142,7 +163,7 @@ export const apiService = {
   },
   getGettingStartData: async (): Promise<any> => {
     try {
-      const response = await api.get(ENDPOINTS.gettingStart());
+      const response = await api.get(ENDPOINTS.organisationsDetails());
       return response.data;
     } catch (error) {
       console.error('Error fetching getting started data:', error);
@@ -150,13 +171,13 @@ export const apiService = {
     }
   },
   updateDataSource: async (payload: unknown): Promise<any> => {
-    return api.put<any>(ENDPOINTS.gettingStart(), payload)
+    return api.put<any>(ENDPOINTS.organisationsDetails(), payload)
       .then(res => res.data)
       .catch(error => {
         throw error;
       });
   },
-  
+
   // Upload admin avatar image
   updateAdminAvatar: async (formData: FormData): Promise<any> => {
     try {
@@ -176,7 +197,7 @@ export const apiService = {
         throw error;
       });
   },
-  
+
   // Password reset
   passwordReset: async (payload: { old_password: string, new_password1: string, new_password2: string }): Promise<any> => {
     return api.post<any>(ENDPOINTS.passwordReset(), payload)

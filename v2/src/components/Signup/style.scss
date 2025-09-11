@@ -1,0 +1,140 @@
+.loginWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px 32px;
+  width: 100%;
+  min-height: calc(100dvh - 40px); // keep footer visible
+  overflow-y: auto;
+
+  /* Custom scrollbar: show only thumb, hide track */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(0,0,0,0.25) transparent; /* thumb color and track color */
+}
+
+/* WebKit browsers */
+.loginWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+.loginWrapper::-webkit-scrollbar-track {
+  background: transparent; /* Hide track */
+}
+.loginWrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  border: 2px solid transparent; /* creates space around thumb making track seem hidden */
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.logoImg {
+  width: 180px;
+  border-radius: 50%;
+}
+
+.text-field {
+  box-sizing: border-box;
+  padding: 0.3rem;
+  border: 1px solid #cecece;
+  border-radius: 0.45rem;
+  width: 350px;
+}
+
+.MuiInputBase-input {
+  font-size: 0.875rem;
+}
+
+/* Wrapper to allow a leading icon for multiline description */
+.withIcon {
+  display: flex;
+  align-items: flex-start; /* align with first text line */
+  gap: 8px;
+}
+.withIcon .leadingIcon {
+  margin: 2px 8px 0 2px; /* slight nudge down to align with placeholder baseline */
+  flex: 0 0 auto;
+}
+.withIcon .MuiFormControl-root {
+  flex: 1;
+}
+/* Ensure the textarea aligns its first line with the icon and keeps placeholder visible */
+.withIcon .MuiInputBase-root {
+  align-items: flex-start; /* top-align textarea content */
+}
+.withIcon .MuiInputBase-inputMultiline {
+  padding-top: 6px; /* ensure placeholder is visible and baseline-aligned */
+  padding-bottom: 4px;
+  line-height: 1.5;
+  min-height: 2em; /* robust min height for placeholder */
+}
+.withIcon textarea::placeholder {
+  opacity: 1 !important; /* ensure placeholder is visible when not focused */
+}
+
+/* Match multiline description height to single-line inputs in this form */
+.text-field .MuiInputBase-root.MuiInputBase-multiline {
+  align-items: center; /* vertically center next to icon */
+  min-height: 48px; /* match single-line default control height */
+}
+.text-field .MuiInputBase-inputMultiline {
+  padding-top: 0; /* align with single-line */
+  padding-bottom: 0;
+  line-height: 1.4375em; /* MUI default line-height */
+  min-height: 1.4375em; /* match single-line input visual height */
+}
+
+/* Field grouping and labels */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 2px 2px;
+}
+
+.fieldLabel {
+  color: #555;
+}
+
+.requiredAsterisk {
+  color: #d32f2f;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.optionalLabel {
+  margin-left: auto;
+  color: #888;
+}
+
+.helperRow {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2px 4px 0;
+}
+
+.charCount {
+  color: #777;
+  font-size: 0.7rem;
+}
+
+@media (max-width: 768px) {
+  .titleTxt {
+    font-size: 1rem !important;
+  }
+}

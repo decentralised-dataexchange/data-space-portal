@@ -5,11 +5,12 @@ import { setAdminDetails, setAuthenticated, setMessage, setSuccessMessage } from
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LocalStorageService } from "@/utils/localStorageService";
-import { AccessToken } from "@/types/auth";
+import { AccessToken, SignupPayload } from "@/types/auth";
 
 declare module "@/lib/apiService/apiService" {
   interface ApiService {
     login: (email: string, password: string) => Promise<{ access: string; refresh: string }>;
+    signup: (email: string, password: string, name?: string) => Promise<{ id: string; email: string; name?: string }>;
     getAdminDetails: () => Promise<any>;
   }
 }
@@ -33,7 +34,7 @@ export const useLogin = () => {
         refresh_expires_in: 86400, // Default refresh expiration time
         token_type: 'Bearer'
       };
-
+      
       // First update the token in localStorage and cookies
       LocalStorageService.updateToken(token);
 
@@ -65,14 +66,13 @@ export const useLogin = () => {
       }, 500);
     },
     onError: (error: unknown) => {
-      // Send a global error message so AppLayout can display it
       let errText = 'Login failed';
-      // Try to extract a server-provided message
       try {
         const anyErr = error as any;
         const data = anyErr?.response?.data;
         if (typeof data === 'string') errText = data;
         else if (data?.detail) errText = data.detail;
+        else if (data?.message) errText = data.message;
         else if (anyErr?.message) errText = anyErr.message;
       } catch {}
       dispatch(setSuccessMessage(''));
@@ -86,6 +86,50 @@ export const useLogin = () => {
     error: error,
     success: isSuccess,
     isLoading: isPending,
+    data
+  };
+};
+
+// Signup hook
+export const useSignup = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const { mutate, isPending, isSuccess, error, data } = useMutation({
+    mutationFn: (payload: SignupPayload) => {
+      console.log("payload", payload);
+      return apiService.signup(payload);
+    },
+    onSuccess: () => {
+      // Clear any previous messages and suppress success toast
+      dispatch(setMessage(''));
+      dispatch(setSuccessMessage(''));
+      // Navigate to login
+      setTimeout(() => {
+        router.push('/login');
+      }, 0);
+    },
+    onError: (error: unknown) => {
+      let errText = 'Signup failed';
+      try {
+        const anyErr = error as any;
+        const data = anyErr?.response?.data;
+        if (typeof data === 'string') errText = data;
+        else if (data?.detail) errText = data.detail;
+        else if (data?.message) errText = data.message;
+        else if (data?.email?.length) errText = data.email.join(", ");
+        else if (anyErr?.message) errText = anyErr.message;
+      } catch {}
+      dispatch(setSuccessMessage(''));
+      dispatch(setMessage(errText));
+    }
+  });
+
+  return {
+    signup: mutate,
+    isLoading: isPending,
+    success: isSuccess,
+    error,
     data
   };
 };

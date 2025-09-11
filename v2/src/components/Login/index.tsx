@@ -29,6 +29,9 @@ const Login = () => {
   const { email, password } = formValue;
   const { login } = useLogin();
 
+  // Determine if form is valid for enabling submit
+  const isFormValid = !!email && !!password;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -65,11 +68,14 @@ const Login = () => {
         <Box
           sx={{
             margin: "1rem",
-            justifyContent: "center",
-            alignItems: "center"
+            textAlign: "center", 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: "1rem"
           }}
         >
-          <p className='titleTxt'>{t('login.header')}</p>
+          <p className='titleTxt'>{t('common.orgDashboardTitle')}</p>
+          <p className='titleTxt'>{t('login.title')}</p>
         </Box>
         <form onSubmit={handleSubmit}>
           <Box className='text-field'>
@@ -110,11 +116,11 @@ const Login = () => {
                   disableUnderline: true,
                   onKeyPress: handleKeyPress,
                   endAdornment: (
-                    <IconButton type="submit">
+                    <IconButton type="submit" disabled={!isFormValid} sx={{ '&.Mui-disabled': { pointerEvents: 'all', cursor: 'not-allowed' } }}>
                       <ArrowCircleRightIcon
                         size={22}
 
-                        style={{ color: "#888", cursor: "pointer", transform: "translateY(-2px)" }}
+                        style={{ color: "#888", transform: "translateY(-2px)" }}
                       />
                     </IconButton>
                   ),
@@ -150,6 +156,13 @@ const Login = () => {
             }
             style={{ color: "#A1A1A1" }}
           />
+        </Box>
+        <Box sx={{ width: "100%", marginTop: ".5em", display: "flex", justifyContent: "center" }}>
+          <Typography variant="body2" style={{ color: "#A1A1A1" }}>
+            {t('login.noAccount')}
+            {' '}
+            <Link className="appLink" href="/signup">{t('login.createNow')}</Link>
+          </Typography>
         </Box>
       </Box>
     </Box>

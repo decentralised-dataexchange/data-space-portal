@@ -32,8 +32,11 @@ export const MainAppBarMenu = (props: Props) => {
 
   const { data: gettingStartData } = useGetGettingStartData();
 
-  const orgName = gettingStartData?.dataSource?.name || organisationDetails?.name || 'Organisation';
-  const orgLocation = gettingStartData?.dataSource?.location || organisationDetails?.location || 'Location';
+  // Support both { organisation: {...} } and { dataSource: {...} } response shapes
+  const orgFromHook = (gettingStartData as any)?.organisation || (gettingStartData as any)?.dataSource || {};
+  const orgFromRedux = (organisationDetails as any)?.organisation || organisationDetails || {};
+  const orgName = orgFromHook?.name || orgFromRedux?.name || 'Organisation';
+  const orgLocation = orgFromHook?.location || orgFromRedux?.location || 'Location';
   // Prefer user avatar over organization logo for the navbar avatar
   const localUserAvatar = LocalStorageService.getUserProfilePic();
   const userAvatarUrl = (adminDetails as any)?.avatarImageUrl || localUserAvatar || defaultLogoImg;

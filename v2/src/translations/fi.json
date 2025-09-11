@@ -10,11 +10,35 @@
     "apiDoc": "/data-source/open-api"
   },
   "login": {
-    "header": "CRANE dHDSI - Organisaation hallintapaneeli",
+    "header": "CRANE dHDSI - Organisaation hallintapaneeli - Kirjaudu",
     "userId": "Käyttäjätunnus",
     "password": "Salasana",
     "rememberMe": "Muista minut",
-    "errorMessage": "Virheelliset kirjautumistiedot. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen."
+    "errorMessage": "Virheelliset kirjautumistiedot. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen.",
+    "title": "Kirjaudu",
+    "noAccount": "Eikö sinulla ole tiliä?",
+    "signup": "Luo tili",
+    "createNow": "Luo omasi nyt."
+  },
+  "signup": {
+    "header": "CRANE dHDSI - Organisaation hallintapaneeli - Luo tili",
+    "name": "Nimi",
+    "email": "Sähköposti",
+    "confirmPassword": "Vahvista salasana",
+    "userId": "Käyttäjätunnus",
+    "passwordMismatch": "Salasanat eivät täsmää",
+    "haveAccount": "Onko sinulla jo tili?",
+    "login": "Kirjaudu sisään",
+    "title": "Luo tili",
+    "sector": "Sektori",
+    "location": "Sijainti",
+    "policyUrl": "Käytäntö URL",
+    "description": "Kuvaus",
+    "owsBaseUrl": "OWS-perus-URL",
+    "optional": "Valinnainen",
+    "required": "Pakollinen",
+    "requiredFieldsMissing": "Täytä kaikki pakolliset kentät",
+    "passwordLength": "Salasanan tulee olla 8–20 merkkiä"
   },
   "breadcrumbs" : {
     "home": "Koti",
@@ -123,6 +147,7 @@
     "industry": "Toimiala"
   },
   "common": {
+    "orgDashboardTitle": "CRANE dHDSI - Organisaation hallintapaneeli",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
     "untrustedServiceProvider": "Luottamaton palveluntarjoaja",
     "continue": "Jatka",
@@ -156,7 +181,10 @@
     "businessWalletLabel": "Yrityslompakon nimi",
     "connectedOn": "Yhdistetty",
     "connectionId": "Yhteystunnus",
-    "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus"
+    "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus",
+    "generic": "Jokin meni pieleen.",
+    "errorOccurred": "Tapahtui virhe.",
+    "tryAgainLater": "Yritä myöhemmin uudelleen."
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -256,6 +284,7 @@
     "yourUserID": "Käyttäjätunnuksesi",
     "configuredBaseURL": "Määritetty perus-URL",
     "apiKey": "API-avain",
+    "noTokenAvailable": "Ei tunnusta saatavilla",
     "createConnection": "Luo yhteys",
     "scope": "Laajuus",
     "scopes": "Laajuudet",
@@ -275,7 +304,19 @@
     "configureOpenApi": "Määritä OpenAPI-määrittely",
     "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite:",
     "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
-    "uploadButton": "Lataa"
+    "uploadButton": "Lataa",
+    "oauth2ClientTitle": "OAuth2-asiakas",
+    "oauth2ClientNameLabel": "Nimi",
+    "oauth2ClientNamePlaceholder": "OAuth2-asiakkaan nimi",
+    "createOAuth2Client": "Luo",
+    "clientNameLabel": "Asiakkaan nimi",
+    "clientIdLabel": "Client ID",
+    "clientSecretLabel": "Client Secret",
+    "organisationWalletTitle": "Organisaation lompakko",
+    "owsBaseUrlLabel": "Perus-URL:",
+    "owsBaseUrlPlaceholder": "Syötä organisaation lompakon perus-URL",
+    "saveButton": "Tallenna",
+    "owsBaseUrlUpdateFailed": "Organisaation lompakon perus-URL:n päivitys epäonnistui"
   },
   "dispConnection": {
     "copy": "KOPIOI",

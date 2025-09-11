@@ -44,11 +44,11 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
               translationKey: 'developerApis',
               link: 'developer-apis',
             },
-            {
-              name: 'Business Wallet',
-              translationKey: 'businessWallet',
-              link: 'business-wallet',
-            }
+            // {
+            //   name: 'Business Wallet',
+            //   translationKey: 'businessWallet',
+            //   link: 'business-wallet',
+            // }
           ]
 }
 ];

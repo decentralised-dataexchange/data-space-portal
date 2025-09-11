@@ -50,8 +50,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     
     // Check client-side auth state
     const checkClientAuth = () => {
-      // Always use MinimalLayout on the login route to avoid layout flip/remount
-      if (pathname && pathname.includes('/login')) {
+      // Always use MinimalLayout on the auth routes to avoid layout flip/remount
+      if (pathname && (pathname.includes('/login') || pathname.includes('/signup'))) {
         setCurrentLayout('minimal');
         return;
       }

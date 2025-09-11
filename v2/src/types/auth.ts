@@ -37,3 +37,14 @@ export interface User {
     avatarImageUrl: string
     lastVisited: string
 }
+
+export interface SignupPayload {
+    email: string
+    password: string
+    name: string
+    sector: string
+    location: string
+    policyUrl: string
+    description: string
+    owsBaseUrl: string
+}
