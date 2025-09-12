@@ -223,7 +223,7 @@ const DDATable: React.FC<DDATableProps> = ({
           ) : (
             <TableRow>
               <StyledTableCell colSpan={5} align="center">
-                {t("dataAgreements.table.noData")}
+                {t("common.noResultsFound")}
               </StyledTableCell>
             </TableRow>
           )}
