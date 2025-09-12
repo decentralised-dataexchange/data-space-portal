@@ -176,27 +176,6 @@ const DDAgreements = () => {
       );
     }
 
-    const hasListings = (data?.dataDisclosureAgreements?.length ?? 0) > 0;
-
-    if (!hasListings) {
-      return (
-        <div className={styles.emptyState}>
-          <p className={styles.emptyText}>{t("dataAgreements.noListingsAvailable")}</p>
-          <div
-            className={styles.addButton}
-            onClick={handleAddNewListing}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && handleAddNewListing()}
-          >
-            {/* <AddCircleOutlineIcon /> */}
-            <PlusCircleIcon />
-            {t("dataAgreements.addButton")}
-          </div>
-        </div>
-      );
-    }
-
     return (
       <>
 
