@@ -7,8 +7,16 @@ export interface Organisation {
   location: string;
   policyUrl: string;
   description: string;
-  owsBaseUrl: string;
+  verificationRequestURLPrefix: string;
   openApiUrl: string;
+}
+
+export interface OrganisationResponse {
+  organisation: Organisation;
+}
+
+export interface OrganisationUpdatePayload {
+  organisation: Organisation;
 }
 
 export interface OrganisationIdentity {

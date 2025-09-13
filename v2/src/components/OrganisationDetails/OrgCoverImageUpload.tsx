@@ -44,7 +44,7 @@ const OrgCoverImageUpload = (props: Props) => {
       formData.append('orgimage', file);
       
       console.log('Form data prepared successfully');
-      console.log('Using endpoint:', '/config/data-source/coverimage/');
+      console.log('Using endpoint:', '/config/organisation/coverimage/');
       
       // Upload first
       const result = await updateCoverImage(formData);

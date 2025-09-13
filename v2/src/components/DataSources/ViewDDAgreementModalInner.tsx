@@ -9,6 +9,7 @@ import { DataAttributeCardForDDA } from "./dataAttributeCardForDDA";
 import { DDAPolicyCard } from "./dataPolicyCard";
 import RightSidebar from "../common/RightSidebar";
 import VerifiedBadge from "../common/VerifiedBadge";
+import { isOrganisationVerified } from "@/utils/verification";
 import { useAppSelector } from "@/custom-hooks/store";
 
 interface Props {
@@ -30,7 +31,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
   const isVerified =
     typeof props.trusted === 'boolean'
       ? props.trusted
-      : selectedData?.verification?.presentationState === "verified";
+      : isOrganisationVerified(selectedData as any);
   // Custom header content showing purpose and template ID
   const headerContent = (
     <Box sx={{ width: "100%" }}>

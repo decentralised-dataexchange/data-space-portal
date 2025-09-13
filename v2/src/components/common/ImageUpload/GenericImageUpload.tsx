@@ -85,9 +85,11 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
 
   const handleCropComplete = async (croppedBlob: Blob) => {
     try {
-      // Always convert cropped blob to JPEG File for backend compatibility
-      const file = new File([croppedBlob], 'cropped-image.jpg', {
-        type: 'image/jpeg',
+      // Preserve the cropped blob's MIME type (do not force JPEG)
+      const mime = croppedBlob.type || 'image/jpeg';
+      const ext = mime === 'image/png' ? '.png' : (mime === 'image/jpeg' ? '.jpg' : '');
+      const file = new File([croppedBlob], `cropped-image${ext}`, {
+        type: mime,
         lastModified: Date.now(),
       });
       

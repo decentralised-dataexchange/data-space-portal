@@ -14,19 +14,16 @@ export const ENDPOINTS = {
         return "/config/admin/";
     },
 
-    dataSourceList: () => {
-        return "/service/data-sources/"
-    },
     organisationList: () => {
         return "/service/organisation/";
     },
 
     getLogoImage: () => {
-        return "/config/data-source/logoimage/"
+        return "/config/organisation/logoimage/"
     },
 
     getCoverImage: () => {
-        return "/config/data-source/coverimage/"
+        return "/config/organisation/coverimage/"
     },
 
     // Admin avatar image
@@ -35,17 +32,7 @@ export const ENDPOINTS = {
         return "/config/admin/avatarimage/"
     },
 
-    listConnections: (limit: number, offsetValue: number) => {
-        return `/config/connections/?limit=${limit}&offset=${offsetValue}`
-    },
-
-    createConnection: () => {
-        return "/config/connection/"
-    },
-
-    deleteConnection: (connectionId: string) => {
-        return `/config/connection/${connectionId}/`
-    },
+    // Connections endpoints removed
 
     // Verification endpoints
     verificationTemplates: (restrictTemplate: boolean = false) => {
@@ -66,19 +53,19 @@ export const ENDPOINTS = {
     organisationsDetails: () => {
         return "/config/organisation/"
     },
+    orgIdentity: () => {
+        return "/config/organisation/identity/"
+    },
     listDataDisclosureAgreements: (filter: any, limit: number, offsetValue: number) => {
-        return `config/data-disclosure-agreements/?limit=${limit}&offset=${offsetValue}${filter === "listed" ? `&status=${filter}` : ""}`;
+        return `/config/data-disclosure-agreements/?limit=${limit}&offset=${offsetValue}${filter === "listed" ? `&status=${filter}` : ""}`;
     },
     updateDDAStatus: (id: any) => {
-        return `config/data-disclosure-agreement/${id}/status/`
+        return `/config/data-disclosure-agreement/${id}/status/`
     },
     deleteDDA: (id: any) => {
-        return `config/data-disclosure-agreement/${id}`
+        return `/config/data-disclosure-agreement/${id}`
     },
-    // Organisation details used across pages
-    getOrganisationsDetails: () => {
-        return "/config/data-source/";
-    },
+    // Removed legacy data-source details endpoint
     updateOpenApiUrl: () => {
         return "/config/open-api/url";
     },

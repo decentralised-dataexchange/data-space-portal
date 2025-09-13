@@ -23,6 +23,8 @@
   "signup": {
     "header": "CRANE dHDSI - Organisation dashboard - Signup",
     "name": "Name",
+    "userName": "Your name",
+    "organisationName": "Organisation name",
     "email": "Email",
     "userId": "User ID",
     "confirmPassword": "Confirm Password",
@@ -35,6 +37,7 @@
     "policyUrl": "Policy URL",
     "description": "Description",
     "owsBaseUrl": "OWS Base URL",
+    "verificationRequestURLPrefix": "Verification Request URL Prefix",
     "optional": "Optional",
     "required": "Required",
     "requiredFieldsMissing": "Please fill in all required fields",
@@ -87,7 +90,7 @@
   },
   "gettingStarted": {
     "public": "Public",
-    "sector": "Sector:",
+    "sector": "Sector",
     "overView": "Overview",
     "organisationName": "Organisation Name",
     "addCredential": "Add Credentials",
@@ -162,7 +165,8 @@
     "businessWallet": "business-wallet",
     "generic": "Something went wrong.",
     "errorOccurred": "An error occurred.",
-    "tryAgainLater": "Please try again later."
+    "tryAgainLater": "Please try again later.",
+    "pleaseWait": "Please wait..."
   },
   "errors": {
     "generic": "Something went wrong."
@@ -326,9 +330,11 @@
     "openApiUpdateFailed": "Updating open API specification URL failed",
     "configureOpenApi": "Configure OpenAPI Specification",
     "openApiUrlLabel": "OpenAPI Specification URL:",
+    "holderBaseUrlLabel": "Holder Base URL:",
     "openApiUrlPlaceholder": "Enter OpenAPI URL",
     "uploadButton": "Upload",
     "oauth2ClientTitle": "OAuth2 Client",
+    "oauth2Title": "OAuth 2.0 Client",
     "oauth2ClientNameLabel": "Name",
     "oauth2ClientNamePlaceholder": "Name for OAuth2 Client",
     "createOAuth2Client": "Create",
@@ -336,10 +342,16 @@
     "clientIdLabel": "Client ID",
     "clientSecretLabel": "Client Secret",
     "organisationWalletTitle": "Organisation Wallet",
-    "owsBaseUrlLabel": "Base URL:",
+    "owsBaseUrlLabel": "Base URL",
     "owsBaseUrlPlaceholder": "Enter Base URL for Organisation Wallet",
     "saveButton": "Save",
-    "owsBaseUrlUpdateFailed": "Updating Organisation Wallet Base URL failed"
+    "owsBaseUrlUpdateFailed": "Updating Organisation Wallet Base URL failed",
+    "walletConfigurationTitle": "Organisation Wallet Configuration",
+    "configuredLabel": "Configured",
+    "configureButton": "Configure",
+    "oauth2ClientConfigTitle": "OAuth2 Client Configuration",
+    "deploymentStatusLabel": "Deployment Status:",
+    "notConfiguredLabel": "Not Configured"
   },
   "dispConnection": {
     "copy": "COPY",
