@@ -306,7 +306,7 @@ const DDAgreements = () => {
           resourceName={"dataDisclosureAgreements"}
           confirmButtonText={t("dataAgreements.publishModal.confirmButton")}
           selectedData={{
-            id: selectedDDA.templateId,
+            id: selectedDDA.templateId || (selectedDDA as any)?.dataAgreementId || (selectedDDA as any)?.dataAgreementRevisionId || (selectedDDA as any)["@id"],
             templateId: selectedDDA.templateId,
             status: selectedDDA.status,
             purpose: selectedDDA.purpose

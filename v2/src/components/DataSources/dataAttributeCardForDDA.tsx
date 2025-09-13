@@ -24,7 +24,10 @@ interface Props {
 export const DataAttributeCardForDDA = (props: Props) => {
   const { selectedData } = props;
 
-  const attributes = selectedData?.personalData ?? [];
+  // Support both legacy 'personalData' and new 'dataAttributes'
+  const attributes = Array.isArray(selectedData?.dataAttributes)
+    ? selectedData.dataAttributes
+    : (selectedData?.personalData ?? []);
 
   return (
     <Box
@@ -53,7 +56,7 @@ export const DataAttributeCardForDDA = (props: Props) => {
                 >
                   <td style={{ border: 0, width: '100%' }}>
                     <Typography variant="subtitle2" sx={{ fontSize: '14px' }}>
-                      {attribute.attributeName}
+                      {attribute?.name ?? attribute?.attributeName ?? ''}
                     </Typography>
                   </td>
                 </tr>

@@ -9,7 +9,7 @@ import { defaultLogoImg } from "@/constants/defalultImages";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { logout } from "@/store/reducers/authReducer";
 import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
-import { useGetGettingStartData } from "@/custom-hooks/gettingStarted";
+import { useGetOrganisation } from "@/custom-hooks/gettingStarted";
 
 type Props = {
   firstName?: string;
@@ -26,14 +26,16 @@ export const MainAppBarMenu = (props: Props) => {
   const organisationDetails = useAppSelector((state) => state.gettingStart.data);
   const orgImages = useAppSelector((state) => state.gettingStart.imageSet);
 
-  // Use admin details from Redux first, fallback to props
+  // Use admin details from Redux first, then LocalStorage, then props, then email prefix
   const userEmail = adminDetails?.email || props.email || '';
-  const userName = adminDetails?.name || props.firstName || '';
+  const storedUser = LocalStorageService.getUser();
+  const storedName = (storedUser as any)?.name || (storedUser as any)?.firstName || (storedUser as any)?.first_name || '';
+  const emailPrefix = userEmail ? userEmail.split('@')[0] : '';
+  const userName = adminDetails?.name || storedName || props.firstName || emailPrefix;
 
-  const { data: gettingStartData } = useGetGettingStartData();
-
-  // Support both { organisation: {...} } and { dataSource: {...} } response shapes
-  const orgFromHook = (gettingStartData as any)?.organisation || (gettingStartData as any)?.dataSource || {};
+  const { data: organisationResp } = useGetOrganisation();
+  // Use organisation response shape { organisation: {...} }
+  const orgFromHook = organisationResp?.organisation || {} as any;
   const orgFromRedux = (organisationDetails as any)?.organisation || organisationDetails || {};
   const orgName = orgFromHook?.name || orgFromRedux?.name || 'Organisation';
   const orgLocation = orgFromHook?.location || orgFromRedux?.location || 'Location';
@@ -111,7 +113,7 @@ export const MainAppBarMenu = (props: Props) => {
             variant="body2"
             style={{ fontWeight: "bold", margin: "0.5rem 4px" }}
           >
-            {userName || props.firstName}
+            {userName}
           </Typography>
           <Typography variant="caption" style={{ marginBottom: "6px" }}>
             {userEmail}

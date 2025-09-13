@@ -1,22 +1,6 @@
 import { useQuery, useMutation, useQueryClient, QueryKey } from '@tanstack/react-query';
 import { apiService } from '@/lib/apiService/apiService';
-import { DataDisclosureAgreement, DataSource } from '@/types/dataDisclosureAgreement';
-
-export interface Pagination {
-  total: number;
-  limit: number;
-  offset: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-  totalItems: number;
-  currentPage: number;
-  totalPages: number;
-}
-
-export interface DDAgreementsResponse {
-  dataDisclosureAgreements: DataDisclosureAgreement[];
-  pagination: Pagination;
-}
+import { DataDisclosureAgreement, DDAgreementsResponse } from '@/types/dataDisclosureAgreement';
 
 export interface DDAError extends Error {
   status?: number;
@@ -45,19 +29,21 @@ export const useDDAgreements = (status: string, limit: number, offset: number) =
     queryFn: async () => {
       try {
         const response = await apiService.listDataDisclosureAgreements(status, limit, offset);
+        // Ensure minimal fallbacks if backend omits some fields
+        const pg = response.pagination || ({} as DDAgreementsResponse['pagination']);
         return {
           dataDisclosureAgreements: response.dataDisclosureAgreements || [],
           pagination: {
-            total: response.pagination?.total || 0,
-            limit: response.pagination?.limit || limit,
-            offset: response.pagination?.offset || offset,
-            hasNext: response.pagination?.hasNext || false,
-            hasPrevious: response.pagination?.hasPrevious || false,
-            totalItems: response.pagination?.totalItems || 0,
-            currentPage: Math.floor((response.pagination?.offset || 0) / (response.pagination?.limit || limit)) || 0,
-            totalPages: Math.ceil((response.pagination?.totalItems || 0) / (response.pagination?.limit || limit)) || 0,
-          }
-        };
+            currentPage: pg.currentPage ?? Math.floor((pg.offset ?? offset) / (pg.limit ?? limit)) + 1,
+            totalItems: pg.totalItems ?? 0,
+            totalPages: pg.totalPages ?? Math.max(1, Math.ceil((pg.totalItems ?? 0) / (pg.limit ?? limit))),
+            limit: pg.limit ?? limit,
+            hasPrevious: pg.hasPrevious ?? ((pg.currentPage ?? 1) > 1),
+            hasNext: pg.hasNext ?? ((pg.currentPage ?? 1) < (pg.totalPages ?? 1)),
+            total: pg.total ?? pg.totalItems ?? 0,
+            offset: pg.offset ?? (pg.currentPage ? (pg.currentPage - 1) * (pg.limit ?? limit) : offset),
+          },
+        } as DDAgreementsResponse;
       } catch (error) {
         const ddaError = error as DDAError;
         console.error('Error fetching DDA list:', ddaError);
@@ -183,13 +169,59 @@ export const useUpdateDDAStatus = () => {
   
   return useMutation<void, DDAError, UpdateDDAStatusParams>({
     mutationFn: async ({ id, status }: UpdateDDAStatusParams) => {
-      try {
-        await apiService.updateDDAStatus(id, { status });
-      } catch (error) {
-        const ddaError = error as DDAError;
-        console.error(`Error updating DDA ${id} status to ${status}:`, ddaError);
-        throw ddaError;
+      // Try the provided id first. If 404, attempt fallbacks derived from cached list item.
+      const tried: Set<string> = new Set();
+      const tryUpdate = async (candidateId: string) => {
+        tried.add(candidateId);
+        try {
+          await apiService.updateDDAStatus(candidateId, { status });
+          return true;
+        } catch (e: any) {
+          const httpStatus = e?.response?.status;
+          if (httpStatus === 404) {
+            return false; // allow trying next candidate
+          }
+          // non-404 -> surface error immediately
+          throw e;
+        }
+      };
+
+      // 1) primary attempt with incoming id
+      if (await tryUpdate(id)) return;
+
+      // 2) derive candidates from cached lists
+      const queries = queryClient.getQueriesData<DDAgreementsResponse>({ queryKey: DDA_QUERY_KEYS.lists() });
+      const candidates: string[] = [];
+      for (const [, data] of queries) {
+        const items = data?.dataDisclosureAgreements || [];
+        const match = items.find((dda: any) => (
+          dda?.templateId === id ||
+          dda?.['@id'] === id ||
+          dda?.dataAgreementId === id ||
+          dda?.dataAgreementRevisionId === id
+        ));
+        if (match) {
+          // Prefer templateId first, then other known identifiers
+          const maybeIds = [
+            match?.templateId,
+            match?.['@id'],
+            match?.dataAgreementId,
+            match?.dataAgreementRevisionId,
+          ].filter(Boolean) as string[];
+          maybeIds.forEach((cid) => { if (!tried.has(cid)) candidates.push(cid); });
+          break;
+        }
       }
+
+      // 3) attempt each unique candidate until one succeeds or all fail
+      for (const cid of candidates) {
+        if (await tryUpdate(cid)) return;
+      }
+
+      // If nothing worked, throw a 404-ish error with context
+      const err: DDAError = new Error(`All candidate IDs 404 for status update. Tried: ${[id, ...candidates].join(', ')}`) as DDAError;
+      err.status = 404;
+      throw err;
     },
     onMutate: async ({ id, status }: UpdateDDAStatusParams) => {
       // Cancel any outgoing refetches

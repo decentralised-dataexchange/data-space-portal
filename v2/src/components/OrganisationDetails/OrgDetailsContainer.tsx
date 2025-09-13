@@ -1,15 +1,18 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { useUpdateDataSource } from "@/custom-hooks/gettingStarted";
-import { Box, Grid, Typography, TextField, Button } from "@mui/material";
+import { useUpdateOrganisation } from "@/custom-hooks/gettingStarted";
+import { Box, Grid, Typography, TextField, Button, Avatar, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "@/components/OrganisationDetails/OrgLogoImageUpload";
-import AddCredentialComponent from "@/components/AddCredential";
+import ViewCredentials from "@/components/ViewCredentials";
 import RightSidebar from "@/components/common/RightSidebar";
 import './style.scss';
 import { useTranslations } from "next-intl";
-import { useAppSelector } from "@/custom-hooks/store";
 import VerifiedBadge from "../common/VerifiedBadge";
+import { Eye as EyeIcon, EyeSlash as EyeSlashIcon, PencilSimple as PencilIcon } from "@phosphor-icons/react";
+import { Organisation } from "@/types/organisation";
+import { OrgIdentityResponse } from "@/types/orgIdentity";
+import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -38,11 +41,20 @@ type Props = {
   handleEdit: () => void;
   setOganisationDetails: (field: string, value: string) => void;
   isEnableAddCredential: boolean;
+  originalOrganisation?: Organisation;
+  isVerified?: boolean;
+  addCredentialUrl?: string;
+  onAddCredentialsClick?: () => void;
+  addCredentialsLoading?: boolean;
+  coverImageBase64?: string;
+  logoImageBase64?: string;
+  orgIdentity?: OrgIdentityResponse;
 };
 
 const OrganisationDetailsContainer = (props: Props) => {
   const t = useTranslations();
   const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
+  const [showValues, setShowValues] = useState(false);
   const {
     editMode,
     organisationDetails,
@@ -50,7 +62,6 @@ const OrganisationDetailsContainer = (props: Props) => {
     isEnableAddCredential,
     setOganisationDetails
   } = props;
-  const [coverImageBase64, setCoverImageBase64] = useState();
   const [formValue, setFormValue] = useState({
     'name': '',
     'location': '',
@@ -69,11 +80,7 @@ const OrganisationDetailsContainer = (props: Props) => {
     })
   }, [organisationDetails])
 
-  const verifyConnectionObj = useAppSelector(
-    (state) => state?.gettingStart?.data
-  );
-
-  const isVerify = verifyConnectionObj?.verification?.presentationState === 'verified';
+  const isVerify = !!props.isVerified;
 
   const callRightSideDrawer = () => {
     setOpenRightSideDrawer(!openRightSideDrawer)
@@ -89,14 +96,22 @@ const OrganisationDetailsContainer = (props: Props) => {
     setOganisationDetails(name, value);
   }
 
-  const { mutateAsync: updateDataSource } = useUpdateDataSource();
+  const { mutateAsync: updateOrganisation } = useUpdateOrganisation();
 
   const handleSave = async () => {
     try {
-      const obj = {
-        "dataSource": formValue
+      // Merge edited form values onto the original organisation object to preserve required fields
+      const fullOrganisation: Organisation = {
+        ...(props.originalOrganisation as Organisation),
+        name: formValue.name,
+        location: formValue.location,
+        policyUrl: formValue.policyUrl,
+        description: formValue.description,
+        sector: formValue.sector,
       };
-      await updateDataSource(obj);
+
+      const payload = { organisation: fullOrganisation };
+      await updateOrganisation(payload);
 
       handleEdit();
     } catch (error) {
@@ -110,10 +125,7 @@ const OrganisationDetailsContainer = (props: Props) => {
       sx={{
         flexGrow: 1,
         boxSizing: 'border-box',
-        height: {
-          xs: 'auto',
-          sm: '229px',
-        },
+        height: 'auto',
       }}
       className="gettingStarted"
     >
@@ -125,7 +137,7 @@ const OrganisationDetailsContainer = (props: Props) => {
         height="100%"
         headerContent={
           <Box sx={{ width: "100%" }}>
-            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
               {isVerify ? 
                 t('gettingStarted.viewCredential') : 
                 `${t('gettingStarted.connectWalletTitle')} ${t('gettingStarted.choose')}`}
@@ -133,24 +145,72 @@ const OrganisationDetailsContainer = (props: Props) => {
           </Box>
         }
         bannerContent={
-          <Box
-            sx={{
-              height: "194px",
-              width: "100%",
-              backgroundColor: '#E6E6E6',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#666',
-              fontSize: '14px'
-            }}
-          >
-            {t('noBannerImageAvailable')}
-          </Box>
+          <>
+            <Box sx={{ position: 'relative' }}>
+              <Box
+                component="img"
+                alt="Banner"
+                src={props.coverImageBase64 || defaultCoverImage}
+                sx={{ height: 194, width: '100%', objectFit: 'cover' }}
+              />
+              <IconButton
+                onClick={() => setShowValues(!showValues)}
+                sx={{
+                  position: 'absolute',
+                  right: 10,
+                  top: 10,
+                  backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                  zIndex: 10,
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                  }
+                }}
+              >
+                {showValues ? <EyeSlashIcon size={20} color="white" /> : <EyeIcon size={20} color="white" />}
+              </IconButton>
+              <Box sx={{ position: "relative", height: '65px', left: -25 }}>
+                      <Avatar
+                        src={props.logoImageBase64 || defaultLogoImg}
+                        sx={{
+                          position: 'absolute',
+                          left: 50,
+                          top: -65,
+                          width: 110,
+                          height: 110,
+                          border: '6px solid white',
+                          backgroundColor: 'white'
+                        }}
+                      />
+                    </Box>
+            </Box>
+          </>
         }
         showBanner={true}
+        showFooter={true}
+        footerContent={
+          <Button
+            onClick={callRightSideDrawer}
+            className="delete-btn"
+            sx={{
+              marginRight: "10px",
+              color: "black",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            variant="outlined"
+          >
+            {t('common.close')}
+          </Button>
+        }
       >
-        <AddCredentialComponent isVerify={isVerify} callRightSideDrawer={callRightSideDrawer} />
+        <ViewCredentials 
+          callRightSideDrawer={callRightSideDrawer}
+          orgIdentity={props.orgIdentity}
+          organisation={props.originalOrganisation}
+          showValues={showValues}
+        />
       </RightSidebar>
       <Grid
         sx={{
@@ -161,9 +221,11 @@ const OrganisationDetailsContainer = (props: Props) => {
       >
         <Grid
           sx={{
-            height: { xs: "auto", sm: "90px" },
+            height: editMode ? { xs: 'auto', sm: 'auto' } : { xs: "auto", sm: "90px" },
             display: { xs: "grid", sm: "flex" },
             width: "auto",
+            flexGrow: 1,
+            minWidth: 0,
           }}
         >
           <OrgLogoImageUpload
@@ -176,21 +238,28 @@ const OrganisationDetailsContainer = (props: Props) => {
               marginLeft: { xs: "0", sm: "30px" },
               // Small spacing below avatar on mobile; keep content high
               marginTop: editMode ? { xs: "8px", sm: "0px" } : { xs: "9px", sm: "0px" },
+              display: "flex",
+              flexDirection:"column",
+              flexGrow: "1",
+              width: "auto",
+              maxWidth: "800px",
             }}
           >
             {editMode ? (
               <>
-                <Box sx={{ display: "flex", alignItems: 'center' }} mb={"11px"} mt={"-2px"}>
+                <Box sx={{ display: "flex", alignItems: 'flex-start', flexDirection: 'column', width: '100%', maxWidth: { xs: '100%', sm: 500 } }} mb={"11px"} mt={"-2px"}>
+                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
+                    {t("gettingStarted.organisationName")}
+                  </Typography>
                   <TextField
                     autoFocus
                     onChange={handleChange}
                     variant="standard"
-                    placeholder={t("gettingStarted.organisationName")}
                     fullWidth
                     name='name'
                     style={{
                       ...editStyleEnable,
-                      marginTop: "0.9px",
+                      marginTop: 0,
                       fontSize: "0.875rem !important"
                     }}
                     InputProps={{
@@ -200,58 +269,112 @@ const OrganisationDetailsContainer = (props: Props) => {
                     value={formValue.name}
                   />
                 </Box>
-                <Typography variant="body2" height="23px" sx={{ marginTop: '10px', color: '#9F9F9F' }}>
-                  {t('gettingStarted.sector')} {t('gettingStarted.public')}
-                </Typography>
-                <Typography variant="body2" height="23px" sx={{ marginTop: '10px', color: '#9F9F9F' }}>
-                  {t('gettingStarted.industry')} {formValue.sector}
-                </Typography>
-                <TextField
-                  variant="standard"
-                  value={formValue.location}
-                  name='location'
-                  onChange={handleChange}
-                  placeholder={t("gettingStarted.location")}
-                  fullWidth
-                  style={{ ...editStyleEnable, marginTop: "-4px" }}
-                  InputProps={{
-                    disableUnderline: true,
-                    style: { fontSize: 14 },
-                  }}
-                />
-                <TextField
-                  variant="standard"
-                  onChange={handleChange}
-                  placeholder={t("common.policyUrl")}
-                  value={formValue.policyUrl}
-                  fullWidth
-                  name='policyUrl'
-                  style={{ ...editStyleEnable }}
-                  InputProps={{
-                    disableUnderline: true,
-                    style: { fontSize: 14 },
-                  }}
-                />
+                <Box sx={{ mt: 1, width: '100%', maxWidth: { xs: '100%', sm: 500 } }}>
+                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
+                    {t('gettingStarted.sector')}
+                  </Typography>
+                  <TextField
+                    variant="standard"
+                    value={formValue.sector}
+                    name='sector'
+                    onChange={handleChange}
+                    fullWidth
+                    style={{ ...editStyleEnable, marginTop: 0 }}
+                    InputProps={{
+                      disableUnderline: true,
+                      style: { fontSize: 14 },
+                    }}
+                  />
+                </Box>
+                <Box sx={{ mt: 1, width: '100%', maxWidth: { xs: '100%', sm: 500 } }}>
+                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
+                    {t("gettingStarted.location")}
+                  </Typography>
+                  <TextField
+                    variant="standard"
+                    value={formValue.location}
+                    name='location'
+                    onChange={handleChange}
+                    fullWidth
+                    style={{ ...editStyleEnable, marginTop: 0 }}
+                    InputProps={{
+                      disableUnderline: true,
+                      style: { fontSize: 14 },
+                    }}
+                  />
+                </Box>
+                <Box sx={{ mt: 1, width: '100%', maxWidth: { xs: '100%', sm: 500 } }}>
+                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
+                    {t("common.policyUrl")}
+                  </Typography>
+                  <TextField
+                    variant="standard"
+                    onChange={handleChange}
+                    value={formValue.policyUrl}
+                    fullWidth
+                    name='policyUrl'
+                    style={{ ...editStyleEnable, marginTop: 0 }}
+                    InputProps={{
+                      disableUnderline: true,
+                      style: { fontSize: 14 },
+                    }}
+                  />
+                </Box>
+                <Box sx={{ mt: 1, maxWidth: { xs: '100%', sm: 500 } }}>
+                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
+                    {t("common.description")}
+                  </Typography>
+                  <TextField
+                    variant="standard"
+                    onChange={handleChange}
+                    value={formValue.description}
+                    fullWidth
+                    name='description'
+                    multiline
+                    minRows={1}
+                    maxRows={6}
+                    style={{ ...editStyleEnable, marginTop: 0, height: 'auto' }}
+                    InputProps={{
+                      disableUnderline: true,
+                      style: { fontSize: 14 },
+                    }}
+                  />
+                </Box>
               </>
             ) :
               <>
                 <Box sx={{ display: "flex", alignItems: 'center' }} mt={"-7px"} >
-                    <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
-                      {organisationDetails?.name}
-                    </Typography>
-                    <p style={{marginLeft: '0.5rem'}}className={addCredentialClass} onClick={callRightSideDrawer}>
-                      {isVerify ? (t('gettingStarted.viewCredential')) : (t('gettingStarted.addCredential'))}
+                  <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
+                    {organisationDetails?.name}
+                  </Typography>
+                  {isVerify ? (
+                    <p
+                      style={{ marginLeft: '0.5rem' }}
+                      className={addCredentialClass}
+                      onClick={callRightSideDrawer}
+                    >
+                      {t('gettingStarted.viewCredential')}
                     </p>
-                  </Box>
+                  ) : props.isEnableAddCredential ? (
+                    <p
+                      style={{ marginLeft: '0.5rem', cursor: props.addCredentialsLoading ? 'not-allowed' : 'pointer', opacity: props.addCredentialsLoading ? 0.6 : 1 }}
+                      className={addCredentialClass}
+                      onClick={props.addCredentialsLoading ? undefined : props.onAddCredentialsClick}
+                    >
+                      {props.addCredentialsLoading ? t('common.pleaseWait') : t('gettingStarted.addCredential')}
+                    </p>
+                  ) : (
+                    <p style={{ marginLeft: '0.5rem' }} className={addCredentialClass}>
+                      {t('gettingStarted.addCredential')}
+                    </p>
+                  )}
+                </Box>
                   <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>
                     {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                     <VerifiedBadge trusted={isVerify} />
                   </Typography>
                 <Typography variant="body2" height="23px">
-                  {(t('gettingStarted.sector'))} {t('gettingStarted.public')}
-                </Typography>
-                <Typography variant="body2" height="23px">
-                  {(t('gettingStarted.industry'))}:&nbsp;
+                  {(t('gettingStarted.sector'))}:&nbsp;
                   {organisationDetails?.sector}
                 </Typography>
                 <Typography variant="body2" height="23px">
@@ -317,39 +440,23 @@ const OrganisationDetailsContainer = (props: Props) => {
           </Typography>}
         </Grid>
       </Grid>
-      <Box
-        sx={{
-          minHeight: 100,
-          maxHeight: { xs: 'none', sm: 160 },
-          overflow: { xs: 'visible', sm: 'auto' },
-          marginTop: { xs: '24px', sm: '50px' }
-        }}
-      >
-        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>{t('gettingStarted.overView')}</Typography>
-        {editMode ? (
-          <TextField
-            variant="standard"
-            value={formValue?.description}
-            multiline={true}
-            onChange={handleChange}
-            name='description'
-            label={false}
-            placeholder={(t('gettingStarted.descriptionPlaceholder'))}
-            fullWidth
-            style={{ marginTop: "-4px" }}
-            InputProps={{
-              disableUnderline: true,
-              style: { fontSize: 14 },
-            }}
-          />
-        ) : (
-          <>
-            <Box>
-              <p className="txtOverview" >{organisationDetails?.description}</p>
-            </Box>
-          </>
-        )}
-      </Box>
+      {!editMode && (
+        <Box
+          sx={{
+            minHeight: 100,
+            maxHeight: { xs: 'none', sm: 160 },
+            overflow: { xs: 'visible', sm: 'auto' },
+            marginTop: { xs: '24px', sm: '50px' }
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>{t('gettingStarted.overView')}</Typography>
+          </Box>
+          <Box>
+            <p className="txtOverview" >{organisationDetails?.description}</p>
+          </Box>
+        </Box>
+      )}
     </DetailsContainer>
   );
 };

@@ -23,6 +23,8 @@
   "signup": {
     "header": "CRANE dHDSI - Organisaation hallintapaneeli - Luo tili",
     "name": "Nimi",
+    "userName": "Nimesi",
+    "organisationName": "Organisaation nimi",
     "email": "Sähköposti",
     "confirmPassword": "Vahvista salasana",
     "userId": "Käyttäjätunnus",
@@ -35,6 +37,7 @@
     "policyUrl": "Käytäntö URL",
     "description": "Kuvaus",
     "owsBaseUrl": "OWS-perus-URL",
+    "verificationRequestURLPrefix": "Vahvistuspyynnön URL-etuliite",
     "optional": "Valinnainen",
     "required": "Pakollinen",
     "requiredFieldsMissing": "Täytä kaikki pakolliset kentät",
@@ -75,7 +78,11 @@
   },
   "sideBar": {
     "gettingStarted": "Aloittaminen",
-    "dataAgreements": "Marketplace Listaus",
+    "dataAgreements": {
+      "title": "Markkinapaikkailmoitukset",
+      "addButton": "Lisää uusi DDA",
+      "saveButton": "Tallenna muutokset"
+    },
     "account": "Tili",
     "manageAdmin": "Hallitse ylläpitäjää",
     "developerApis": "Kehittäjä-API:t",
@@ -146,6 +153,51 @@
     "confirmWalletDescription": "Yrityksesi on tällä hetkellä vahvistamaton. Valitse vahvista vahvistaaksesi yrityksesi.",
     "industry": "Toimiala"
   },
+  "verification": {
+    "connect": {
+      "title": "Yhdistä lompakkosi",
+      "description": "Valitse vahvistustapa jatkaaksesi",
+      "selectWallet": "Valitse yhdistettävä lompakko",
+      "walletTitle": "Lompakon yhdistäminen",
+      "cloudWallet": "Pilvilompakko",
+      "mobileWallet": "Mobiililompakko",
+      "walletDescription": "Anna lyhyt perustelu lompakkosi yhdistämiselle:",
+      "justificationPlaceholder": "Kirjoita perustelusi tähän...",
+      "connectWallet": "Yhdistä lompakko"
+    },
+    "choose": {
+      "title": "Valitse varmennustapa",
+      "description": "Valitse, miten haluat vahvistaa tunnistetietosi",
+      "walletTitle": "Lompakko",
+      "selectTemplate": "Valitse varmennusmalli",
+      "walletInfo": "Yhdistetyn lompakon tiedot",
+      "issuedBy": "Myöntäjä:",
+      "issuer": "Myöntäjä"
+    },
+    "confirm": {
+      "title": "Vahvista varmennus",
+      "description": "Tarkista ja vahvista varmennustietosi",
+      "verifying": "Vahvistetaan tietojasi...",
+      "success": "Varmennus onnistui!",
+      "error": "Varmennus epäonnistui. Yritä uudelleen.",
+      "templateError": "Varmennuspohjaa ei löytynyt",
+      "errorDescription": "Kohtasimme ongelman varmennustietojesi käsittelyssä. Tarkista seuraavat asiat:",
+      "checkConnection": "Tarkista internetyhteytesi",
+      "tryAgain": "Yritä uudelleen hetken kuluttua",
+      "contactSupport": "Ota yhteyttä tukeen, jos ongelma jatkuu",
+      "retry": "Yritä uudelleen",
+      "back": "Takaisin",
+      "issuedOn": "Myönnetty",
+      "validUntil": "Voimassa",
+      "status": "Tila",
+      "verificationId": "Varmennuksen tunniste"
+    },
+    "status": {
+      "pending": "Varmennus käynnissä...",
+      "success": "Varmennus onnistui!",
+      "error": "Varmennus epäonnistui"
+    }
+  },
   "common": {
     "orgDashboardTitle": "CRANE dHDSI - Organisaation hallintapaneeli",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
@@ -161,6 +213,11 @@
     "dataset": "Tietojoukko",
     "policyUrl": "Käytäntö URL",
     "cancel": "Peruuta",
+    "submit": "Lähetä",
+    "back": "Takaisin",
+    "retry": "Yritä uudelleen",
+    "loading": "Ladataan...",
+    "success": "Onnistui",
     "confirm": "Vahvista",
     "next": "Seuraava",
     "save": "Tallenna",
@@ -184,7 +241,8 @@
     "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus",
     "generic": "Jokin meni pieleen.",
     "errorOccurred": "Tapahtui virhe.",
-    "tryAgainLater": "Yritä myöhemmin uudelleen."
+    "tryAgainLater": "Yritä myöhemmin uudelleen.",
+    "pleaseWait": "Odota hetki..."
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -303,9 +361,11 @@
     "openApiUpdateFailed": "OpenAPI-määrittelyn URL-osoitteen päivitys epäonnistui",
     "configureOpenApi": "Määritä OpenAPI-määrittely",
     "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite:",
+    "holderBaseUrlLabel": "Haltijan perus-URL:",
     "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
     "uploadButton": "Lataa",
     "oauth2ClientTitle": "OAuth2-asiakas",
+    "oauth2Title": "OAuth 2.0 -asiakas",
     "oauth2ClientNameLabel": "Nimi",
     "oauth2ClientNamePlaceholder": "OAuth2-asiakkaan nimi",
     "createOAuth2Client": "Luo",
@@ -313,10 +373,16 @@
     "clientIdLabel": "Client ID",
     "clientSecretLabel": "Client Secret",
     "organisationWalletTitle": "Organisaation lompakko",
-    "owsBaseUrlLabel": "Perus-URL:",
+    "owsBaseUrlLabel": "Perus-URL",
     "owsBaseUrlPlaceholder": "Syötä organisaation lompakon perus-URL",
     "saveButton": "Tallenna",
-    "owsBaseUrlUpdateFailed": "Organisaation lompakon perus-URL:n päivitys epäonnistui"
+    "owsBaseUrlUpdateFailed": "Organisaation lompakon perus-URL:n päivitys epäonnistui",
+    "walletConfigurationTitle": "Organisaation lompakon konfigurointi",
+    "configuredLabel": "Määritetty",
+    "configureButton": "Määritä",
+    "oauth2ClientConfigTitle": "OAuth2-asiakkaan konfigurointi",
+    "deploymentStatusLabel": "Käyttöönottotila:",
+    "notConfiguredLabel": "Ei konfiguroitu"
   },
   "dispConnection": {
     "copy": "KOPIOI",

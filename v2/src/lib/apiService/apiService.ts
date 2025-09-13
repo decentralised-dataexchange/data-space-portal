@@ -2,8 +2,7 @@ import { api } from "./api";
 import { ENDPOINTS } from "./apiEndpoints";
 import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
-import { DataSourceListResponse } from "@/types/dataDisclosureAgreement";
-import { OrganisationListResponse } from "@/types/organisation";
+import { OrganisationListResponse, OrganisationResponse, OrganisationUpdatePayload } from "@/types/organisation";
 import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from "@/types/oauth2";
 import {
   Verification,
@@ -12,6 +11,8 @@ import {
   PresentationRecord
 } from "@/types/verification";
 import { SignupPayload } from "@/types/auth";
+import { OrgIdentityResponse } from "@/types/orgIdentity";
+import { DDAgreementsResponse } from "@/types/dataDisclosureAgreement";
 
 // API Service implementation with real API calls
 export const apiService = {
@@ -21,15 +22,11 @@ export const apiService = {
       { email, password }
     ).then(res => res.data);
   },
-  signup: async (payload: SignupPayload): Promise<SignupPayload> => {
-    return api.post<SignupPayload>(
+  signup: async (payload: SignupPayload): Promise<any> => {
+    return api.post<any>(
       ENDPOINTS.signup(),
       payload
     ).then(res => res.data);
-  },
-  dataSourceList: async (): Promise<DataSourceListResponse> => {
-    return api.get<DataSourceListResponse>(ENDPOINTS.dataSourceList())
-      .then(res => res.data);
   },
   organisationList: async (): Promise<OrganisationListResponse> => {
     return api.get<OrganisationListResponse>(ENDPOINTS.organisationList())
@@ -47,17 +44,17 @@ export const apiService = {
     filter: string,
     limit: number,
     offsetValue: number
-  ): Promise<any> => {
-    return api.get<any>(ENDPOINTS.listDataDisclosureAgreements(filter, limit, offsetValue))
+  ): Promise<DDAgreementsResponse> => {
+    return api.get<DDAgreementsResponse>(ENDPOINTS.listDataDisclosureAgreements(filter, limit, offsetValue))
       .then(res => res.data);
   },
-  updateDDAStatus: async (ddaId: string, payload: unknown): Promise<any> => {
-    return api.put<any>(ENDPOINTS.updateDDAStatus(ddaId), payload)
-      .then(res => res.data);
+  updateDDAStatus: async (ddaId: string, payload: { status: string }): Promise<void> => {
+    return api.put<void>(ENDPOINTS.updateDDAStatus(ddaId), payload)
+      .then(res => res.data as unknown as void);
   },
-  deleteDDA: async (ddaId: string): Promise<any> => {
-    return api.delete<any>(ENDPOINTS.deleteDDA(ddaId))
-      .then(res => res.data);
+  deleteDDA: async (ddaId: string): Promise<void> => {
+    return api.delete<void>(ENDPOINTS.deleteDDA(ddaId))
+      .then(res => res.data as unknown as void);
   },
   getAdminDetails: async (): Promise<any> => {
     return api.get<any>(ENDPOINTS.getAdminDetails())
@@ -75,9 +72,6 @@ export const apiService = {
     try {
       const formData = new FormData();
       formData.append('orgimage', file);
-
-      // Make the API call; backend returns updated organization object, but we
-      // don’t need it here – letting Axios set the multipart boundary automatically.
       await api.put(
         ENDPOINTS.getLogoImage(),
         formData
@@ -88,22 +82,37 @@ export const apiService = {
     }
   },
   getCoverImage: async (): Promise<any> => {
-    return axiosInstanceWithArrayBufferResType.get(ENDPOINTS.getCoverImage()).then((res) => {
+    const url = ENDPOINTS.getCoverImage();
+    console.debug('[apiService] GET cover image:', url);
+    return axiosInstanceWithArrayBufferResType.get(url).then((res) => {
       return imageBlobToBase64(res.data);
     });
   },
   getLogoImage: async (): Promise<any> => {
-    return axiosInstanceWithArrayBufferResType.get(ENDPOINTS.getLogoImage()).then((res) => {
+    const url = ENDPOINTS.getLogoImage();
+    console.debug('[apiService] GET logo image:', url);
+    return axiosInstanceWithArrayBufferResType.get(url).then((res) => {
       return imageBlobToBase64(res.data);
     });
   },
-  listConnections: async (limit: number, offsetValue: number, restrictTemplate: boolean = false): Promise<any> => {
-    return api.get<any>(ENDPOINTS.listConnections(limit, offsetValue))
-      .then(res => res.data);
-  },
+  // Connections listing removed
   updateOrganisationCoverImage: async (formData: FormData): Promise<any> => {
     return api.put<{ Organization: any }>(ENDPOINTS.getCoverImage(), formData)
       .then(res => res.data.Organization);
+  },
+  
+  // Public service: organisation by ID (unauthenticated route)
+  getServiceOrganisationById: async (organisationId: string): Promise<import('@/types/serviceOrganisation').ServiceOrganisationResponse> => {
+    return api.get<import('@/types/serviceOrganisation').ServiceOrganisationResponse>(
+      ENDPOINTS.organisationList(),
+      { params: { organisationId } }
+    ).then(res => res.data);
+  },
+  // Public service: all organisations (unauthenticated route)
+  getServiceOrganisations: async (): Promise<import('@/types/serviceOrganisation').ServiceOrganisationResponse> => {
+    return api.get<import('@/types/serviceOrganisation').ServiceOrganisationResponse>(
+      ENDPOINTS.organisationList()
+    ).then(res => res.data);
   },
   getVerificationTemplates: async (restrictTemplate: boolean = false): Promise<VerificationTemplate[]> => {
     try {
@@ -161,22 +170,44 @@ export const apiService = {
       throw error;
     }
   },
-  getGettingStartData: async (): Promise<any> => {
+  getOrgIdentity: async (): Promise<OrgIdentityResponse> => {
     try {
-      const response = await api.get(ENDPOINTS.organisationsDetails());
+      const response = await api.get<OrgIdentityResponse>(ENDPOINTS.orgIdentity());
       return response.data;
     } catch (error) {
-      console.error('Error fetching getting started data:', error);
+      console.error('Error fetching organization identity:', error);
       throw error;
     }
   },
-  updateDataSource: async (payload: unknown): Promise<any> => {
-    return api.put<any>(ENDPOINTS.organisationsDetails(), payload)
-      .then(res => res.data)
-      .catch(error => {
-        throw error;
-      });
+  createOrgIdentity: async (): Promise<OrgIdentityResponse> => {
+    try {
+      const response = await api.post<OrgIdentityResponse>(ENDPOINTS.orgIdentity(), null);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating organization identity:', error);
+      throw error;
+    }
   },
+  // Organisation details (current logged in user's organisation)
+  getOrganisation: async (): Promise<OrganisationResponse> => {
+    try {
+      const response = await api.get<OrganisationResponse>(ENDPOINTS.organisationsDetails());
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching organisation details:', error);
+      throw error;
+    }
+  },
+  updateOrganisation: async (payload: OrganisationUpdatePayload): Promise<OrganisationResponse> => {
+    try {
+      const response = await api.put<OrganisationResponse>(ENDPOINTS.organisationsDetails(), payload);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating organisation details:', error);
+      throw error;
+    }
+  },
+  // Removed legacy data-source update API
 
   // Upload admin avatar image
   updateAdminAvatar: async (formData: FormData): Promise<any> => {

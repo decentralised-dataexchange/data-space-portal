@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Grid, Typography, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
@@ -10,14 +10,15 @@ import OrganisationDetailsContainer from "@/components/OrganisationDetails/OrgDe
 import { useTranslations } from 'next-intl';
 import Loader from "@/components/common/Loader";
 import { 
-  useGetGettingStartData, 
-  useListConnections, 
+  useGetOrganisation,
+  useGetOrgIdentity,
+  useCreateOrgIdentity,
   useGetCoverImage,
-  
-  useUpdateDataSource,
-  useUpdateCoverImage,
-  useGetVerificationTemplate,
+  useGetLogoImage,
+  useAutoCreateOrgIdentity,
+  useOrgIdentityPolling,
 } from '@/custom-hooks/gettingStarted';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -72,27 +73,41 @@ const GettingStarted = () => {
   const t = useTranslations();
   const router = useRouter();
 
-  const { data: gettingStartData, isLoading: isGettingStartLoading } = useGetGettingStartData();
-  const { data: listConnections } = useListConnections(10, 0, false);
+  const { data: organisationResponse, isLoading: isOrganisationLoading } = useGetOrganisation();
   const { data: coverImageBase64, isLoading: isCoverImageLoading } = useGetCoverImage();
+  const { data: logoImageBase64 } = useGetLogoImage();
+  const organisationId = organisationResponse?.organisation?.id || 'current';
+  const { data: orgIdentityResp } = useGetOrgIdentity(organisationId);
+  const { mutateAsync: createOrgIdentity } = useCreateOrgIdentity();
+  const queryClient = useQueryClient();
+  const pollTimers = useRef<number[]>([]);
   
-  const isEnableAddCredential = listConnections?.connections && listConnections?.connections.length > 0 && 
-    listConnections?.connections[0]?.connectionState === 'active';
-
   const [formData, setFormData] = useState<any>({});
+  // Hooks for Add Credentials should be declared before any early returns
+  const addInFlight = useRef(false);
+  const [isAddLoading, setIsAddLoading] = useState(false);
+
+
 
   // Initialize form data when data is loaded
   useEffect(() => {
-    if (gettingStartData?.dataSource) {
+    const org = organisationResponse?.organisation;
+    if (org) {
       setFormData({
-        name: gettingStartData.dataSource.name || '',
-        location: gettingStartData.dataSource.location || '',
-        policyUrl: gettingStartData.dataSource.policyUrl || '',
-        description: gettingStartData.dataSource.description || '',
-        sector: gettingStartData.dataSource.sector || ''
+        name: org.name || '',
+        location: org.location || '',
+        policyUrl: org.policyUrl || '',
+        description: org.description || '',
+        sector: org.sector || ''
       });
     }
-  }, [gettingStartData]);
+  }, [organisationResponse]);
+
+  // Use hook to auto-create org identity when needed
+  useAutoCreateOrgIdentity(orgIdentityResp);
+
+  // Use hook to handle polling lifecycle
+  useOrgIdentityPolling(orgIdentityResp, organisationId);
 
   const handleEdit = () => {
     setEditMode(!editMode);
@@ -105,36 +120,15 @@ const GettingStarted = () => {
     }));
   };
 
-  // Mutation hooks
-  const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
-
-  // Logo image upload is fully handled inside OrgLogoImageUpload via React Query
-
-  const handleCoverImageChange = async (newImage: string) => {
-    try {
-      const formData = new FormData();
-      formData.append('file', newImage);
-      await updateCoverImage(formData);
-    } catch (error) {
-      console.error('Error updating cover image:', error);
-    }
-  };
-
   const isLoading = useMemo(() => {
-    const loading = isGettingStartLoading || isCoverImageLoading;
+    const loading = isOrganisationLoading || isCoverImageLoading;
     return loading;
-  }, [isGettingStartLoading, isCoverImageLoading]);
+  }, [isOrganisationLoading, isCoverImageLoading]);
 
   const hasError = useMemo(() => {
-    const error = !isLoading && (!gettingStartData || !gettingStartData.dataSource);
-    console.log('Error state evaluation:', {
-      isLoading,
-      gettingStartDataExists: !!gettingStartData,
-      gettingStartDataHasDataSource: !!gettingStartData?.dataSource,
-      hasError: error
-    });
+    const error = !isLoading && (!organisationResponse || !organisationResponse.organisation);
     return error;
-  }, [isLoading, gettingStartData]);
+  }, [isLoading, organisationResponse]);
 
   if (isLoading) {
     return (
@@ -157,6 +151,42 @@ const GettingStarted = () => {
     );
   }
 
+  const isVerified = !!orgIdentityResp?.verified;
+  const addCredentialUrl = (orgIdentityResp as any)?.organisationalIdentity?.vpTokenQrCode as string | undefined;
+  const isEnableAddCredential = !isVerified; // Show until verified becomes true
+
+  const handleAddCredentialsClick = async () => {
+    if (isVerified) return;
+    if (addInFlight.current) return;
+    addInFlight.current = true;
+    try {
+      const state = orgIdentityResp?.state || '';
+      const identityObj = (orgIdentityResp as any)?.organisationalIdentity;
+      const hasQr = identityObj && identityObj.vpTokenQrCode;
+
+      if (state === 'request_sent' && hasQr) {
+        // Navigate to existing request in same tab
+        window.location.href = identityObj.vpTokenQrCode as string;
+        return;
+      }
+
+      // Otherwise create a fresh identity request and navigate to new QR URL
+      setIsAddLoading(true);
+      const created = await createOrgIdentity();
+      const newQr = (created as any)?.organisationalIdentity?.vpTokenQrCode as string | undefined;
+      if (newQr) {
+        window.location.href = newQr;
+      } else {
+        console.error('No vpTokenQrCode returned from createOrgIdentity');
+      }
+    } catch (e) {
+      console.error('Error handling Add Credentials click:', e);
+    } finally {
+      setIsAddLoading(false);
+      addInFlight.current = false;
+    }
+  };
+
   return (
     <Container className='pageContainer'>
       <OrgCoverImageUpload
@@ -167,7 +197,15 @@ const GettingStarted = () => {
       <OrganisationDetailsContainer
         editMode={editMode}
         handleEdit={handleEdit}
-        isEnableAddCredential={isEnableAddCredential ?? false}
+        isEnableAddCredential={isEnableAddCredential}
+        originalOrganisation={organisationResponse?.organisation}
+        isVerified={isVerified}
+        addCredentialUrl={addCredentialUrl}
+        onAddCredentialsClick={handleAddCredentialsClick}
+        addCredentialsLoading={isAddLoading}
+        coverImageBase64={coverImageBase64 || ''}
+        logoImageBase64={logoImageBase64 || ''}
+        orgIdentity={orgIdentityResp}
         organisationDetails={formData}
         setOganisationDetails={handleFormChange}
       />

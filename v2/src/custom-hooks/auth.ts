@@ -10,7 +10,7 @@ import { AccessToken, SignupPayload } from "@/types/auth";
 declare module "@/lib/apiService/apiService" {
   interface ApiService {
     login: (email: string, password: string) => Promise<{ access: string; refresh: string }>;
-    signup: (email: string, password: string, name?: string) => Promise<{ id: string; email: string; name?: string }>;
+    signup: (payload: SignupPayload) => Promise<any>;
     getAdminDetails: () => Promise<any>;
   }
 }

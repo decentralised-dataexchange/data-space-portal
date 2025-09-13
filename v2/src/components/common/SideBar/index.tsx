@@ -11,6 +11,7 @@ import {
     useMediaQuery,
     useTheme
 } from '@mui/material';
+import { CaretRight, CaretDown } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -111,19 +112,22 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
             py: 1,
           }}
         >
-          <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
-            <list.icon size={22} weight={active ? "fill" : "regular"} />
+          <ListItemIcon sx={{ color: inactiveTextColor }}>
+            <list.icon size={22} weight={"regular"} />
           </ListItemIcon>
           <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
           </ListItemText>
+          <Box sx={{ ml: 'auto', color: inactiveTextColor }}>
+            {isOpen ? <CaretDown size={18} /> : <CaretRight size={18} />}
+          </Box>
         </MenuItem>
         {isOpen && (
           <Box>
             {list.subMenu.map((subItem) => {
               const subItemActive = pathname.includes(subItem.link);
               return (
-                <MenuItem 
+                <MenuItem
                   key={subItem.name}
                   component={Link}
                   href={`${list.link}/${subItem.link}`}
@@ -195,8 +199,8 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
                 href={list.link}
                 sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal', display: 'flex', width: '100%', alignItems: 'center', py: 1 }}
               >
-                <ListItemIcon sx={{ color: active ? activeTextColor : inactiveTextColor }}>
-                  <list.icon size={22} weight={active ? "fill" : "regular"} />
+                <ListItemIcon sx={{ color: inactiveTextColor }}>
+                  <list.icon size={22} weight={"regular"} />
                 </ListItemIcon>
                 <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>

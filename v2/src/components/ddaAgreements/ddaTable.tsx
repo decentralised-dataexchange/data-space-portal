@@ -138,7 +138,7 @@ const DDATable: React.FC<DDATableProps> = ({
   const t = useTranslations();
 
   return (
-    <TableContainer className="dd-container" sx={{ backgroundColor: '#FFFF', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
+    <TableContainer className="dd-container" sx={{ backgroundColor: 'transparent', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
       <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -149,7 +149,7 @@ const DDATable: React.FC<DDATableProps> = ({
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
           {tabledata?.dataDisclosureAgreements?.length > 0 ? (
             tabledata.dataDisclosureAgreements.map((row, index) => (
               <StyledTableRow key={row.templateId} style={{ color: "red" }}>

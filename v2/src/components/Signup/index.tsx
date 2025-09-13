@@ -9,17 +9,21 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import './style.scss';
 import { useSignup } from '@/custom-hooks/auth';
+import type { SignupPayload } from '@/types/auth';
 import { useAppDispatch } from '@/custom-hooks/store';
 import { setMessage } from '@/store/reducers/authReducer';
 
 interface FormValue {
-  name: string;
+  // Organisation fields
+  organisationName: string;
   sector: string;
   location: string;
   policyUrl: string;
   description: string;
+  verificationRequestURLPrefix: string;
+  // User fields
+  userName: string;
   email: string;
-  owsBaseUrl: string;
   password: string;
   confirmPassword: string;
 }
@@ -27,18 +31,19 @@ interface FormValue {
 const Signup = () => {
   const t = useTranslations();
   const [formValue, setFormValue] = useState<FormValue>({
-    name: '',
+    organisationName: '',
     sector: '',
     location: '',
     policyUrl: '',
     description: '',
+    verificationRequestURLPrefix: '',
+    userName: '',
     email: '',
-    owsBaseUrl: '',
     password: '',
     confirmPassword: ''
   });
   const [showFieldErrors, setShowFieldErrors] = useState(false);
-  const { name, sector, location, policyUrl, description, email, owsBaseUrl, password, confirmPassword } = formValue;
+  const { organisationName, sector, location, policyUrl, description, verificationRequestURLPrefix, userName, email, password, confirmPassword } = formValue;
   const { signup: doSignup, isLoading } = useSignup();
   const dispatch = useAppDispatch();
   const passwordsMismatch = confirmPassword.length > 0 && password !== confirmPassword;
@@ -69,13 +74,14 @@ const Signup = () => {
 
   // Overall form validity (computed after validation flags above)
   const isFormValid = (
-    !!name &&
+    !!organisationName &&
     !!sector &&
     !!location &&
     !!policyUrl &&
     !!description &&
+    !!userName &&
     !!email &&
-    !!owsBaseUrl &&
+    !!verificationRequestURLPrefix &&
     !!password &&
     !!confirmPassword &&
     !passwordLengthInvalid &&
@@ -85,7 +91,7 @@ const Signup = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Basic validations
-    if (!name || !sector || !location || !policyUrl || !description || !email || !owsBaseUrl || !password || !confirmPassword) {
+    if (!organisationName || !sector || !location || !policyUrl || !description || !userName || !email || !verificationRequestURLPrefix || !password || !confirmPassword) {
       setShowFieldErrors(true);
       dispatch(setMessage(t('signup.requiredFieldsMissing')));
       return;
@@ -101,10 +107,22 @@ const Signup = () => {
       return;
     }
 
-    // console.log(formValue);  
-    // return
+    const payload = {
+      organisation: {
+        name: organisationName,
+        sector,
+        location,
+        policyUrl,
+        description,
+        verificationRequestURLPrefix,
+      },
+      name: userName,
+      email,
+      password,
+      confirmPassword
+    };
 
-    doSignup(formValue);
+    doSignup(payload as SignupPayload);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -135,20 +153,37 @@ const Signup = () => {
         </Box>
         <form onSubmit={handleSubmit}>
           <Box className='text-field'>
-            {/* Name */}
+            {/* User Name */}
             <TextField
-              name="name"
+              name="userName"
               type="text"
-              value={name}
+              value={userName}
               onChange={handleChange}
               variant="standard"
               label={false}
-              placeholder={t('signup.name')}
+              placeholder={t('signup.userName')}
               fullWidth
-              slotProps={{ input: inputSlots(<UserIcon size={22} style={iconStyle} />, name, MAX_SHORT) }}
+              slotProps={{ input: inputSlots(<UserIcon size={22} style={iconStyle} />, userName, MAX_SHORT) }}
               inputProps={{ maxLength: MAX_SHORT }}
-              error={showFieldErrors && !name}
-              helperText={showFieldErrors && !name ? t('signup.required') : ''}
+              error={showFieldErrors && !userName}
+              helperText={showFieldErrors && !userName ? t('signup.required') : ''}
+            />
+            <Divider />
+
+            {/* Organisation Name */}
+            <TextField
+              name="organisationName"
+              type="text"
+              value={organisationName}
+              onChange={handleChange}
+              variant="standard"
+              label={false}
+              placeholder={t('signup.organisationName')}
+              fullWidth
+              slotProps={{ input: inputSlots(<UserIcon size={22} style={iconStyle} />, organisationName, MAX_SHORT) }}
+              inputProps={{ maxLength: MAX_SHORT }}
+              error={showFieldErrors && !organisationName}
+              helperText={showFieldErrors && !organisationName ? t('signup.required') : ''}
             />
             <Divider />
 
@@ -252,20 +287,20 @@ const Signup = () => {
             />
             <Divider />
 
-            {/* OWS Base URL */}
+            {/* Verification Request URL Prefix */}
             <TextField
-              name="owsBaseUrl"
+              name="verificationRequestURLPrefix"
               type="url"
-              value={owsBaseUrl}
+              value={verificationRequestURLPrefix}
               onChange={handleChange}
               variant="standard"
               label={false}
-              placeholder={t('signup.owsBaseUrl')}
+              placeholder={t('signup.verificationRequestURLPrefix')}
               fullWidth
-              slotProps={{ input: inputSlots(<Globe size={22} style={iconStyle} />, owsBaseUrl, MAX_SHORT) }}
+              slotProps={{ input: inputSlots(<Globe size={22} style={iconStyle} />, verificationRequestURLPrefix, MAX_SHORT) }}
               inputProps={{ maxLength: MAX_SHORT }}
-              error={showFieldErrors && !owsBaseUrl}
-              helperText={showFieldErrors && !owsBaseUrl ? t('signup.required') : ''}
+              error={showFieldErrors && !verificationRequestURLPrefix}
+              helperText={showFieldErrors && !verificationRequestURLPrefix ? t('signup.required') : ''}
             />
             <Divider />
 

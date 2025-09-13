@@ -6,6 +6,7 @@ import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
 import VerifiedBadge from '../common/VerifiedBadge';
+import { isOrganisationVerified } from '@/utils/verification';
 
 import ClientPagination from '../Home/ClientPagination';
 import ApiDoc from '@/components/ApiDocs';
@@ -25,30 +26,32 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '');
 
-    // Fetch list; be resilient to local/dev timeouts
-    let listResp: Awaited<ReturnType<typeof apiService.dataSourceList>> | null = null;
-    try {
-        listResp = await apiService.dataSourceList();
-    } catch (err) {
-        console.error('Failed to fetch data sources on DataSources page:', err);
+    // Use unauthenticated service endpoints
+    let serviceItem: import('@/types/serviceOrganisation').ServiceOrganisationItem | undefined;
+    if (id) {
+        // Prefer fetching by ID when provided
+        const resp = await apiService.getServiceOrganisationById(id);
+        serviceItem = resp.organisations?.[0];
     }
-    const list = ((listResp)?.dataSources ?? []);
-    // Try to match by exact ID first, then fall back to slug match if needed
-    let dataSourceItem = list.find(item => (id ? item.dataSource.id === id : false));
-    if (!dataSourceItem) {
+    if (!serviceItem) {
+        // Fallback: fetch all and match by slug deriving from organisation.name
+        const allResp = await apiService.getServiceOrganisations();
+        const list = allResp.organisations ?? [];
         const paramSlug = slug ?? id ?? '';
         if (paramSlug) {
-            dataSourceItem = list.find(item => slugify(item.dataSource.name) === paramSlug);
+            serviceItem = list.find(item => slugify(item.organisation.name) === paramSlug);
+        }
+        // If still not found and id provided, try direct ID match
+        if (!serviceItem && id) {
+            serviceItem = list.find(item => item.organisation.id === id);
         }
     }
-    const trusted =
-        typeof dataSourceItem?.dataSource?.trusted === 'boolean'
-            ? (dataSourceItem?.dataSource?.trusted as boolean)
-            : dataSourceItem?.verification?.presentationState === "verified";
+    const dataSourceItem = serviceItem; // maintain name for downstream usage
+    const trusted = isOrganisationVerified(dataSourceItem as any);
     const sp = await searchParams;
     const ddas = dataSourceItem?.dataDisclosureAgreements ?? [];
     const viewApiFor = sp?.viewApiFor;
-    const dataSourceSlug = slugify(dataSourceItem?.dataSource?.name || '');
+    const dataSourceSlug = slugify(dataSourceItem?.organisation?.name || '');
     // pagination setup (disabled when viewing API for a specific DDA)
     const itemsPerPage = 4;
     const totalItems = ddas.length;
@@ -70,10 +73,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                         {/* Left info box */}
                         <Grid size={{ lg: 4, md: 12, sm: 12, xs: 12 }} className='leftContainer'>
                             <Card className='leftSection'>
-                                <CardMedia component="div" className='card-header' image={dataSourceItem?.dataSource?.coverImageUrl}>
+                                <CardMedia component="div" className='card-header' image={dataSourceItem?.organisation?.coverImageUrl}>
                                     <CardMedia
                                         component="img"
-                                        image={dataSourceItem?.dataSource?.logoUrl}
+                                        image={dataSourceItem?.organisation?.logoUrl}
                                         alt="symbiome"
                                         className='logo'
                                     />
@@ -89,22 +92,22 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                         transform: "none"
                                     }}>
                                         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
-                                            {dataSourceItem?.dataSource?.name}
+                                            {dataSourceItem?.organisation?.name}
                                         </Typography>
                                         <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
                                             {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                             <VerifiedBadge trusted={trusted} />
                                         </Typography>
                                         <Typography className='datasource-location'>
-                                            {dataSourceItem?.dataSource?.location}
+                                            {dataSourceItem?.organisation?.location}
                                         </Typography>
                                     </Box>
                                     <Typography variant="subtitle1" className='datasource-overview-label'>
                                         {t("common.overView")}
                                     </Typography>
                                     <Typography gutterBottom component="div" className="card-body datasource-overview" sx={{ fontSize: "14px" }}>
-                                        {/* {moreOrLessTxt === 'Read Less....' ? dataSourceItem?.dataSource?.description : dataSourceItem?.dataSource?.description.slice(0, 275)} */}
-                                        {dataSourceItem?.dataSource?.description}
+                                        {/* {moreOrLessTxt === 'Read Less....' ? dataSourceItem?.organisation?.description : dataSourceItem?.organisation?.description.slice(0, 275)} */}
+                                        {dataSourceItem?.organisation?.description}
                                         {/* read more button to be added here */}
                                     </Typography>
                                 </CardContent>
@@ -130,7 +133,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     </Typography>
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
-                                                        openApiUrl={dataSourceItem?.dataSource.openApiUrl || ''}
+                                                        openApiUrl={dataSourceItem?.organisation.openApiUrl || ''}
                                                         dataSourceSlug={dataSourceSlug}
                                                         apiViewMode={!!viewApiFor}
                                                     />
@@ -141,11 +144,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 })}
                             </Grid>
                             {/* Render API docs below the selected card when viewApiFor is present */}
-                            {viewApiFor && (dataSourceItem?.dataSource?.openApiUrl) && (
+                            {viewApiFor && (dataSourceItem?.organisation?.openApiUrl) && (
                                 <Box sx={{ mt: 2 }}>
                                     <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                         <CardContent sx={{ padding: '24px' }}>
-                                            <ApiDoc openApiUrl={dataSourceItem.dataSource.openApiUrl} />
+                                            <ApiDoc openApiUrl={dataSourceItem.organisation.openApiUrl} />
                                         </CardContent>
                                     </Card>
                                 </Box>
@@ -160,11 +163,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                     </Grid>
                 </Grid>
                 <DDAModalController
-                    dataSourceName={dataSourceItem?.dataSource?.name || ''}
-                    dataSourceLocation={dataSourceItem?.dataSource?.location || ''}
-                    dataSourceDescription={dataSourceItem?.dataSource?.description || ''}
-                    coverImage={dataSourceItem?.dataSource?.coverImageUrl || ''}
-                    logoImage={dataSourceItem?.dataSource?.logoUrl || ''}
+                    dataSourceName={dataSourceItem?.organisation?.name || ''}
+                    dataSourceLocation={dataSourceItem?.organisation?.location || ''}
+                    dataSourceDescription={dataSourceItem?.organisation?.description || ''}
+                    coverImage={dataSourceItem?.organisation?.coverImageUrl || ''}
+                    logoImage={dataSourceItem?.organisation?.logoUrl || ''}
                     dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
                     trusted={trusted}
                 />

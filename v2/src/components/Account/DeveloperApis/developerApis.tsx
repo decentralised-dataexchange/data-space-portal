@@ -1,14 +1,15 @@
 "use client"
-import { CopyIcon, EyeIcon, EyeSlashIcon } from "@phosphor-icons/react";
-import { Box, Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
+import { CopyIcon, EyeIcon, EyeSlashIcon, PencilSimple as PencilIcon, Check as CheckIcon, X as XIcon } from "@phosphor-icons/react";
+import { Box, Button, CircularProgress, Grid, IconButton, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import { useGetAdminDetails, useGetOrganizationDetails, useUpdateOpenApiUrl, useGetApiToken, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation } from "@/custom-hooks/developerApis";
+import { useGetAdminDetails, useGetOrganizationDetails, useGetApiToken, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation } from "@/custom-hooks/developerApis";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
+import RightSidebar from "@/components/common/RightSidebar";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -34,30 +35,34 @@ const DetailsContainer = styled("div")({
 
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
-  padding: 10,
-  paddingLeft: 20,
+  padding: "15px 30px",
   height: "auto",
   borderRadius: 2,
   border: "1px solid #CECECE",
 }));
 
 export default function DeveloperAPIs() {
-  const [showAPI, setShowAPI] = useState(false);
-  const [showClientName, setShowClientName] = useState(false);
-  const [showClientId, setShowClientId] = useState(false);
-  const [showClientSecret, setShowClientSecret] = useState(false);
+  const [oauthSecretVisible, setOauthSecretVisible] = useState(false);
   const [clientName, setClientName] = useState("");
   const t = useTranslations();
   const dispatch = useAppDispatch();
-  const { getFormattedToken } = useGetApiToken();
-  const token = getFormattedToken();
   const [openApiUrl, setOpenApiUrl] = useState("");
-  const [isOk, setIsOk] = useState(false);
-  const [owsBaseUrl, setOwsBaseUrl] = useState("");
-  const [isOwsDirty, setIsOwsDirty] = useState(false);
+  const [verificationRequestURLPrefix, setVerificationRequestURLPrefix] = useState("");
+  // Right sidebar modals
+  const [openWalletConfig, setOpenWalletConfig] = useState(false);
+  const [openOAuthConfig, setOpenOAuthConfig] = useState(false);
+  // Edit form states inside sidebars
+  const [editOpenApiUrl, setEditOpenApiUrl] = useState("");
+  const [editHolderBaseUrl, setEditHolderBaseUrl] = useState("");
+  // Local edit mode toggles for sidebar fields
+  const [isEditingOpenApi, setIsEditingOpenApi] = useState(false);
+  const [isEditingHolderBase, setIsEditingHolderBase] = useState(false);
+  const [isEditingClientName, setIsEditingClientName] = useState(false);
   const { data: oauth2List, isLoading: oauth2Loading } = useGetOAuth2Clients();
   const { mutate: createOAuth2Client, isPending: isCreating } = useCreateOAuth2Client();
   const oauth2Client = useAppSelector((state) => state.auth.oauth2Client);
+  const isWalletConfigured = Boolean(openApiUrl || verificationRequestURLPrefix);
+  const isOAuthConfigured = Boolean(oauth2Client);
 
   // Fetch admin details using React Query
   const { data: adminData, isLoading: adminLoading, isError: adminError } = useGetAdminDetails();
@@ -67,8 +72,7 @@ export default function DeveloperAPIs() {
   const { data: orgData, isLoading: orgLoading, isError: orgError } = useGetOrganizationDetails();
   const orgDetails = (orgData?.organisation ?? orgData?.dataSource);
 
-  // Update OpenAPI URL mutation
-  const { mutate: updateOpenApiUrl, isPending: isUpdating } = useUpdateOpenApiUrl();
+  // Organisation update mutation
   const { mutate: updateOrganisation, isPending: isSavingOws } = useUpdateOrganisation();
 
   // Set the OpenAPI URL when organization data is loaded
@@ -76,8 +80,8 @@ export default function DeveloperAPIs() {
     if (orgDetails?.openApiUrl) {
       setOpenApiUrl(orgDetails.openApiUrl);
     }
-    if (orgDetails?.owsBaseUrl) {
-      setOwsBaseUrl(orgDetails.owsBaseUrl);
+    if (orgDetails?.verificationRequestURLPrefix) {
+      setVerificationRequestURLPrefix(orgDetails.verificationRequestURLPrefix);
     }
   }, [orgDetails]);
 
@@ -89,35 +93,6 @@ export default function DeveloperAPIs() {
     }
   }, [oauth2List, dispatch]);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(token);
-    // Success toasts suppressed globally; no local snackbar on copy
-  };
-
-  const handleOwsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = event.target.value;
-    setOwsBaseUrl(val);
-    setIsOwsDirty(val !== (orgDetails?.owsBaseUrl ?? ""));
-  };
-
-  const handleSaveOws = () => {
-    if (!orgDetails?.id) return;
-    if (!isOwsDirty) return;
-    const payload = {
-      organisation: {
-        ...orgDetails,
-        owsBaseUrl: owsBaseUrl,
-      }
-    } as unknown as { organisation: any };
-    updateOrganisation(payload as any, {
-      onSuccess: () => {
-        setIsOwsDirty(false);
-      },
-      onError: () => {
-        dispatch(setMessage(t("developerAPIs.owsBaseUrlUpdateFailed")));
-      }
-    });
-  };
 
   const handleCopyValue = (value: string) => {
     navigator.clipboard.writeText(value);
@@ -132,6 +107,8 @@ export default function DeveloperAPIs() {
           if (res?.oAuth2Client) {
             dispatch(setOAuth2Client(res.oAuth2Client));
             setClientName("");
+            // Auto-close the OAuth2 sidebar after successful creation
+            closeOAuthSidebar();
           }
         },
         onError: () => {
@@ -141,34 +118,41 @@ export default function DeveloperAPIs() {
     );
   };
 
-  const handleUpdateUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setOpenApiUrl(event.target.value);
-
-    if (event.target.value !== orgDetails?.openApiUrl) {
-      setIsOk(true);
-    } else {
-      setIsOk(false);
-    }
+  // Handlers to open/close sidebars
+  const openWalletSidebar = () => {
+    setEditOpenApiUrl(openApiUrl || "");
+    setEditHolderBaseUrl(verificationRequestURLPrefix || "");
+    setIsEditingOpenApi(false);
+    setIsEditingHolderBase(false);
+    setOpenWalletConfig(true);
   };
+  const closeWalletSidebar = () => setOpenWalletConfig(false);
+  const openOAuthSidebar = () => { setIsEditingClientName(false); setOpenOAuthConfig(true); };
+  const closeOAuthSidebar = () => setOpenOAuthConfig(false);
 
-  const udateOpenApiUrls = () => {
-    if (isOk) {
-      const payload = {
-        dataSource: {
-          openApiUrl: openApiUrl,
-        },
-      };
-
-      updateOpenApiUrl(payload, {
-        onSuccess: () => {
-          // Success toasts suppressed globally; do not open snackbar
-          setIsOk(false);
-        },
-        onError: () => {
-          dispatch(setMessage(t("developerAPIs.openApiUpdateFailed")));
-        }
-      });
-    }
+  // Save both OpenAPI URL and Holder Base URL via organisation update
+  const handleSaveWalletConfig = () => {
+    if (!orgDetails?.id) return;
+    const payload = {
+      organisation: {
+        ...orgDetails,
+        openApiUrl: editOpenApiUrl,
+        verificationRequestURLPrefix: editHolderBaseUrl,
+      },
+    } as unknown as { organisation: any };
+    updateOrganisation(payload as any, {
+      onSuccess: () => {
+        setOpenApiUrl(editOpenApiUrl);
+        setVerificationRequestURLPrefix(editHolderBaseUrl);
+        setOpenWalletConfig(false);
+        // Exit inline edit modes upon successful save
+        setIsEditingOpenApi(false);
+        setIsEditingHolderBase(false);
+      },
+      onError: () => {
+        dispatch(setMessage(t("developerAPIs.owsBaseUrlUpdateFailed")));
+      },
+    });
   };
 
   // Show loading state if any data is loading
@@ -267,271 +251,374 @@ export default function DeveloperAPIs() {
           </Grid>
         </Grid>
       </DetailsContainer>
-      <Box className="apiKey">
-        <Grid container spacing={1}>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-            <Typography
-              color="black"
-              variant="subtitle1"
-              fontWeight="bold"
-              mb={0.5}
+      {/* Organisation Wallet Configuration (combined view) */}
+      <Box className="apiKey" sx={{ padding: '15px 30px' }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          flexDirection={{ xs: 'column', sm: 'row' }}
+          gap={{ xs: 1, sm: 0 }}
+          sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
+        >
+          <Typography color="black" variant="subtitle1" fontWeight="bold">
+            {t('developerAPIs.walletConfigurationTitle')}
+          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            {isWalletConfigured && (
+              <Typography variant="button" sx={{ color: 'black' }}>{t('developerAPIs.configuredLabel')}</Typography>
+            )}
+            <Button
+              variant="outlined"
+              onClick={openWalletSidebar}
+              sx={{
+                padding: '5px 50px',
+                border: '1px solid #DFDFDF',
+                borderRadius: 0,
+                color: 'black',
+                '&:hover': { backgroundColor: 'black', color: 'white' },
+              }}
             >
-              {t("developerAPIs.apiKey")}
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
-            <Typography color="grey" variant="body1" className="description">
-              {showAPI
-                ? token || t("developerAPIs.noTokenAvailable")
-                : "************************************************************************************************************************************************************************************"}
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
-            <Box
-              className="actionBtnContainer pointer d-flex-evenly"
-              sx={{ cursor: "pointer" }}
-            >
-              {showAPI ? (
-                <EyeIcon
-                  onClick={() => setShowAPI(false)}
-                  size={24}
-                />
-              ) : (
-                <EyeSlashIcon
-                  onClick={() => setShowAPI(true)}
-                  size={24}
-                />
-              )}
+              {t('developerAPIs.configureButton')}
+            </Button>
+          </Box>
+        </Box>
 
-              <CopyIcon
-                size={24}
-                onClick={handleCopy}
-              />
+        {/* Values display like org details view */}
+        <Grid container spacing={1}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography color="black" variant="body2">{t('developerAPIs.openApiUrlLabel')}</Typography>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box display="flex" alignItems="center" gap={1}>
+              {openApiUrl ? (
+                <a href={openApiUrl} target="_blank" rel="noreferrer" style={{ color: '#1976d2', wordBreak: 'break-all' }}>{openApiUrl}</a>
+              ) : (
+                <Typography color="grey" variant="body2">-</Typography>
+              )}
+              {openApiUrl && (
+                <CopyIcon size={18} style={{ cursor: 'pointer' }} onClick={() => handleCopyValue(openApiUrl)} />
+              )}
+            </Box>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography color="black" variant="body2">{t('developerAPIs.holderBaseUrlLabel')}</Typography>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box display="flex" alignItems="center" gap={1}>
+              {verificationRequestURLPrefix ? (
+                <a href={verificationRequestURLPrefix} target="_blank" rel="noreferrer" style={{ color: '#1976d2', wordBreak: 'break-all' }}>{verificationRequestURLPrefix}</a>
+              ) : (
+                <Typography color="grey" variant="body2">-</Typography>
+              )}
+              {verificationRequestURLPrefix && (
+                <CopyIcon size={18} style={{ cursor: 'pointer' }} onClick={() => handleCopyValue(verificationRequestURLPrefix)} />
+              )}
             </Box>
           </Grid>
         </Grid>
       </Box>
 
-      <Box className="apiKey">
-        <Grid container spacing={1} alignItems={"center"}>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-            <Typography
-              color="black"
-              variant="subtitle1"
-              fontWeight="bold"
-              mb={0.5}
-            >
-              {t("developerAPIs.configureOpenApi")}
-            </Typography>
-          </Grid>
-          {(openApiUrl) && (
-            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-              <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-                {t("developerAPIs.openApiUrlLabel")}
-              </Typography>
-            </Grid>
-          )}
-
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
-            <TextField
-              placeholder={t("developerAPIs.openApiUrlPlaceholder")}
-              variant="standard"
-              size="small"
-              fullWidth
-              value={openApiUrl}
-              onChange={handleUpdateUrl}
-              InputProps={{
-                disableUnderline: false,
-              }}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 12, md: 12, lg: 3 }}>
+      {/* OAuth2 Client display */}
+      <Box className="apiKey" sx={{ padding: '15px 30px' }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          flexDirection={{ xs: 'column', sm: 'row' }}
+          gap={{ xs: 1, sm: 0 }}
+          sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
+        >
+          <Typography color="black" variant="subtitle1" fontWeight="bold">
+            {t('developerAPIs.oauth2Title')}
+          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            {isOAuthConfigured && (
+              <Typography variant="button" sx={{ color: 'black' }}>{t('developerAPIs.configuredLabel')}</Typography>
+            )}
             <Button
               variant="outlined"
-              onClick={udateOpenApiUrls}
-              disabled={!isOk || isUpdating}
+              onClick={openOAuthSidebar}
               sx={{
-                width: "auto",
-                marginRight: "20px",
-                cursor: (!isOk || isUpdating) ? "not-allowed" : "pointer",
-                color: (!isOk || isUpdating) ? "#6D7676" : "black",
-                height: "40px",
-                border: "1px solid #DFDFDF",
-                borderRadius: "0px",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
-              }}
-            >
-              {isUpdating ? <CircularProgress size={20} /> : t("developerAPIs.uploadButton")}
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* OAuth2 Client Section */}
-      <Box className="apiKey">
-        <Grid container spacing={1} alignItems={"center"}>
-          <Grid size={{ xs: 12 }}>
-            <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-              {t("developerAPIs.oauth2ClientTitle")}
-            </Typography>
-          </Grid>
-
-          {/* If no client, show create form */}
-          {!oauth2Client ? (
-            <>
-              <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
-                <TextField
-                  placeholder={t("developerAPIs.oauth2ClientNamePlaceholder")}
-                  variant="standard"
-                  size="small"
-                  fullWidth
-                  value={clientName}
-                  onChange={(e) => setClientName(e.target.value)}
-                  InputProps={{ disableUnderline: false }}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, sm: 4, md: 4, lg: 3 }}>
-                <Button
-                  variant="outlined"
-                  onClick={handleCreateClient}
-                  disabled={isCreating || !clientName.trim()}
-                  sx={{
-                    width: { xs: '100%', sm: 'auto' },
-                    marginRight: { xs: 0, sm: '20px' },
-                    cursor: (isCreating || !clientName.trim()) ? "not-allowed" : "pointer",
-                    color: (isCreating || !clientName.trim()) ? "#6D7676" : "black",
-                    height: '40px',
-                    border: "1px solid #DFDFDF",
-                    borderRadius: "0px",
-                    "&:hover": { backgroundColor: "black", color: "white" },
-                  }}
-                >
-                  {isCreating ? <CircularProgress size={20} /> : t("developerAPIs.createOAuth2Client")}
-                </Button>
-              </Grid>
-            </>
-          ) : (
-            <>
-              {/* Client Name */}
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-                  {t("developerAPIs.clientNameLabel")}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
-                <Typography color="grey" variant="body1" className="description">
-                  {showClientName ? oauth2Client.name : "************************************************************************************************************************************************************************************"}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
-                <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
-                  {showClientName ? (
-                    <EyeIcon onClick={() => setShowClientName(false)} size={24} />
-                  ) : (
-                    <EyeSlashIcon onClick={() => setShowClientName(true)} size={24} />
-                  )}
-                  <CopyIcon size={24} onClick={() => handleCopyValue(oauth2Client.name)} />
-                </Box>
-              </Grid>
-
-              {/* Client ID */}
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-                  {t("developerAPIs.clientIdLabel")}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
-                <Typography color="grey" variant="body1" className="description">
-                  {showClientId ? oauth2Client.client_id : "************************************************************************************************************************************************************************************"}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
-                <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
-                  {showClientId ? (
-                    <EyeIcon onClick={() => setShowClientId(false)} size={24} />
-                  ) : (
-                    <EyeSlashIcon onClick={() => setShowClientId(true)} size={24} />
-                  )}
-                  <CopyIcon size={24} onClick={() => handleCopyValue(oauth2Client.client_id)} />
-                </Box>
-              </Grid>
-
-              {/* Client Secret */}
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-                <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-                  {t("developerAPIs.clientSecretLabel")}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 11 }}>
-                <Typography color="grey" variant="body1" className="description">
-                  {showClientSecret ? oauth2Client.client_secret : "************************************************************************************************************************************************************************************"}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 1 }}>
-                <Box className="actionBtnContainer pointer d-flex-evenly" sx={{ cursor: "pointer" }}>
-                  {showClientSecret ? (
-                    <EyeIcon onClick={() => setShowClientSecret(false)} size={24} />
-                  ) : (
-                    <EyeSlashIcon onClick={() => setShowClientSecret(true)} size={24} />
-                  )}
-                  <CopyIcon size={24} onClick={() => handleCopyValue(oauth2Client.client_secret)} />
-                </Box>
-              </Grid>
-            </>
-          )}
-        </Grid>
-      </Box>
-
-      {/* Organisation Wallet Section */}
-      <Box className="apiKey">
-        <Grid container spacing={1} alignItems={"center"}>
-          <Grid size={{ xs: 12 }}>
-            <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-              {t("developerAPIs.organisationWalletTitle")}
-            </Typography>
-          </Grid>
-          {(owsBaseUrl) && (
-            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 12 }}>
-              <Typography color="black" variant="subtitle1" fontWeight="bold" mb={0.5}>
-                {t("developerAPIs.owsBaseUrlLabel")}
-              </Typography>
-            </Grid>
-          )}
-
-          <Grid size={{ xs: 12, sm: 6, md: 6, lg: 6 }}>
-            <TextField
-              placeholder={t("developerAPIs.owsBaseUrlPlaceholder")}
-              variant="standard"
-              size="small"
-              fullWidth
-              value={owsBaseUrl}
-              onChange={handleOwsChange}
-              InputProps={{ disableUnderline: false }}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 3 }}>
-            <Button
-              variant="outlined"
-              onClick={handleSaveOws}
-              disabled={!isOwsDirty || isSavingOws}
-              sx={{
-                width: { xs: '100%', sm: 'auto' },
-                cursor: (!isOwsDirty || isSavingOws) ? 'not-allowed' : 'pointer',
-                color: (!isOwsDirty || isSavingOws) ? '#6D7676' : 'black',
-                height: '40px',
+                padding: '5px 50px',
                 border: '1px solid #DFDFDF',
-                borderRadius: '0px',
+                borderRadius: 0,
+                color: 'black',
                 '&:hover': { backgroundColor: 'black', color: 'white' },
               }}
             >
-              {isSavingOws ? <CircularProgress size={20} /> : t("developerAPIs.saveButton")}
+              {t('developerAPIs.configureButton')}
             </Button>
+          </Box>
+        </Box>
+        <Grid container spacing={1}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography color="black" variant="body2">{t('developerAPIs.clientNameLabel')}:</Typography>
           </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 72px', alignItems: 'center', columnGap: 2 }}>
+              <Typography color="black" variant="body2" sx={{ wordBreak: 'break-all' }}>{oauth2Client?.name || '-'}</Typography>
+              {!!oauth2Client?.name && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 1.25 }}>
+                  <CopyIcon size={18} style={{ cursor: 'pointer' }} onClick={() => handleCopyValue(oauth2Client.name)} />
+                </Box>
+              )}
+            </Box>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography color="black" variant="body2">{t('developerAPIs.clientIdLabel')}:</Typography>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 72px', alignItems: 'center', columnGap: 2 }}>
+              <Typography color="black" variant="body2" sx={{ wordBreak: 'break-all' }}>{oauth2Client?.client_id || '-'}</Typography>
+              {!!oauth2Client?.client_id && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 1.25 }}>
+                  <CopyIcon size={18} style={{ cursor: 'pointer' }} onClick={() => handleCopyValue(oauth2Client.client_id)} />
+                </Box>
+              )}
+            </Box>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Typography color="black" variant="body2">{t('developerAPIs.clientSecretLabel')}:</Typography>
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 72px', alignItems: 'center', columnGap: 2 }}>
+              <Typography color="black" variant="body2">
+                {oauth2Client?.client_secret ? (oauthSecretVisible ? oauth2Client.client_secret : '****************') : '-'}
+              </Typography>
+              {!!oauth2Client?.client_secret && (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: 1.25 }}>
+                  <CopyIcon size={18} style={{ cursor: 'pointer' }} onClick={() => handleCopyValue(oauth2Client.client_secret!)} />
+                  {oauthSecretVisible ? (
+                    <EyeSlashIcon size={18} style={{ cursor: 'pointer' }} onClick={() => setOauthSecretVisible(false)} />
+                  ) : (
+                    <EyeIcon size={18} style={{ cursor: 'pointer' }} onClick={() => setOauthSecretVisible(true)} />
+                  )}
+                </Box>
+              )}
+            </Box>
+          </Grid>
+          
         </Grid>
       </Box>
+
+      {/* RightSidebar for Wallet Configuration */}
+      <RightSidebar
+        open={openWalletConfig}
+        onClose={closeWalletSidebar}
+        width={594}
+        maxWidth={594}
+        height="100%"
+        footerProps={{ sx: { justifyContent: 'flex-end', alignItems: 'center', gap: 1.5 } }}
+        headerContent={(
+          <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
+              {t('developerAPIs.walletConfigurationTitle')}
+            </Typography>
+          </Box>
+        )}
+        showBanner={false}
+        showFooter={true}
+        footerContent={(
+          <>
+            <Button className="delete-btn" variant="outlined" onClick={closeWalletSidebar} sx={{ minWidth: 120 }}>
+              {t('common.close')}
+            </Button>
+            <Button className="delete-btn" variant="outlined" onClick={handleSaveWalletConfig} sx={{ minWidth: 120 }}>
+              {t('common.save')}
+            </Button>
+          </>
+        )}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="body2" sx={{ fontSize: '16px' }}>
+              {t('developerAPIs.deploymentStatusLabel')}
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '16px' }}>
+              {isWalletConfigured ? t('developerAPIs.configuredLabel') : t('developerAPIs.notConfiguredLabel')}
+            </Typography>
+          </Box>
+          <Typography variant="body2" mb={0.5}>
+            {t('developerAPIs.openApiUrlLabel')}
+          </Typography>
+          {!isEditingOpenApi ? (
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 36px', alignItems: 'center', columnGap: 1 }}>
+              {editOpenApiUrl ? (
+                <Typography variant="body2" sx={{ color: 'text.secondary', wordBreak: 'break-all' }}>{editOpenApiUrl}</Typography>
+              ) : (
+                <Typography variant="body2" sx={{ color: 'text.disabled' }}>-</Typography>
+              )}
+              <IconButton aria-label="edit" size="small" onClick={() => setIsEditingOpenApi(true)}>
+                <PencilIcon size={18} />
+              </IconButton>
+            </Box>
+          ) : (
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 28px 28px', alignItems: 'center', columnGap: 0.5 }}>
+              <TextField
+                placeholder={t('developerAPIs.openApiUrlPlaceholder')}
+                autoFocus
+                variant="standard"
+                size="small"
+                fullWidth
+                value={editOpenApiUrl}
+                onChange={(e) => setEditOpenApiUrl(e.target.value)}
+                InputProps={{ disableUnderline: false }}
+                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+              />
+              <IconButton aria-label="confirm" size="small" onClick={() => setIsEditingOpenApi(false)}>
+                <CheckIcon size={18} />
+              </IconButton>
+              <IconButton aria-label="cancel" size="small" onClick={() => { setEditOpenApiUrl(openApiUrl || ''); setIsEditingOpenApi(false); }}>
+                <XIcon size={18} />
+              </IconButton>
+            </Box>
+          )}
+
+          <Typography variant="body2" mt={2} mb={0.5}>
+            {t('developerAPIs.holderBaseUrlLabel')}
+          </Typography>
+          {!isEditingHolderBase ? (
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 36px', alignItems: 'center', columnGap: 1 }}>
+              {editHolderBaseUrl ? (
+                <Typography variant="body2" sx={{ color: 'text.secondary', wordBreak: 'break-all' }}>{editHolderBaseUrl}</Typography>
+              ) : (
+                <Typography variant="body2" sx={{ color: 'text.disabled' }}>-</Typography>
+              )}
+              <IconButton aria-label="edit" size="small" onClick={() => setIsEditingHolderBase(true)}>
+                <PencilIcon size={18} />
+              </IconButton>
+            </Box>
+          ) : (
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 28px 28px', alignItems: 'center', columnGap: 0.5 }}>
+              <TextField
+                placeholder={t('developerAPIs.owsBaseUrlPlaceholder')}
+                autoFocus
+                variant="standard"
+                size="small"
+                fullWidth
+                value={editHolderBaseUrl}
+                onChange={(e) => setEditHolderBaseUrl(e.target.value)}
+                InputProps={{ disableUnderline: false }}
+                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+              />
+              <IconButton aria-label="confirm" size="small" onClick={() => setIsEditingHolderBase(false)}>
+                <CheckIcon size={18} />
+              </IconButton>
+              <IconButton aria-label="cancel" size="small" onClick={() => { setEditHolderBaseUrl(verificationRequestURLPrefix || ''); setIsEditingHolderBase(false); }}>
+                <XIcon size={18} />
+              </IconButton>
+            </Box>
+          )}
+        </Box>
+      </RightSidebar>
+
+      {/* RightSidebar for OAuth2 Client */}
+      <RightSidebar
+        open={openOAuthConfig}
+        onClose={closeOAuthSidebar}
+        width={594}
+        maxWidth={594}
+        height="100%"
+        footerProps={{ sx: { justifyContent: 'flex-end', alignItems: 'center', gap: 1.5 } }}
+        headerContent={(
+          <Box sx={{ width: '100%' }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
+              {t('developerAPIs.oauth2ClientConfigTitle')}
+            </Typography>
+          </Box>
+        )}
+        showBanner={false}
+        showFooter={true}
+        footerContent={(
+          <>
+            <Button className="delete-btn" variant="outlined" onClick={closeOAuthSidebar} sx={{ minWidth: 120 }}>
+              {t('common.close')}
+            </Button>
+            {!oauth2Client && (
+              <Button
+                className="delete-btn"
+                variant="outlined"
+                onClick={handleCreateClient}
+                disabled={isCreating || !clientName.trim()}
+                sx={{ minWidth: 120 }}
+              >
+                {isCreating ? <CircularProgress size={20} /> : t('developerAPIs.createOAuth2Client')}
+              </Button>
+            )}
+          </>
+        )}
+      >
+        <Box sx={{ p: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="body2" sx={{ fontSize: '16px' }}>
+              {t('developerAPIs.deploymentStatusLabel')}
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '16px' }}>
+              {isOAuthConfigured ? t('developerAPIs.configuredLabel') : t('developerAPIs.notConfiguredLabel')}
+            </Typography>
+          </Box>
+          {!oauth2Client ? (
+            <>
+              <Typography variant="body2" mb={0.5}>
+                {t('developerAPIs.oauth2ClientNameLabel')}
+              </Typography>
+              {!isEditingClientName ? (
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 36px', alignItems: 'center', columnGap: 1 }}>
+                  {clientName ? (
+                    <Typography variant="body2" sx={{ color: 'text.secondary', wordBreak: 'break-all' }}>{clientName}</Typography>
+                  ) : (
+                    <Typography variant="body2" sx={{ color: 'text.disabled' }}>-</Typography>
+                  )}
+                  <IconButton aria-label="edit" size="small" onClick={() => setIsEditingClientName(true)}>
+                    <PencilIcon size={18} />
+                  </IconButton>
+                </Box>
+              ) : (
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 28px 28px', alignItems: 'center', columnGap: 0.5 }}>
+                  <TextField
+                    placeholder={t('developerAPIs.oauth2ClientNamePlaceholder')}
+                    autoFocus
+                    variant="standard"
+                    size="small"
+                    fullWidth
+                    value={clientName}
+                    onChange={(e) => setClientName(e.target.value)}
+                    InputProps={{ disableUnderline: false }}
+                    sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+                  />
+                  <IconButton aria-label="confirm" size="small" onClick={() => setIsEditingClientName(false)}>
+                    <CheckIcon size={18} />
+                  </IconButton>
+                  <IconButton aria-label="cancel" size="small" onClick={() => setIsEditingClientName(false)}>
+                    <XIcon size={18} />
+                  </IconButton>
+                </Box>
+              )}
+            </>
+          ) : (
+            <>
+              <Typography variant="body2" mb={0.5}>
+                {t('developerAPIs.clientIdLabel')}
+              </Typography>
+              <Typography variant="body2" sx={{ wordBreak: 'break-all', color: 'text.secondary' }}>{oauth2Client.client_id}</Typography>
+              <Typography variant="body2" mt={2} mb={0.5}>
+                {t('developerAPIs.clientSecretLabel')}
+              </Typography>
+              <Typography variant="body2" sx={{ wordBreak: 'break-all', color: 'text.secondary' }}>{oauth2Client.client_secret ?? '-'}</Typography>
+              <Typography variant="body2" mt={2} mb={0.5}>
+                {t('developerAPIs.owsBaseUrlLabel')}
+              </Typography>
+              <Typography variant="body2" sx={{ wordBreak: 'break-all', color: 'text.secondary' }}>{baseURL}</Typography>
+            </>
+          )}
+        </Box>
+      </RightSidebar>
+
+      
     </Container>
   );
 };
