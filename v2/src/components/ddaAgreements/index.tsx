@@ -202,7 +202,7 @@ const DDAgreements = () => {
         <div className={styles.headerContent}>
           <div className={styles.headerRow}>
             <h1 className={styles.title}>{t("dataAgreements.title")}</h1>
-            <div className={styles.actions}>
+            {/* <div className={styles.actions}>
               <Tooltip title={t('dataAgreements.tooltipAddNew')} arrow>
                 <IconButton
                   onClick={handleAddNewListing}
@@ -222,7 +222,7 @@ const DDAgreements = () => {
                   <DownloadSimpleIcon size={25} />
                 </IconButton>
               </Tooltip>
-            </div>
+            </div> */}
           </div>
           <div className={styles.subtitleContainer}>
             <p className={styles.subtitle}>

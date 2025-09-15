@@ -94,10 +94,15 @@ export default function GeneralModal({
               value={confirmationTextInput}
               onChange={handleCancelConfirmationText}
               placeholder={`Type "${confirmText}" to confirm`}
-              variant="standard"
+              variant="outlined"
               size="small"
               InputProps={{
                 disableUnderline: false,
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 0, 0, 0.87)',
+                },
               }}
             />
           </Box>

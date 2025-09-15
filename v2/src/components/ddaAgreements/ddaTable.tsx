@@ -190,14 +190,14 @@ const DDATable: React.FC<DDATableProps> = ({
                     title={t("dataAgreements.tooltipView")}
                     placement="top"
                   >
-                    <IconButton aria-label="edit">
+                    <IconButton aria-label="edit" onClick={() => {
+                          setIsOpenViewDDA(true);
+                          setSelectedDDA(row);
+                        }}>
                       <EyeIcon
                         style={{ color: row.status === "unlisted" ? "red" : "black" }}
                         size={17}
-                        onClick={() => {
-                          setIsOpenViewDDA(true);
-                          setSelectedDDA(row);
-                        }}
+                        
                       />
                     </IconButton>
                   </Tooltip>
@@ -206,14 +206,15 @@ const DDATable: React.FC<DDATableProps> = ({
                     title={t("dataAgreements.tooltipDelete")}
                     placement="top"
                   >
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete"
+                    onClick={() => {
+                      setIsOpenDelete(true);
+                      setSelectedDDA(row);
+                    }}
+                    >
                       <TrashSimpleIcon
                         style={{ color: row.status === "unlisted" ? "red" : "black" }}
                         size={17}
-                        onClick={() => {
-                          setIsOpenDelete(true);
-                          setSelectedDDA(row);
-                        }}
                       />
                     </IconButton>
                   </Tooltip>

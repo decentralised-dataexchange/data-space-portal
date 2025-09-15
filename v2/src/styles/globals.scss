@@ -24,8 +24,12 @@ body {
 }
 
 /* Cursor behavior: pointer only when interactive; not-allowed for disabled */
-button:not(:disabled) {
-  cursor: pointer;
+button {
+  text-transform: uppercase !important;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 button:disabled,
