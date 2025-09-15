@@ -242,7 +242,9 @@
     "generic": "Jokin meni pieleen.",
     "errorOccurred": "Tapahtui virhe.",
     "tryAgainLater": "Yritä myöhemmin uudelleen.",
-    "pleaseWait": "Odota hetki..."
+    "pleaseWait": "Odota hetki...",
+    "copy": "Kopioi",
+    "copied": "Kopioitu"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -360,8 +362,8 @@
     "openApiUpdated": "OpenAPI-määrittelyn URL-osoite päivitetty onnistuneesti",
     "openApiUpdateFailed": "OpenAPI-määrittelyn URL-osoitteen päivitys epäonnistui",
     "configureOpenApi": "Määritä OpenAPI-määrittely",
-    "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite:",
-    "holderBaseUrlLabel": "Haltijan perus-URL:",
+    "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite",
+    "holderBaseUrlLabel": "Haltijan perus-URL",
     "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
     "uploadButton": "Lataa",
     "oauth2ClientTitle": "OAuth2-asiakas",

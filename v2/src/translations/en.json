@@ -166,7 +166,9 @@
     "generic": "Something went wrong.",
     "errorOccurred": "An error occurred.",
     "tryAgainLater": "Please try again later.",
-    "pleaseWait": "Please wait..."
+    "pleaseWait": "Please wait...",
+    "copy": "Copy",
+    "copied": "Copied"
   },
   "errors": {
     "generic": "Something went wrong."
@@ -329,8 +331,8 @@
     "openApiUpdated": "Successfully updated open API specification URL",
     "openApiUpdateFailed": "Updating open API specification URL failed",
     "configureOpenApi": "Configure OpenAPI Specification",
-    "openApiUrlLabel": "OpenAPI Specification URL:",
-    "holderBaseUrlLabel": "Holder Base URL:",
+    "openApiUrlLabel": "OpenAPI Specification URL",
+    "holderBaseUrlLabel": "Holder Base URL",
     "openApiUrlPlaceholder": "Enter OpenAPI URL",
     "uploadButton": "Upload",
     "oauth2ClientTitle": "OAuth2 Client",

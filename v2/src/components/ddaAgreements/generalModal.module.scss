@@ -75,10 +75,12 @@
       &:hover .MuiOutlinedInput-notchedOutline {
         border-color: rgba(0, 0, 0, 0.87);
       }
-      
+      .MuiOutlinedInput-input {
+        color: rgba(0, 0, 0, 0.50);
+      }
       &.Mui-focused .MuiOutlinedInput-notchedOutline {
-        border-color: #1976d2;
-        border-width: 2px;
+        border-color: rgba(0, 0, 0, 0.87);
+        border-width: 1px;
       }
     }
     
