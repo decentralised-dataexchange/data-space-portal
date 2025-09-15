@@ -25,28 +25,48 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         .trim()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '');
+    // Helper to determine if a string is likely a UUID (v4-style). If not, it's a slug.
+    const isUuid = (s?: string) => !!s && /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(s);
 
     // Use unauthenticated service endpoints
     let serviceItem: import('@/types/serviceOrganisation').ServiceOrganisationItem | undefined;
-    if (id) {
-        // Prefer fetching by ID when provided
-        const resp = await apiService.getServiceOrganisationById(id);
-        serviceItem = resp.organisations?.[0];
+    // Try by ID only if the param looks like a UUID; otherwise it's a slug and by-ID call would 400
+    if (id && isUuid(id)) {
+        try {
+            const resp = await apiService.getServiceOrganisationById(id);
+            serviceItem = resp.organisations?.[0];
+        } catch (e) {
+            // Swallow 4xx and fall back to list fetch
+            console.error('[DataSourceListingPage] getServiceOrganisationById failed; falling back to list', e);
+        }
     }
     if (!serviceItem) {
-        // Fallback: fetch all and match by slug deriving from organisation.name
+        // Fallback: fetch all and try to match by slug first, then by raw ID
         const allResp = await apiService.getServiceOrganisations();
         const list = allResp.organisations ?? [];
         const paramSlug = slug ?? id ?? '';
         if (paramSlug) {
-            serviceItem = list.find(item => slugify(item.organisation.name) === paramSlug);
-        }
-        // If still not found and id provided, try direct ID match
-        if (!serviceItem && id) {
-            serviceItem = list.find(item => item.organisation.id === id);
+            serviceItem = list.find(item => slugify(item.organisation.name) === paramSlug)
+                || list.find(item => item.organisation.id === paramSlug);
         }
     }
     const dataSourceItem = serviceItem; // maintain name for downstream usage
+    if (!dataSourceItem) {
+        return (
+            <Box className="dataListContainer" sx={{ width: '100%', p: 3 }}>
+                <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                    <CardContent sx={{ padding: '24px' }}>
+                        <Typography variant="h6" sx={{ fontSize: '18px', fontWeight: 'bold', mb: 1 }}>
+                            {t('common.notFound')}
+                        </Typography>
+                        <Typography sx={{ fontSize: '14px', color: '#666' }}>
+                            {t('common.tryAgain')}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </Box>
+        );
+    }
     const trusted = isOrganisationVerified(dataSourceItem as any);
     const sp = await searchParams;
     const ddas = dataSourceItem?.dataDisclosureAgreements ?? [];

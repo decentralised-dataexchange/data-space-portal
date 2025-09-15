@@ -60,12 +60,16 @@ export const DataAttributeCardForDDA = (props: Props) => {
                     alignItems: "center",
                   }}
                 >
-                  <Typography variant="subtitle2">
-                    {camelCaseToWords(splitByDotAndGetLastWord(attribute.attribute))}
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ filter: !showValues ? "blur(2px)" : "none" }}>
-                    {showValues ? attribute.value : '********'}
-                  </Typography>
+                  <td style={{ border: 0, width: '100%' }}>
+                    <Typography variant="subtitle2">
+                      {camelCaseToWords(splitByDotAndGetLastWord(attribute.attribute))}
+                    </Typography>
+                  </td>
+                  <td style={{ border: 0 }}>
+                    <Typography variant="subtitle2" sx={{ filter: !showValues ? "blur(2px)" : "none" }}>
+                      {showValues ? attribute.value : '********'}
+                    </Typography>
+                  </td>
                 </tr>
               </tbody>
             </table>

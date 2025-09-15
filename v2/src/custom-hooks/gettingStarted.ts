@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { apiService } from '@/lib/apiService/apiService';
-import { useAppDispatch } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 import {
   setGettingStartLoading,
   setGettingStartSuccess,
@@ -15,6 +15,7 @@ import { OrganisationResponse, OrganisationUpdatePayload } from '@/types/organis
 
 export const useGetOrgIdentity = (orgId: string) => {
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   
   return useQuery<OrgIdentityResponse, Error>({
     queryKey: ['orgIdentity', orgId],
@@ -33,6 +34,7 @@ export const useGetOrgIdentity = (orgId: string) => {
     staleTime: 0,
     retry: 1, // Only retry once to avoid infinite loading
     refetchOnWindowFocus: false,
+    enabled: isAuthenticated === true,
   });
 };
 
@@ -103,6 +105,7 @@ export const useCreateOrgIdentity = () => {
 // Fetch current logged-in user's organisation details
 export const useGetOrganisation = () => {
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery<OrganisationResponse, Error>({
     queryKey: ['organisation'],
     queryFn: async (): Promise<OrganisationResponse> => {
@@ -120,6 +123,7 @@ export const useGetOrganisation = () => {
     staleTime: 30 * 1000,
     retry: 1,
     refetchOnWindowFocus: false,
+    enabled: isAuthenticated === true,
   });
 };
 
@@ -143,6 +147,7 @@ export const useUpdateOrganisation = () => {
 // Cover Image: fetch
 export const useGetCoverImage = () => {
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery<string, Error>({
     queryKey: ['coverImage'],
     queryFn: async (): Promise<string> => {
@@ -162,12 +167,14 @@ export const useGetCoverImage = () => {
     retry: 1,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
+    enabled: isAuthenticated === true,
   });
 };
 
 // Logo Image: fetch
 export const useGetLogoImage = () => {
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery<string, Error>({
     queryKey: ['logoImage'],
     queryFn: async (): Promise<string> => {
@@ -186,6 +193,7 @@ export const useGetLogoImage = () => {
     staleTime: 5 * 60 * 1000,
     retry: 1,
     refetchOnWindowFocus: false,
+    enabled: isAuthenticated === true,
   });
 };
 

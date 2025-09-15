@@ -29,6 +29,7 @@ export default async function HomePage({ params, searchParams }: Props) {
   } catch (err) {
     console.error('Failed to fetch organisations on Home page:', err);
   }
+
   // Map organisations into the card's expected shape
   const dataSourceItems = (organisationList?.organisations ?? []).map(item => ({
     dataSource: {
