@@ -43,6 +43,7 @@ const Item = styled("div")(({ theme }) => ({
 
 export default function DeveloperAPIs() {
   const [clientName, setClientName] = useState("");
+  const [clientDescription, setClientDescription] = useState("");
   const t = useTranslations();
   const dispatch = useAppDispatch();
   const [openApiUrl, setOpenApiUrl] = useState("");
@@ -99,12 +100,13 @@ export default function DeveloperAPIs() {
   const handleCreateClient = () => {
     if (!clientName.trim()) return;
     createOAuth2Client(
-      { name: clientName.trim() },
+      { name: clientName.trim(), description: clientDescription.trim() || undefined },
       {
         onSuccess: (res) => {
           if (res?.oAuth2Client) {
             dispatch(setOAuth2Client(res.oAuth2Client));
             setClientName("");
+            setClientDescription("");
             // Auto-close the OAuth2 sidebar after successful creation
             closeOAuthSidebar();
           }
@@ -160,7 +162,7 @@ export default function DeveloperAPIs() {
     const hasValue = Boolean(value);
     const displayValue = mask && hasValue ? '••••••••••••••••' : (value || '');
     return (
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5, paddingTop: 1 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
         <Typography color="black" variant="body2">{label}:</Typography>
         <Box display="inline-flex" alignItems="center" gap={0.75}>
           {hasValue ? (
@@ -175,7 +177,7 @@ export default function DeveloperAPIs() {
           {!!copyValue && (
             <Tooltip title={copiedKey === copyKey ? t('common.copied') : t('common.copy')}>
               <span>
-                <Button onClick={() => handleCopyValue(copyValue, copyKey)} size="small" variant="text" startIcon={<CopyIcon size={16} color="#808080" />} sx={{ color: '#808080', display: 'flex', alignItems: 'center !important' }}>{t('common.copy')}</Button>
+                <Button onClick={() => handleCopyValue(copyValue, copyKey)} size="small" variant="text" startIcon={<CopyIcon size={14} color="#808080" />} sx={{ color: '#808080', display: 'flex', alignItems: 'center !important' }}>{t('common.copy')}</Button>
               </span>
             </Tooltip>
           )}
@@ -309,7 +311,7 @@ export default function DeveloperAPIs() {
             </Button>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <InfoRow
             label={t('developerAPIs.openApiUrlLabel')}
             value={openApiUrl || ''}
@@ -356,12 +358,19 @@ export default function DeveloperAPIs() {
             </Button>
           </Box>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <InfoRow
             label={t('developerAPIs.clientNameLabel')}
             value={oauth2Client?.name || ''}
             copyKey="clientName"
+            
             copyValue={oauth2Client?.name || ''}
+          />
+          <InfoRow
+            label={t('developerAPIs.clientDescriptionLabel')}
+            value={oauth2Client?.description || ''}
+            copyKey="clientDescription"
+            copyValue={oauth2Client?.description || ''}
           />
           <InfoRow
             label={t('developerAPIs.clientIdLabel')}
@@ -423,7 +432,7 @@ export default function DeveloperAPIs() {
             sx={{ '& .MuiInputBase-input': { color: 'black' } }}
           />
 
-          <Typography variant="body2" mt={2} mb={0.5}>
+          <Typography variant="body2" mt={0.5} mb={0.5}>
             {t('developerAPIs.holderBaseUrlLabel')}<RequiredAsterisk />
           </Typography>
           <TextField
@@ -479,7 +488,7 @@ export default function DeveloperAPIs() {
           {!oauth2Client ? (
             <>
               <Typography variant="body2" mb={0.5}>
-                {t('developerAPIs.oauth2ClientNameLabel')}:
+                {t('developerAPIs.oauth2ClientNameLabel')}<RequiredAsterisk />
               </Typography>
               <TextField
                 placeholder={t('developerAPIs.oauth2ClientNamePlaceholder')}
@@ -489,6 +498,19 @@ export default function DeveloperAPIs() {
                 fullWidth
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
+                InputProps={{ disableUnderline: false }}
+                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+              />
+              <Typography variant="body2" mt={0.5} mb={0.5}>
+                {t('developerAPIs.oauth2ClientDescriptionLabel')}
+              </Typography>
+              <TextField
+                placeholder={t('developerAPIs.oauth2ClientDescriptionPlaceholder')}
+                variant="standard"
+                size="small"
+                fullWidth
+                value={clientDescription}
+                onChange={(e) => setClientDescription(e.target.value)}
                 InputProps={{ disableUnderline: false }}
                 sx={{ '& .MuiInputBase-input': { color: 'black' } }}
               />
@@ -506,7 +528,18 @@ export default function DeveloperAPIs() {
                 InputProps={{ readOnly: true, disableUnderline: false }}
                 sx={{ '& .MuiInputBase-input': { color: 'black' } }}
               />
-              <Typography variant="body2" mt={2} mb={0.5}>
+                <Typography variant="body2" mb={0.5}>
+                {t('developerAPIs.clientDescriptionLabel')}
+              </Typography>
+              <TextField
+                variant="standard"
+                size="small"
+                fullWidth
+                value={oauth2Client.description ?? ''}
+                InputProps={{ readOnly: true }}
+                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+              />
+              <Typography variant="body2" mt={0.5} mb={0.5}>
                 {t('developerAPIs.clientSecretLabel')}
               </Typography>
               <TextField
@@ -518,7 +551,7 @@ export default function DeveloperAPIs() {
                 InputProps={{ readOnly: true, disableUnderline: false }}
                 sx={{ '& .MuiInputBase-input': { color: 'black' } }}
               />
-              <Typography variant="body2" mt={2} mb={0.5}>
+              <Typography variant="body2" mt={0.5} mb={0.5}>
                 {t('developerAPIs.owsBaseUrlLabel')}
               </Typography>
               <TextField

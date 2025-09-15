@@ -17,7 +17,9 @@ export const ENDPOINTS = {
     organisationList: () => {
         return "/service/organisation/";
     },
-
+    organisationById: (id: string) => {
+        return `/service/organisation/?organisationId=${id}`;
+    },
     getLogoImage: () => {
         return "/config/organisation/logoimage/"
     },
@@ -63,7 +65,7 @@ export const ENDPOINTS = {
         return `/config/data-disclosure-agreement/${id}/status/`
     },
     deleteDDA: (id: any) => {
-        return `/config/data-disclosure-agreement/${id}`
+        return `/config/data-disclosure-agreement/${id}/`
     },
     // Removed legacy data-source details endpoint
     updateOpenApiUrl: () => {

@@ -105,8 +105,8 @@ export const useGetOAuth2Clients = () => {
 // Hook to create an OAuth2 client
 export const useCreateOAuth2Client = () => {
   const queryClient = useQueryClient();
-  return useMutation<OAuth2ClientCreateResponse, unknown, { name: string }>({
-    mutationFn: async (payload: { name: string }) => {
+  return useMutation<OAuth2ClientCreateResponse, unknown, { name: string; description?: string }>({
+    mutationFn: async (payload: { name: string; description?: string }) => {
       try {
         return await apiService.createOAuth2Client(payload);
       } catch (error) {

@@ -36,7 +36,7 @@ export const apiService = {
     return api.get<OAuth2ClientsListResponse>(ENDPOINTS.getOAuth2Clients())
       .then(res => res.data);
   },
-  createOAuth2Client: async (payload: { name: string }): Promise<OAuth2ClientCreateResponse> => {
+  createOAuth2Client: async (payload: { name: string; description?: string }): Promise<OAuth2ClientCreateResponse> => {
     return api.post<OAuth2ClientCreateResponse>(ENDPOINTS.createOAuth2Client(), payload)
       .then(res => res.data);
   },
@@ -104,8 +104,7 @@ export const apiService = {
   // Public service: organisation by ID (unauthenticated route)
   getServiceOrganisationById: async (organisationId: string): Promise<import('@/types/serviceOrganisation').ServiceOrganisationResponse> => {
     return api.get<import('@/types/serviceOrganisation').ServiceOrganisationResponse>(
-      ENDPOINTS.organisationList(),
-      { params: { organisationId } }
+      ENDPOINTS.organisationById(organisationId)
     ).then(res => res.data);
   },
   // Public service: all organisations (unauthenticated route)
