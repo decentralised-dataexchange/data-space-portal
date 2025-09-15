@@ -22,13 +22,13 @@ export const useGetAdminDetails = () => {
   });
 };
 
-// Hook to update organisation (e.g., update owsBaseUrl)
+// Hook to update organisation (e.g., update organisation wallet base URL)
 export const useUpdateOrganisation = () => {
   const queryClient = useQueryClient();
   return useMutation<any, unknown, { organisation: Organisation }>({
     mutationFn: async (payload: { organisation: Organisation }) => {
-      // organisationId is not used by endpoint builder but kept for parity
-      return apiService.updateDataSource({ organisation: payload.organisation });
+      // Call the unified organisation update endpoint
+      return apiService.updateOrganisation({ organisation: payload.organisation });
     },
     onSuccess: () => {
       // Refetch organisation details

@@ -1,0 +1,74 @@
+"use client";
+
+import React, { useMemo } from 'react';
+import { Box, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { OrgIdentityResponse } from '@/types/orgIdentity';
+import { Organisation } from '@/types/organisation';
+import VerifiedBadge from '@/components/common/VerifiedBadge';
+import { DataAttributeCardForDDA } from '../AddCredential/dataAttributeCardCredentials';
+
+type Props = {
+  callRightSideDrawer: () => void;
+  orgIdentity?: OrgIdentityResponse;
+  organisation?: Organisation;
+  showValues?: boolean;
+};
+
+const ViewCredentials: React.FC<Props> = ({ callRightSideDrawer, orgIdentity, organisation, showValues = true }) => {
+  const t = useTranslations();
+
+  const presentation = useMemo(() => {
+    const p = orgIdentity?.organisationalIdentity?.presentation as any[] | undefined;
+    return Array.isArray(p) && p.length > 0 ? p[0] as any : undefined;
+  }, [orgIdentity]);
+
+  const legalName = presentation?.legalName as string | undefined;
+  const identifier = presentation?.identifier as string | undefined;
+  const isVerified = Boolean(orgIdentity?.verified ?? orgIdentity?.organisationalIdentity?.verified);
+
+  return (
+    <Box>
+      <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '20px' }}>
+        <Typography variant="h6" sx={{ fontSize: '16px' }}>
+          {organisation?.name || t('gettingStarted.viewCredential')}
+        </Typography>
+      </Box>
+
+      <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerified ? '#2e7d32' : '#d32f2f' }}>
+        {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+        <VerifiedBadge trusted={isVerified} />
+      </Typography>
+
+      <Typography variant="subtitle1" mt={2}>
+        {t('common.overView')}
+      </Typography>
+      <Typography
+        variant="subtitle2"
+        color="black"
+        mt={0.5}
+        sx={{ wordWrap: 'break-word' }}
+      >
+        {organisation?.description || ''}
+      </Typography>
+
+      <Typography color="grey" mt={2} variant="subtitle1">
+        {t('common.certificateOfRegistration')}
+      </Typography>
+
+      <Box sx={{ marginTop: '16px' }}>
+        <DataAttributeCardForDDA
+          selectedData={[
+            ...(legalName ? [{ attribute: 'legalName', value: legalName }] : []),
+            ...(identifier ? [{ attribute: 'identifier', value: identifier }] : []),
+          ]}
+          showValues={showValues}
+        />
+      </Box>
+
+      {/* Close button removed; RightSidebar footer provides the Close action */}
+    </Box>
+  );
+};
+
+export default ViewCredentials;

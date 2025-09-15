@@ -38,13 +38,44 @@ export interface User {
     lastVisited: string
 }
 
-export interface SignupPayload {
-    email: string
-    password: string
+export interface SignupOrganisationPayload {
     name: string
     sector: string
     location: string
     policyUrl: string
     description: string
-    owsBaseUrl: string
+    verificationRequestURLPrefix: string
+}
+
+export interface SignupPayload {
+    organisation: SignupOrganisationPayload
+    name: string // user's name
+    email: string
+    password: string
+    confirmPassword: string
+}
+
+// --- Signup response types ---
+export interface SignupUser {
+  id: number;
+  email: string;
+  name: string;
+}
+
+export interface SignupOrganisation {
+  id: string;
+  coverImageUrl: string;
+  logoUrl: string;
+  name: string;
+  sector: string;
+  location: string;
+  policyUrl: string;
+  description: string;
+  verificationRequestURLPrefix: string;
+  openApiUrl: string;
+}
+
+export interface SignupResponse {
+  user: SignupUser;
+  organisation: SignupOrganisation;
 }

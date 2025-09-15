@@ -2,6 +2,24 @@ type Connection = {
     invitationUrl: string
 }
 
+// Pagination and list response as per new API
+export interface Pagination {
+  currentPage: number;
+  totalItems: number;
+  totalPages: number;
+  limit: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  // Keep legacy fields but make them required for consumer components
+  total: number;
+  offset: number;
+}
+
+export interface DDAgreementsResponse {
+  dataDisclosureAgreements: DataDisclosureAgreement[];
+  pagination: Pagination;
+}
+
 type PersonalDaum = {
     attributeId: string
     attributeName: string
@@ -9,17 +27,17 @@ type PersonalDaum = {
 }
 
 type DataController = {
-    did: string
+    did?: string
     url: string
     name: string
-    legalId: string
-    industrySector: string
+    legalId?: string
+    industrySector?: string
+    publicKey?: string
 }
 
 type DataSharingRestrictions = {
     policyUrl: string
     jurisdiction: string
-    industrySector: string
     storageLocation: string
     dataRetentionPeriod: number
     geographicRestriction: string
@@ -111,22 +129,42 @@ type Verification = {
     presentation_request_dict: PresentationRequestDict;
 }
 
+export interface DataAttribute {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  sensitivity: boolean;
+  restrictions: any | null;
+}
+
 export interface DataDisclosureAgreement {
+  // New API optional fields
+  '@id'?: string;
+  '@type'?: string[];
+  '@context'?: string[];
+  templateVersion?: string;
+  dataAgreementId?: string;
+  dataAgreementRevisionId?: string;
+  dataAgreementRevisionHash?: string;
+  dataAttributes?: DataAttribute[];
+
+  // Existing/common fields
   purpose: string;
   version: string;
   language: string;
-  connection: Connection;
+  connection?: Connection;
   templateId: string;
   lawfulBasis: string;
-  personalData: PersonalDaum[];
-  codeOfConduct: string;
+  personalData?: PersonalDaum[];
+  codeOfConduct?: string;
   dataController: DataController;
   agreementPeriod: number;
   purposeDescription: string;
   dataSharingRestrictions: DataSharingRestrictions;
   status: string;
   isLatestVersion: boolean;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
 }
 

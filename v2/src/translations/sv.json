@@ -23,6 +23,8 @@
   "signup": {
     "header": "CRANE dHDSI - Organisationspanel - Skapa konto",
     "name": "Namn",
+    "userName": "Ditt namn",
+    "organisationName": "Organisationsnamn",
     "email": "E-post",
     "confirmPassword": "Bekräfta lösenord",
     "passwordMismatch": "Lösenorden matchar inte",
@@ -35,6 +37,7 @@
     "policyUrl": "Policy-URL",
     "description": "Beskrivning",
     "owsBaseUrl": "OWS Base URL",
+    "verificationRequestURLPrefix": "Verifieringsförfrågans URL-prefix",
     "optional": "Valfritt",
     "required": "Obligatorisk",
     "requiredFieldsMissing": "Fyll i alla obligatoriska fält",
@@ -75,7 +78,11 @@
   },
   "sideBar": {
     "gettingStarted": "Kom igång",
-    "dataAgreements": "Marketplace Listning",
+    "dataAgreements": {
+      "title": "Marknadsplatslistning",
+      "addButton": "Lägg till ny DDA",
+      "saveButton": "Spara ändringar"
+    },
     "account": "Konto",
     "manageAdmin": "Hantera admin",
     "developerApis": "Utvecklar-API:er",
@@ -144,6 +151,21 @@
       "walletDescription": "Ange en kort motivering för att ansluta din plånbok:",
       "justificationPlaceholder": "Ange din motivering här...",
       "connectWallet": "Anslut plånbok"
+    },
+    "choose": {
+      "title": "Välj verifieringsmetod",
+      "description": "Välj hur du vill verifiera dina uppgifter",
+      "walletTitle": "Plånbok",
+      "selectTemplate": "Välj en verifieringsmall",
+      "walletInfo": "Information om ansluten plånbok",
+      "issuedBy": "Utfärdad av:",
+      "issuer": "Utfärdare"
+    }
+    ,
+    "status": {
+      "pending": "Verifiering pågår...",
+      "success": "Verifiering lyckades!",
+      "error": "Verifiering misslyckades"
     }
   },
   "common": {
@@ -151,6 +173,11 @@
     "trustedServiceProvider": "Pålitlig tjänsteleverantör",
     "untrustedServiceProvider": "Opålitlig tjänsteleverantör",
     "continue": "Fortsätt",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "retry": "Försök igen",
+    "loading": "Laddar...",
+    "success": "Lyckades",
     "certificateOfRegistration": "REGISTRERINGSBEVIS",
     "language": "Språk",
     "poweredby": "Drivs av",
@@ -161,8 +188,8 @@
     "dataset": "Datamängd",
     "policyUrl": "Policy URL",
     "cancel": "Avbryt",
-    "confirm": "Bekräfta",
     "submit": "Skicka",
+    "confirm": "Bekräfta",
     "save": "Spara",
     "add": "Lägg till",
     "delete": "Ta bort",
@@ -176,6 +203,9 @@
     "timestamp": "Tidsstämpel",
     "status": "Status",
     "name": "Namn",
+    "manageAdmin": "manage-admin",
+    "developerApis": "developer-apis",
+    "disp-connections": "disp-connections",
     "businessWallet": "business-wallet",
     "businessWalletLabel": "Företagsplånboksnamn",
     "connectedOn": "Ansluten",
@@ -183,7 +213,8 @@
     "addDataDisclosureAgreement": "Lägg till datautlämningsavtal",
     "generic": "Något gick fel.",
     "errorOccurred": "Ett fel inträffade.",
-    "tryAgainLater": "Försök igen senare."
+    "tryAgainLater": "Försök igen senare.",
+    "pleaseWait": "Vänligen vänta..."
   },
   "errors": {
     "generic": "Något gick fel."
@@ -301,9 +332,11 @@
     "openApiUpdateFailed": "Uppdatering av OpenAPI-specifikations-URL misslyckades",
     "configureOpenApi": "Konfigurera OpenAPI-specifikation",
     "openApiUrlLabel": "OpenAPI-specifikations-URL:",
+    "holderBaseUrlLabel": "Innehavarens bas-URL:",
     "openApiUrlPlaceholder": "Ange OpenAPI-URL",
     "uploadButton": "Ladda upp",
     "oauth2ClientTitle": "OAuth2-klient",
+    "oauth2Title": "OAuth 2.0-klient",
     "oauth2ClientNameLabel": "Namn",
     "oauth2ClientNamePlaceholder": "Namn för OAuth2-klient",
     "createOAuth2Client": "Skapa",
@@ -311,10 +344,16 @@
     "clientIdLabel": "Client ID",
     "clientSecretLabel": "Client Secret",
     "organisationWalletTitle": "Organisationsplånbok",
-    "owsBaseUrlLabel": "Bas-URL:",
+    "owsBaseUrlLabel": "Bas-URL",
     "owsBaseUrlPlaceholder": "Ange bas-URL för organisationsplånbok",
     "saveButton": "Spara",
-    "owsBaseUrlUpdateFailed": "Uppdatering av organisationsplånbokens bas-URL misslyckades"
+    "owsBaseUrlUpdateFailed": "Uppdatering av organisationsplånbokens bas-URL misslyckades",
+    "walletConfigurationTitle": "Konfiguration av organisationsplånbok",
+    "configuredLabel": "Konfigurerad",
+    "configureButton": "Konfigurera",
+    "oauth2ClientConfigTitle": "Konfiguration av OAuth2-klient",
+    "deploymentStatusLabel": "Implementeringsstatus:",
+    "notConfiguredLabel": "Inte konfigurerad"
   },
   "dispConnection": {
     "copy": "KOPIERA",
@@ -337,6 +376,7 @@
   "error": {
     "generic": "Något gick fel."
   },
+  "addDataDisclosureAgreement": "Lägg till datautlämningsavtal",
   "noBannerImageAvailable": "Ingen bannerbild tillgänglig",
   "unknownOrganization": "Okänd organisation"
 }
