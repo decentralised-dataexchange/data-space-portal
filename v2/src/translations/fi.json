@@ -95,6 +95,7 @@
     "overView": "Yleiskatsaus",
     "organisationName": "Organisaation nimi",
     "addCredential": "Lisää tunnistetiedot",
+    "viewCredential": "Näytä tunnistetiedot",
     "edit": "Muokkaa",
     "policyUrl": "Käytäntö URL",
     "verification": {
@@ -151,7 +152,14 @@
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Myöntäjä: Kaupparekisteri, Suomi",
     "confirmWalletDescription": "Yrityksesi on tällä hetkellä vahvistamaton. Valitse vahvista vahvistaaksesi yrityksesi.",
-    "industry": "Toimiala"
+    "industry": "Toimiala",
+    "tooltipDeleteCredentials": "Poista tunnistetiedot",
+    "deleteCredentialsModal": {
+      "title": "Poista tunnistetiedot",
+      "description": "Olet poistamassa organisaatiosi tunnistetietoja. Tätä toimintoa ei voi perua.",
+      "confirmButton": "Poista",
+      "confirmText": "POISTA"
+    }
   },
   "verification": {
     "connect": {
@@ -244,7 +252,8 @@
     "tryAgainLater": "Yritä myöhemmin uudelleen.",
     "pleaseWait": "Odota hetki...",
     "copy": "Kopioi",
-    "copied": "Kopioitu"
+    "copied": "Kopioitu",
+    "typeToConfirm": "Kirjoita \"{text}\" vahvistaaksesi"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -366,12 +375,12 @@
     "holderBaseUrlLabel": "Haltijan perus-URL",
     "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
     "uploadButton": "Lataa",
-    "oauth2ClientTitle": "OAuth2-asiakas",
+    "oauth2ClientTitle": "OAuth 2.0 asiakas",
     "oauth2Title": "OAuth 2.0 -asiakas",
     "oauth2ClientNameLabel": "Nimi",
-    "oauth2ClientNamePlaceholder": "OAuth2-asiakkaan nimi",
+    "oauth2ClientNamePlaceholder": "OAuth 2.0 asiakkaan nimi",
     "oauth2ClientDescriptionLabel": "Kuvaus",
-    "oauth2ClientDescriptionPlaceholder": "Lyhyt kuvaus OAuth2-asiakkaalle (valinnainen)",
+    "oauth2ClientDescriptionPlaceholder": "Lyhyt kuvaus OAuth 2.0 asiakkaalle (valinnainen)",
     "createOAuth2Client": "Luo",
     "clientNameLabel": "Asiakkaan nimi",
     "clientDescriptionLabel": "Asiakkaan kuvaus",
@@ -385,7 +394,7 @@
     "walletConfigurationTitle": "Organisaation lompakon konfigurointi",
     "configuredLabel": "Määritetty",
     "configureButton": "Määritä",
-    "oauth2ClientConfigTitle": "OAuth2-asiakkaan konfigurointi",
+    "oauth2ClientConfigTitle": "OAuth 2.0 asiakkaan konfigurointi",
     "deploymentStatusLabel": "Käyttöönottotila:",
     "notConfiguredLabel": "Ei konfiguroitu"
   },

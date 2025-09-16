@@ -40,6 +40,13 @@ export const apiService = {
     return api.post<OAuth2ClientCreateResponse>(ENDPOINTS.createOAuth2Client(), payload)
       .then(res => res.data);
   },
+  updateOAuth2Client: async (
+    clientId: string,
+    payload: { name?: string; description?: string }
+  ): Promise<OAuth2ClientCreateResponse> => {
+    return api.put<OAuth2ClientCreateResponse>(ENDPOINTS.updateOAuth2Client(clientId), payload)
+      .then(res => res.data);
+  },
   listDataDisclosureAgreements: async (
     filter: string,
     limit: number,
@@ -184,6 +191,15 @@ export const apiService = {
       return response.data;
     } catch (error) {
       console.error('Error creating organization identity:', error);
+      throw error;
+    }
+  },
+  deleteOrgIdentity: async (): Promise<void> => {
+    try {
+      await api.delete<void>(ENDPOINTS.orgIdentity());
+      return;
+    } catch (error) {
+      console.error('Error deleting organization identity:', error);
       throw error;
     }
   },

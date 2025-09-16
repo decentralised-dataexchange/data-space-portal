@@ -30,8 +30,9 @@ export const InfoRow = ({ label, value, hideBottomBorder = false }) => {
       style={{
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
         borderBottom: hideBottomBorder ? "none" : "solid 1px #dee2e6",
-        padding: "12px",
+        padding: "6px 16px",
       }}
     >
       <Typography variant="subtitle2" color="black">{label}</Typography>

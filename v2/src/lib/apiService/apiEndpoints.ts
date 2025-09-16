@@ -80,5 +80,8 @@ export const ENDPOINTS = {
     },
     createOAuth2Client: () => {
         return "/config/organisation/oauth2-client/";
+    },
+    updateOAuth2Client: (clientId: string) => {
+        return `/config/organisation/oauth2-client/${clientId}/`;
     }
 };

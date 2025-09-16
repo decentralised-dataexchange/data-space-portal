@@ -121,3 +121,24 @@ export const useCreateOAuth2Client = () => {
     }
   });
 };
+
+// Hook to update an existing OAuth2 client
+export const useUpdateOAuth2Client = () => {
+  const queryClient = useQueryClient();
+  return useMutation<OAuth2ClientCreateResponse, unknown, { clientId: string; name?: string; description?: string }>({
+    mutationFn: async ({ clientId, name, description }) => {
+      try {
+        return await apiService.updateOAuth2Client(clientId, { name, description });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to update OAuth2 client';
+        console.error('Error in updateOAuth2Client:', errorMessage, error);
+        throw error;
+      }
+    },
+    retry: false,
+    onSuccess: () => {
+      // Refresh OAuth2 clients list after update
+      queryClient.invalidateQueries({ queryKey: ['oauth2Clients'] });
+    }
+  });
+};

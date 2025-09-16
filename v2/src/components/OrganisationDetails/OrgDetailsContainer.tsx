@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { useUpdateOrganisation } from "@/custom-hooks/gettingStarted";
-import { Box, Grid, Typography, TextField, Button, Avatar, IconButton } from "@mui/material";
+import { Box, Grid, Typography, TextField, Button, Avatar, IconButton, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import OrgLogoImageUpload from "@/components/OrganisationDetails/OrgLogoImageUpload";
 import ViewCredentials from "@/components/ViewCredentials";
@@ -9,7 +9,8 @@ import RightSidebar from "@/components/common/RightSidebar";
 import './style.scss';
 import { useTranslations } from "next-intl";
 import VerifiedBadge from "../common/VerifiedBadge";
-import { Eye as EyeIcon, EyeSlash as EyeSlashIcon, PencilSimple as PencilIcon } from "@phosphor-icons/react";
+import DeleteCredentialsModal from "./DeleteCredentialsModal";
+import { Eye as EyeIcon, EyeSlash as EyeSlashIcon, PencilSimple as PencilIcon, TrashSimple as TrashIcon } from "@phosphor-icons/react";
 import { Organisation } from "@/types/organisation";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
@@ -55,6 +56,7 @@ const OrganisationDetailsContainer = (props: Props) => {
   const t = useTranslations();
   const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
   const [showValues, setShowValues] = useState(false);
+  const [openDeleteCredentials, setOpenDeleteCredentials] = useState(false);
   const {
     editMode,
     organisationDetails,
@@ -81,6 +83,7 @@ const OrganisationDetailsContainer = (props: Props) => {
   }, [organisationDetails])
 
   const isVerify = !!props.isVerified;
+  const hasIdentity = !!props.orgIdentity && Object.keys((props.orgIdentity as any)?.organisationalIdentity || {}).length > 0;
 
   const callRightSideDrawer = () => {
     setOpenRightSideDrawer(!openRightSideDrawer)
@@ -212,6 +215,10 @@ const OrganisationDetailsContainer = (props: Props) => {
           showValues={showValues}
         />
       </RightSidebar>
+      <DeleteCredentialsModal
+        open={openDeleteCredentials}
+        setOpen={setOpenDeleteCredentials}
+      />
       <Grid
         sx={{
           display: { xs: "grid", sm: "flex" },
@@ -348,25 +355,62 @@ const OrganisationDetailsContainer = (props: Props) => {
                     {organisationDetails?.name}
                   </Typography>
                   {isVerify ? (
-                    <p
-                      style={{ marginLeft: '0.5rem' }}
-                      className={addCredentialClass}
-                      onClick={callRightSideDrawer}
-                    >
-                      {t('gettingStarted.viewCredential')}
-                    </p>
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <p
+                        style={{ marginLeft: '0.5rem' }}
+                        className={addCredentialClass}
+                        onClick={callRightSideDrawer}
+                      >
+                        {t('gettingStarted.viewCredential')}
+                      </p>
+                      {hasIdentity && (
+                        <Tooltip title={t('gettingStarted.tooltipDeleteCredentials')} placement="top">
+                          <IconButton
+                            aria-label="delete-credentials"
+                            onClick={() => setOpenDeleteCredentials(true)}
+                            size="small"
+                            sx={{ ml: 0.5, color: '#d80606', p: 0.25, '&:hover': { backgroundColor: 'transparent', color: '#b10505' } }}
+                          >
+                            <TrashIcon size={16} />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                    </Box>
                   ) : props.isEnableAddCredential ? (
-                    <p
-                      style={{ marginLeft: '0.5rem', cursor: props.addCredentialsLoading ? 'not-allowed' : 'pointer', opacity: props.addCredentialsLoading ? 0.6 : 1 }}
-                      className={addCredentialClass}
+                    <Button
+                      variant="text"
+                      className={'view-credential'}
                       onClick={props.addCredentialsLoading ? undefined : props.onAddCredentialsClick}
+                      disabled={!!props.addCredentialsLoading}
+                      sx={{
+                        ml: '0.5rem',
+                        minWidth: 'auto',
+                        padding: 0,
+                        lineHeight: 1,
+                        textTransform: 'none !important',
+                        '&:hover': { backgroundColor: 'transparent' },
+                        '&.Mui-disabled': { opacity: 0.6 },
+                      }}
                     >
                       {props.addCredentialsLoading ? t('common.pleaseWait') : t('gettingStarted.addCredential')}
-                    </p>
+                    </Button>
                   ) : (
-                    <p style={{ marginLeft: '0.5rem' }} className={addCredentialClass}>
+                    <Button
+                      variant="text"
+                      className={'view-credential'}
+                      disabled
+                      sx={{
+                        ml: '0.5rem',
+                        minWidth: 'auto',
+                        padding: 0,
+                        lineHeight: 1,
+                        textTransform: 'none !important',
+                        '&:hover': { backgroundColor: 'transparent' },
+                        '&.Mui-disabled': { opacity: 0.6 }
+                      }}
+                    >
                       {t('gettingStarted.addCredential')}
-                    </p>
+                    </Button>
                   )}
                 </Box>
                   <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>

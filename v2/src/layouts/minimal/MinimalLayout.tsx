@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <>
       {isAuthRoute ? null : <MinimalAppBar />}
       <Box className="leftNavigationContainer">
-        <Box component="main" sx={{ paddingTop: isAuthRoute ? 0 : '80px', flex: 1 }}>
+        <Box component="main" sx={{ paddingTop: isAuthRoute ? 0 : '80px', flex: 1, backgroundColor: isAuthRoute ? '#FFFFFF' : 'transparent' }}>
           {!isAuthRoute && (
             <Suspense fallback={null}>
               <Breadcrumb />

@@ -38,6 +38,25 @@ export const useGetOrgIdentity = (orgId: string) => {
   });
 };
 
+// Delete organisation identity (credentials)
+export const useDeleteOrgIdentity = () => {
+  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
+  return useMutation<void, Error, void>({
+    mutationFn: () => apiService.deleteOrgIdentity(),
+    onSuccess: () => {
+      // Clear getting started state to reflect deletion and refetch identity
+      dispatch(setGettingStartSuccess({}));
+      queryClient.invalidateQueries({ queryKey: ['orgIdentity'] });
+      queryClient.invalidateQueries({ queryKey: ['organisation'] });
+    },
+    onError: (error) => {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete organization identity';
+      dispatch(setGettingStartFailure(errorMessage));
+    },
+  });
+};
+
 // Auto-create org identity once when empty identity, empty state and not verified
 export const useAutoCreateOrgIdentity = (orgIdentityResp?: OrgIdentityResponse) => {
   const { mutateAsync: createOrgIdentity } = useCreateOrgIdentity();

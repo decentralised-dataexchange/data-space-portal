@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -136,6 +136,44 @@ const DDATable: React.FC<DDATableProps> = ({
   onRowsPerPageChange,
 }) => {
   const t = useTranslations();
+  // Keep track of selected version per DDA (keyed by templateId)
+  const [selectedVersions, setSelectedVersions] = useState<Record<string, string>>({});
+
+  const getVersionVal = (item: any): string => String(item?.version || item?.templateVersion || "");
+
+  const getLatestVersion = (row: any): string => {
+    // prefer item marked as latest among row and its revisions
+    const pool = [row, ...(Array.isArray(row?.revisions) ? row.revisions : [])];
+    const latest = pool.find((r: any) => r && r.isLatestVersion);
+    return latest ? getVersionVal(latest) : getVersionVal(row);
+  };
+
+  const getSelectedVersion = (row: any) => selectedVersions[row.templateId] || getLatestVersion(row);
+
+  const getSelectedRevisionData = (row: any) => {
+    const sel = getSelectedVersion(row);
+    if (sel === getVersionVal(row)) return row;
+    const rev = Array.isArray(row?.revisions) ? row.revisions.find((r: any) => getVersionVal(r) === sel) : null;
+    // Merge revision over base row to avoid missing fields in modal
+    return rev ? { ...row, ...rev } : row;
+  };
+
+  // Initialize default selected versions to latest for all rows
+  useEffect(() => {
+    const list = tabledata?.dataDisclosureAgreements || [];
+    if (!Array.isArray(list) || list.length === 0) return;
+    setSelectedVersions((prev) => {
+      const next = { ...prev };
+      for (const row of list) {
+        const key = row?.templateId;
+        if (!key) continue;
+        if (!(key in next)) {
+          next[key] = getLatestVersion(row);
+        }
+      }
+      return next;
+    });
+  }, [tabledata]);
 
   return (
     <TableContainer className="dd-container" sx={{ backgroundColor: 'transparent', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
@@ -155,7 +193,11 @@ const DDATable: React.FC<DDATableProps> = ({
               <StyledTableRow key={row.templateId} style={{ color: "red" }}>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.purpose}</StyledTableCell>
                 <StyledTableCell>
-                  <VersionDropdown record={row} />
+                  <VersionDropdown
+                    record={row}
+                    value={getSelectedVersion(row)}
+                    onChange={(v) => setSelectedVersions((prev) => ({ ...prev, [row.templateId]: v }))}
+                  />
                 </StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{getStatus(t, row.status)}</StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.lawfulBasis}</StyledTableCell>
@@ -171,19 +213,29 @@ const DDATable: React.FC<DDATableProps> = ({
                     title={t("dataAgreements.table.tooltips.listToMarketplace")}
                     placement="top"
                   >
-
-                    <IconButton className="actionButton" aria-label="delete" data-disabled={row.status === "awaitingForApproval"}>
-                      <UploadSimpleIcon
-                        style={{ color: row.status === "unlisted" ? "red" : row.status === "awaitingForApproval" ? "gray" : "black", cursor: row.status === "awaitingForApproval" ? "not-allowed" : "pointer" }}
-                        size={16}
-                        onClick={() => {
-                          if (row.status !== "awaitingForApproval") {
-                            setIsOpenPublish(true);
-                            setSelectedDDA(row);
-                          }
-                        }}
-                      />
-                    </IconButton>
+                    {(() => {
+                      // Only allow listing when the currently selected version is the latest
+                      const isCurrentSelected = String(getSelectedVersion(row)) === String(getLatestVersion(row));
+                      const disabled = row.status === "awaitingForApproval" || !isCurrentSelected;
+                      const color = !isCurrentSelected
+                        ? "gray"
+                        : row.status === "unlisted" ? "red" : row.status === "awaitingForApproval" ? "gray" : "black";
+                      const cursor = disabled ? "not-allowed" : "pointer";
+                      return (
+                        <IconButton className="actionButton" aria-label="publish" data-disabled={disabled}>
+                          <UploadSimpleIcon
+                            style={{ color, cursor }}
+                            size={16}
+                            onClick={() => {
+                              if (!disabled) {
+                                setIsOpenPublish(true);
+                                setSelectedDDA(row);
+                              }
+                            }}
+                          />
+                        </IconButton>
+                      );
+                    })()}
                   </Tooltip>
 
                   <Tooltip
@@ -192,7 +244,7 @@ const DDATable: React.FC<DDATableProps> = ({
                   >
                     <IconButton aria-label="edit" onClick={() => {
                           setIsOpenViewDDA(true);
-                          setSelectedDDA(row);
+                          setSelectedDDA(getSelectedRevisionData(row));
                         }}>
                       <EyeIcon
                         style={{ color: row.status === "unlisted" ? "red" : "black" }}

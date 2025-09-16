@@ -15,7 +15,6 @@ import {
   useCreateOrgIdentity,
   useGetCoverImage,
   useGetLogoImage,
-  useAutoCreateOrgIdentity,
   useOrgIdentityPolling,
 } from '@/custom-hooks/gettingStarted';
 import { useQueryClient } from '@tanstack/react-query';
@@ -44,13 +43,13 @@ const Item = styled("div")(({ theme }) => ({
   color: "#000",
   height: 'auto',
   minHeight: 90,
-  borderRadius: 0,
   border: "1px solid #DFDFDF",
   boxShadow: 'none',
   transition: 'all 0.3s ease',
   textTransform: 'unset',
   width: '100%',
   textAlign: 'center',
+  borderRadius: "7px",
   '&:hover': {
     backgroundColor: '#000',
     color: '#fff',
@@ -102,9 +101,6 @@ const GettingStarted = () => {
       });
     }
   }, [organisationResponse]);
-
-  // Use hook to auto-create org identity when needed
-  useAutoCreateOrgIdentity(orgIdentityResp);
 
   // Use hook to handle polling lifecycle
   useOrgIdentityPolling(orgIdentityResp, organisationId);
@@ -160,17 +156,8 @@ const GettingStarted = () => {
     if (addInFlight.current) return;
     addInFlight.current = true;
     try {
-      const state = orgIdentityResp?.state || '';
       const identityObj = (orgIdentityResp as any)?.organisationalIdentity;
-      const hasQr = identityObj && identityObj.vpTokenQrCode;
 
-      if (state === 'request_sent' && hasQr) {
-        // Navigate to existing request in same tab
-        window.location.href = identityObj.vpTokenQrCode as string;
-        return;
-      }
-
-      // Otherwise create a fresh identity request and navigate to new QR URL
       setIsAddLoading(true);
       const created = await createOrgIdentity();
       const newQr = (created as any)?.organisationalIdentity?.vpTokenQrCode as string | undefined;
