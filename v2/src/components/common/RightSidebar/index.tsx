@@ -137,6 +137,7 @@ const RightSidebar = ({
   height,
   disableBackdropClick = false,
   disableEscapeKeyDown = false,
+  keepMounted,
   className,
   ...props
 }: RightSidebarProps) => {
@@ -156,6 +157,7 @@ const RightSidebar = ({
       width={width}
       maxWidth={maxWidth}
       height={height}
+      ModalProps={{ keepMounted }}
       className={`right-sidebar ${className || ''}`}
       {...props}
     >

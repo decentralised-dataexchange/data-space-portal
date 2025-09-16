@@ -396,7 +396,8 @@
     "configureButton": "Määritä",
     "oauth2ClientConfigTitle": "OAuth 2.0 asiakkaan konfigurointi",
     "deploymentStatusLabel": "Käyttöönottotila:",
-    "notConfiguredLabel": "Ei konfiguroitu"
+    "notConfiguredLabel": "Ei konfiguroitu",
+    "owsBaseUrlRequired": "Haltijan perus-URL on pakollinen"
   },
   "dispConnection": {
     "copy": "KOPIOI",
@@ -421,5 +422,9 @@
   },
   "addDataDisclosureAgreement": "Lisää tietojen luovutus -sopimus",
   "noBannerImageAvailable": "Bannerikuvaa ei saatavilla",
+  "imageUpload": {
+    "recommendedCoverSize": "Suositeltu koko on 1500x500 px",
+    "recommendedLogoSize": "Suositeltu koko on 400x400 px"
+  },
   "unknownOrganization": "Tuntematon organisaatio"
 }

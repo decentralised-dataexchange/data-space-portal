@@ -46,15 +46,15 @@ const Item = styled("div")(({ theme }) => ({
   border: "1px solid #DFDFDF",
   boxShadow: 'none',
   transition: 'all 0.3s ease',
-  textTransform: 'unset',
   width: '100%',
   textAlign: 'center',
   borderRadius: "7px",
   '&:hover': {
-    backgroundColor: '#000',
-    color: '#fff',
+    backgroundColor: 'rgb(245,245,245)',
+    border: "1px solid rgb(153,153,153)",
+    color: 'black',
     '& .MuiTypography-root': {
-      color: '#fff',
+      color: 'black',
     }
   },
   '& .MuiTypography-root': {
@@ -64,6 +64,7 @@ const Item = styled("div")(({ theme }) => ({
     width: '100%',
     padding: '6px 16px',
     margin: '8px 0 0 0',
+    textTransform: 'capitalize',
   }
 }));
 

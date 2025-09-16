@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useUpdateOrganisation } from "@/custom-hooks/gettingStarted";
 import { Box, Grid, Typography, TextField, Button, Avatar, IconButton, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -10,7 +10,7 @@ import './style.scss';
 import { useTranslations } from "next-intl";
 import VerifiedBadge from "../common/VerifiedBadge";
 import DeleteCredentialsModal from "./DeleteCredentialsModal";
-import { Eye as EyeIcon, EyeSlash as EyeSlashIcon, PencilSimple as PencilIcon, TrashSimple as TrashIcon } from "@phosphor-icons/react";
+import { Eye as EyeIcon, EyeSlash as EyeSlashIcon } from "@phosphor-icons/react";
 import { Organisation } from "@/types/organisation";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
@@ -54,7 +54,7 @@ type Props = {
 
 const OrganisationDetailsContainer = (props: Props) => {
   const t = useTranslations();
-  const [openRightSideDrawer, setOpenRightSideDrawer] = useState(false)
+  const [openViewCredentialsModal, setOpenViewCredentialsModal] = useState(false)
   const [showValues, setShowValues] = useState(false);
   const [openDeleteCredentials, setOpenDeleteCredentials] = useState(false);
   const {
@@ -86,7 +86,7 @@ const OrganisationDetailsContainer = (props: Props) => {
   const hasIdentity = !!props.orgIdentity && Object.keys((props.orgIdentity as any)?.organisationalIdentity || {}).length > 0;
 
   const callRightSideDrawer = () => {
-    setOpenRightSideDrawer(!openRightSideDrawer)
+    setOpenViewCredentialsModal(!openViewCredentialsModal)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +98,34 @@ const OrganisationDetailsContainer = (props: Props) => {
     setFormValue(updatedFormValue);
     setOganisationDetails(name, value);
   }
+
+  const handleDescriptionInput = (e: React.FormEvent<HTMLParagraphElement>) => {
+    const text = e.currentTarget.textContent ?? '';
+    setFormValue((prev) => ({ ...prev, description: text }));
+    setOganisationDetails('description', text);
+  }
+
+  const descriptionRef = useRef<HTMLParagraphElement | null>(null);
+
+  // Initialize editable content when entering edit mode without causing caret resets
+  useEffect(() => {
+    if (editMode && descriptionRef.current) {
+      // Prefer current form value, fallback to existing organisation description
+      const initial = (formValue.description ?? organisationDetails?.description ?? '') as string;
+      // Only update DOM if it differs to avoid caret jumps
+      if (descriptionRef.current.innerText !== initial) {
+        descriptionRef.current.innerText = initial;
+      }
+    }
+  }, [editMode]);
+
+  const handleDescriptionPaste = (e: React.ClipboardEvent<HTMLParagraphElement>) => {
+    // Paste as plain text to avoid styled content interfering with caret/DOM
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    // Insert at caret position
+    document.execCommand('insertText', false, text);
+  };
 
   const { mutateAsync: updateOrganisation } = useUpdateOrganisation();
 
@@ -133,10 +161,11 @@ const OrganisationDetailsContainer = (props: Props) => {
       className="gettingStarted"
     >
       <RightSidebar
-        open={openRightSideDrawer}
+        open={openViewCredentialsModal}
         onClose={callRightSideDrawer}
         width={594}
         maxWidth={594}
+        keepMounted
         height="100%"
         headerContent={
           <Box sx={{ width: "100%" }}>
@@ -191,25 +220,51 @@ const OrganisationDetailsContainer = (props: Props) => {
         showBanner={true}
         showFooter={true}
         footerContent={
-          <Button
-            onClick={callRightSideDrawer}
-            className="delete-btn"
-            sx={{
-              marginRight: "10px",
-              color: "black",
-              "&:hover": {
-                backgroundColor: "black",
-                color: "white",
-              },
-            }}
-            variant="outlined"
-          >
-            {t('common.close')}
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1.5, width: '100%' }}>
+           
+            <Button
+              onClick={callRightSideDrawer}
+              className="delete-btn"
+              sx={{
+                marginRight: "10px",
+                minWidth: 120,
+                textTransform: 'none',
+                borderColor: '#DFDFDF',
+                color: 'black',
+                borderRadius: '0 !important',
+                '&:hover': {
+                  backgroundColor: 'black',
+                  color: 'white',
+                  borderColor: 'black',
+                },
+              }}
+              variant="outlined"
+            >
+              {t('common.close')}
+            </Button>
+            {hasIdentity && (
+              <Tooltip title={t('gettingStarted.tooltipDeleteCredentials')} placement="top">
+                <Button
+                  onClick={() => setOpenDeleteCredentials(true)}
+                  className="delete-btn"
+                  variant="outlined"
+                  sx={{
+                    minWidth: 120,
+                    textTransform: 'none',
+                    borderColor: '#DFDFDF',
+                    color: 'black',
+                    borderRadius: '0 !important',
+                    '&:hover': { backgroundColor: 'black', color: 'white', borderColor: 'black' },
+                  }}
+                >
+                  {t('common.delete')}
+                </Button>
+              </Tooltip>
+            )}
+          </Box>
         }
       >
         <ViewCredentials 
-          callRightSideDrawer={callRightSideDrawer}
           orgIdentity={props.orgIdentity}
           organisation={props.originalOrganisation}
           showValues={showValues}
@@ -218,6 +273,7 @@ const OrganisationDetailsContainer = (props: Props) => {
       <DeleteCredentialsModal
         open={openDeleteCredentials}
         setOpen={setOpenDeleteCredentials}
+        onSuccess={() => setOpenViewCredentialsModal(false)}
       />
       <Grid
         sx={{
@@ -327,26 +383,7 @@ const OrganisationDetailsContainer = (props: Props) => {
                     }}
                   />
                 </Box>
-                <Box sx={{ mt: 1, maxWidth: { xs: '100%', sm: 500 } }}>
-                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
-                    {t("common.description")}
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    onChange={handleChange}
-                    value={formValue.description}
-                    fullWidth
-                    name='description'
-                    multiline
-                    minRows={1}
-                    maxRows={6}
-                    style={{ ...editStyleEnable, marginTop: 0, height: 'auto' }}
-                    InputProps={{
-                      disableUnderline: true,
-                      style: { fontSize: 14 },
-                    }}
-                  />
-                </Box>
+                
               </>
             ) :
               <>
@@ -363,18 +400,6 @@ const OrganisationDetailsContainer = (props: Props) => {
                       >
                         {t('gettingStarted.viewCredential')}
                       </p>
-                      {hasIdentity && (
-                        <Tooltip title={t('gettingStarted.tooltipDeleteCredentials')} placement="top">
-                          <IconButton
-                            aria-label="delete-credentials"
-                            onClick={() => setOpenDeleteCredentials(true)}
-                            size="small"
-                            sx={{ ml: 0.5, color: '#d80606', p: 0.25, '&:hover': { backgroundColor: 'transparent', color: '#b10505' } }}
-                          >
-                            <TrashIcon size={16} />
-                          </IconButton>
-                        </Tooltip>
-                      )}
                     </Box>
                   ) : props.isEnableAddCredential ? (
                     <Button
@@ -426,7 +451,18 @@ const OrganisationDetailsContainer = (props: Props) => {
                 </Typography>
                 <Typography variant="body2" height="23px">
                   {(t('gettingStarted.policyUrl'))}:&nbsp;
-                  {organisationDetails?.policyUrl}
+                  {organisationDetails?.policyUrl ? (
+                    <a
+                      href={organisationDetails.policyUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: '#0000FF', wordBreak: 'break-all', fontSize: '14px' }}
+                    >
+                      {organisationDetails.policyUrl}
+                    </a>
+                  ) : (
+                    <span>-</span>
+                  )}
                 </Typography>
               </>
             }
@@ -484,23 +520,32 @@ const OrganisationDetailsContainer = (props: Props) => {
           </Typography>}
         </Grid>
       </Grid>
-      {!editMode && (
-        <Box
-          sx={{
-            minHeight: 100,
-            maxHeight: { xs: 'none', sm: 160 },
-            overflow: { xs: 'visible', sm: 'auto' },
-            marginTop: { xs: '24px', sm: '50px' }
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>{t('gettingStarted.overView')}</Typography>
-          </Box>
-          <Box>
-            <p className="txtOverview" >{organisationDetails?.description}</p>
-          </Box>
+      <Box
+        sx={{
+          minHeight: 100,
+          maxHeight: { xs: 'none', sm: 160 },
+          overflow: { xs: 'visible', sm: 'auto' },
+          marginTop: { xs: '24px', sm: '50px' }
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>{t('gettingStarted.overView')}</Typography>
         </Box>
-      )}
+        <Box>
+          <p
+            className="txtOverview"
+            contentEditable={editMode}
+            suppressContentEditableWarning
+            aria-label={t('common.description')}
+            onInput={handleDescriptionInput}
+            onPaste={handleDescriptionPaste}
+            ref={descriptionRef}
+            style={{ outline: 'none' }}
+          >
+            {!editMode ? (organisationDetails?.description || '') : null}
+          </p>
+        </Box>
+      </Box>
     </DetailsContainer>
   );
 };

@@ -254,22 +254,24 @@ const DDATable: React.FC<DDATableProps> = ({
                     </IconButton>
                   </Tooltip>
 
-                  <Tooltip
-                    title={t("dataAgreements.tooltipDelete")}
-                    placement="top"
-                  >
-                    <IconButton aria-label="delete"
-                    onClick={() => {
-                      setIsOpenDelete(true);
-                      setSelectedDDA(row);
-                    }}
+                  {false && (
+                    <Tooltip
+                      title={t("dataAgreements.tooltipDelete")}
+                      placement="top"
                     >
-                      <TrashSimpleIcon
-                        style={{ color: row.status === "unlisted" ? "red" : "black" }}
-                        size={17}
-                      />
-                    </IconButton>
-                  </Tooltip>
+                      <IconButton aria-label="delete"
+                        onClick={() => {
+                          setIsOpenDelete(true);
+                          setSelectedDDA(row);
+                        }}
+                      >
+                        <TrashSimpleIcon
+                          style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                          size={17}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </StyledTableCell>
               </StyledTableRow>
             ))

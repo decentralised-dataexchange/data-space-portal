@@ -151,6 +151,11 @@ export default function DeveloperAPIs() {
     if (!oauth2Client) return;
     // Guard against forced enable: only submit when fields are dirty
     if (!isOAuthFormDirty) return;
+    // Required validation for Client Name
+    if (!clientName.trim()) {
+      dispatch(setMessage(t('developerAPIs.clientNameRequired')));
+      return;
+    }
     const payload = {
       clientId: oauth2Client.id,
       name: clientName.trim(),
@@ -182,6 +187,11 @@ export default function DeveloperAPIs() {
   // Save both OpenAPI URL and Holder Base URL via organisation update
   const handleSaveWalletConfig = () => {
     if (!orgDetails?.id) return;
+    // Required validation for Holder Base URL (has asterisk)
+    if (!editHolderBaseUrl.trim()) {
+      dispatch(setMessage(t('developerAPIs.owsBaseUrlRequired')));
+      return;
+    }
     const payload = {
       organisation: {
         ...orgDetails,
@@ -457,7 +467,23 @@ export default function DeveloperAPIs() {
             <Button className="delete-btn" variant="outlined" onClick={closeWalletSidebar} sx={{ minWidth: 120 }}>
               {t('common.close')}
             </Button>
-            <Button className="delete-btn" variant="outlined" onClick={handleSaveWalletConfig} sx={{ minWidth: 120 }}>
+            <Button
+              className="delete-btn"
+              variant="outlined"
+              onClick={handleSaveWalletConfig}
+              disabled={!editHolderBaseUrl.trim()}
+              sx={{
+                minWidth: 120,
+                '&.Mui-disabled': {
+                  opacity: 0.5,
+                  color: '#9e9e9e !important',
+                  borderColor: '#e0e0e0 !important',
+                  // Allow cursor styling to apply on disabled button
+                  pointerEvents: 'auto !important',
+                  cursor: 'not-allowed !important',
+                }
+              }}
+            >
               {t('common.save')}
             </Button>
           </>
@@ -533,7 +559,7 @@ export default function DeveloperAPIs() {
                 className="delete-btn"
                 variant="outlined"
                 onClick={handleUpdateClient}
-                disabled={!isOAuthFormDirty || isUpdating}
+                disabled={!isOAuthFormDirty || isUpdating || !clientName.trim()}
                 sx={{
                   minWidth: 120,
                   '&.Mui-disabled': {
@@ -586,7 +612,7 @@ export default function DeveloperAPIs() {
           ) : (
             <>
               <Typography variant="body2" mb={0.5}>
-                {t('developerAPIs.oauth2ClientNameLabel')}
+                {t('developerAPIs.oauth2ClientNameLabel')}<RequiredAsterisk />
               </Typography>
               <TextField
                 placeholder={t('developerAPIs.oauth2ClientNamePlaceholder')}
@@ -611,9 +637,7 @@ export default function DeveloperAPIs() {
                 InputProps={{ disableUnderline: false }}
                 sx={{ '& .MuiInputBase-input': { color: 'black' } }}
               />
-
-              {/* Non-editable display fields styled like TextField (standard) */}
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              {/* <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <StaticInputLike
                   label={t('developerAPIs.clientIdLabel')}
                   value={oauth2Client.client_id}
@@ -627,7 +651,7 @@ export default function DeveloperAPIs() {
                   label={t('developerAPIs.owsBaseUrlLabel')}
                   value={baseURL}
                 />
-              </Box>
+              </Box> */}
             </>
           )}
         </Box>

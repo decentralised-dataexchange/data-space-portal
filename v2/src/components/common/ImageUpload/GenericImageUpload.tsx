@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Box } from '@mui/material';
-import { PencilSimpleIcon } from '@phosphor-icons/react';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ImageCropModal from './ImageCropModal';
 import { useAppDispatch } from '@/custom-hooks/store';
 import { setMessage } from '@/store/reducers/authReducer';
@@ -45,7 +45,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   imageStyle,
   iconPosition = { top: '24px', right: '24px' },
   modalSize,
-  acceptedFileTypes = 'image/jpeg,image/jpg,image/png',
+  acceptedFileTypes = 'image/jpeg,image/jpg,image/png,image/webp',
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -54,30 +54,26 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
 
   const handleIconClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Open the modal directly instead of clicking the file input
-    // Reset any previously selected image so the modal starts clean
-    setSelectedImage(null);
+    // Open the modal and ensure an image is shown immediately
+    setSelectedImage((prev) => prev || imageUrl || defaultImage || null);
     setModalOpen(true);
   };
+
+  // When modal opens, if there is no selected image yet, preload the current or default one
+  useEffect(() => {
+    if (modalOpen && !selectedImage) {
+      setSelectedImage(imageUrl || defaultImage || null);
+    }
+  }, [modalOpen, imageUrl, defaultImage]);
 
   // Handle file selection from the modal's browse button
   const handleFileSelect = (file: File) => {
     const reader = new FileReader();
     
     reader.onload = () => {
-      // Check image dimensions before proceeding with cropping
-      const img = new Image();
-      img.onload = () => {
-        if (img.width < minWidth || img.height < minHeight) {
-          // Show toast for invalid size
-          dispatch(setMessage(`Image must be at least ${minWidth}x${minHeight}px`));
-          return;
-        }
-        
-        setSelectedImage(reader.result as string);
-      };
-      
-      img.src = reader.result as string;
+      // Immediately preview the selected image in the modal.
+      // Validation will be handled inside the modal by disabling Save when crop is invalid.
+      setSelectedImage(reader.result as string);
     };
     
     reader.readAsDataURL(file);
@@ -154,8 +150,8 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
               right: iconPosition.right,
               backgroundColor: 'rgba(0, 0, 0, 0.7)',
               borderRadius: '50%',
-              width: '32px',
-              height: '32px',
+              width: '40px',
+              height: '40px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -163,7 +159,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
               transform: 'translate(50%, -50%)'
             }}
           >
-            <PencilSimpleIcon size={20} color="white" />
+            <CreateOutlinedIcon sx={{ fontSize: 24, color: 'white' }} />
           </label>
           
           <input
