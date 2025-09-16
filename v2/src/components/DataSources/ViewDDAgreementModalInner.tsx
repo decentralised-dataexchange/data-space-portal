@@ -32,16 +32,21 @@ export default function ViewDataAgreementModalInner(props: Props) {
     typeof props.trusted === 'boolean'
       ? props.trusted
       : isOrganisationVerified(selectedData as any);
-  // Custom header content showing purpose and template ID
+  // Custom header content showing purpose, template ID and Version
   const headerContent = (
     <Box sx={{ width: "100%" }}>
       <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
         {t('dataAgreements.viewModal.title')}: {selectedData?.purpose}
       </Typography>
       {mode !== "Create" && (
-        <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
-          {selectedData?.templateId}
-        </Typography>
+        <>
+          <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
+            {selectedData?.templateId}
+          </Typography>
+          <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
+            {t('dataAgreements.version')}: {String((selectedData as any)?.version || (selectedData as any)?.templateVersion || '')}
+          </Typography>
+        </>
       )}
     </Box>
   );

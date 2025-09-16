@@ -48,6 +48,7 @@ const MainLayout = ({ children }: Props) => {
             display: 'flex', 
             flexDirection: 'column', 
             minHeight: 'calc(100vh - 80px)',
+            backgroundColor: inPublicRoute ? 'transparent' : '#FFFFFF',
             // '& > *:first-child': {
             //   marginLeft: '15px', // Match container padding
             //   marginBottom: '1rem',

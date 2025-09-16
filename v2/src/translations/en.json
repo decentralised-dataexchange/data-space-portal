@@ -120,7 +120,14 @@
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Issues by:",
     "confirmWalletDescription": "Your business is currently unverified. Choose confirm to verify your business.",
-    "industry": "Industry"
+    "industry": "Industry",
+    "tooltipDeleteCredentials": "Delete credentials",
+    "deleteCredentialsModal": {
+      "title": "Delete Credentials",
+      "description": "You are about to delete your organisation credentials. This action cannot be undone.",
+      "confirmButton": "Delete",
+      "confirmText": "DELETE"
+    }
   },
   "common": {
     "orgDashboardTitle": "CRANE dHDSI - Organisation dashboard",
@@ -168,7 +175,8 @@
     "tryAgainLater": "Please try again later.",
     "pleaseWait": "Please wait...",
     "copy": "Copy",
-    "copied": "Copied"
+    "copied": "Copied",
+    "typeToConfirm": "Type \"{text}\" to confirm"
   },
   "errors": {
     "generic": "Something went wrong."
@@ -335,12 +343,12 @@
     "holderBaseUrlLabel": "Holder Base URL",
     "openApiUrlPlaceholder": "Enter OpenAPI URL",
     "uploadButton": "Upload",
-    "oauth2ClientTitle": "OAuth2 Client",
+    "oauth2ClientTitle": "OAuth 2.0 Client",
     "oauth2Title": "OAuth 2.0 Client",
     "oauth2ClientNameLabel": "Name",
-    "oauth2ClientNamePlaceholder": "Name for OAuth2 Client",
+    "oauth2ClientNamePlaceholder": "Name for OAuth 2.0 Client",
     "oauth2ClientDescriptionLabel": "Description",
-    "oauth2ClientDescriptionPlaceholder": "Short description for OAuth2 Client (optional)",
+    "oauth2ClientDescriptionPlaceholder": "Short description for OAuth 2.0 Client (optional)",
     "createOAuth2Client": "Create",
     "clientNameLabel": "Client Name",
     "clientDescriptionLabel": "Client Description",
@@ -354,7 +362,7 @@
     "walletConfigurationTitle": "Organisation Wallet Configuration",
     "configuredLabel": "Configured",
     "configureButton": "Configure",
-    "oauth2ClientConfigTitle": "OAuth2 Client Configuration",
+    "oauth2ClientConfigTitle": "OAuth 2.0 Client Configuration",
     "deploymentStatusLabel": "Deployment Status:",
     "notConfiguredLabel": "Not Configured"
   },

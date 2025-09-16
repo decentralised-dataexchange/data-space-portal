@@ -120,7 +120,13 @@
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Utfärdade av: Bolagsverket",
     "confirmWalletDescription": "Ditt företag är ej verifierat. Klicka Bekräfta för att verifiera.",
-    "industry": "Bransch"
+    "industry": "Bransch",
+    "deleteCredentialsModal": {
+      "title": "Radera behörigheter",
+      "description": "Du är på väg att radera din organisations behörigheter. Denna åtgärd kan inte ångras.",
+      "confirmButton": "Radera",
+      "confirmText": "RADERA"
+    }
   },
   "verification": {
     "confirm": {
@@ -216,7 +222,8 @@
     "tryAgainLater": "Försök igen senare.",
     "pleaseWait": "Vänligen vänta...",
     "copy": "Kopiera",
-    "copied": "Kopierat"
+    "copied": "Kopierat",
+    "typeToConfirm": "Skriv \"{text}\" för att bekräfta"
   },
   "errors": {
     "generic": "Något gick fel."
@@ -337,12 +344,12 @@
     "holderBaseUrlLabel": "Innehavarens bas-URL",
     "openApiUrlPlaceholder": "Ange OpenAPI-URL",
     "uploadButton": "Ladda upp",
-    "oauth2ClientTitle": "OAuth2-klient",
-    "oauth2Title": "OAuth 2.0-klient",
+    "oauth2ClientTitle": "OAuth 2.0 klient",
+    "oauth2Title": "OAuth 2.0 klient",
     "oauth2ClientNameLabel": "Namn",
-    "oauth2ClientNamePlaceholder": "Namn för OAuth2-klient",
+    "oauth2ClientNamePlaceholder": "Namn för OAuth 2.0 klient",
     "oauth2ClientDescriptionLabel": "Beskrivning",
-    "oauth2ClientDescriptionPlaceholder": "Kort beskrivning för OAuth2-klient (valfritt)",
+    "oauth2ClientDescriptionPlaceholder": "Kort beskrivning för OAuth 2.0 klient (valfritt)",
     "createOAuth2Client": "Skapa",
     "clientNameLabel": "Klientnamn",
     "clientDescriptionLabel": "Klientbeskrivning",
@@ -356,7 +363,7 @@
     "walletConfigurationTitle": "Konfiguration av organisationsplånbok",
     "configuredLabel": "Konfigurerad",
     "configureButton": "Konfigurera",
-    "oauth2ClientConfigTitle": "Konfiguration av OAuth2-klient",
+    "oauth2ClientConfigTitle": "Konfiguration av OAuth 2.0 klient",
     "deploymentStatusLabel": "Implementeringsstatus:",
     "notConfiguredLabel": "Inte konfigurerad"
   },

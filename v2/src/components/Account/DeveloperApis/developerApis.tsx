@@ -1,15 +1,15 @@
 "use client"
-import { CopyIcon } from "@phosphor-icons/react";
-import { Box, Button, CircularProgress, Grid, TextField, Tooltip, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import { useGetAdminDetails, useGetOrganizationDetails, useGetApiToken, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation } from "@/custom-hooks/developerApis";
+import { useGetAdminDetails, useGetOrganizationDetails, useGetApiToken, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client } from "@/custom-hooks/developerApis";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
 import RightSidebar from "@/components/common/RightSidebar";
+import CopyButton from "@/components/common/CopyButton";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -54,10 +54,9 @@ export default function DeveloperAPIs() {
   // Edit form states inside sidebars
   const [editOpenApiUrl, setEditOpenApiUrl] = useState("");
   const [editHolderBaseUrl, setEditHolderBaseUrl] = useState("");
-  // Copied tooltip state
-  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const { data: oauth2List, isLoading: oauth2Loading } = useGetOAuth2Clients();
   const { mutate: createOAuth2Client, isPending: isCreating } = useCreateOAuth2Client();
+  const { mutate: updateOAuth2Client, isPending: isUpdating } = useUpdateOAuth2Client();
   const oauth2Client = useAppSelector((state) => state.auth.oauth2Client);
 
   // Fetch admin details using React Query
@@ -89,15 +88,17 @@ export default function DeveloperAPIs() {
     }
   }, [oauth2List, dispatch]);
 
-  const handleCopyValue = (value: string, key?: string) => {
-    navigator.clipboard.writeText(value);
-    if (key) {
-      setCopiedKey(key);
-      setTimeout(() => setCopiedKey(null), 1500);
+  // Initialize editable fields when an OAuth2 client exists (for displaying editable fields)
+  useEffect(() => {
+    if (oauth2Client) {
+      setClientName(oauth2Client.name ?? "");
+      setClientDescription(oauth2Client.description ?? "");
     }
-  };
+  }, [oauth2Client]);
 
   const handleCreateClient = () => {
+    // Prevent submission if a client already exists (defensive guard)
+    if (oauth2Client) return;
     if (!clientName.trim()) return;
     createOAuth2Client(
       { name: clientName.trim(), description: clientDescription.trim() || undefined },
@@ -116,6 +117,56 @@ export default function DeveloperAPIs() {
         }
       }
     );
+  };
+
+  // Static input-like field for non-editable values to visually match TextField (standard)
+  const StaticInputLike: React.FC<{ label: string; value?: string; mask?: boolean }> = ({ label, value, mask }) => {
+    const hasValue = Boolean(value);
+    const displayValue = mask && hasValue ? '••••••••••••••••' : (value || '');
+    return (
+      <Box sx={{ mt: 1 }}>
+        <Typography variant="body2" mb={0.5}>{label}</Typography>
+        <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0.75,
+          minHeight: 32,
+          pb: 0.5,
+        }}>
+          {hasValue ? (
+            <Typography color="black" variant="body2" sx={{ wordBreak: 'break-all' }}>{displayValue}</Typography>
+          ) : (
+            <Typography color="grey" variant="body2">-</Typography>
+          )}
+        </Box>
+      </Box>
+    );
+  };
+
+  const isOAuthFormDirty = !!oauth2Client && (
+    (clientName ?? "") !== (oauth2Client.name ?? "") || (clientDescription ?? "") !== (oauth2Client.description ?? "")
+  );
+
+  const handleUpdateClient = () => {
+    if (!oauth2Client) return;
+    // Guard against forced enable: only submit when fields are dirty
+    if (!isOAuthFormDirty) return;
+    const payload = {
+      clientId: oauth2Client.id,
+      name: clientName.trim(),
+      description: clientDescription.trim(),
+    };
+    updateOAuth2Client(payload, {
+      onSuccess: (res) => {
+        if (res?.oAuth2Client) {
+          dispatch(setOAuth2Client(res.oAuth2Client));
+          setOpenOAuthConfig(false);
+        }
+      },
+      onError: () => {
+        dispatch(setMessage(t("error.generic")));
+      }
+    });
   };
 
   // Handlers to open/close sidebars
@@ -175,11 +226,7 @@ export default function DeveloperAPIs() {
             <Typography color="grey" variant="body2">-</Typography>
           )}
           {!!copyValue && (
-            <Tooltip title={copiedKey === copyKey ? t('common.copied') : t('common.copy')}>
-              <span>
-                <Button onClick={() => handleCopyValue(copyValue, copyKey)} size="small" variant="text" startIcon={<CopyIcon size={14} color="#808080" />} sx={{ color: '#808080', display: 'flex', alignItems: 'center !important' }}>{t('common.copy')}</Button>
-              </span>
-            </Tooltip>
+            <CopyButton text={copyValue} />
           )}
         </Box>
       </Box>
@@ -418,7 +465,7 @@ export default function DeveloperAPIs() {
       >
         <Box>
           <Typography variant="body2" mb={0.5}>
-            {t('developerAPIs.openApiUrlLabel')}<RequiredAsterisk />
+            {t('developerAPIs.openApiUrlLabel')}
           </Typography>
           <TextField
             placeholder={t('developerAPIs.openApiUrlPlaceholder')}
@@ -481,6 +528,27 @@ export default function DeveloperAPIs() {
                 {isCreating ? <CircularProgress size={20} /> : t('developerAPIs.createOAuth2Client')}
               </Button>
             )}
+            {oauth2Client && (
+              <Button
+                className="delete-btn"
+                variant="outlined"
+                onClick={handleUpdateClient}
+                disabled={!isOAuthFormDirty || isUpdating}
+                sx={{
+                  minWidth: 120,
+                  '&.Mui-disabled': {
+                    opacity: 0.5,
+                    color: '#9e9e9e !important',
+                    borderColor: '#e0e0e0 !important',
+                    // Allow cursor styling to apply on disabled button
+                    pointerEvents: 'auto !important',
+                    cursor: 'not-allowed !important',
+                  }
+                }}
+              >
+                {isUpdating ? <CircularProgress size={20} /> : t('common.save')}
+              </Button>
+            )}
           </>
         )}
       >
@@ -518,50 +586,48 @@ export default function DeveloperAPIs() {
           ) : (
             <>
               <Typography variant="body2" mb={0.5}>
-                {t('developerAPIs.clientIdLabel')}
+                {t('developerAPIs.oauth2ClientNameLabel')}
               </Typography>
               <TextField
+                placeholder={t('developerAPIs.oauth2ClientNamePlaceholder')}
                 variant="standard"
                 size="small"
                 fullWidth
-                value={oauth2Client.client_id}
-                InputProps={{ readOnly: true, disableUnderline: false }}
-                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
-              />
-                <Typography variant="body2" mb={0.5}>
-                {t('developerAPIs.clientDescriptionLabel')}
-              </Typography>
-              <TextField
-                variant="standard"
-                size="small"
-                fullWidth
-                value={oauth2Client.description ?? ''}
-                InputProps={{ readOnly: true }}
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                InputProps={{ disableUnderline: false }}
                 sx={{ '& .MuiInputBase-input': { color: 'black' } }}
               />
               <Typography variant="body2" mt={0.5} mb={0.5}>
-                {t('developerAPIs.clientSecretLabel')}
+                {t('developerAPIs.oauth2ClientDescriptionLabel')}
               </Typography>
               <TextField
+                placeholder={t('developerAPIs.oauth2ClientDescriptionPlaceholder')}
                 variant="standard"
                 size="small"
                 fullWidth
-                type="password"
-                value={oauth2Client.client_secret ?? ''}
-                InputProps={{ readOnly: true, disableUnderline: false }}
+                value={clientDescription}
+                onChange={(e) => setClientDescription(e.target.value)}
+                InputProps={{ disableUnderline: false }}
                 sx={{ '& .MuiInputBase-input': { color: 'black' } }}
               />
-              <Typography variant="body2" mt={0.5} mb={0.5}>
-                {t('developerAPIs.owsBaseUrlLabel')}
-              </Typography>
-              <TextField
-                variant="standard"
-                size="small"
-                fullWidth
-                value={baseURL}
-                InputProps={{ readOnly: true, disableUnderline: false }}
-                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
-              />
+
+              {/* Non-editable display fields styled like TextField (standard) */}
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <StaticInputLike
+                  label={t('developerAPIs.clientIdLabel')}
+                  value={oauth2Client.client_id}
+                />
+                <StaticInputLike
+                  label={t('developerAPIs.clientSecretLabel')}
+                  value={oauth2Client.client_secret}
+                  mask={!!oauth2Client.client_secret}
+                />
+                <StaticInputLike
+                  label={t('developerAPIs.owsBaseUrlLabel')}
+                  value={baseURL}
+                />
+              </Box>
             </>
           )}
         </Box>

@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
-import { setAuthenticated, setAdminDetails } from '@/store/reducers/authReducer';
+import { setAuthenticated, setAdminDetails, logout as logoutAction } from '@/store/reducers/authReducer';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -38,6 +39,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   
   // Keep local state in sync with Redux state
   useEffect(() => {
@@ -141,7 +143,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     LocalStorageService.clear();
     
     // Then update Redux (source of truth)
-    dispatch(setAuthenticated(false));
+    dispatch(logoutAction());
+    
+    // Clear React Query cache to avoid stale data leakage between sessions
+    try {
+      queryClient.clear();
+    } catch (e) {
+      // no-op
+    }
     
     // Local state will be updated via the useEffect that watches reduxIsAuthenticated
     

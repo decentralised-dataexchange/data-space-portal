@@ -16,8 +16,9 @@ const PolicyDetailsBox = (props: Props) => {
       style={{
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
         borderBottom: isLastAttribute ? "none" : "solid 1px #dee2e6",
-        padding: "12px",
+        padding: "6px 16px",
       }}
     >
       <Typography variant="subtitle2" color="black">{name}</Typography>
