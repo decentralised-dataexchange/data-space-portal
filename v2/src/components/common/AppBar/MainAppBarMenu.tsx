@@ -7,7 +7,7 @@ import { Box, Menu, Typography, IconButton } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { defaultLogoImg } from "@/constants/defalultImages";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
-import { logout } from "@/store/reducers/authReducer";
+import { useAuth as useAuthContext } from "@/components/common/AuthProvider";
 import { GearSixIcon, SignOutIcon } from "@phosphor-icons/react";
 import { useGetOrganisation } from "@/custom-hooks/gettingStarted";
 
@@ -21,6 +21,7 @@ export const MainAppBarMenu = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const t = useTranslations();
   const dispatch = useAppDispatch();
+  const { logout } = useAuthContext();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const adminDetails = useAppSelector((state) => state.auth.adminDetails);
   const organisationDetails = useAppSelector((state) => state.gettingStart.data);
@@ -45,9 +46,8 @@ export const MainAppBarMenu = (props: Props) => {
 
 
   const handleClickLogOut = () => {
-    dispatch(logout());
-    LocalStorageService.clear();
-    router.push('/login');
+    // Use centralized logout to clear React Query and all storages
+    logout();
   };
 
   const handleClose = () => {

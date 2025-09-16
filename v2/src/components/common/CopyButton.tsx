@@ -50,7 +50,6 @@ export default function CopyButton({ text, size = "small", onCopied }: CopyButto
             "&:hover": { backgroundColor: "transparent" },
             minWidth: 0,
             padding: 0,
-            margin: 1,
           }}
         >
           {t("common.copy")}
