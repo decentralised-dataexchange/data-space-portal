@@ -1,12 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiService } from '@/lib/apiService/apiService';
-import { useAppDispatch } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from '@/types/oauth2';
 import { Organisation } from '@/types/organisation';
 
 // Hook to get admin details
 export const useGetAdminDetails = () => {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery({
     queryKey: ['adminDetails'],
     queryFn: async () => {
@@ -19,6 +20,9 @@ export const useGetAdminDetails = () => {
         throw error;
       }
     },
+    enabled: isAuthenticated,
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -39,6 +43,7 @@ export const useUpdateOrganisation = () => {
 
 // Hook to get organization details
 export const useGetOrganizationDetails = () => {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery({
     queryKey: ['organizationDetails'],
     queryFn: async () => {
@@ -51,6 +56,9 @@ export const useGetOrganizationDetails = () => {
         throw error;
       }
     },
+    enabled: isAuthenticated,
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -88,6 +96,7 @@ export const useGetApiToken = () => {
 
 // Hook to list OAuth2 clients
 export const useGetOAuth2Clients = () => {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery<OAuth2ClientsListResponse>({
     queryKey: ['oauth2Clients'],
     queryFn: async () => {
@@ -98,7 +107,10 @@ export const useGetOAuth2Clients = () => {
         console.error('Error in getOAuth2Clients:', errorMessage, error);
         throw error;
       }
-    }
+    },
+    enabled: isAuthenticated,
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 

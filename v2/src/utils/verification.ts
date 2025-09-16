@@ -10,7 +10,7 @@ export function isOrganisationVerified(
 
   // If an explicit verification object is supplied, prefer that
   if (orgVerification && typeof orgVerification.verified === 'boolean') {
-    return orgVerification.verified === true;
+    return orgVerification.verified;
   }
 
   // Try common locations for org identity in various payloads
@@ -25,13 +25,13 @@ export function isOrganisationVerified(
     identity?.isPresentationVerified,
     identity?.walletUnitAttestation?.isVerified,
     identity?.walletUnitValidity?.[0]?.attestation?.isVerified,
-    identity?.walletUnitAttestationVerified === true,
+    identity?.walletUnitAttestationVerified,
     identity?.presentationState === 'verified',
-    org?.verified === true,
-    source?.verified === true,
+    org?.verified,
+    source?.verified,
     // Common ad-hoc fields
-    source?.trusted === true,
-    org?.trusted === true,
+    source?.trusted,
+    org?.trusted,
     source?.verification?.presentationState === 'verified',
     org?.verification?.presentationState === 'verified',
   ];

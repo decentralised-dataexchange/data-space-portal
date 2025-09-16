@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiService } from '@/lib/apiService/apiService';
-import { useAppDispatch } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 
 // Query key constants
 export const ADMIN_QUERY_KEYS = {
@@ -12,6 +12,7 @@ export const ADMIN_QUERY_KEYS = {
  */
 export const useGetAdminDetails = () => {
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
   
   return useQuery({
     queryKey: [ADMIN_QUERY_KEYS.ADMIN_DETAILS],
@@ -24,6 +25,9 @@ export const useGetAdminDetails = () => {
         throw error;
       }
     },
+    enabled: isAuthenticated,
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 };
 

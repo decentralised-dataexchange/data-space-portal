@@ -34,7 +34,7 @@ export const useGetOrgIdentity = (orgId: string) => {
     staleTime: 0,
     retry: 1, // Only retry once to avoid infinite loading
     refetchOnWindowFocus: false,
-    enabled: isAuthenticated === true,
+    enabled: isAuthenticated,
   });
 };
 
@@ -142,7 +142,7 @@ export const useGetOrganisation = () => {
     staleTime: 30 * 1000,
     retry: 1,
     refetchOnWindowFocus: false,
-    enabled: isAuthenticated === true,
+    enabled: isAuthenticated,
   });
 };
 
@@ -186,7 +186,7 @@ export const useGetCoverImage = () => {
     retry: 1,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
-    enabled: isAuthenticated === true,
+    enabled: isAuthenticated,
   });
 };
 
@@ -212,7 +212,7 @@ export const useGetLogoImage = () => {
     staleTime: 5 * 60 * 1000,
     retry: 1,
     refetchOnWindowFocus: false,
-    enabled: isAuthenticated === true,
+    enabled: isAuthenticated,
   });
 };
 

@@ -7,6 +7,8 @@ import { LocalStorageService } from '@/utils/localStorageService';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
 import { setAuthenticated, setAdminDetails, logout as logoutAction } from '@/store/reducers/authReducer';
 import { useQueryClient } from '@tanstack/react-query';
+import { clearAllBrowserStorage } from '@/utils/browserStorage';
+import { setAxiosAuthState } from '@/lib/apiService/axios';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -63,6 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (!token || !token.access_token) {
           setIsAuthenticated(false);
           dispatch(setAuthenticated(false));
+          try { setAxiosAuthState(false); } catch {}
           setIsLoading(false);
           return;
         }
@@ -74,6 +77,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           LocalStorageService.clear();
           setIsAuthenticated(false);
           dispatch(setAuthenticated(false));
+          try { setAxiosAuthState(false); } catch {}
           setIsLoading(false);
           return;
         }
@@ -89,6 +93,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             LocalStorageService.clear();
             setIsAuthenticated(false);
             dispatch(setAuthenticated(false));
+            try { setAxiosAuthState(false); } catch {}
             setIsLoading(false);
             return;
           }
@@ -96,6 +101,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           // Token is valid, update Redux state
           console.log('Token is valid, setting authenticated state');
           dispatch(setAuthenticated(true));
+          try { setAxiosAuthState(true); } catch {}
           
           // Get admin details if available
           try {
@@ -111,6 +117,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           LocalStorageService.clear();
           setIsAuthenticated(false);
           dispatch(setAuthenticated(false));
+          try { setAxiosAuthState(false); } catch {}
         }
         
         setIsLoading(false);
@@ -119,6 +126,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         LocalStorageService.clear();
         setIsAuthenticated(false);
         dispatch(setAuthenticated(false));
+        try { setAxiosAuthState(false); } catch {}
         setIsLoading(false);
       }
     };
@@ -134,26 +142,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Then update Redux (source of truth)
     dispatch(setAuthenticated(true));
     dispatch(setAdminDetails(userData));
+    // Allow axios requests
+    try { setAxiosAuthState(true); } catch {}
     
     // Local state will be updated via the useEffect that watches reduxIsAuthenticated
   };
 
   const logout = () => {
-    // First clear storage
-    LocalStorageService.clear();
-    
-    // Then update Redux (source of truth)
+    // Block axios requests immediately
+    try { setAxiosAuthState(false); } catch {}
+
+    // Update Redux (source of truth) ASAP so queries gated by isAuthenticated stop
     dispatch(logoutAction());
-    
+
+    // Cancel any in-flight queries next
+    try { queryClient.cancelQueries(); } catch {}
+
     // Clear React Query cache to avoid stale data leakage between sessions
     try {
       queryClient.clear();
-    } catch (e) {
-      // no-op
-    }
-    
-    // Local state will be updated via the useEffect that watches reduxIsAuthenticated
-    
+    } catch {}
+
+    // Clear all browser storage (cookies, local/session storage, caches, indexedDB)
+    try { void clearAllBrowserStorage(); } catch {}
+
     // Finally redirect
     router.push('/login');
   };
