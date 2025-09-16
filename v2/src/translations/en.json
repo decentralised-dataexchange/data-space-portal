@@ -364,7 +364,8 @@
     "configureButton": "Configure",
     "oauth2ClientConfigTitle": "OAuth 2.0 Client Configuration",
     "deploymentStatusLabel": "Deployment Status:",
-    "notConfiguredLabel": "Not Configured"
+    "notConfiguredLabel": "Not Configured",
+    "owsBaseUrlRequired": "Holder Base URL is required"
   },
   "dispConnection": {
     "copy": "COPY",
@@ -389,5 +390,9 @@
   },
   "addDataDisclosureAgreement": "Add data disclosure agreement",
   "noBannerImageAvailable": "No banner image available",
+  "imageUpload": {
+    "recommendedCoverSize": "Recommended size is 1500x500px",
+    "recommendedLogoSize": "Recommended size is 400x400px"
+  },
   "unknownOrganization": "Unknown Organization"
 }

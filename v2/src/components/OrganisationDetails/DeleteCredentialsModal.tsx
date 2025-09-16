@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Drawer, Typography, Button, Box, TextField } from "@mui/material";
-import { XIcon, TrashSimple as TrashIcon } from "@phosphor-icons/react";
+import { XIcon, CaretLeftIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useDeleteOrgIdentity } from "@/custom-hooks/gettingStarted";
 import styles from "../ddaAgreements/generalModal.module.scss";
@@ -42,7 +42,7 @@ export default function DeleteCredentialsModal({ open, setOpen, onSuccess }: Pro
       <Box className={styles["dd-modal-container"]}>
         <Box className={styles["dd-modal-header"]}>
           <Typography sx={{ fontSize: "16px", display: "flex", alignItems: "center", gap: 1 }}>
-            <TrashIcon size={18} /> {gsT("deleteCredentialsModal.title")}
+            <CaretLeftIcon size={18} onClick={handleClose} style={{ cursor: "pointer" }}/> {gsT("deleteCredentialsModal.title")}
           </Typography>
           <Button onClick={handleClose} className={styles["close-btn"]}>
             <XIcon size={24} />

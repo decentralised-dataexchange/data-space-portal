@@ -121,6 +121,7 @@
     "chooseWalletThree": "Utfärdade av: Bolagsverket",
     "confirmWalletDescription": "Ditt företag är ej verifierat. Klicka Bekräfta för att verifiera.",
     "industry": "Bransch",
+    "tooltipDeleteCredentials": "Radera behörigheter",
     "deleteCredentialsModal": {
       "title": "Radera behörigheter",
       "description": "Du är på väg att radera din organisations behörigheter. Denna åtgärd kan inte ångras.",
@@ -365,7 +366,8 @@
     "configureButton": "Konfigurera",
     "oauth2ClientConfigTitle": "Konfiguration av OAuth 2.0 klient",
     "deploymentStatusLabel": "Implementeringsstatus:",
-    "notConfiguredLabel": "Inte konfigurerad"
+    "notConfiguredLabel": "Inte konfigurerad",
+    "owsBaseUrlRequired": "Bas-URL för innehavare är obligatorisk"
   },
   "dispConnection": {
     "copy": "KOPIERA",
@@ -385,10 +387,8 @@
     "noConnections": "Inga plånboksanslutningar hittades",
     "tooltipAddNewConnection": "Lägg till ny företagsplånboksanslutning"
   },
-  "error": {
-    "generic": "Något gick fel."
-  },
-  "addDataDisclosureAgreement": "Lägg till datautlämningsavtal",
-  "noBannerImageAvailable": "Ingen bannerbild tillgänglig",
-  "unknownOrganization": "Okänd organisation"
+  "imageUpload": {
+    "recommendedCoverSize": "Rekommenderad storlek är 1500x500 px",
+    "recommendedLogoSize": "Rekommenderad storlek är 400x400 px"
+  }
 }

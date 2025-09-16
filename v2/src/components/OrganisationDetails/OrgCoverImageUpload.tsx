@@ -5,6 +5,7 @@ import { useUpdateCoverImage } from "@/custom-hooks/gettingStarted";
 import { defaultCoverImage } from "@/constants/defalultImages";
 import { GenericImageUpload } from "@/components/common/ImageUpload";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -25,6 +26,7 @@ type Props = {
 
 const OrgCoverImageUpload = (props: Props) => {
   const { editMode, handleEdit } = props;
+  const t = useTranslations();
 
   // Use the update cover image mutation hook
   const { mutateAsync: updateCoverImage } = useUpdateCoverImage();
@@ -75,7 +77,7 @@ const OrgCoverImageUpload = (props: Props) => {
         aspectRatio={3} // 1500/500 = 3
         minWidth={1500}
         minHeight={500}
-        recommendedSize="Recommended size is 1500x500px"
+        recommendedSize={t('imageUpload.recommendedCoverSize')}
         outputWidth={1500}
         outputHeight={500}
         outputQuality={0.82}

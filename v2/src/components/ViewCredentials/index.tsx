@@ -9,13 +9,12 @@ import VerifiedBadge from '@/components/common/VerifiedBadge';
 import { DataAttributeCardForDDA } from '../AddCredential/dataAttributeCardCredentials';
 
 type Props = {
-  callRightSideDrawer: () => void;
   orgIdentity?: OrgIdentityResponse;
   organisation?: Organisation;
   showValues?: boolean;
 };
 
-const ViewCredentials: React.FC<Props> = ({ callRightSideDrawer, orgIdentity, organisation, showValues = true }) => {
+const ViewCredentials: React.FC<Props> = ({ orgIdentity, organisation, showValues = true }) => {
   const t = useTranslations();
 
   const presentation = useMemo(() => {
@@ -27,9 +26,18 @@ const ViewCredentials: React.FC<Props> = ({ callRightSideDrawer, orgIdentity, or
   const identifier = presentation?.identifier as string | undefined;
   const isVerified = Boolean(orgIdentity?.verified ?? orgIdentity?.organisationalIdentity?.verified);
 
+  const vctTitle = useMemo(() => {
+    const vct = presentation?.vct as string | undefined;
+    if (!vct) return t('common.certificateOfRegistration');
+    // Insert spaces between camelCase/PascalCase boundaries and acronyms
+    return vct
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2').trim();
+  }, [presentation, t]);
+
   return (
-    <Box>
-      <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '20px' }}>
+    <Box sx={{ paddingTop: '30px' }}>
+      <Box display="flex" alignItems="center" gap={1}>
         <Typography variant="h6" sx={{ fontSize: '16px' }}>
           {organisation?.name || t('gettingStarted.viewCredential')}
         </Typography>
@@ -53,7 +61,7 @@ const ViewCredentials: React.FC<Props> = ({ callRightSideDrawer, orgIdentity, or
       </Typography>
 
       <Typography color="grey" mt={2} variant="subtitle1">
-        {t('common.certificateOfRegistration')}
+        {vctTitle}
       </Typography>
 
       <Box sx={{ marginTop: '16px' }}>

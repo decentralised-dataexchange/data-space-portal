@@ -4,6 +4,7 @@ import { apiService } from '@/lib/apiService/apiService';
 import { GenericImageUpload } from '@/components/common/ImageUpload';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGetLogoImage } from '@/custom-hooks/gettingStarted';
+import { useTranslations } from 'next-intl';
 
 // Temporary default logo image
 const defaultLogoImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
@@ -15,6 +16,7 @@ type Props = {
 
 const OrgLogoImageUpload = (props: Props) => {
   const {editMode, handleEdit } = props;
+  const t = useTranslations();
   const { data: logoImageBase64 = '' } = useGetLogoImage();
   const queryClient = useQueryClient();
 
@@ -62,7 +64,7 @@ const OrgLogoImageUpload = (props: Props) => {
           aspectRatio={1} // Square aspect ratio for logo
           minWidth={400}
           minHeight={400}
-          recommendedSize="Recommended size is 400x400px"
+          recommendedSize={t('imageUpload.recommendedLogoSize')}
           outputWidth={400}
           outputHeight={400}
           outputQuality={0.82}
@@ -80,7 +82,6 @@ const OrgLogoImageUpload = (props: Props) => {
           // Fully hide the overlay image to avoid any visual seams over the white border
           imageStyle={{ display: 'none' }}
           iconPosition={{ top: '45px', right: '45px' }}
-          acceptedFileTypes="image/jpeg,image/jpg,image/png"
         />
       </Box>
     </Box>
