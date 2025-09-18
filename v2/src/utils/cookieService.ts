@@ -30,6 +30,13 @@ export const CookieService = {
       sameSite: 'strict'
     });
     
+    // Also set a lightweight client auth flag used by middleware routing
+    Cookies.set('client_auth', '1', {
+      expires: TOKEN_EXPIRATION,
+      path: '/',
+      sameSite: 'strict'
+    });
+    
     // Also store in localStorage for client-side access (keeping for compatibility)
     localStorage.setItem('access_token', token.access_token);
     localStorage.setItem('refresh_token', token.refresh_token);
@@ -60,6 +67,7 @@ export const CookieService = {
     Cookies.remove('access_token', { path: '/' });
     Cookies.remove('refresh_token', { path: '/' });
     Cookies.remove('token_expires_in', { path: '/' });
+    Cookies.remove('client_auth', { path: '/' });
   }
 };
 

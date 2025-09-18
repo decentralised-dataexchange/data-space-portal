@@ -46,9 +46,16 @@ export const useLogin = () => {
       dispatch(setSuccessMessage('Login successful'));
       // dispatch(setLoading(false));
       
-      // Delay navigation to allow notification to be seen
+      // Single navigation after login: locale-aware replace to avoid flicker
       setTimeout(() => {
-        router.push('/start');
+        try {
+          const path = typeof window !== 'undefined' ? window.location.pathname : null;
+          const match = path ? path.match(/^\/(en|fi|sv)(?:\/|$)/) : null;
+          const localizedStart = match ? `/${match[1]}/start` : '/start';
+          router.replace(localizedStart);
+        } catch {
+          router.replace('/start');
+        }
       }, 0);
 
       // Then fetch admin details in the background (non-blocking)
@@ -106,7 +113,14 @@ export const useSignup = () => {
       dispatch(setSuccessMessage(''));
       // Navigate to login
       setTimeout(() => {
-        router.push('/login');
+        try {
+          const path = typeof window !== 'undefined' ? window.location.pathname : null;
+          const match = path ? path.match(/^\/(en|fi|sv)(?:\/|$)/) : null;
+          const localizedLogin = match ? `/${match[1]}/login` : '/login';
+          router.replace(localizedLogin);
+        } catch {
+          router.replace('/login');
+        }
       }, 0);
     },
     onError: (error: unknown) => {
