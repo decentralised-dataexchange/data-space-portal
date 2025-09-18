@@ -35,6 +35,24 @@ export default async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value || 
                request.headers.get('Authorization')?.split(' ')[1];
   
+  // Determine locale and normalized path (strip locale prefix if present)
+  let currentLocale: string | null = null;
+  let pathWithoutLocale = pathname;
+  for (const locale of routing.locales) {
+    if (pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)) {
+      currentLocale = locale;
+      pathWithoutLocale = pathname.slice(locale.length + 1) || '/';
+      break;
+    }
+  }
+
+  // If user is already authenticated and visiting auth pages, redirect to /start
+  const isAuthRoute = ['/login', '/signup'].some(route => pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`));
+  if (token && isAuthRoute) {
+    const redirectUrl = new URL(currentLocale ? `/${currentLocale}/start` : '/start', request.url);
+    return NextResponse.redirect(redirectUrl);
+  }
+  
   // If it's not a public route and there's no token, redirect to login
   if (!isPublicRoute && !token) {
     const loginUrl = new URL('/login', request.url);

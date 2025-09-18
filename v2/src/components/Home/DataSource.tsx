@@ -67,6 +67,7 @@ interface DataSource {
     location: string,
     policyUrl: string,
     trusted?: boolean;
+    accessPointEndpoint?: string | null;
 }
 
 interface DataSourceCardProp {
@@ -112,10 +113,25 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                     <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1 }}>
                         {dataSource?.name}
                     </Typography>
-                    <Typography variant="body2" className="datasource-location" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
+                    <Typography variant="body2" className="datasource-location" sx={{ mb: 0.5, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
                         {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                         <VerifiedBadge trusted={trusted} />
                     </Typography>
+                    {dataSource?.accessPointEndpoint && (
+                        <Typography variant="body2" sx={{ mb: 1, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
+                            <span>{t('developerAPIs.accessPointEndpointLabel')}</span>
+                            <a
+                                href={dataSource.accessPointEndpoint}
+                                title={dataSource.accessPointEndpoint}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="hover-underline"
+                                style={{ color: '#0000FF', textDecoration: 'none', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                            >
+                                {dataSource.accessPointEndpoint}
+                            </a>
+                        </Typography>
+                    )}
                     {dataSource?.location && (
                         <Typography variant="body2" className="datasource-location" sx={{ mb: 1 }}>
                             {dataSource.location}

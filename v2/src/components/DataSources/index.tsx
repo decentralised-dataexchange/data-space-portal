@@ -11,6 +11,7 @@ import { isOrganisationVerified } from '@/utils/verification';
 import ClientPagination from '../Home/ClientPagination';
 import ApiDoc from '@/components/ApiDocs';
 import './style.scss';
+import OrgConfigCard from '@/components/DataSources/OrgConfigCard';
 
 type Props = {
     params: Promise<{ id?: string; slug?: string }>;
@@ -114,10 +115,26 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
                                             {dataSourceItem?.organisation?.name}
                                         </Typography>
-                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 1, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
+                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 0.5, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
                                             {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                             <VerifiedBadge trusted={trusted} />
                                         </Typography>
+                                        {/* Access Point Endpoint under trust label */}
+                                        {dataSourceItem?.organisation?.accessPointEndpoint && (
+                                            <Typography variant="body2" sx={{ fontSize: '14px', mb: 1, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
+                                                <span>{t('developerAPIs.accessPointEndpointLabel')}</span>
+                                                <a
+                                                    href={dataSourceItem.organisation.accessPointEndpoint}
+                                                    title={dataSourceItem.organisation.accessPointEndpoint}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="hover-underline"
+                                                    style={{ color: '#0000FF', textDecoration: 'none', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                                >
+                                                    {dataSourceItem.organisation.accessPointEndpoint}
+                                                </a>
+                                            </Typography>
+                                        )}
                                         <Typography className='datasource-location'>
                                             {dataSourceItem?.organisation?.location}
                                         </Typography>
@@ -136,6 +153,10 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                         {/* Right wide cards list */}
                         <Grid size={{ lg: 8, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
                             <Grid container spacing={2}>
+                                {/* Wallet/Org configuration card */}
+                                <Grid size={{ xs: 12 }}>
+                                    <OrgConfigCard serviceItem={dataSourceItem} />
+                                </Grid>
                                 {currentDdas.map((dataDisclosureAgreement, index) => {
                                     return (
                                         <Grid
@@ -190,6 +211,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                     logoImage={dataSourceItem?.organisation?.logoUrl || ''}
                     dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
                     trusted={trusted}
+                    accessPointEndpoint={dataSourceItem?.organisation?.accessPointEndpoint || ''}
                 />
             </Grid>
         </Box>

@@ -223,8 +223,9 @@
     "tryAgainLater": "Försök igen senare.",
     "pleaseWait": "Vänligen vänta...",
     "copy": "Kopiera",
-    "copied": "Kopierat",
-    "typeToConfirm": "Skriv \"{text}\" för att bekräfta"
+    "copied": "Kopierad",
+    "typeToConfirm": "Skriv \"{text}\" för att bekräfta",
+    "comingSoon": "Kommer snart"
   },
   "errors": {
     "generic": "Något gick fel."
@@ -344,6 +345,10 @@
     "openApiUrlLabel": "OpenAPI-specifikations-URL",
     "holderBaseUrlLabel": "Innehavarens bas-URL",
     "openApiUrlPlaceholder": "Ange OpenAPI-URL",
+    "credentialOfferEndpointLabel": "Credential Offer-slutpunkt",
+    "credentialOfferEndpointPlaceholder": "Ange URL för Credential Offer-slutpunkt",
+    "accessPointEndpointLabel": "Access Point-slutpunkt",
+    "accessPointEndpointPlaceholder": "Ange URL för Access Point-slutpunkt",
     "uploadButton": "Ladda upp",
     "oauth2ClientTitle": "OAuth 2.0 klient",
     "oauth2Title": "OAuth 2.0 klient",
@@ -367,7 +372,31 @@
     "oauth2ClientConfigTitle": "Konfiguration av OAuth 2.0 klient",
     "deploymentStatusLabel": "Implementeringsstatus:",
     "notConfiguredLabel": "Inte konfigurerad",
-    "owsBaseUrlRequired": "Bas-URL för innehavare är obligatorisk"
+    "owsBaseUrlRequired": "Bas-URL för innehavare är obligatorisk",
+    "credentialOfferEndpointRequired": "Slutpunkten för Credential Offer är obligatorisk",
+    "accessPointEndpointRequired": "Slutpunkten för Access Point är obligatorisk",
+    "clientNameRequired": "Klientnamn krävs",
+    "softwareStatementTitle": "Programvaruintyg",
+    "softwareStatementLabel": "Programvaruintyg",
+    "softwareStatementRequest": "Begär",
+    "softwareStatementView": "Visa",
+    "softwareStatementRequestTooltip": "Begär ett nytt programvaruintyg",
+    "softwareStatementViewTooltip": "Visa detaljer för programvaruintyget",
+    "softwareStatementPrereqMissing": "Ställ in Credential Offer- och Access Point-slutpunkter först",
+    "softwareStatementVctLabel": "VCT",
+    "softwareStatementClientUriLabel": "Klient-URI",
+    "softwareStatementClientIdLabel": "Klient-ID",
+    "softwareStatementRedirectUriLabel": "Omdirigerings-URI",
+    "softwareStatementExchangeIdLabel": "Utbytes-ID",
+    "softwareStatementDidLabel": "DID",
+    "softwareStatementCreatedAtLabel": "Skapad",
+    "softwareStatementUpdatedAtLabel": "Uppdaterad",
+    "softwareStatementStatus": {
+      "": "Inte begärt",
+      "offer_sent": "Erbjudande skickat",
+      "offer_received": "Erbjudande mottaget",
+      "credential_accepted": "Behörighet accepterad"
+    }
   },
   "dispConnection": {
     "copy": "KOPIERA",
@@ -390,5 +419,9 @@
   "imageUpload": {
     "recommendedCoverSize": "Rekommenderad storlek är 1500x500 px",
     "recommendedLogoSize": "Rekommenderad storlek är 400x400 px"
+  },
+  "viewCredentials": {
+    "legalNameLabel": "Juridiskt namn",
+    "identifierLabel": "Identifierare"
   }
 }

@@ -1,10 +1,11 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Tooltip, Link as MuiLink } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAppSelector } from '@/custom-hooks/store';
 import { DataAttributeCardForDDA } from './dataAttributeCardCredentials';
 import { PresentationRecord } from '@/types/verification';
 import VerifiedBadge from '@/components/common/VerifiedBadge';
+import { AttributeTable } from '@/components/common/AttributeTable';
 
 interface ConfirmComponentProps {
   showValues?: boolean;
@@ -22,6 +23,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
   // Data source metadata
   const gettingStartData = useAppSelector((state: any) => state.gettingStart.data);
   const { coverImageUrl, logoUrl, location, description, name } = gettingStartData?.dataSource || {};
+  const accessPointEndpoint: string | undefined = gettingStartData?.dataSource?.accessPointEndpoint || undefined;
 
   // Get verification status and data
   const { isVerified = false, verifyConnectionObj } = useAppSelector((state: any) => {
@@ -61,6 +63,24 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
         {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
         <VerifiedBadge trusted={isVerified} />
       </Typography>
+      {!!accessPointEndpoint && (
+        <Box sx={{ mt: 1, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
+          <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
+            {t('developerAPIs.accessPointEndpointLabel')}
+          </Typography>
+          <Tooltip title={accessPointEndpoint} placement="top-start" arrow>
+            <MuiLink
+              href={accessPointEndpoint}
+              target="_blank"
+              rel="noreferrer"
+              underline="hover"
+              sx={{ color: '#0000FF', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
+              {accessPointEndpoint}
+            </MuiLink>
+          </Tooltip>
+        </Box>
+      )}
       <Typography variant="subtitle1" mt={2}>
         {t('common.overView')}
       </Typography>

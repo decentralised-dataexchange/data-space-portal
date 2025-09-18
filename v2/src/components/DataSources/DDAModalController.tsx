@@ -14,6 +14,7 @@ interface Props {
   logoImage: string;
   dataDisclosureAgreements: DataDisclosureAgreement[];
   trusted?: boolean;
+  accessPointEndpoint?: string;
 }
 
 export default function DDAModalController({
@@ -24,6 +25,7 @@ export default function DDAModalController({
   logoImage,
   dataDisclosureAgreements,
   trusted,
+  accessPointEndpoint,
 }: Props) {
   const dispatch = useAppDispatch();
   const selectedDDAId = useAppSelector((state) => state.dataSources.selectedDDAId);
@@ -48,6 +50,7 @@ export default function DDAModalController({
       coverImage={coverImage}
       logoImage={logoImage}
       trusted={trusted}
+      accessPointEndpoint={accessPointEndpoint}
     />
   );
 }

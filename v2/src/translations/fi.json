@@ -253,7 +253,8 @@
     "pleaseWait": "Odota hetki...",
     "copy": "Kopioi",
     "copied": "Kopioitu",
-    "typeToConfirm": "Kirjoita \"{text}\" vahvistaaksesi"
+    "typeToConfirm": "Kirjoita \"{text}\" vahvistaaksesi",
+    "comingSoon": "Tulossa pian"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -374,6 +375,10 @@
     "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite",
     "holderBaseUrlLabel": "Haltijan perus-URL",
     "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
+    "credentialOfferEndpointLabel": "Credential Offer -päätepiste",
+    "credentialOfferEndpointPlaceholder": "Syötä Credential Offer -päätepisteen URL",
+    "accessPointEndpointLabel": "Access Point -päätepiste",
+    "accessPointEndpointPlaceholder": "Syötä Access Point -päätepisteen URL",
     "uploadButton": "Lataa",
     "oauth2ClientTitle": "OAuth 2.0 asiakas",
     "oauth2Title": "OAuth 2.0 -asiakas",
@@ -397,7 +402,31 @@
     "oauth2ClientConfigTitle": "OAuth 2.0 asiakkaan konfigurointi",
     "deploymentStatusLabel": "Käyttöönottotila:",
     "notConfiguredLabel": "Ei konfiguroitu",
-    "owsBaseUrlRequired": "Haltijan perus-URL on pakollinen"
+    "owsBaseUrlRequired": "Haltijan perus-URL on pakollinen",
+    "credentialOfferEndpointRequired": "Credential Offer -päätepiste on pakollinen",
+    "accessPointEndpointRequired": "Access Point -päätepiste on pakollinen",
+    "clientNameRequired": "Asiakkaan nimi on pakollinen",
+    "softwareStatementTitle": "Ohjelmistolauseke",
+    "softwareStatementLabel": "Ohjelmistolauseke",
+    "softwareStatementRequest": "Pyydä",
+    "softwareStatementView": "Näytä",
+    "softwareStatementRequestTooltip": "Pyydä uusi ohjelmistotodistus",
+    "softwareStatementViewTooltip": "Näytä ohjelmistotodistuksen tiedot",
+    "softwareStatementPrereqMissing": "Aseta ensin Credential Offer- ja Access Point -päätepisteet",
+    "softwareStatementVctLabel": "VCT",
+    "softwareStatementClientUriLabel": "Client URI",
+    "softwareStatementClientIdLabel": "Asiakas-ID",
+    "softwareStatementRedirectUriLabel": "Uudelleenohjauksen URI",
+    "softwareStatementExchangeIdLabel": "Vaihdo ID",
+    "softwareStatementDidLabel": "DID",
+    "softwareStatementCreatedAtLabel": "Luotu",
+    "softwareStatementUpdatedAtLabel": "Päivitetty",
+    "softwareStatementStatus": {
+      "": "Ei pyydetty",
+      "offer_sent": "Tarjous lähetetty",
+      "offer_received": "Tarjous vastaanotettu",
+      "credential_accepted": "Tunniste hyväksytty"
+    }
   },
   "dispConnection": {
     "copy": "KOPIOI",
@@ -426,5 +455,9 @@
     "recommendedCoverSize": "Suositeltu koko on 1500x500 px",
     "recommendedLogoSize": "Suositeltu koko on 400x400 px"
   },
-  "unknownOrganization": "Tuntematon organisaatio"
+  "unknownOrganization": "Tuntematon organisaatio",
+  "viewCredentials": {
+    "legalNameLabel": "Oikeudellinen nimi",
+    "identifierLabel": "Tunniste"
+  }
 }

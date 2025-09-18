@@ -55,6 +55,10 @@ export const ENDPOINTS = {
     organisationsDetails: () => {
         return "/config/organisation/"
     },
+    // Software Statement (Organisation)
+    softwareStatement: () => {
+        return "/config/organisation/software-statement/";
+    },
     orgIdentity: () => {
         return "/config/organisation/identity/"
     },
