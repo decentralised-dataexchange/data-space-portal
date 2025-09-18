@@ -53,9 +53,10 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
   
-  // If it's not a public route and there's no token, redirect to login
+  // If it's not a public route and there's no token, redirect to localized login
   if (!isPublicRoute && !token) {
-    const loginUrl = new URL('/login', request.url);
+    const loginPath = currentLocale ? `/${currentLocale}/login` : '/login';
+    const loginUrl = new URL(loginPath, request.url);
     return NextResponse.redirect(loginUrl);
   }
 

@@ -163,11 +163,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       queryClient.clear();
     } catch {}
 
-    // Clear all browser storage (cookies, local/session storage, caches, indexedDB)
+    // Clear auth cookies and storage synchronously to avoid middleware seeing stale tokens
+    try { LocalStorageService.clear(); } catch {}
+    // Then do best-effort background cleanup (caches, indexedDB, etc.)
     try { void clearAllBrowserStorage(); } catch {}
 
     // Finally redirect
-    router.push('/login');
+    try {
+      const path = typeof window !== 'undefined' ? window.location.pathname : null;
+      const match = path ? path.match(/^\/(en|fi|sv)(?:\/|$)/) : null;
+      const localizedLogin = match ? `/${match[1]}/login` : '/login';
+      router.replace(localizedLogin);
+    } catch {
+      router.replace('/login');
+    }
   };
 
   const value = {

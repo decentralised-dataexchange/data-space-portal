@@ -18,6 +18,7 @@ import {
   useOrgIdentityPolling,
 } from '@/custom-hooks/gettingStarted';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAppSelector } from '@/custom-hooks/store';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -72,6 +73,7 @@ const GettingStarted = () => {
   const [editMode, setEditMode] = useState(false);
   const t = useTranslations();
   const router = useRouter();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   const { data: organisationResponse, isLoading: isOrganisationLoading } = useGetOrganisation();
   const { data: coverImageBase64, isLoading: isCoverImageLoading } = useGetCoverImage();
@@ -118,14 +120,21 @@ const GettingStarted = () => {
   };
 
   const isLoading = useMemo(() => {
-    const loading = isOrganisationLoading || isCoverImageLoading;
-    return loading;
-  }, [isOrganisationLoading, isCoverImageLoading]);
+    // Only consider loading states when authenticated
+    if (!isAuthenticated) return false;
+    return isOrganisationLoading || isCoverImageLoading;
+  }, [isAuthenticated, isOrganisationLoading, isCoverImageLoading]);
 
   const hasError = useMemo(() => {
-    const error = !isLoading && (!organisationResponse || !organisationResponse.organisation);
-    return error;
-  }, [isLoading, organisationResponse]);
+    // Do not show page-level error when unauthenticated (during logout redirect)
+    if (!isAuthenticated) return false;
+    return !isLoading && (!organisationResponse || !organisationResponse.organisation);
+  }, [isAuthenticated, isLoading, organisationResponse]);
+
+  // During logout, avoid rendering content that could flash an error state.
+  if (!isAuthenticated) {
+    return null;
+  }
 
   if (isLoading) {
     return (

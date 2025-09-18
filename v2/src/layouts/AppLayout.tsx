@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import MainLayout from './main/MainLayout';
 import MinimalLayout from './minimal/MinimalLayout';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
@@ -19,10 +19,27 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const successMessage = useAppSelector((state) => state.auth.successMessage);
   const errorMessage = useAppSelector((state) => state.auth.message);
   const pathname = usePathname();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [currentLayout, setCurrentLayout] = useState<'main' | 'minimal'>('minimal');
   const [isClient, setIsClient] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // Helper to get current locale from path like /en/..., /fi/..., /sv/...
+  const getLocaleFromPath = (p?: string | null) => {
+    if (!p) return null;
+    const match = p.match(/^\/(en|fi|sv)(?:\/|$)/);
+    return match ? match[1] : null;
+  };
+  // Helper to prefix a path with current locale if present
+  const withLocale = (path: string) => {
+    const locale = getLocaleFromPath(pathname);
+    return locale ? `/${locale}${path}` : path;
+  };
+  const isSamePath = (target: string) => {
+    const dest = withLocale(target);
+    return pathname === dest;
+  };
   
   // Only show toast when an error message is present. Suppress success toasts.
   useEffect(() => {
@@ -48,38 +65,30 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   useEffect(() => {
     setIsClient(true);
     
-    // Check client-side auth state
+    // Check client-side auth state relying solely on Redux auth
     const checkClientAuth = () => {
-      // Always use MinimalLayout on the auth routes to avoid layout flip/remount
-      if (pathname && (pathname.includes('/login') || pathname.includes('/signup'))) {
+      const isAuthPath = !!pathname && (pathname.includes('/login') || pathname.includes('/signup'));
+
+      // Always render auth routes with MinimalLayout to avoid flicker/remount
+      if (isAuthPath) {
         setCurrentLayout('minimal');
+        // Do not redirect here; login/signup flows handle navigation
         return;
       }
 
       if (isAuthenticated) {
         setCurrentLayout('main');
+        // Do not redirect here; let login flow handle navigation to avoid flicker
         return;
       }
-      
-      // Only access browser APIs after hydration
-      try {
-        const hasToken = typeof window !== 'undefined' && 
-                        (document.cookie.includes('access_token=') || 
-                        localStorage.getItem('access_token'));
-                        
-        if (hasToken) {
-          setCurrentLayout('main');
-        } else {
-          setCurrentLayout('minimal');
-        }
-      } catch (e) {
-        console.error('Error checking client auth:', e);
-        setCurrentLayout('minimal');
-      }
+
+      // Not authenticated: ensure minimal layout and send to login if needed
+      setCurrentLayout('minimal');
+      if (!isSamePath('/login')) router.replace(withLocale('/login'));
     };
     
     checkClientAuth();
-  }, [isAuthenticated, pathname]);
+  }, [isAuthenticated, pathname, router]);
   
   // Show loading state during server-side rendering
   if (!isClient) {
