@@ -1,23 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Typography, Collapse } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { CaretRight as CaretRightIcon, CaretDown as CaretDownIcon } from "@phosphor-icons/react";
 import DataAgreementPolicyCardModal from "./dataPolicyCardModal";
-
-const titleAttrRestrictionStyle = {
-  fontWeight: "normal",
-  marginTop: "20px",
-  lineHeight: "1.5rem",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  cursor: "pointer",
-  border: "1px solid #DFE0E1",
-  borderRadius: "7px",
-  padding: "12px",
-  backgroundColor: "#FFFFFF",
-};
+import { CaretRight as CaretRightIcon } from "@phosphor-icons/react";
 
 interface Props {
   selectedData: any;
@@ -27,20 +13,31 @@ interface Props {
 export const DDAPolicyCard = (props: Props) => {
   const t = useTranslations();
   const { selectedData, handleCloseViewDDAModal } = props;
-  const [openDataAgreementPolicyModal, setOpenDataAgreementPolicyModal] =
-    useState(false);
-
-  const handleCardClick = () => {
-    setOpenDataAgreementPolicyModal(true);
-  };
+  const [openDataAgreementPolicyModal, setOpenDataAgreementPolicyModal] = useState(false);
 
   return (
     <>
-      <Box style={titleAttrRestrictionStyle} onClick={handleCardClick}>
-        <Typography color="black" variant="subtitle2" sx={{ fontSize: '14px' }}>
-          {t("dataAgreements.dataDisclosureAgreementPolicy")}
-        </Typography>
-        <CaretRightIcon style={{ color: "black" }} size={20}/>
+      <Box sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '7px' }}>
+        <Box
+          onClick={() => setOpenDataAgreementPolicyModal(true)}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            cursor: 'pointer',
+            // Match AttributeTable row spacing
+            mt: 1.25,
+            mx: 1.25,
+            mb: 0.625,
+            py: 1.25,
+          }}
+        >
+          <Typography variant="subtitle2" color="black" sx={{ fontSize: '14px' }}>
+            {t("dataAgreements.dataDisclosureAgreementPolicy")}
+          </Typography>
+          <CaretRightIcon size={20} style={{ color: 'black' }} />
+        </Box>
       </Box>
       <DataAgreementPolicyCardModal
         open={openDataAgreementPolicyModal}

@@ -1,45 +1,17 @@
 import React from "react";
-import { Box, Typography } from "@mui/material"; 
+import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
 
 const DataControllerCard = ({ selectedData }) => {
+  const dc = selectedData?.dataController || {};
+  const rows: AttributeRow[] = [
+    { label: "Name", value: String(dc.name ?? "") },
+    { label: "DID", value: String(dc.did ?? "") },
+    { label: "Legal ID", value: String(dc.legalId ?? "") },
+    { label: "URL", value: String(dc.url ?? ""), href: dc.url || undefined },
+    { label: "Industry Sector", value: String(dc.industrySector ?? "") },
+  ];
   return (
-    <Box 
-      sx={{
-        backgroundColor: '#FFFFFF',
-        borderRadius: '7px',
-        padding: '12px',
-        border: '1px solid #DFE0E1',
-      }}
-    >
-      <InfoRow label="Name" value={selectedData?.dataController.name} />
-      <InfoRow label="DID" value={selectedData?.dataController.did} />
-      <InfoRow label="Legal ID" value={selectedData?.dataController.legalId} />
-      <InfoRow label="URL" value={selectedData?.dataController.url} />
-      <InfoRow
-        label="Industry Sector"
-        value={selectedData?.dataController.industrySector}
-        hideBottomBorder
-      />
-    </Box>
-  );
-};
-
-export const InfoRow = ({ label, value, hideBottomBorder = false }) => {
-  return (
-    <Box
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderBottom: hideBottomBorder ? "none" : "solid 1px #dee2e6",
-        padding: "6px 16px",
-      }}
-    >
-      <Typography variant="subtitle2" color="black">{label}</Typography>
-      <Typography variant="subtitle2" color="black">
-        {value}
-      </Typography>
-    </Box>
+    <AttributeTable rows={rows} showValues={true} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} />
   );
 };
 

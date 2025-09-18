@@ -12,6 +12,7 @@ import {
 } from "@/types/verification";
 import { SignupPayload } from "@/types/auth";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
+import { SoftwareStatementResponse } from "@/types/softwareStatement";
 import { DDAgreementsResponse } from "@/types/dataDisclosureAgreement";
 
 // API Service implementation with real API calls
@@ -21,6 +22,25 @@ export const apiService = {
       ENDPOINTS.login(),
       { email, password }
     ).then(res => res.data);
+  },
+  // Software Statement for Organisation
+  getSoftwareStatement: async (): Promise<SoftwareStatementResponse> => {
+    try {
+      const response = await api.get<SoftwareStatementResponse>(ENDPOINTS.softwareStatement());
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching software statement:', error);
+      throw error;
+    }
+  },
+  requestSoftwareStatement: async (): Promise<SoftwareStatementResponse> => {
+    try {
+      const response = await api.post<SoftwareStatementResponse>(ENDPOINTS.softwareStatement(), null);
+      return response.data;
+    } catch (error) {
+      console.error('Error requesting software statement:', error);
+      throw error;
+    }
   },
   signup: async (payload: SignupPayload): Promise<any> => {
     return api.post<any>(

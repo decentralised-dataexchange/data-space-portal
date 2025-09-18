@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import { useAppDispatch } from "@/custom-hooks/store";
 import { setSelectedDDAId, setSelectedOpenApiUrl } from "@/store/reducers/dataSourceReducers";
@@ -34,46 +34,51 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
     }
   };
 
+  const versionText = String((dataDisclosureAgreement as any)?.version || (dataDisclosureAgreement as any)?.templateVersion || "");
   return (
     <Box
       className="actionListingBtn"
       sx={{
         display: "flex",
-        // Match older layout: row on desktop, stack on mobile
         flexDirection: { xs: "column", sm: "row" },
-        justifyContent: "flex-end",
-        alignItems: "center",
+        alignItems: { xs: "flex-start", sm: "center" },
         gap: 1,
         marginTop: "auto",
       }}
     >
-      {!apiViewMode && (
+      <Box sx={{ flex: 1, width: '100%', display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-start' } }}>
+        {!!versionText && (
+          <Typography variant="body2" sx={{ color: '#666666' }}>
+            {t('dataAgreements.version')}: {versionText}
+          </Typography>
+        )}
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
+        {!apiViewMode && (
+          <Button
+            variant="outlined"
+            size="medium"
+            sx={{
+              fontSize: "14px",
+              textTransform: "none",
+              fontWeight: "medium",
+              '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed', pointerEvents: 'auto' },
+            }}
+            onClick={handleViewApiClick}
+            disabled={!openApiUrl}
+          >
+            {t("home.btn-viewMetadata")}
+          </Button>
+        )}
         <Button
           variant="outlined"
           size="medium"
-          sx={{
-            fontSize: "14px",
-            textTransform: "none",
-            fontWeight: "medium",
-          }}
-          onClick={handleViewApiClick}
-          disabled={!openApiUrl}
+          sx={{ fontSize: "14px", textTransform: "none", fontWeight: "medium" }}
+          onClick={handleDDAClick}
         >
-          {t("home.btn-viewMetadata")}
+          {t("home.btn-signData")}
         </Button>
-      )}
-      <Button
-        variant="outlined"
-        size="medium"
-        sx={{
-          fontSize: "14px",
-          textTransform: "none",
-          fontWeight: "medium",
-        }}
-        onClick={handleDDAClick}
-      >
-        {t("home.btn-signData")}
-      </Button>
+      </Box>
     </Box>
   );
 }

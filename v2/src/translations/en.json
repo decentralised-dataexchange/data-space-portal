@@ -176,7 +176,8 @@
     "pleaseWait": "Please wait...",
     "copy": "Copy",
     "copied": "Copied",
-    "typeToConfirm": "Type \"{text}\" to confirm"
+    "typeToConfirm": "Type \"{text}\" to confirm",
+    "comingSoon": "Coming soon"
   },
   "errors": {
     "generic": "Something went wrong."
@@ -342,6 +343,10 @@
     "openApiUrlLabel": "OpenAPI Specification URL",
     "holderBaseUrlLabel": "Holder Base URL",
     "openApiUrlPlaceholder": "Enter OpenAPI URL",
+    "credentialOfferEndpointLabel": "Credential Offer Endpoint",
+    "credentialOfferEndpointPlaceholder": "Enter Credential Offer endpoint URL",
+    "accessPointEndpointLabel": "Access Point Endpoint",
+    "accessPointEndpointPlaceholder": "Enter Access Point endpoint URL",
     "uploadButton": "Upload",
     "oauth2ClientTitle": "OAuth 2.0 Client",
     "oauth2Title": "OAuth 2.0 Client",
@@ -365,7 +370,31 @@
     "oauth2ClientConfigTitle": "OAuth 2.0 Client Configuration",
     "deploymentStatusLabel": "Deployment Status:",
     "notConfiguredLabel": "Not Configured",
-    "owsBaseUrlRequired": "Holder Base URL is required"
+    "owsBaseUrlRequired": "Holder Base URL is required",
+    "credentialOfferEndpointRequired": "Credential Offer endpoint is required",
+    "accessPointEndpointRequired": "Access Point endpoint is required",
+    "clientNameRequired": "Client name is required",
+    "softwareStatementTitle": "Software Statement",
+    "softwareStatementLabel": "Software Statement",
+    "softwareStatementRequest": "Request",
+    "softwareStatementView": "View",
+    "softwareStatementRequestTooltip": "Request a new software statement",
+    "softwareStatementViewTooltip": "View your software statement details",
+    "softwareStatementPrereqMissing": "Set Credential Offer and Access Point endpoints first",
+    "softwareStatementVctLabel": "VCT",
+    "softwareStatementClientUriLabel": "Client URI",
+    "softwareStatementClientIdLabel": "Client ID",
+    "softwareStatementRedirectUriLabel": "Redirect URI",
+    "softwareStatementExchangeIdLabel": "Exchange ID",
+    "softwareStatementDidLabel": "DID",
+    "softwareStatementCreatedAtLabel": "Created At",
+    "softwareStatementUpdatedAtLabel": "Updated At",
+    "softwareStatementStatus": {
+      "": "Not requested",
+      "offer_sent": "Offer sent",
+      "offer_received": "Offer received",
+      "credential_accepted": "Credential accepted"
+    }
   },
   "dispConnection": {
     "copy": "COPY",
@@ -394,5 +423,13 @@
     "recommendedCoverSize": "Recommended size is 1500x500px",
     "recommendedLogoSize": "Recommended size is 400x400px"
   },
-  "unknownOrganization": "Unknown Organization"
+  "unknownOrganization": "Unknown Organization",
+  "viewCredentials": {
+    "attributeTable": {
+      "title": "Attribute Table",
+      "description": "View credentials for attribute table"
+    },
+    "legalNameLabel": "Legal name",
+    "identifierLabel": "Identifier"
+  }
 }

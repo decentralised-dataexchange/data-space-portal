@@ -41,6 +41,7 @@ export default async function HomePage({ params, searchParams }: Props) {
       sector: item.organisation?.sector ?? '',
       location: item.organisation?.location ?? '',
       policyUrl: item.organisation?.policyUrl ?? '',
+      accessPointEndpoint: item.organisation?.accessPointEndpoint ?? null,
       // Map org verification to trusted
       trusted: item.organisationIdentity?.isPresentationVerified ?? false,
     },

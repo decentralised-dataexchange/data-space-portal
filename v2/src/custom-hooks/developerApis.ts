@@ -3,6 +3,7 @@ import { apiService } from '@/lib/apiService/apiService';
 import { useAppDispatch, useAppSelector } from './store';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from '@/types/oauth2';
+import { SoftwareStatementResponse } from '@/types/softwareStatement';
 import { Organisation } from '@/types/organisation';
 
 // Hook to get admin details
@@ -23,6 +24,45 @@ export const useGetAdminDetails = () => {
     enabled: isAuthenticated,
     retry: 1,
     refetchOnWindowFocus: false,
+  });
+};
+
+// Hook to get Software Statement
+export const useGetSoftwareStatement = () => {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  return useQuery<SoftwareStatementResponse>({
+    queryKey: ['softwareStatement'],
+    queryFn: async () => {
+      try {
+        return await apiService.getSoftwareStatement();
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch software statement';
+        console.error('Error in getSoftwareStatement:', errorMessage, error);
+        throw error;
+      }
+    },
+    enabled: isAuthenticated,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+// Hook to request a new Software Statement
+export const useRequestSoftwareStatement = () => {
+  const queryClient = useQueryClient();
+  return useMutation<SoftwareStatementResponse, unknown, void>({
+    mutationFn: async () => {
+      try {
+        return await apiService.requestSoftwareStatement();
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to request software statement';
+        console.error('Error in requestSoftwareStatement:', errorMessage, error);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['softwareStatement'] });
+    }
   });
 };
 

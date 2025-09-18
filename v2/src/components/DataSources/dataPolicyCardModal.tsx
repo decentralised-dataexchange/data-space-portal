@@ -7,8 +7,8 @@ import { Drawer, Typography, Button, Box, useTheme } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { CaretLeftIcon, XIcon } from "@phosphor-icons/react";
 
-import PolicyDetailsBox from "./PolicyDetailBox";
 import DataControllerCard from "./dataControllerCard";
+import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
 import "./style.scss";
 
 interface Props {
@@ -40,41 +40,15 @@ export default function DataAgreementPolicyCardModal(props: Props) {
   // Create ref for the container
   const containerRef = React.useRef<HTMLDivElement>(null);
   
-  const SSIpolicyDetailsForContainer = [
-    {
-      name: "Lawful basis of processing",
-      value: selectedData?.lawfulBasis,
-    },
-    {
-      name: "Data retention period",
-      value: selectedData?.dataSharingRestrictions.dataRetentionPeriod,
-    },
-    {
-      name: "Policy URL",
-      value: selectedData?.dataSharingRestrictions.policyUrl,
-    },
-    {
-      name: "Jurisdiction",
-      value: selectedData?.dataSharingRestrictions.jurisdiction,
-    },
-    {
-      name: "Industry sector",
-      value: selectedData?.dataSharingRestrictions.industrySector,
-    },
-
-    {
-      name: "Geographic restriction",
-      value: selectedData?.dataSharingRestrictions.geographicRestriction,
-    },
-    {
-      name: "Storage location",
-      value: selectedData?.dataSharingRestrictions.storageLocation,
-    },
-    {
-      name: "Agreement Period",
-      value:selectedData?.agreementPeriod,
-    },
-  
+  const SSIpolicyDetailsForContainer: AttributeRow[] = [
+    { label: "Lawful basis of processing", value: String(selectedData?.lawfulBasis ?? "") },
+    { label: "Data retention period", value: String(selectedData?.dataSharingRestrictions?.dataRetentionPeriod ?? "") },
+    { label: "Policy URL", value: String(selectedData?.dataSharingRestrictions?.policyUrl ?? ""), href: selectedData?.dataSharingRestrictions?.policyUrl || undefined },
+    { label: "Jurisdiction", value: String(selectedData?.dataSharingRestrictions?.jurisdiction ?? "") },
+    { label: "Industry sector", value: String(selectedData?.dataSharingRestrictions?.industrySector ?? "") },
+    { label: "Geographic restriction", value: String(selectedData?.dataSharingRestrictions?.geographicRestriction ?? "") },
+    { label: "Storage location", value: String(selectedData?.dataSharingRestrictions?.storageLocation ?? "") },
+    { label: "Agreement Period", value: String(selectedData?.agreementPeriod ?? "") },
   ];
 
   return (
@@ -115,26 +89,8 @@ export default function DataAgreementPolicyCardModal(props: Props) {
             <Box m={1.5}>
               <DataControllerCard selectedData={selectedData} />
             </Box>
-            <Box 
-              m={1.5}
-              sx={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '7px',
-                border: '1px solid #DFE0E1',
-                padding: '12px',
-              }}
-            >
-              {SSIpolicyDetailsForContainer?.map((policyDetail, index) => (
-                <PolicyDetailsBox
-                  key={index}
-                  selectedData={selectedData}
-                  isLastAttribute={
-                    index === SSIpolicyDetailsForContainer.length - 1
-                  }
-                  name={policyDetail.name}
-                  value={policyDetail.value}
-                />
-              ))}
+            <Box m={1.5}>
+              <AttributeTable rows={SSIpolicyDetailsForContainer} showValues={true} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} />
             </Box>
 
         

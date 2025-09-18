@@ -9,6 +9,9 @@ export interface Organisation {
   description: string;
   verificationRequestURLPrefix: string;
   openApiUrl: string;
+  // New fields for Software Statement prerequisites
+  credentialOfferEndpoint: string | null;
+  accessPointEndpoint: string | null;
 }
 
 export interface OrganisationResponse {

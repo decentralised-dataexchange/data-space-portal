@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useMemo } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Tooltip, Link as MuiLink } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import { OrgIdentityResponse } from '@/types/orgIdentity';
 import { Organisation } from '@/types/organisation';
 import VerifiedBadge from '@/components/common/VerifiedBadge';
-import { DataAttributeCardForDDA } from '../AddCredential/dataAttributeCardCredentials';
+import { AttributeTable, AttributeRow } from '@/components/common/AttributeTable';
+import IssuedExpiryStrip from '@/components/common/IssuedExpiryStrip';
 
 type Props = {
   orgIdentity?: OrgIdentityResponse;
@@ -25,6 +26,9 @@ const ViewCredentials: React.FC<Props> = ({ orgIdentity, organisation, showValue
   const legalName = presentation?.legalName as string | undefined;
   const identifier = presentation?.identifier as string | undefined;
   const isVerified = Boolean(orgIdentity?.verified ?? orgIdentity?.organisationalIdentity?.verified);
+  const issuedAt = (presentation as any)?.iat as number | undefined;
+  const expiresAt = (presentation as any)?.exp as number | undefined;
+  const accessPointEndpoint = organisation?.accessPointEndpoint || undefined;
 
   const vctTitle = useMemo(() => {
     const vct = presentation?.vct as string | undefined;
@@ -47,7 +51,24 @@ const ViewCredentials: React.FC<Props> = ({ orgIdentity, organisation, showValue
         {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
         <VerifiedBadge trusted={isVerified} />
       </Typography>
-
+      {!!accessPointEndpoint && (
+        <Box sx={{ mt: 0.5, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
+          <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
+            {t('developerAPIs.accessPointEndpointLabel')}
+          </Typography>
+          <Tooltip title={accessPointEndpoint} placement="top-start" arrow>
+            <MuiLink
+              href={accessPointEndpoint}
+              target="_blank"
+              rel="noreferrer"
+              underline="hover"
+              sx={{ color: '#0000FF', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
+              {accessPointEndpoint}
+            </MuiLink>
+          </Tooltip>
+        </Box>
+      )}
       <Typography variant="subtitle1" mt={2}>
         {t('common.overView')}
       </Typography>
@@ -65,13 +86,16 @@ const ViewCredentials: React.FC<Props> = ({ orgIdentity, organisation, showValue
       </Typography>
 
       <Box sx={{ marginTop: '16px' }}>
-        <DataAttributeCardForDDA
-          selectedData={[
-            ...(legalName ? [{ attribute: 'legalName', value: legalName }] : []),
-            ...(identifier ? [{ attribute: 'identifier', value: identifier }] : []),
+        <AttributeTable
+          rows={[
+            ...(legalName ? [{ label: t('viewCredentials.legalNameLabel'), value: legalName } as AttributeRow] : []),
+            ...(identifier ? [{ label: t('viewCredentials.identifierLabel'), value: identifier } as AttributeRow] : []),
           ]}
           showValues={showValues}
+          labelMinWidth={200}
+          labelMaxPercent={40}
         />
+        <IssuedExpiryStrip issued={issuedAt} expiry={expiresAt} />
       </Box>
 
       {/* Close button removed; RightSidebar footer provides the Close action */}

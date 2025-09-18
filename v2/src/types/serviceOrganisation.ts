@@ -11,6 +11,9 @@ export interface ServiceOrganisationItemOrg {
   description: string;
   verificationRequestURLPrefix: string;
   openApiUrl: string;
+  // Optional endpoints used across UI
+  credentialOfferEndpoint?: string | null;
+  accessPointEndpoint?: string | null;
 }
 
 export interface ServiceOrganisationPresentationStatusList {

@@ -36,6 +36,13 @@
   }
 }
 
+// Simple helper to show underline on hover without using client-side event handlers
+.hover-underline {
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
 /* Left panel: responsive header/logo sizing */
 .dataListContainer {
   .leftSection {

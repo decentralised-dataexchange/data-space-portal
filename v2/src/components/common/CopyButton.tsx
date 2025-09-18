@@ -52,7 +52,9 @@ export default function CopyButton({ text, size = "small", onCopied }: CopyButto
             padding: 0,
           }}
         >
-          {t("common.copy")}
+          <span style={{ paddingTop: "3px" }}>
+            {t("common.copy")}
+          </span>
         </Button>
       </span>
     </Tooltip>
