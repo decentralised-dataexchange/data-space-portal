@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
 import Loader from '@/components/common/Loader';
 import SnackbarComponent from '@/components/notification';
 import { setSuccessMessage, setMessage } from '@/store/reducers/authReducer';
+import { publicRoutes } from '@/constants/routes';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -39,6 +40,29 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const isSamePath = (target: string) => {
     const dest = withLocale(target);
     return pathname === dest;
+  };
+  const getPathWithoutLocale = (p?: string | null) => {
+    if (!p) return '/';
+    const locale = getLocaleFromPath(p);
+    if (!locale) return p || '/';
+    const stripped = p.slice(locale.length + 1) || '/';
+    return stripped;
+  };
+  const isPublicPath = (p?: string | null) => {
+    const path = getPathWithoutLocale(p);
+    for (const route of publicRoutes) {
+      if (route === '/') {
+        if (path === '/') return true;
+        continue;
+      }
+      if (route.includes('[')) {
+        const base = route.split('/[')[0];
+        if (path === base || path.startsWith(base + '/')) return true;
+        continue;
+      }
+      if (path === route || path.startsWith(route + '/')) return true;
+    }
+    return false;
   };
   
   // Only show toast when an error message is present. Suppress success toasts.
@@ -84,7 +108,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       // Not authenticated: ensure minimal layout and send to login if needed
       setCurrentLayout('minimal');
-      if (!isSamePath('/login')) router.replace(withLocale('/login'));
+      // Respect public routes: don't redirect for them
+      if (!isPublicPath(pathname)) {
+        if (!isSamePath('/login')) router.replace(withLocale('/login'));
+      }
     };
     
     checkClientAuth();

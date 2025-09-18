@@ -9,27 +9,34 @@ const intlMiddleware = createMiddleware(routing);
 // Custom middleware function that combines intl with auth protection
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
-  // Check if the path is a public route (including dynamic routes)
-  const isPublicRoute = Array.from(publicRoutes).some(route => {
-    // Check exact match
-    if (pathname === route) return true;
-    
-    // Check if path starts with a public route (for dynamic routes)
-    return pathname.startsWith(route);
-  }) ||
-  routing.locales.some(locale => {
-    if (!pathname.startsWith(`/${locale}`)) return false;
-    
-    const pathWithoutLocale = pathname.slice(locale.length + 1) || '/';
-    return Array.from(publicRoutes).some(route => {
-      // Check exact match for localized routes
-      if (pathWithoutLocale === route) return true;
-      
-      // Check if localized path starts with a public route
-      return pathWithoutLocale.startsWith(route);
-    });
-  });
+
+  // Helpers to support locale-prefixed and dynamic public routes
+  const getPathWithoutLocale = (p: string) => {
+    for (const locale of routing.locales) {
+      if (p === `/${locale}` || p.startsWith(`/${locale}/`)) {
+        return p.slice(locale.length + 1) || '/';
+      }
+    }
+    return p;
+  };
+  const matchesPublicRoute = (path: string) => {
+    for (const route of publicRoutes) {
+      if (route === '/') {
+        if (path === '/') return true;
+        continue;
+      }
+      if (route.includes('[')) {
+        const base = route.split('/[')[0];
+        if (path === base || path.startsWith(base + '/')) return true;
+        continue;
+      }
+      if (path === route || path.startsWith(route + '/')) return true;
+    }
+    return false;
+  };
+
+  const pathNoLocale = getPathWithoutLocale(pathname);
+  const isPublicRoute = matchesPublicRoute(pathname) || matchesPublicRoute(pathNoLocale);
 
   // Get the token from cookies or headers (server-side only)
   const token = request.cookies.get('access_token')?.value || 
