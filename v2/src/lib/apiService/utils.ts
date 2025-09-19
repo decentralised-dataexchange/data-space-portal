@@ -1,7 +1,13 @@
 import { publicRoutes } from "@/constants/routes";
 
 export function getPathnameWithoutLocale(pathname: string): string {
-    return "/" + pathname.split("/").slice(2).join("/");
+    // If pathname starts with a supported locale (/en, /fi, /sv), strip it; otherwise return as-is
+    const match = pathname.match(/^\/(en|fi|sv)(?:\/|$)/);
+    if (match) {
+        const withoutLocale = pathname.slice(match[0].length);
+        return withoutLocale ? (withoutLocale.startsWith('/') ? withoutLocale : '/' + withoutLocale) : '/';
+    }
+    return pathname || '/';
 };
 
 export function isPublicRoute(pathname: string): boolean {

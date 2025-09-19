@@ -267,6 +267,9 @@
     "saveButton": "Tallenna muutokset",
     "noListingsAvailable": "Ei listauksia saatavilla. Lisää uusi listaus painamalla +",
     "signWithBusinessWallet": "Allekirjoita yrityslompakolla",
+    "unsignWithBusinessWallet": "Peruuta allekirjoitus yrityslompakolla",
+    "loginToSignWithBusinessWallet": "Kirjaudu sisään allekirjoittaaksesi yrityslompakolla",
+    "loginToUnsignWithBusinessWallet": "Kirjaudu sisään peruuttaaksesi allekirjoituksen yrityslompakolla",
     "dataDisclosureAgreementPolicy": "Tietojen luovutussopimuksen käytäntö",
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {

@@ -6,7 +6,6 @@ import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
 import VerifiedBadge from '../common/VerifiedBadge';
-import { isOrganisationVerified } from '@/utils/verification';
 
 import ClientPagination from '../Home/ClientPagination';
 import ApiDoc from '@/components/ApiDocs';
@@ -68,7 +67,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
             </Box>
         );
     }
-    const trusted = isOrganisationVerified(dataSourceItem as any);
+    const trusted = Boolean(dataSourceItem?.organisationIdentity?.presentationRecord?.verified);
     const sp = await searchParams;
     const ddas = dataSourceItem?.dataDisclosureAgreements ?? [];
     const viewApiFor = sp?.viewApiFor;
@@ -81,8 +80,9 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
     const currentPage = pageParam && !isNaN(parseInt(pageParam, 10)) ? parseInt(pageParam, 10) : 1;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+    const getDdaId = (dda: any): string | undefined => dda?.dataAgreementId || dda?.['@id'] || dda?.templateId;
     const currentDdas = (viewApiFor
-        ? ddas.filter(dda => dda.templateId === viewApiFor)
+        ? ddas.filter(dda => (getDdaId(dda) === viewApiFor || dda.templateId === viewApiFor))
         : ddas.slice(startIndex, endIndex)
     );
 

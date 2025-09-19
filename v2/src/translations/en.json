@@ -242,6 +242,9 @@
       "confirmText": "DELETE"
     },
     "signWithBusinessWallet": "Sign with Business Wallet",
+    "unsignWithBusinessWallet": "Unsign with Business Wallet",
+    "loginToSignWithBusinessWallet": "Login to sign with Business Wallet",
+    "loginToUnsignWithBusinessWallet": "Login to unsign with Business Wallet",
     "publishModal": {
       "title": "Publish to Marketplace",
       "confirmButton": "Publish"

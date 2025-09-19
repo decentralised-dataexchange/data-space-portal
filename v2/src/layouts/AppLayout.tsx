@@ -9,6 +9,7 @@ import Loader from '@/components/common/Loader';
 import SnackbarComponent from '@/components/notification';
 import { setSuccessMessage, setMessage } from '@/store/reducers/authReducer';
 import { publicRoutes } from '@/constants/routes';
+import { isPublicRoute } from '@/lib/apiService/utils';
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -92,6 +93,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     // Check client-side auth state relying solely on Redux auth
     const checkClientAuth = () => {
       const isAuthPath = !!pathname && (pathname.includes('/login') || pathname.includes('/signup'));
+      const inPublicRoute = !!pathname && isPublicRoute(pathname);
 
       // Always render auth routes with MinimalLayout to avoid flicker/remount
       if (isAuthPath) {
@@ -106,11 +108,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         return;
       }
 
-      // Not authenticated: ensure minimal layout and send to login if needed
+      // Not authenticated: ensure minimal layout
       setCurrentLayout('minimal');
-      // Respect public routes: don't redirect for them
-      if (!isPublicPath(pathname)) {
-        if (!isSamePath('/login')) router.replace(withLocale('/login'));
+      // Only redirect to login if not on a public route
+      if (!inPublicRoute && !isSamePath('/login')) {
+        router.replace(withLocale('/login'));
       }
     };
     

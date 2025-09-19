@@ -28,8 +28,9 @@ export const useGetAdminDetails = () => {
 };
 
 // Hook to get Software Statement
-export const useGetSoftwareStatement = () => {
+export const useGetSoftwareStatement = (options?: { enabled?: boolean }) => {
   const { isAuthenticated } = useAppSelector(state => state.auth);
+  const enabled = Boolean(isAuthenticated && (options?.enabled ?? true));
   return useQuery<SoftwareStatementResponse>({
     queryKey: ['softwareStatement'],
     queryFn: async () => {
@@ -41,7 +42,7 @@ export const useGetSoftwareStatement = () => {
         throw error;
       }
     },
-    enabled: isAuthenticated,
+    enabled,
     retry: 1,
     refetchOnWindowFocus: false,
   });

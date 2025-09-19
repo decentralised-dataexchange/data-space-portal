@@ -1,4 +1,5 @@
 import { DataDisclosureAgreement } from "./dataDisclosureAgreement";
+import { SoftwareStatementRecord } from "./softwareStatement";
 
 export interface ServiceOrganisationItemOrg {
   id: string;
@@ -14,6 +15,8 @@ export interface ServiceOrganisationItemOrg {
   // Optional endpoints used across UI
   credentialOfferEndpoint?: string | null;
   accessPointEndpoint?: string | null;
+  // Public response now includes software statement under organisation
+  softwareStatement?: SoftwareStatementRecord | Record<string, never>;
 }
 
 export interface ServiceOrganisationPresentationStatusList {
