@@ -254,7 +254,8 @@
     "copy": "Kopioi",
     "copied": "Kopioitu",
     "typeToConfirm": "Kirjoita \"{text}\" vahvistaaksesi",
-    "comingSoon": "Tulossa pian"
+    "comingSoon": "Tulossa pian",
+    "noDataSelected": "Ei valittua dataa"
   },
   "errors": {
     "generic": "Jokin meni pieleen."

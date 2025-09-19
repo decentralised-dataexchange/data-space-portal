@@ -55,7 +55,7 @@ const StyledDrawer = styled(Drawer, {
   width?: number | string;
   maxWidth?: number | string;
   height?: number | string;
-}>(({ theme, width = 480, maxWidth = 594, height = '100%' }) => ({
+}>(({ theme, width = 480, maxWidth = 580, height = '100%' }) => ({
   zIndex: theme.zIndex.modal,
   '& .MuiDrawer-paper': {
     display: 'flex',

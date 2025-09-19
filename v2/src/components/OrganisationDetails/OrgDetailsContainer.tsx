@@ -163,8 +163,8 @@ const OrganisationDetailsContainer = (props: Props) => {
       <RightSidebar
         open={openViewCredentialsModal}
         onClose={callRightSideDrawer}
-        width={594}
-        maxWidth={594}
+        width={580}
+        maxWidth={580}
         keepMounted
         height="100%"
         headerContent={

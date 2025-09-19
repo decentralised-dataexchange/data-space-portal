@@ -9,6 +9,7 @@ import { AttributeRow } from '@/components/common/AttributeTable';
 import { useGetSoftwareStatement } from '@/custom-hooks/developerApis';
 import CopyButton from '@/components/common/CopyButton';
 import '@/components/OrganisationDetails/style.scss';
+import { isOrganisationVerified } from '@/utils/verification';
 
 type Props = {
   serviceItem: ServiceOrganisationItem;
@@ -47,7 +48,8 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
     return rows;
   }, [ssObj, t]);
 
-  const trusted = Boolean((softwareStatementRes as any)?.softwareStatement?.isVerifiedWithTrustList);
+  // Use robust verification util, fallback to software statement flag
+  const trusted = isOrganisationVerified(serviceItem as any) || Boolean((softwareStatementRes as any)?.softwareStatement?.isVerifiedWithTrustList);
 
   return (
     <>
@@ -181,6 +183,8 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
         overview={serviceItem?.organisation?.description}
         trusted={trusted}
         accessPointEndpoint={(serviceItem?.organisation as any)?.accessPointEndpoint || ''}
+        showAccessPointEndpoint={false}
+        drawerWidth={580}
       />
     </>
   );

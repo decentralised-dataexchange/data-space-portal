@@ -187,8 +187,8 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
       bannerContent={bannerContent}
       showBanner={true}
       footerContent={footerContent}
-      width={594}
-      maxWidth={594}
+      width={580}
+      maxWidth={580}
       height="100%"
     >
       <Box sx={{ p: 2 }}>
