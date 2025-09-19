@@ -372,6 +372,27 @@
     "configuredLabel": "Configured",
     "configureButton": "Configure",
     "oauth2ClientConfigTitle": "OAuth 2.0 Client Configuration",
+    "orgOauth2Title": "Organisation OAuth 2.0 Client",
+    "orgOauth2ClientConfigTitle": "Organisation OAuth 2.0 Client Configuration",
+    "orgOauth2ClientNameLabel": "Name",
+    "orgOauth2ClientNamePlaceholder": "Name for Organisation OAuth 2.0 Client",
+    "orgOauth2ClientIdLabel": "Client ID",
+    "orgOauth2ClientIdPlaceholder": "Enter Client ID",
+    "orgOauth2ClientSecretLabel": "Client Secret",
+    "orgOauth2ClientSecretPlaceholder": "Enter Client Secret",
+    "createOrganisationOAuth2Client": "Create",
+    "orgClientNameRequired": "Client name is required",
+    "orgClientIdRequired": "Client ID is required",
+    "orgClientSecretRequired": "Client Secret is required",
+    "orgOauth2DeleteConfirm": "Are you sure you want to delete the Organisation OAuth2 client?",
+    "orgOauth2ClientDescriptionLabel": "Description",
+    "orgOauth2ClientDescriptionPlaceholder": "Optional description",
+    "orgOauth2DeleteModal": {
+      "title": "Delete Organisation OAuth 2.0 Client",
+      "description": "This action will permanently delete the Organisation OAuth 2.0 client. To confirm, type the confirmation text below.",
+      "confirmText": "DELETE",
+      "confirmButton": "Delete"
+    },
     "deploymentStatusLabel": "Deployment Status:",
     "notConfiguredLabel": "Not Configured",
     "owsBaseUrlRequired": "Holder Base URL is required",
@@ -398,6 +419,12 @@
       "offer_sent": "Offer sent",
       "offer_received": "Offer received",
       "credential_accepted": "Credential accepted"
+    },
+    "deleteSoftwareStatementModal": {
+      "title": "Delete Software Statement",
+      "description": "You are about to delete your software statement. This action cannot be undone.",
+      "confirmButton": "Delete",
+      "confirmText": "DELETE"
     }
   },
   "dispConnection": {

@@ -192,15 +192,15 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
         const active = isActive(list.link);
         
         return (
-          <Box key={list.name} sx={{ px: 1, py: 0 }}>
+          <Box key={list.name}>
             {!list.subMenu.length ? (
               <MenuItem
                 component={Link}
                 href={list.link}
-                sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal', display: 'flex', width: '100%', alignItems: 'center', py: 1 }}
+                sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal', display: 'flex', width: '100%', alignItems: 'center', gap: 0.5}}
               >
                 <ListItemIcon sx={{ color: inactiveTextColor }}>
-                  <list.icon size={22} weight={"regular"} />
+                  <list.icon size={24} weight={"regular"} />
                 </ListItemIcon>
                 <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>

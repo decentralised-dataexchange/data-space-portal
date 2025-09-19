@@ -91,5 +91,18 @@ export const ENDPOINTS = {
     },
     updateOAuth2Client: (clientId: string) => {
         return `/config/organisation/oauth2-client/${clientId}/`;
+    },
+    // Organisation OAuth2 Clients - External
+    getOrganisationOAuth2ClientsExternal: () => {
+        return "/config/organisation/oauth2-clients-external/";
+    },
+    createOrganisationOAuth2ClientExternal: () => {
+        return "/config/organisation/oauth2-client-external/";
+    },
+    updateOrganisationOAuth2ClientExternal: (clientId: string) => {
+        return `/config/organisation/oauth2-client-external/${clientId}/`;
+    },
+    deleteOrganisationOAuth2ClientExternal: (clientId: string) => {
+        return `/config/organisation/oauth2-client-external/${clientId}/`;
     }
 };

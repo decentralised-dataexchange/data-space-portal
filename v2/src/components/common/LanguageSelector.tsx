@@ -40,7 +40,7 @@ const LanguageSelector: React.FC = () => {
         aria-controls={open ? "dropdown-menu" : undefined}
         aria-haspopup="true"
         onClick={handleToggle}
-        sx={{ textTransform: "capitalize !important", padding: 0, color: "#808080", fontSize: "12px" }}
+        sx={{ textTransform: "capitalize !important", padding: 0, color: "black", fontSize: "12px" }}
       >
         {t('common.language')}
       </Button>

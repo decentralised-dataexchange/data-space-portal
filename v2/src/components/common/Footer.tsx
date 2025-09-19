@@ -8,17 +8,17 @@ interface Props {
 const Footer = (props: Props) => {
   const { txt } = props;
   return (
-    <Box className=".d-flex-center" sx={{ color: '#808080' }}>
+    <Box>
       <LanguageSelector /> |&nbsp;
-      <Typography variant="caption" color="grey" className="pr-2">{txt}</Typography> |
-      <Typography color="grey" className="pr-2" variant="caption">
+      <Typography variant="caption" sx={{ color: "black !important" }} className="pr-2">{txt}</Typography> |
+      <Typography sx={{ color: "black !important" }} className="pr-2" variant="caption">
         &nbsp;Powered by{" "}
         <a
           href="https://igrant.io/"
           target="blank"
           style={{
             textDecoration: "none",
-            color: "#808080",
+            color: "black !important",
           }}
         >
           iGrant.io

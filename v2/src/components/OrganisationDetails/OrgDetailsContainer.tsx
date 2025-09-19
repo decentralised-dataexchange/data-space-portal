@@ -306,9 +306,11 @@ const OrganisationDetailsContainer = (props: Props) => {
             sx={{
               marginLeft: { xs: "0", sm: "30px" },
               // Small spacing below avatar on mobile; keep content high
-              marginTop: editMode ? { xs: "8px", sm: "0px" } : { xs: "9px", sm: "0px" },
+              // Use a consistent value across modes to avoid 1px layout shift on xs
+              marginTop: { xs: "8px", sm: "0px" },
               display: "flex",
               flexDirection:"column",
+              rowGap: '4px',
               flexGrow: "1",
               width: "auto",
               maxWidth: "800px",
@@ -316,88 +318,29 @@ const OrganisationDetailsContainer = (props: Props) => {
           >
             {editMode ? (
               <>
-                <Box sx={{ display: "flex", alignItems: 'flex-start', flexDirection: 'column', width: '100%', maxWidth: { xs: '100%', sm: 500 } }} mb={"11px"} mt={"-2px"}>
-                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
-                    {t("gettingStarted.organisationName")}
-                  </Typography>
+                <Box sx={{ display: "flex", alignItems: 'flex-end', height: '24px' }} mt={"-7px"}>
                   <TextField
                     autoFocus
                     onChange={handleChange}
                     variant="standard"
-                    fullWidth
                     name='name'
-                    style={{
-                      ...editStyleEnable,
-                      marginTop: 0,
-                      fontSize: "0.875rem !important"
-                    }}
-                    InputProps={{
-                      disableUnderline: true,
-                      style: { fontSize: 20, fontWeight: "bold", marginTop: "-4px" },
-                    }}
                     value={formValue.name}
-                  />
-                </Box>
-                <Box sx={{ mt: 1, width: '100%', maxWidth: { xs: '100%', sm: 500 } }}>
-                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
-                    {t('gettingStarted.sector')}
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    value={formValue.sector}
-                    name='sector'
-                    onChange={handleChange}
-                    fullWidth
-                    style={{ ...editStyleEnable, marginTop: 0 }}
+                    sx={{
+                      width: 'auto',
+                      '& .MuiInputBase-root': { width: 'auto', padding: 0, lineHeight: 1.2, minHeight: '23px', alignItems: 'flex-start' },
+                      '& input': { padding: 0, paddingBottom: 0, fontSize: '20px', lineHeight: '1.2', fontWeight: 700, fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', color: 'text.primary' },
+                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                    }}
                     InputProps={{
-                      disableUnderline: true,
-                      style: { fontSize: 14 },
+                      style: { fontSize: 20, fontWeight: 'bold', lineHeight: 1.2 },
                     }}
                   />
-                </Box>
-                <Box sx={{ mt: 1, width: '100%', maxWidth: { xs: '100%', sm: 500 } }}>
-                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
-                    {t("gettingStarted.location")}
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    value={formValue.location}
-                    name='location'
-                    onChange={handleChange}
-                    fullWidth
-                    style={{ ...editStyleEnable, marginTop: 0 }}
-                    InputProps={{
-                      disableUnderline: true,
-                      style: { fontSize: 14 },
-                    }}
-                  />
-                </Box>
-                <Box sx={{ mt: 1, width: '100%', maxWidth: { xs: '100%', sm: 500 } }}>
-                  <Typography variant="subtitle2" sx={{ color: '#000', fontSize: { xs: '13px', sm: '14px' }, mb: 0.5 }}>
-                    {t("common.policyUrl")}
-                  </Typography>
-                  <TextField
-                    variant="standard"
-                    onChange={handleChange}
-                    value={formValue.policyUrl}
-                    fullWidth
-                    name='policyUrl'
-                    style={{ ...editStyleEnable, marginTop: 0 }}
-                    InputProps={{
-                      disableUnderline: true,
-                      style: { fontSize: 14 },
-                    }}
-                  />
-                </Box>
-                
-              </>
-            ) :
-              <>
-                <Box sx={{ display: "flex", alignItems: 'center' }} mt={"-7px"} >
-                  <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
-                    {organisationDetails?.name}
-                  </Typography>
-                  {isVerify ? (
+                  {!editMode && (isVerify ? (
                     <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                       <p
                         style={{ marginLeft: '0.5rem' }}
@@ -442,27 +385,178 @@ const OrganisationDetailsContainer = (props: Props) => {
                     >
                       {t('gettingStarted.addCredential')}
                     </Button>
-                  )}
+                  ))}
                 </Box>
+                {editMode ? (
+                  <Box sx={{ height: '15px' }} />
+                ) : (
                   <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>
                     {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                     <VerifiedBadge trusted={isVerify} />
                   </Typography>
-                <Typography variant="body2" height="23px">
+                )}
+                <Box sx={{ height: '23px', display: 'flex', alignItems: 'center' }}>
+                  <TextField
+                    variant="standard"
+                    value={formValue.sector}
+                    name='sector'
+                    onChange={handleChange}
+                    placeholder={t('gettingStarted.sector')}
+                    sx={{
+                      width: 'auto',
+                      minWidth: '200px',
+                      '& .MuiInputBase-root': { width: 'auto', padding: 0, lineHeight: 1.5, minHeight: '23px', alignItems: 'flex-start' },
+                      '& input': { padding: 0, paddingBottom: 0, fontSize: '14px', lineHeight: '1.5', fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', color: 'text.primary' },
+                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                    }}
+                    InputProps={{
+                      style: { fontSize: 14, lineHeight: 1.5 },
+                    }}
+                  />
+                </Box>
+                <Box sx={{ height: '23px', display: 'flex', alignItems: 'center' }}>
+                  <TextField
+                    variant="standard"
+                    value={formValue.location}
+                    name='location'
+                    onChange={handleChange}
+                    placeholder={t('gettingStarted.location')}
+                    sx={{
+                      width: 'auto',
+                      minWidth: '200px',
+                      '& .MuiInputBase-root': { width: 'auto', padding: 0, lineHeight: 1.5, minHeight: '23px', alignItems: 'flex-start' },
+                      '& input': { padding: 0, paddingBottom: '4px', fontSize: '14px', lineHeight: '1.5', fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', color: 'text.primary' },
+                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                    }}
+                    InputProps={{
+                      style: { fontSize: 14, lineHeight: 1.5 },
+                    }}
+                  />
+                </Box>
+                <Box sx={{ height: '23px', display: 'flex', alignItems: 'center', width: '100%' }}>
+                  <TextField
+                    variant="standard"
+                    onChange={handleChange}
+                    value={formValue.policyUrl}
+                    name='policyUrl'
+                    placeholder={t('gettingStarted.policyUrl')}
+                    fullWidth
+                    sx={{
+                      maxWidth: { xs: '100%', sm: '450px' },
+                      width: '100%',
+                      '& .MuiInputBase-root': { 
+                        width: '100%', 
+                        padding: 0, 
+                        lineHeight: 1,
+                        minHeight: '23px',
+                        alignItems: 'flex-start'
+                      },
+                      '& input': { 
+                        padding: 0, 
+                        paddingBottom: 0, 
+                        width: '100%',
+                        fontSize: '14px',
+                        lineHeight: '1.5',
+                        color: 'text.primary',
+                        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                        verticalAlign: 'top'
+                      },
+                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
+                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                      },
+                    }}
+                  />
+                </Box>
+              </>
+            ) :
+              <>
+                <Box sx={{ display: "flex", alignItems: 'flex-end', height: '24px' }} mt={"-7px"} >
+                  <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', lineHeight: '1.2' }}>
+                    {organisationDetails?.name}
+                  </Typography>
+                  {!editMode && (isVerify ? (
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <p
+                        style={{ marginLeft: '0.5rem' }}
+                        className={addCredentialClass}
+                        onClick={callRightSideDrawer}
+                      >
+                        {t('gettingStarted.viewCredential')}
+                      </p>
+                    </Box>
+                  ) : props.isEnableAddCredential ? (
+                    <Button
+                      variant="text"
+                      className={'view-credential'}
+                      onClick={props.addCredentialsLoading ? undefined : props.onAddCredentialsClick}
+                      disabled={!!props.addCredentialsLoading}
+                      sx={{
+                        ml: '0.5rem',
+                        minWidth: 'auto',
+                        padding: 0,
+                        lineHeight: 1,
+                        textTransform: 'none !important',
+                        '&:hover': { backgroundColor: 'transparent' },
+                        '&.Mui-disabled': { opacity: 0.6 },
+                      }}
+                    >
+                      {props.addCredentialsLoading ? t('common.pleaseWait') : t('gettingStarted.addCredential')}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="text"
+                      className={'view-credential'}
+                      disabled
+                      sx={{
+                        ml: '0.5rem',
+                        minWidth: 'auto',
+                        padding: 0,
+                        lineHeight: 1,
+                        textTransform: 'none !important',
+                        '&:hover': { backgroundColor: 'transparent' },
+                        '&.Mui-disabled': { opacity: 0.6 }
+                      }}
+                    >
+                      {t('gettingStarted.addCredential')}
+                    </Button>
+                  ))}
+                </Box>
+                <Box sx={{ height: '24px', display: 'flex', alignItems: 'center' }}>
+                  {!editMode && (
+                    <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, color: isVerify ? '#2e7d32' : '#d32f2f' }}>
+                      {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+                      <VerifiedBadge trusted={isVerify} />
+                    </Typography>
+                  )}
+                </Box>
+                <Typography variant="body2" height="23px" sx={{ fontSize: '14px', lineHeight: '1.5' }}>
                   {(t('gettingStarted.sector'))}:&nbsp;
                   {organisationDetails?.sector}
                 </Typography>
-                <Typography variant="body2" height="23px">
+                <Typography variant="body2" height="23px" sx={{ fontSize: '14px', lineHeight: '1.5' }}>
                   {(t('gettingStarted.location'))}:&nbsp; {organisationDetails?.location}
                 </Typography>
-                <Typography variant="body2" height="23px">
+                <Typography variant="body2" height="23px" sx={{ fontSize: '14px', lineHeight: '1.5' }}>
                   {(t('gettingStarted.policyUrl'))}:&nbsp;
                   {organisationDetails?.policyUrl ? (
                     <a
                       href={organisationDetails.policyUrl}
                       target="_blank"
                       rel="noreferrer"
-                      style={{ color: '#0000FF', wordBreak: 'break-all', fontSize: '14px' }}
+                      style={{ color: '#0000FF', wordBreak: 'break-all', fontSize: '14px', lineHeight: '1.5' }}
                     >
                       {organisationDetails.policyUrl}
                     </a>

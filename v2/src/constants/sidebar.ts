@@ -1,4 +1,4 @@
-import { FileIcon, HouseIcon, LockIcon } from "@phosphor-icons/react";
+import { FilesIcon, HouseLineIcon, LockIcon } from "@phosphor-icons/react";
 export interface SubMenuItem {
   name: string;
   translationKey: string; // Key for translation lookup
@@ -8,7 +8,7 @@ export interface SubMenuItem {
 export interface SidebarMenuItem {
   name: string;
   translationKey: string; // Key for translation lookup
-  icon: typeof HouseIcon;
+  icon: typeof HouseLineIcon;
   link: string;
   subMenu: SubMenuItem[];
 }
@@ -17,14 +17,14 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
   {
     name: 'Getting Started',
     translationKey: 'gettingStarted',
-    icon: HouseIcon,
+    icon: HouseLineIcon,
     link: '/start',
     subMenu: []
   },
 {
   name: 'Marketplace Listing',
     translationKey: 'dataAgreements.title',
-      icon: FileIcon,
+      icon: FilesIcon,
         link: '/dd-agreements',
           subMenu: []
 },

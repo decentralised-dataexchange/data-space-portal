@@ -194,9 +194,8 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
         organisationName={serviceItem?.organisation?.name}
         overview={serviceItem?.organisation?.description}
         trusted={trusted}
-        accessPointEndpoint={(serviceItem?.organisation as any)?.accessPointEndpoint || ''}
-        showAccessPointEndpoint={false}
         drawerWidth={580}
+        isDeleteEnabled={false}
       />
     </>
   );
