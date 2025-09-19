@@ -83,6 +83,10 @@ export const apiService = {
     return api.delete<void>(ENDPOINTS.deleteDDA(ddaId))
       .then(res => res.data as unknown as void);
   },
+  initiateOrganisationDDA: async (ddaId: string): Promise<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }> => {
+    return api.post<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }>(ENDPOINTS.organisationDDAInitiate(ddaId), {})
+      .then(res => res.data);
+  },
   getAdminDetails: async (): Promise<any> => {
     return api.get<any>(ENDPOINTS.getAdminDetails())
       .then(res => res.data);

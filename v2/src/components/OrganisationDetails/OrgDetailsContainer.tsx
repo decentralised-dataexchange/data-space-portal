@@ -82,7 +82,13 @@ const OrganisationDetailsContainer = (props: Props) => {
     })
   }, [organisationDetails])
 
-  const isVerify = !!props.isVerified;
+  const isVerify = Boolean(
+    props.orgIdentity?.verified ??
+    (props.orgIdentity?.organisationalIdentity as any)?.verified ??
+    (props.orgIdentity?.organisationalIdentity as any)?.presentationRecord?.verified ??
+    props.isVerified ??
+    false
+  );
   const hasIdentity = !!props.orgIdentity && Object.keys((props.orgIdentity as any)?.organisationalIdentity || {}).length > 0;
 
   const callRightSideDrawer = () => {

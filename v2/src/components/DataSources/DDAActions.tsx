@@ -22,15 +22,22 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
   const t = useTranslations();
   const locale = useLocale();
 
+  const getDdaId = (dda: any): string | undefined => {
+    return dda?.dataAgreementId || dda?.['@id'] || dda?.templateId;
+  };
+
   const handleDDAClick = () => {
-    dispatch(setSelectedDDAId(dataDisclosureAgreement.templateId));
+    // For modal selection and subsequent signing, use templateId as the stable key
+    const templateId = (dataDisclosureAgreement as DataDisclosureAgreement)?.templateId;
+    if (templateId) dispatch(setSelectedDDAId(templateId));
   };
 
   const handleViewApiClick = () => {
     if (openApiUrl) {
       dispatch(setSelectedOpenApiUrl(openApiUrl));
       // Navigate to the same datasource read page, showing only this DDA and the API doc below it
-      router.push(`/${locale}/data-source/read/${dataSourceSlug}?viewApiFor=${dataDisclosureAgreement.templateId}`);
+      const viewId = getDdaId(dataDisclosureAgreement) || dataDisclosureAgreement.templateId;
+      router.push(`/${locale}/data-source/read/${dataSourceSlug}?viewApiFor=${viewId}`);
     }
   };
 

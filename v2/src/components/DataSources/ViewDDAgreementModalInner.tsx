@@ -10,8 +10,9 @@ import { DDAPolicyCard } from "./dataPolicyCard";
 import RightSidebar from "../common/RightSidebar";
 import VerifiedBadge from "../common/VerifiedBadge";
 import IssuedExpiryStrip from "../common/IssuedExpiryStrip";
-import { isOrganisationVerified } from "@/utils/verification";
 import { useAppSelector } from "@/custom-hooks/store";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -27,15 +28,27 @@ interface Props {
   accessPointEndpoint?: string;
   showAccessPointEndpoint?: boolean;
   drawerWidth?: number;
+  signStatus?: 'sign' | 'unsign' | string;
+  onSignClick?: () => void;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
-  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, accessPointEndpoint } = props;
+  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, accessPointEndpoint, signStatus, onSignClick } = props;
   const t = useTranslations();
-  const isVerified =
-    typeof props.trusted === 'boolean'
-      ? props.trusted
-      : isOrganisationVerified(selectedData as any);
+  const isVerified = Boolean(props.trusted);
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  const router = useRouter();
+  const locale = useLocale();
+  const isUnsign = signStatus === 'unsign';
+  const buttonLabel = isUnsign ? t('dataAgreements.unsignWithBusinessWallet') : t('dataAgreements.signWithBusinessWallet');
+  const tooltipText = isAuthenticated
+    ? buttonLabel
+    : (isUnsign ? t('dataAgreements.loginToUnsignWithBusinessWallet') : t('dataAgreements.loginToSignWithBusinessWallet'));
+  const handleSignButtonClick = () => {
+    // Only trigger sign flow when authenticated; else keep disabled with tooltip
+    if (!isAuthenticated) return;
+    onSignClick && onSignClick();
+  };
   // Custom header content showing purpose, template ID and Version
   const headerContent = (
     <Box sx={{ width: "100%" }}>
@@ -105,15 +118,19 @@ export default function ViewDataAgreementModalInner(props: Props) {
         {t("common.close")}
       </Button>
       {mode === "public" && (
-        <Button
-          onClick={() => {
-            navigator.clipboard.writeText(selectedData?.connection?.invitationUrl);
-          }}
-          className="delete-btn"
-          variant="outlined"
-        >
-          {t("dataAgreements.signWithBusinessWallet")}
-        </Button>
+        <Tooltip title={tooltipText} arrow>
+          <span>
+            <Button
+              onClick={handleSignButtonClick}
+              className="delete-btn"
+              variant="outlined"
+              sx={{ textTransform: 'none', '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed', pointerEvents: 'auto' } }}
+              disabled={!isAuthenticated}
+            >
+              {buttonLabel}
+            </Button>
+          </span>
+        </Tooltip>
       )}
     </Box>
   );

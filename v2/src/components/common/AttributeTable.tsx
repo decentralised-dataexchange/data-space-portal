@@ -52,7 +52,7 @@ export const AttributeTable: React.FC<{
                     rowGap: 0.5,
                   }}
                 >
-                  <Typography variant="subtitle2" sx={{ wordBreak: "break-word", lineHeight: '20px', height: '20px' }}>
+                  <Typography variant="subtitle2" sx={{ wordBreak: "break-word", lineHeight: '20px', textWrap: "nowrap"}}>
                     {row.label}
                   </Typography>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0, height: '20px' }}>

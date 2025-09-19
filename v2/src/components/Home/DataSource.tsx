@@ -11,7 +11,6 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import './style.scss';
 import VerifiedBadge from '../common/VerifiedBadge';
-import { isOrganisationVerified } from '@/utils/verification';
 
 export interface DataDisclosureAgreement {
     purpose: string
@@ -79,7 +78,12 @@ interface DataSourceCardProp {
 
 const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, signDataLabel }: DataSourceCardProp) => {
     const t = useTranslations();
-    const trusted = isOrganisationVerified({ organisation: dataSource, verification: (dataDisclosureAgreements as any)?.verification } as any);
+    const trusted = Boolean(
+        (dataSource as any)?.organisationIdentity?.presentationRecord?.verified ??
+        (dataSource as any)?.organisationIdentity?.isPresentationVerified ??
+        dataSource?.trusted ??
+        false
+    );
     return (
         <>
             <Card className='cardContainer'>

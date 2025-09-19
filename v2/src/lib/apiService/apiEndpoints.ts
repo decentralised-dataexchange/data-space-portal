@@ -71,6 +71,10 @@ export const ENDPOINTS = {
     deleteDDA: (id: any) => {
         return `/config/data-disclosure-agreement/${id}/`
     },
+    // Initiate sign/unsign for organisation DDA (auth required)
+    organisationDDAInitiate: (id: string) => {
+        return `/config/organisation/data-disclosure-agreement/${id}/`;
+    },
     // Removed legacy data-source details endpoint
     updateOpenApiUrl: () => {
         return "/config/open-api/url";

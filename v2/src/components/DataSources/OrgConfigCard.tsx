@@ -9,7 +9,8 @@ import { AttributeRow } from '@/components/common/AttributeTable';
 import { useGetSoftwareStatement } from '@/custom-hooks/developerApis';
 import CopyButton from '@/components/common/CopyButton';
 import '@/components/OrganisationDetails/style.scss';
-import { isOrganisationVerified } from '@/utils/verification';
+import { usePathname } from 'next/navigation';
+import { isPublicRoute } from '@/lib/apiService/utils';
 
 type Props = {
   serviceItem: ServiceOrganisationItem;
@@ -19,10 +20,16 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [ssShowValues, setSsShowValues] = useState(true);
-  const { data: softwareStatementRes } = useGetSoftwareStatement();
+  const pathname = usePathname();
+  const publicRoute = isPublicRoute(pathname || '/');
+  // Protected hook (will only fetch when authenticated). Disable on public routes to avoid redundant calls.
+  const { data: softwareStatementRes } = useGetSoftwareStatement({ enabled: !publicRoute });
 
-  const status = softwareStatementRes?.status || '';
-  const ssObj = (softwareStatementRes?.softwareStatement as any) || undefined;
+  // Determine source of Software Statement
+  const ssPublic = (serviceItem?.organisation as any)?.softwareStatement as any | undefined;
+  const ssObj = (publicRoute ? ssPublic : (softwareStatementRes?.softwareStatement as any)) || undefined;
+  // Status comes from protected response on private routes; from ssPublic.status on public routes
+  const status = publicRoute ? ((ssPublic as any)?.status || '') : (softwareStatementRes?.status || '');
   const hasSoftwareStatement = !!ssObj && Object.keys(ssObj).length > 0 && status === 'credential_accepted';
 
   const openApiUrl = serviceItem?.organisation?.openApiUrl || '';
@@ -48,8 +55,13 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
     return rows;
   }, [ssObj, t]);
 
-  // Use robust verification util, fallback to software statement flag
-  const trusted = isOrganisationVerified(serviceItem as any) || Boolean((softwareStatementRes as any)?.softwareStatement?.isVerifiedWithTrustList);
+  // Compute trusted from org identity verified flag with safe fallbacks
+  const trusted = Boolean(
+    (serviceItem as any)?.organisationIdentity?.presentationRecord?.verified ??
+    (serviceItem as any)?.organisationIdentity?.isPresentationVerified ??
+    (ssObj as any)?.isVerifiedWithTrustList ??
+    false
+  );
 
   return (
     <>
@@ -112,7 +124,7 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
             <Typography color="black" variant='body2'>{t('developerAPIs.softwareStatementLabel')}:</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {(() => {
-                const ssEmpty = !softwareStatementRes || !softwareStatementRes.softwareStatement || Object.keys(softwareStatementRes.softwareStatement).length === 0;
+                const ssEmpty = !ssObj || Object.keys(ssObj || {}).length === 0;
                 const available = !ssEmpty && status === 'credential_accepted';
                 const tooltip = !hasEndpoints
                   ? t('developerAPIs.softwareStatementPrereqMissing')
