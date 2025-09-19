@@ -25,15 +25,13 @@ interface Props {
   coverImage: any;
   logoImage: any;
   trusted?: boolean;
-  accessPointEndpoint?: string;
-  showAccessPointEndpoint?: boolean;
   drawerWidth?: number;
   signStatus?: 'sign' | 'unsign' | string;
   onSignClick?: () => void;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
-  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, accessPointEndpoint, signStatus, onSignClick } = props;
+  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, signStatus, onSignClick } = props;
   const t = useTranslations();
   const isVerified = Boolean(props.trusted);
   const { isAuthenticated } = useAppSelector(state => state.auth);
@@ -157,32 +155,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
           <VerifiedBadge trusted={isVerified} />
         </Typography>
-        {/* Access Point Endpoint row under trust/untrust label (single line, truncated with tooltip) */}
-        {(props.showAccessPointEndpoint ?? true) && accessPointEndpoint && (
-          <Box sx={{ mt: 0.5, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
-            <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
-              {t('developerAPIs.accessPointEndpointLabel')}
-            </Typography>
-            <Tooltip title={accessPointEndpoint} placement="top-start" arrow>
-              <MuiLink
-                href={accessPointEndpoint}
-                target="_blank"
-                rel="noreferrer"
-                underline="hover"
-                sx={{
-                  color: '#0000FF',
-                  display: 'block',
-                  maxWidth: '100%',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {accessPointEndpoint}
-              </MuiLink>
-            </Tooltip>
-          </Box>
-        )}
+        {/* Access Point Endpoint removed from below avatar section */}
         <Typography variant="subtitle1" mt={2} sx={{ fontSize: '16px' }}>
           {t('common.usagePurpose')}
         </Typography>

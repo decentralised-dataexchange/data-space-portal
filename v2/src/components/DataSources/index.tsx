@@ -196,7 +196,6 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                     logoImage={dataSourceItem?.organisation?.logoUrl || ''}
                     dataDisclosureAgreements={dataSourceItem?.dataDisclosureAgreements ?? []}
                     trusted={trusted}
-                    accessPointEndpoint={dataSourceItem?.organisation?.accessPointEndpoint || ''}
                 />
             </Grid>
         </Box>

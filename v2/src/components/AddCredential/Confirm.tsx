@@ -23,7 +23,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
   // Data source metadata
   const gettingStartData = useAppSelector((state: any) => state.gettingStart.data);
   const { coverImageUrl, logoUrl, location, description, name } = gettingStartData?.dataSource || {};
-  const accessPointEndpoint: string | undefined = gettingStartData?.dataSource?.accessPointEndpoint || undefined;
+  // Access Point Endpoint intentionally not shown under avatar/trust label
 
   // Get verification status and data
   const { isVerified = false, verifyConnectionObj } = useAppSelector((state: any) => {
@@ -63,24 +63,7 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
         {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
         <VerifiedBadge trusted={isVerified} />
       </Typography>
-      {!!accessPointEndpoint && (
-        <Box sx={{ mt: 1, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
-          <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
-            {t('developerAPIs.accessPointEndpointLabel')}
-          </Typography>
-          <Tooltip title={accessPointEndpoint} placement="top-start" arrow>
-            <MuiLink
-              href={accessPointEndpoint}
-              target="_blank"
-              rel="noreferrer"
-              underline="hover"
-              sx={{ color: '#0000FF', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-            >
-              {accessPointEndpoint}
-            </MuiLink>
-          </Tooltip>
-        </Box>
-      )}
+      {/* Access Point Endpoint removed from below avatar section */}
       <Typography variant="subtitle1" mt={2}>
         {t('common.overView')}
       </Typography>

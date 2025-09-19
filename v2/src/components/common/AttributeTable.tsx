@@ -55,35 +55,47 @@ export const AttributeTable: React.FC<{
                   <Typography variant="subtitle2" sx={{ wordBreak: "break-word", lineHeight: '20px', textWrap: "nowrap"}}>
                     {row.label}
                   </Typography>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0, height: '20px' }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0, height: '20px', justifyContent: 'flex-end' }}>
                     {showValues ? (
-                      <Tooltip title={full} placement="top-start" disableInteractive arrow>
-                        {row.href ? (
-                          <MuiLink
-                            href={row.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            underline="hover"
-                            sx={{
-                              color: "#0000FF",
-                              minWidth: 0,
-                              display: "block",
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {full}
-                          </MuiLink>
-                        ) : (
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", minWidth: 0, lineHeight: '20px' }}
-                          >
-                            {hideEmptyDash && !full ? "" : (full || "-")}
-                          </Typography>
-                        )}
-                      </Tooltip>
+                      <Box sx={{ flex: 1, minWidth: 0, display: 'block', textAlign: 'right' }}>
+                        <Tooltip title={full} placement="top-start" disableInteractive arrow>
+                          {row.href ? (
+                            <MuiLink
+                              href={row.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              underline="hover"
+                              sx={{
+                                color: "#0000FF",
+                                minWidth: 0,
+                                display: "block",
+                                width: '100%',
+                                textAlign: 'right',
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              {full}
+                            </MuiLink>
+                          ) : (
+                            <Typography
+                              variant="subtitle2"
+                              sx={{
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                minWidth: 0,
+                                lineHeight: '20px',
+                                textAlign: 'right',
+                                width: '100%'
+                              }}
+                            >
+                              {hideEmptyDash && !full ? "" : (full || "-")}
+                            </Typography>
+                          )}
+                        </Tooltip>
+                      </Box>
                     ) : (
                       <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', minWidth: 0, justifyContent: 'flex-end' }}>
                         <Typography
