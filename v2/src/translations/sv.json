@@ -225,7 +225,8 @@
     "copy": "Kopiera",
     "copied": "Kopierad",
     "typeToConfirm": "Skriv \"{text}\" för att bekräfta",
-    "comingSoon": "Kommer snart"
+    "comingSoon": "Kommer snart",
+    "noDataSelected": "Ingen data vald"
   },
   "errors": {
     "generic": "Något gick fel."

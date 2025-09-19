@@ -51,6 +51,8 @@ export default function DDAModalController({
       logoImage={logoImage}
       trusted={trusted}
       accessPointEndpoint={accessPointEndpoint}
+      showAccessPointEndpoint={false}
+      drawerWidth={580}
     />
   );
 }

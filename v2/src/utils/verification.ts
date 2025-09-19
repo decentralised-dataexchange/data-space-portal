@@ -20,23 +20,31 @@ export function isOrganisationVerified(
 
   // Known flags or states that signal verification
   const flags = [
-    // Explicit boolean flags
     identity?.walletUnitAttestationVerified,
     identity?.isPresentationVerified,
     identity?.walletUnitAttestation?.isVerified,
     identity?.walletUnitValidity?.[0]?.attestation?.isVerified,
     identity?.walletUnitAttestationVerified,
-    identity?.presentationState === 'verified',
+    identity?.isVerifiedWithTrustList,
+    org?.isVerifiedWithTrustList,
     org?.verified,
     source?.verified,
-    // Common ad-hoc fields
     source?.trusted,
     org?.trusted,
-    source?.verification?.presentationState === 'verified',
-    org?.verification?.presentationState === 'verified',
+    source?.isVerifiedWithTrustList,
+    // presentation state fields (case-insensitive)
+    (() => {
+      const s = identity?.presentationState; return typeof s === 'string' && s.toLowerCase() === 'verified';
+    })(),
+    (() => {
+      const s = source?.verification?.presentationState; return typeof s === 'string' && s.toLowerCase() === 'verified';
+    })(),
+    (() => {
+      const s = org?.verification?.presentationState; return typeof s === 'string' && s.toLowerCase() === 'verified';
+    })(),
   ];
 
-  return flags.some(Boolean);
+  return flags.some(isTrueLike);
 }
 
 export function getTrustLabel(isVerified: boolean): 'Trusted' | 'Untrusted' {

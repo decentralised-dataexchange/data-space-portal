@@ -14,8 +14,7 @@ import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable
 import SoftwareStatementModal from "@/components/Account/DeveloperApis/SoftwareStatementModal";
 // Import styles used for view/add credential link-like buttons
 import "@/components/OrganisationDetails/style.scss";
-import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
-import { Eye as EyeIcon, EyeSlash as EyeSlashIcon } from "@phosphor-icons/react";
+import { useGetOrgIdentity } from "@/custom-hooks/gettingStarted";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -123,6 +122,7 @@ export default function DeveloperAPIs() {
   // Derived title from VCT, matching ViewCredentials behavior
   const ssObj = softwareStatementRes?.softwareStatement as any | undefined;
   const vctRaw = ssObj?.credential?.vct as string | undefined;
+  const orgIdentity = useGetOrgIdentity(orgData?.id);
   const vctTitle = useMemo(() => {
     const vct = vctRaw;
     if (!vct) return t('developerAPIs.softwareStatementTitle');
@@ -131,16 +131,6 @@ export default function DeveloperAPIs() {
       .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
       .trim();
   }, [vctRaw, t]);
-
-  // Trust indicator from software statement (fallback to org identity or false)
-  const trustedSS = React.useMemo(() => {
-    const ss: any = (softwareStatementRes as any)?.softwareStatement || {};
-    const v1 = ss?.isVerifiedWithTrustList;
-    const v2 = ss?.softwareStatement?.isVerifiedWithTrustList;
-    const orgVerified = (orgData as any)?.organisationIdentity?.isPresentationVerified
-      ?? (orgData as any)?.dataSourceIdentity?.isPresentationVerified;
-    return Boolean(v1 ?? v2 ?? orgVerified ?? false);
-  }, [softwareStatementRes, orgData]);
 
   // Build rows for the common AttributeTable: only client_uri as per spec
   const ssRows = useMemo<AttributeRow[]>(() => {
@@ -622,8 +612,8 @@ export default function DeveloperAPIs() {
       <RightSidebar
         open={openWalletConfig}
         onClose={closeWalletSidebar}
-        width={594}
-        maxWidth={594}
+        width={580}
+        maxWidth={580}
         height="100%"
         footerProps={{ sx: { justifyContent: 'flex-end', alignItems: 'center', gap: 1.5 } }}
         headerContent={(
@@ -725,8 +715,8 @@ export default function DeveloperAPIs() {
       <RightSidebar
         open={openOAuthConfig}
         onClose={closeOAuthSidebar}
-        width={594}
-        maxWidth={594}
+        width={580}
+        maxWidth={580}
         height="100%"
         footerProps={{ sx: { justifyContent: 'flex-end', alignItems: 'center', gap: 1.5 } }}
         headerContent={(
@@ -875,7 +865,7 @@ export default function DeveloperAPIs() {
         overview={(orgDetails as any)?.description || ''}
         onDelete={handleDeleteSoftwareStatement}
         isDeleteEnabled={false}
-        trusted={trustedSS}
+        trusted={orgIdentity?.data?.verified}
         accessPointEndpoint={(orgDetails as any)?.accessPointEndpoint || ''}
       />
 

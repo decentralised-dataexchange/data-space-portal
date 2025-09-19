@@ -85,8 +85,19 @@ export const AttributeTable: React.FC<{
                         )}
                       </Tooltip>
                     ) : (
-                      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                        <Typography variant="subtitle2" sx={{ filter: "blur(2px)", ml: 2, lineHeight: '20px', width: "100%", textAlign: "right", paddingRight: "2rem" }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', minWidth: 0, justifyContent: 'flex-end' }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
+                            filter: 'blur(2px)',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            minWidth: 0,
+                            lineHeight: '20px',
+                            textAlign: 'right'
+                          }}
+                        >
                           {"********"}
                         </Typography>
                       </Box>

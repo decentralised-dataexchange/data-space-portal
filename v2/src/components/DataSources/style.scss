@@ -13,8 +13,8 @@
         z-index: 1500 !important; // Higher than backdrop
         background-color: #F7F6F6 !important;
         height: 100vh;
-        width: 594px;
-        max-width: 594px;
+        width: 580px;
+        max-width: 580px;
         margin-top: 0;
         @include breakpoints.tabletAndDown {
             width: 100%;
@@ -117,8 +117,8 @@
     height: 100vh;
     background-color: #F7F6F6;
     margin-top: 0;
-    width: 594px;
-    max-width: 594px;
+    width: 580px;
+    max-width: 580px;
     @include breakpoints.tabletAndDown {
         margin-top: 0;
         width: 100%;
@@ -148,7 +148,7 @@
 }
 
 .dd-modal-details {
-    width: 594px;
+    width: 580px;
     border-radius: 2;
     background-color: #FFFF;
     @include breakpoints.tabletAndDown {
@@ -172,7 +172,7 @@
 .modal-footer {
   position: fixed;
   bottom: 0px;
-  width: 594px;
+  width: 580px;
   border-top: 1px solid #E9ECEF;
   height: 65px;
   display: flex;

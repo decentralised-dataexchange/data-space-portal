@@ -177,7 +177,8 @@
     "copy": "Copy",
     "copied": "Copied",
     "typeToConfirm": "Type \"{text}\" to confirm",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "noDataSelected": "No data selected"
   },
   "errors": {
     "generic": "Something went wrong."

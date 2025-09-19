@@ -38,17 +38,12 @@ export default function GeneralModal({
   const [isOk, setIsOk] = useState(false);
   const [confirmationTextInput, setConfirmationTextInput] = useState("");
   const t = useTranslations();
-  const ddaT = useTranslations("dataAgreements");
   const { mutate: deleteDDA, isPending } = useDeleteDDA();
 
   const handleCancelConfirmationText = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setConfirmationTextInput(value);
     setIsOk(value === confirmText);
-  };
-
-  const getPlaceholderText = () => {
-    return `Type ${confirmText} to confirm`;
   };
 
   const handleClose = () => {

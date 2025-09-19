@@ -96,7 +96,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
         
           </Box>
           <Box className="modal-footer" sx={{
-            width: 594,
+            width: 580,
             [theme.breakpoints.down('sm')]: {
               width: '100%',
             },

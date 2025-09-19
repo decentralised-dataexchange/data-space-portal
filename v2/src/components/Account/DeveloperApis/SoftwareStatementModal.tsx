@@ -26,6 +26,8 @@ export type SoftwareStatementModalProps = {
   enableToggle?: boolean; // show/hide eye toggle, default true
   trusted?: boolean; // whether the organisation is trusted
   accessPointEndpoint?: string; // organisation access point endpoint
+  showAccessPointEndpoint?: boolean; // control rendering of access point endpoint row
+  drawerWidth?: number; // optional override for right sidebar width
 };
 
 const formatDateTime = (epochOrIso?: number | string) => {
@@ -50,6 +52,8 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
   enableToggle = true,
   trusted = false,
   accessPointEndpoint,
+  showAccessPointEndpoint = true,
+  drawerWidth = 580,
 }) => {
   const t = useTranslations();
 
@@ -61,14 +65,17 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
   const expiry = metaExpiry?.value ? formatDateTime(metaExpiry.value as any) : '';
 
   // Prepare display rows (exclude meta rows)
-  const displayRows = rows.filter((r: any) => r.key !== '__issued' && r.key !== '__expiry');
+  const displayRows = rows
+    .filter((r: any) => r.key !== '__issued' && r.key !== '__expiry')
+    // remove copy buttons from Software Statement rows (client_uri etc.) as per spec
+    .map((r) => ({ ...r, copy: false }));
 
   return (
     <RightSidebar
       open={open}
       onClose={onClose}
-      width={594}
-      maxWidth={594}
+      width={drawerWidth}
+      maxWidth={drawerWidth}
       height="100%"
       bannerContent={(
         <>
@@ -123,7 +130,7 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
           <VerifiedBadge trusted={trusted} />
         </Typography>
         {/* Access Point Endpoint below trust label (single line, truncated with tooltip) */}
-        {!!accessPointEndpoint && (
+        {showAccessPointEndpoint && !!accessPointEndpoint && (
           <Box sx={{ mt: 0.5, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
             <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
               {t('developerAPIs.accessPointEndpointLabel')}

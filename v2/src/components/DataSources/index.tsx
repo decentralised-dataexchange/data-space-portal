@@ -119,22 +119,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                             {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                             <VerifiedBadge trusted={trusted} />
                                         </Typography>
-                                        {/* Access Point Endpoint under trust label */}
-                                        {dataSourceItem?.organisation?.accessPointEndpoint && (
-                                            <Typography variant="body2" sx={{ fontSize: '14px', mb: 1, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
-                                                <span>{t('developerAPIs.accessPointEndpointLabel')}</span>
-                                                <a
-                                                    href={dataSourceItem.organisation.accessPointEndpoint}
-                                                    title={dataSourceItem.organisation.accessPointEndpoint}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="hover-underline"
-                                                    style={{ color: '#0000FF', textDecoration: 'none', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                                                >
-                                                    {dataSourceItem.organisation.accessPointEndpoint}
-                                                </a>
-                                            </Typography>
-                                        )}
+                                        {/* Access Point Endpoint is intentionally hidden on this page's left panel */}
                                         <Typography className='datasource-location'>
                                             {dataSourceItem?.organisation?.location}
                                         </Typography>

@@ -25,6 +25,8 @@ interface Props {
   logoImage: any;
   trusted?: boolean;
   accessPointEndpoint?: string;
+  showAccessPointEndpoint?: boolean;
+  drawerWidth?: number;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
@@ -125,7 +127,8 @@ export default function ViewDataAgreementModalInner(props: Props) {
       showBanner={true}
       footerContent={footerContent}
       className="drawer-dda"
-      width={594}
+      width={props.drawerWidth ?? 580}
+      maxWidth={props.drawerWidth ?? 580}
     >
       <Box sx={{ marginTop: '20px', paddingBottom: '70px' }}>
         <Box display="flex" alignItems="center" gap={1}>
@@ -138,7 +141,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           <VerifiedBadge trusted={isVerified} />
         </Typography>
         {/* Access Point Endpoint row under trust/untrust label (single line, truncated with tooltip) */}
-        {accessPointEndpoint && (
+        {(props.showAccessPointEndpoint ?? true) && accessPointEndpoint && (
           <Box sx={{ mt: 0.5, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
             <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
               {t('developerAPIs.accessPointEndpointLabel')}
