@@ -3,6 +3,7 @@ import { apiService } from '@/lib/apiService/apiService';
 import { useAppDispatch, useAppSelector } from './store';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from '@/types/oauth2';
+import { OrganisationOAuth2ExternalClientsListResponse, OrganisationOAuth2ExternalClientResponse } from '@/types/organisationOAuth2External';
 import { SoftwareStatementResponse } from '@/types/softwareStatement';
 import { Organisation } from '@/types/organisation';
 
@@ -24,6 +25,81 @@ export const useGetAdminDetails = () => {
     enabled: isAuthenticated,
     retry: 1,
     refetchOnWindowFocus: false,
+  });
+};
+
+// Organisation OAuth2 Client - External
+export const useGetOrganisationOAuth2ClientsExternal = () => {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  return useQuery<OrganisationOAuth2ExternalClientsListResponse>({
+    queryKey: ['organisationOAuth2ClientsExternal'],
+    queryFn: async () => {
+      try {
+        return await apiService.getOrganisationOAuth2ClientsExternal();
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch Organisation OAuth2 clients (external)';
+        console.error('Error in getOrganisationOAuth2ClientsExternal:', errorMessage, error);
+        throw error;
+      }
+    },
+    enabled: isAuthenticated,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useCreateOrganisationOAuth2ClientExternal = () => {
+  const queryClient = useQueryClient();
+  return useMutation<OrganisationOAuth2ExternalClientResponse, unknown, { name: string; client_id: string; client_secret: string; description?: string }>({
+    mutationFn: async (payload) => {
+      try {
+        return await apiService.createOrganisationOAuth2ClientExternal(payload);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to create Organisation OAuth2 client (external)';
+        console.error('Error in createOrganisationOAuth2ClientExternal:', errorMessage, error);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organisationOAuth2ClientsExternal'] });
+    }
+  });
+};
+
+export const useUpdateOrganisationOAuth2ClientExternal = () => {
+  const queryClient = useQueryClient();
+  return useMutation<OrganisationOAuth2ExternalClientResponse, unknown, { clientId: string; name: string; client_id: string; client_secret: string; description?: string }>({
+    mutationFn: async ({ clientId, name, client_id, client_secret, description }) => {
+      try {
+        return await apiService.updateOrganisationOAuth2ClientExternal(clientId, { name, client_id, client_secret, description });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to update Organisation OAuth2 client (external)';
+        console.error('Error in updateOrganisationOAuth2ClientExternal:', errorMessage, error);
+        throw error;
+      }
+    },
+    retry: false,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organisationOAuth2ClientsExternal'] });
+    }
+  });
+};
+
+export const useDeleteOrganisationOAuth2ClientExternal = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, unknown, { clientId: string }>({
+    mutationFn: async ({ clientId }) => {
+      try {
+        return await apiService.deleteOrganisationOAuth2ClientExternal(clientId);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to delete Organisation OAuth2 client (external)';
+        console.error('Error in deleteOrganisationOAuth2ClientExternal:', errorMessage, error);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organisationOAuth2ClientsExternal'] });
+    }
   });
 };
 
@@ -63,6 +139,27 @@ export const useRequestSoftwareStatement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['softwareStatement'] });
+    }
+  });
+};
+
+// Hook to delete Software Statement
+export const useDeleteSoftwareStatement = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, unknown, void>({
+    mutationFn: async () => {
+      try {
+        await apiService.deleteSoftwareStatement();
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to delete software statement';
+        console.error('Error in deleteSoftwareStatement:', errorMessage, error);
+        throw error;
+      }
+    },
+    onSuccess: async () => {
+      // Ensure we re-fetch the now-empty software statement
+      await queryClient.invalidateQueries({ queryKey: ['softwareStatement'] });
+      await queryClient.refetchQueries({ queryKey: ['softwareStatement'] });
     }
   });
 };

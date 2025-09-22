@@ -404,6 +404,27 @@
     "configuredLabel": "Määritetty",
     "configureButton": "Määritä",
     "oauth2ClientConfigTitle": "OAuth 2.0 asiakkaan konfigurointi",
+    "orgOauth2Title": "Organisaation OAuth 2.0 asiakas",
+    "orgOauth2ClientConfigTitle": "Organisaation OAuth 2.0 asiakkaan konfigurointi",
+    "orgOauth2ClientNameLabel": "Nimi",
+    "orgOauth2ClientNamePlaceholder": "Nimi organisaation OAuth 2.0 asiakkaalle",
+    "orgOauth2ClientIdLabel": "Client ID",
+    "orgOauth2ClientIdPlaceholder": "Syötä Client ID",
+    "orgOauth2ClientSecretLabel": "Client Secret",
+    "orgOauth2ClientSecretPlaceholder": "Syötä Client Secret",
+    "createOrganisationOAuth2Client": "Luo",
+    "orgClientNameRequired": "Asiakkaan nimi on pakollinen",
+    "orgClientIdRequired": "Client ID on pakollinen",
+    "orgClientSecretRequired": "Client Secret on pakollinen",
+    "orgOauth2DeleteConfirm": "Haluatko varmasti poistaa organisaation OAuth2-asiakkaan?",
+    "orgOauth2ClientDescriptionLabel": "Kuvaus",
+    "orgOauth2ClientDescriptionPlaceholder": "Valinnainen kuvaus",
+    "orgOauth2DeleteModal": {
+      "title": "Poista organisaation OAuth 2.0 -asiakas",
+      "description": "Tämä toiminto poistaa pysyvästi organisaation OAuth 2.0 -asiakkaan. Vahvista kirjoittamalla alla oleva vahvistusteksti.",
+      "confirmText": "DELETE",
+      "confirmButton": "Poista"
+    },
     "deploymentStatusLabel": "Käyttöönottotila:",
     "notConfiguredLabel": "Ei konfiguroitu",
     "owsBaseUrlRequired": "Haltijan perus-URL on pakollinen",
@@ -430,6 +451,12 @@
       "offer_sent": "Tarjous lähetetty",
       "offer_received": "Tarjous vastaanotettu",
       "credential_accepted": "Tunniste hyväksytty"
+    },
+    "deleteSoftwareStatementModal": {
+      "title": "Poista ohjelmistolauseke",
+      "description": "Olet poistamassa ohjelmistolausekettasi. Tätä toimintoa ei voi perua.",
+      "confirmButton": "Poista",
+      "confirmText": "POISTA"
     }
   },
   "dispConnection": {

@@ -4,6 +4,7 @@ import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
 import { OrganisationListResponse, OrganisationResponse, OrganisationUpdatePayload } from "@/types/organisation";
 import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from "@/types/oauth2";
+import { OrganisationOAuth2ExternalClientsListResponse, OrganisationOAuth2ExternalClientResponse } from "@/types/organisationOAuth2External";
 import {
   Verification,
   VerificationTemplate,
@@ -42,6 +43,15 @@ export const apiService = {
       throw error;
     }
   },
+  deleteSoftwareStatement: async (): Promise<void> => {
+    try {
+      await api.delete<void>(ENDPOINTS.softwareStatement());
+      return;
+    } catch (error) {
+      console.error('Error deleting software statement:', error);
+      throw error;
+    }
+  },
   signup: async (payload: SignupPayload): Promise<any> => {
     return api.post<any>(
       ENDPOINTS.signup(),
@@ -66,6 +76,26 @@ export const apiService = {
   ): Promise<OAuth2ClientCreateResponse> => {
     return api.put<OAuth2ClientCreateResponse>(ENDPOINTS.updateOAuth2Client(clientId), payload)
       .then(res => res.data);
+  },
+  // Organisation OAuth2 Client - External
+  getOrganisationOAuth2ClientsExternal: async (): Promise<OrganisationOAuth2ExternalClientsListResponse> => {
+    return api.get<OrganisationOAuth2ExternalClientsListResponse>(ENDPOINTS.getOrganisationOAuth2ClientsExternal())
+      .then(res => res.data);
+  },
+  createOrganisationOAuth2ClientExternal: async (payload: { name: string; client_id: string; client_secret: string; description?: string }): Promise<OrganisationOAuth2ExternalClientResponse> => {
+    return api.post<OrganisationOAuth2ExternalClientResponse>(ENDPOINTS.createOrganisationOAuth2ClientExternal(), payload)
+      .then(res => res.data);
+  },
+  updateOrganisationOAuth2ClientExternal: async (
+    clientId: string,
+    payload: { name: string; client_id: string; client_secret: string; description?: string }
+  ): Promise<OrganisationOAuth2ExternalClientResponse> => {
+    return api.put<OrganisationOAuth2ExternalClientResponse>(ENDPOINTS.updateOrganisationOAuth2ClientExternal(clientId), payload)
+      .then(res => res.data);
+  },
+  deleteOrganisationOAuth2ClientExternal: async (clientId: string): Promise<void> => {
+    return api.delete<void>(ENDPOINTS.deleteOrganisationOAuth2ClientExternal(clientId))
+      .then(res => res.data as unknown as void);
   },
   listDataDisclosureAgreements: async (
     filter: string,

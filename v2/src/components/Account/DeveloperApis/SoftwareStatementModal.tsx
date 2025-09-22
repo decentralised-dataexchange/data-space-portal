@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Button, Typography, Tooltip, Avatar, IconButton, CircularProgress, Link as MuiLink } from "@mui/material";
+import { Box, Button, Typography, Avatar, IconButton } from "@mui/material";
 import RightSidebar from "@/components/common/RightSidebar";
 import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
@@ -17,6 +17,8 @@ export type SoftwareStatementModalProps = {
   rows: AttributeRow[];
   organisationName?: string;
   overview?: string;
+  coverImageBase64?: string;
+  logoImageBase64?: string;
   showValues: boolean;
   setShowValues: (v: boolean) => void;
   statusLabel?: string; // localized status string (optional)
@@ -25,8 +27,6 @@ export type SoftwareStatementModalProps = {
   isRequesting?: boolean; // for potential loading states
   enableToggle?: boolean; // show/hide eye toggle, default true
   trusted?: boolean; // whether the organisation is trusted
-  accessPointEndpoint?: string; // organisation access point endpoint
-  showAccessPointEndpoint?: boolean; // control rendering of access point endpoint row
   drawerWidth?: number; // optional override for right sidebar width
 };
 
@@ -51,9 +51,9 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
   isDeleteEnabled = false,
   enableToggle = true,
   trusted = false,
-  accessPointEndpoint,
-  showAccessPointEndpoint = true,
   drawerWidth = 580,
+  coverImageBase64,
+  logoImageBase64,
 }) => {
   const t = useTranslations();
 
@@ -80,7 +80,7 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
       bannerContent={(
         <>
           <Box sx={{ position: 'relative' }}>
-            <Box component="img" alt="Banner" src={defaultCoverImage} sx={{ height: 194, width: '100%', objectFit: 'cover' }} />
+            <Box component="img" alt="Banner" src={coverImageBase64 || defaultCoverImage} sx={{ height: 194, width: '100%', objectFit: 'cover' }} />
             {enableToggle && (
               <IconButton
                 onClick={() => setShowValues(!showValues)}
@@ -90,7 +90,7 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
               </IconButton>
             )}
             <Box sx={{ position: 'relative', height: '85px', left: -25 }}>
-              <Avatar src={defaultLogoImg} sx={{ position: 'absolute', left: 50, top: -65, width: 110, height: 110, border: '6px solid white', backgroundColor: 'white' }} />
+              <Avatar src={logoImageBase64 || defaultLogoImg} sx={{ position: 'absolute', left: 50, top: -65, width: 110, height: 110, border: '6px solid white', backgroundColor: 'white' }} />
             </Box>
           </Box>
         </>
@@ -109,11 +109,13 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
           <Button className="delete-btn" variant="outlined" onClick={onClose} sx={{ minWidth: 120, textTransform: 'none' }}>
             {t('common.close')}
           </Button>
-          <span>
-            <Button className="delete-btn" variant="outlined" onClick={() => onDelete?.()} disabled={!isDeleteEnabled} sx={{ minWidth: 120, textTransform: 'none', '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed' } }}>
-              {t('common.delete')}
-            </Button>
-          </span>
+          {isDeleteEnabled && (
+            <span>
+              <Button className="delete-btn" variant="outlined" onClick={() => onDelete?.()} sx={{ minWidth: 120, textTransform: 'none' }}>
+                {t('common.delete')}
+              </Button>
+            </span>
+          )}
         </Box>
       )}
     >
@@ -129,32 +131,6 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
           {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
           <VerifiedBadge trusted={trusted} />
         </Typography>
-        {/* Access Point Endpoint below trust label (single line, truncated with tooltip) */}
-        {showAccessPointEndpoint && !!accessPointEndpoint && (
-          <Box sx={{ mt: 0.5, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
-            <Typography variant="subtitle2" sx={{ lineHeight: '20px', height: '20px' }}>
-              {t('developerAPIs.accessPointEndpointLabel')}
-            </Typography>
-            <Tooltip title={accessPointEndpoint} placement="top-start" arrow>
-              <MuiLink
-                href={accessPointEndpoint}
-                target="_blank"
-                rel="noreferrer"
-                underline="hover"
-                sx={{
-                  color: '#0000FF',
-                  display: 'block',
-                  maxWidth: '100%',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {accessPointEndpoint}
-              </MuiLink>
-            </Tooltip>
-          </Box>
-        )}
         {overview && (
           <>
             <Typography variant="subtitle1" mt={2}>
