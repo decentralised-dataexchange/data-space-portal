@@ -15,6 +15,8 @@ import { SignupPayload } from "@/types/auth";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
 import { SoftwareStatementResponse } from "@/types/softwareStatement";
 import { DDAgreementsResponse } from "@/types/dataDisclosureAgreement";
+import { B2BConnectionsListResponse, B2BConnectionDetailResponse } from "@/types/b2bConnection";
+import { SignedAgreementsListResponse, SignedAgreementRecordResponse } from "@/types/signedAgreement";
 
 // API Service implementation with real API calls
 export const apiService = {
@@ -103,6 +105,34 @@ export const apiService = {
     offsetValue: number
   ): Promise<DDAgreementsResponse> => {
     return api.get<DDAgreementsResponse>(ENDPOINTS.listDataDisclosureAgreements(filter, limit, offsetValue))
+      .then(res => res.data);
+  },
+  // DDA History
+  getDDAHistory: async (dataDisclosureAgreementId: string): Promise<any> => {
+    return api.get<any>(ENDPOINTS.getDDAHistory(dataDisclosureAgreementId)).then(res => res.data);
+  },
+  // B2B Connections (Organisation)
+  listB2BConnections: async (
+    limit: number,
+    offsetValue: number
+  ): Promise<B2BConnectionsListResponse> => {
+    return api.get<B2BConnectionsListResponse>(ENDPOINTS.listB2BConnections(limit, offsetValue))
+      .then(res => res.data);
+  },
+  readB2BConnection: async (b2bConnectionId: string): Promise<B2BConnectionDetailResponse> => {
+    return api.get<B2BConnectionDetailResponse>(ENDPOINTS.readB2BConnection(b2bConnectionId))
+      .then(res => res.data);
+  },
+  // Signed Agreements (Organisation)
+  listSignedAgreements: async (
+    limit: number,
+    offsetValue: number
+  ): Promise<SignedAgreementsListResponse> => {
+    return api.get<SignedAgreementsListResponse>(ENDPOINTS.listSignedAgreements(limit, offsetValue))
+      .then(res => res.data);
+  },
+  readSignedAgreement: async (id: string): Promise<SignedAgreementRecordResponse> => {
+    return api.get<SignedAgreementRecordResponse>(ENDPOINTS.readSignedAgreement(id))
       .then(res => res.data);
   },
   updateDDAStatus: async (ddaId: string, payload: { status: string }): Promise<void> => {

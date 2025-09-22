@@ -16,6 +16,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { sidebarMenuItems, SidebarMenuItem, SubMenuItem } from '@/constants/sidebar';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
+import HubOutlinedIcon from '@mui/icons-material/HubOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import './style.scss';
 
 const drawerWidth = 260;
@@ -27,6 +32,20 @@ interface SideBarProps {
 // Colors for active/inactive states
 const activeTextColor = '#000000';
 const inactiveTextColor = '#757575';
+
+type RenderedSubMenuItem = {
+  name: string;
+  translationKey: string;
+  link: string;
+};
+
+type RenderedMenuItem = {
+  name: string;
+  translationKey: string;
+  icon: React.ReactNode;
+  link: string;
+  subMenu: RenderedSubMenuItem[];
+};
 
 export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
   const t = useTranslations();
@@ -58,15 +77,31 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
     return pathname.endsWith(itemPath);
   };
 
+  const resolveIcon = (iconId: 'home' | 'market' | 'signed' | 'b2b' | 'account') => {
+    switch (iconId) {
+      case 'home':
+        return <HomeOutlinedIcon fontSize="small" />;
+      case 'market':
+        return <DescriptionOutlinedIcon fontSize="small" />;
+      case 'signed':
+        return <AssignmentTurnedInOutlinedIcon fontSize="small" />;
+      case 'b2b':
+        return <HubOutlinedIcon fontSize="small" />;
+      case 'account':
+      default:
+        return <LockOutlinedIcon fontSize="small" />;
+    }
+  };
+
   // Apply translations to the imported sidebar menu items using translation keys
-  const menuList = sidebarMenuItems.map(item => ({
+  const menuList: RenderedMenuItem[] = sidebarMenuItems.map(item => ({
     name: t(`sideBar.${item.translationKey}`, { fallback: item.name }),
-    translationKey: item.translationKey, // Include translationKey to match SidebarMenuItem interface
-    icon: item.icon,
+    translationKey: item.translationKey,
+    icon: resolveIcon(item.iconId),
     link: item.link,
     subMenu: item.subMenu.map(subItem => ({
       name: t(`sideBar.${subItem.translationKey}`, { fallback: subItem.name }),
-      translationKey: subItem.translationKey, // Include translationKey for submenu items
+      translationKey: subItem.translationKey,
       link: subItem.link
     }))
   }))
@@ -92,7 +127,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
   }, [pathname]);
 
   interface SubMenuComponentProps {
-    list: SidebarMenuItem;
+    list: RenderedMenuItem;
     isOpen: boolean;
     handleToggle: (menuName: string) => void;
   }
@@ -113,7 +148,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
           }}
         >
           <ListItemIcon sx={{ color: inactiveTextColor }}>
-            <list.icon size={22} weight={"regular"} />
+            {list.icon}
           </ListItemIcon>
           <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
@@ -200,7 +235,7 @@ export default function SideBar({ open, handleDrawerClose }: SideBarProps) {
                 sx={{ color: active ? activeTextColor : inactiveTextColor, fontWeight: active ? 'bold' : 'normal', display: 'flex', width: '100%', alignItems: 'center', gap: 0.5}}
               >
                 <ListItemIcon sx={{ color: inactiveTextColor }}>
-                  <list.icon size={24} weight={"regular"} />
+                  {list.icon}
                 </ListItemIcon>
                 <ListItemText sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant="body2" sx={{ lineHeight: 'normal' }}>{list.name}</Typography>
