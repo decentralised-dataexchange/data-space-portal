@@ -4,17 +4,19 @@ import { styled } from "@mui/material/styles";
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useRequestSoftwareStatement } from "@/custom-hooks/developerApis";
+import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useRequestSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal } from "@/custom-hooks/developerApis";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
 import RightSidebar from "@/components/common/RightSidebar";
 import CopyButton from "@/components/common/CopyButton";
 import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
+import DeleteOrganisationOAuthClientModal from "@/components/Account/DeveloperApis/DeleteOrganisationOAuthClientModal";
 import SoftwareStatementModal from "@/components/Account/DeveloperApis/SoftwareStatementModal";
+import DeleteSoftwareStatementModal from "@/components/Account/DeveloperApis/DeleteSoftwareStatementModal";
 // Import styles used for view/add credential link-like buttons
 import "@/components/OrganisationDetails/style.scss";
-import { useGetOrgIdentity } from "@/custom-hooks/gettingStarted";
+import { useGetOrgIdentity, useGetCoverImage, useGetLogoImage } from "@/custom-hooks/gettingStarted";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -46,43 +48,6 @@ const Item = styled("div")(({ theme }) => ({
   border: "1px solid #CECECE",
 }));
 
-// Child section for Software Statement modal body
-const SoftwareSectionModalContent: React.FC<{
-  title: string;
-  rows: AttributeRow[];
-  showValues: boolean;
-  status?: string;
-  organisationName?: string;
-  overview?: string;
-}> = ({ title, rows, showValues, organisationName, overview }) => {
-  const t = useTranslations();
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', paddingTop: '40px' }}>
-      {organisationName && (
-        <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="h6" sx={{ fontSize: '16px' }}>
-            {organisationName}
-          </Typography>
-        </Box>
-      )}
-      {overview && (
-        <>
-          <Typography variant="subtitle1" mt={2}>
-            {t('common.overView')}
-          </Typography>
-          <Typography variant="subtitle2" color="black" mt={0.5} sx={{ wordWrap: 'break-word' }}>
-            {overview}
-          </Typography>
-        </>
-      )}
-      <Typography color="grey" mt={1} variant="subtitle1">
-        {title}
-      </Typography>
-      <AttributeTable rows={rows} showValues={showValues} labelMinWidth={200} labelMaxPercent={40} />
-    </Box>
-  );
-};
-
 export default function DeveloperAPIs() {
   const [clientName, setClientName] = useState("");
   const [clientDescription, setClientDescription] = useState("");
@@ -94,7 +59,15 @@ export default function DeveloperAPIs() {
   const [openWalletConfig, setOpenWalletConfig] = useState(false);
   const [openOAuthConfig, setOpenOAuthConfig] = useState(false);
   const [openSoftwareStatementView, setOpenSoftwareStatementView] = useState(false);
+  const [openDeleteSSModal, setOpenDeleteSSModal] = useState(false);
   const [ssShowValues, setSsShowValues] = useState(false);
+  // Organisation OAuth2 External Client states
+  const [openOrgOAuthConfig, setOpenOrgOAuthConfig] = useState(false);
+  const [orgClientName, setOrgClientName] = useState("");
+  const [orgClientId, setOrgClientId] = useState("");
+  const [orgClientSecret, setOrgClientSecret] = useState("");
+  const [orgClientDescription, setOrgClientDescription] = useState("");
+  const [openDeleteOrgOAuthModal, setOpenDeleteOrgOAuthModal] = useState(false);
   // Edit form states inside sidebars
   const [editOpenApiUrl, setEditOpenApiUrl] = useState("");
   const [editHolderBaseUrl, setEditHolderBaseUrl] = useState("");
@@ -103,6 +76,11 @@ export default function DeveloperAPIs() {
   const { data: oauth2List, isLoading: oauth2Loading } = useGetOAuth2Clients();
   const { mutate: createOAuth2Client, isPending: isCreating } = useCreateOAuth2Client();
   const { mutate: updateOAuth2Client, isPending: isUpdating } = useUpdateOAuth2Client();
+  // Organisation OAuth2 External hooks
+  const { data: orgOAuthList, isLoading: orgOAuthLoading } = useGetOrganisationOAuth2ClientsExternal();
+  const { mutate: createOrgOAuth2Client, isPending: isCreatingOrgOAuth } = useCreateOrganisationOAuth2ClientExternal();
+  const { mutate: updateOrgOAuth2Client, isPending: isUpdatingOrgOAuth } = useUpdateOrganisationOAuth2ClientExternal();
+  const { mutate: deleteOrgOAuth2Client, isPending: isDeletingOrgOAuth } = useDeleteOrganisationOAuth2ClientExternal();
   const oauth2Client = useAppSelector((state) => state.auth.oauth2Client);
 
   // Fetch admin details using React Query
@@ -118,6 +96,9 @@ export default function DeveloperAPIs() {
   // Software Statement hooks
   const { data: softwareStatementRes, isLoading: ssLoading, isError: ssError } = useGetSoftwareStatement();
   const { mutate: requestSoftwareStatement, isPending: isRequestingSS } = useRequestSoftwareStatement();
+  const { mutate: deleteSoftwareStatement, isPending: isDeletingSS } = useDeleteSoftwareStatement();
+  const { data: coverImageBase64 } = useGetCoverImage();
+  const { data: logoImageBase64 } = useGetLogoImage();
 
   // Derived title from VCT, matching ViewCredentials behavior
   const ssObj = softwareStatementRes?.softwareStatement as any | undefined;
@@ -131,6 +112,11 @@ export default function DeveloperAPIs() {
       .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
       .trim();
   }, [vctRaw, t]);
+
+  // Organisation display values for the Software Statement modal
+  const orgName = (orgDetails as any)?.organisation?.name ?? (orgDetails as any)?.name ?? '';
+  const orgDesc = (orgDetails as any)?.organisation?.description ?? (orgDetails as any)?.description ?? '';
+  const orgVerified = Boolean((orgIdentity as any)?.data?.verified ?? (orgIdentity as any)?.data?.organisationalIdentity?.verified);
 
   // Build rows for the common AttributeTable: only client_uri as per spec
   const ssRows = useMemo<AttributeRow[]>(() => {
@@ -168,6 +154,22 @@ export default function DeveloperAPIs() {
       setClientDescription(oauth2Client.description ?? "");
     }
   }, [oauth2Client]);
+
+  // Organisation OAuth2 External - first client
+  const orgOAuthClient = orgOAuthList?.organisationOAuth2Client?.[0];
+  useEffect(() => {
+    if (orgOAuthClient) {
+      setOrgClientName(orgOAuthClient.name || "");
+      setOrgClientId(orgOAuthClient.client_id || "");
+      setOrgClientSecret(orgOAuthClient.client_secret || "");
+      setOrgClientDescription(orgOAuthClient.description || "");
+    } else {
+      setOrgClientName("");
+      setOrgClientId("");
+      setOrgClientSecret("");
+      setOrgClientDescription("");
+    }
+  }, [orgOAuthClient]);
 
   const handleCreateClient = () => {
     // Prevent submission if a client already exists (defensive guard)
@@ -234,15 +236,24 @@ export default function DeveloperAPIs() {
   const closeWalletSidebar = () => setOpenWalletConfig(false);
   const openOAuthSidebar = () => { setOpenOAuthConfig(true); };
   const closeOAuthSidebar = () => setOpenOAuthConfig(false);
+  const openOrgOAuthSidebar = () => { setOpenOrgOAuthConfig(true); };
+  const closeOrgOAuthSidebar = () => setOpenOrgOAuthConfig(false);
   const openSoftwareStatementSidebar = () => setOpenSoftwareStatementView(true);
   const closeSoftwareStatementSidebar = () => setOpenSoftwareStatementView(false);
 
-  // Stub flow for delete software statement
+  // Delete Software Statement -> refetch happens via hook; then close modal
   const handleDeleteSoftwareStatement = () => {
-    // TODO: Integrate API once available (e.g., apiService.deleteSoftwareStatement())
-    // Keeping disabled in UI for now. This is just a placeholder to document the flow.
-    dispatch(setMessage(t('common.comingSoon')));
+    deleteSoftwareStatement(undefined, {
+      onSuccess: () => {
+        closeSoftwareStatementSidebar();
+        setOpenDeleteSSModal(false);
+      },
+      onError: () => {
+        dispatch(setMessage(t('error.generic')));
+      }
+    });
   };
+
 
   // Save both OpenAPI URL and Holder Base URL via organisation update
   const handleSaveWalletConfig = () => {
@@ -316,7 +327,7 @@ export default function DeveloperAPIs() {
   };
 
   // Show loading state if any data is loading
-  if (adminLoading || orgLoading || oauth2Loading) {
+  if (adminLoading || orgLoading || oauth2Loading || orgOAuthLoading) {
     return (
       <Container>
         <HeaderContainer>
@@ -478,43 +489,8 @@ export default function DeveloperAPIs() {
                 const hasEndpoints = !!(org?.credentialOfferEndpoint) && !!(org?.accessPointEndpoint);
                 const status = softwareStatementRes?.status || '';
                 const isEmpty = !softwareStatementRes || !softwareStatementRes.softwareStatement || Object.keys(softwareStatementRes.softwareStatement).length === 0;
-                if (isEmpty) {
-                  return (
-                    <>
-                      <Tooltip
-                        title={t(hasEndpoints ? 'developerAPIs.softwareStatementRequestTooltip' : 'developerAPIs.softwareStatementPrereqMissing')}
-                        arrow
-                      >
-                        <span style={{ cursor: (!hasEndpoints || isRequestingSS) ? 'not-allowed' : 'pointer' }}>
-                          <Button
-                            variant="text"
-                            className={'view-credential'}
-                            disabled={!hasEndpoints || isRequestingSS}
-                            onClick={() => {
-                              if (!hasEndpoints) return;
-                              requestSoftwareStatement(undefined, {
-                                onSuccess: () => {
-                                  dispatch(setMessage(t('common.success')));
-                                },
-                                onError: () => dispatch(setMessage(t('error.generic')))
-                              });
-                            }}
-                            sx={{
-                              p: 0,
-                              minWidth: 'auto',
-                              textTransform: 'none !important',
-                              '&:hover': { backgroundColor: 'transparent' },
-                              '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed' }
-                            }}
-                          >
-                            {isRequestingSS ? <CircularProgress size={16} /> : t('gettingStarted.addCredential')}
-                          </Button>
-                        </span>
-                      </Tooltip>
-                    </>
-                  );
-                }
-                if (status === 'credential_accepted') {
+                const available = !isEmpty && status === 'credential_accepted';
+                if (available) {
                   return (
                     <Tooltip title={t('developerAPIs.softwareStatementViewTooltip')} arrow>
                       <Button
@@ -528,17 +504,35 @@ export default function DeveloperAPIs() {
                     </Tooltip>
                   );
                 }
-                // Intermediate states: show disabled Request button with informative tooltip
+                // Not accepted yet (empty or intermediate): show Add Credential; allow clicking even if status in-progress.
                 return (
-                  <Tooltip title={t(`developerAPIs.softwareStatementStatus.${status}` as const)} arrow>
-                    <span style={{ cursor: 'not-allowed' }}>
+                  <Tooltip
+                    title={t(hasEndpoints ? 'developerAPIs.softwareStatementRequestTooltip' : 'developerAPIs.softwareStatementPrereqMissing')}
+                    arrow
+                  >
+                    <span style={{ cursor: (!hasEndpoints || isRequestingSS) ? 'not-allowed' : 'pointer' }}>
                       <Button
                         variant="text"
                         className={'view-credential'}
-                        disabled
-                        sx={{ p: 0, minWidth: 'auto', textTransform: 'none !important', '&:hover': { backgroundColor: 'transparent' }, '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed' } }}
+                        disabled={!hasEndpoints || isRequestingSS}
+                        onClick={() => {
+                          if (!hasEndpoints || isRequestingSS) return;
+                          requestSoftwareStatement(undefined, {
+                            onSuccess: () => {
+                              // No toast on success; UI will refresh via query invalidation
+                            },
+                            onError: () => dispatch(setMessage(t('error.generic')))
+                          });
+                        }}
+                        sx={{
+                          p: 0,
+                          minWidth: 'auto',
+                          textTransform: 'none !important',
+                          '&:hover': { backgroundColor: 'transparent' },
+                          '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed' }
+                        }}
                       >
-                        {t('developerAPIs.softwareStatementRequest')}
+                        {isRequestingSS ? <CircularProgress size={16} /> : t('gettingStarted.addCredential')}
                       </Button>
                     </span>
                   </Tooltip>
@@ -604,6 +598,81 @@ export default function DeveloperAPIs() {
             mask={!!oauth2Client?.client_secret}
             copyKey="clientSecret"
             copyValue={oauth2Client?.client_secret || ''}
+          />
+        </Box>
+      </Box>
+
+      {/* Organisation OAuth2 External Client display */}
+      <Box className="apiKey" sx={{ padding: '15px 30px' }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          flexDirection={{ xs: 'column', sm: 'row' }}
+          gap={{ xs: 1, sm: 0 }}
+          sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
+        >
+          <Typography color="black" variant="subtitle1" fontWeight="bold">
+            {t('developerAPIs.orgOauth2Title')}
+          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            {orgOAuthClient && (
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setOpenDeleteOrgOAuthModal(true)}
+                disabled={isDeletingOrgOAuth}
+                sx={{
+                  padding: '5px 30px',
+                  border: '1px solid #DFDFDF',
+                  borderRadius: 0,
+                  color: 'black',
+                  '&:hover': { backgroundColor: 'black', color: 'white' },
+                }}
+              >
+                {t('common.delete')}
+              </Button>
+            )}
+            <Button
+              variant="outlined"
+              onClick={openOrgOAuthSidebar}
+              sx={{
+                padding: '5px 50px',
+                border: '1px solid #DFDFDF',
+                borderRadius: 0,
+                color: 'black',
+                '&:hover': { backgroundColor: 'black', color: 'white' },
+              }}
+            >
+              {t('developerAPIs.configureButton')}
+            </Button>
+          </Box>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <InfoRow
+            label={t('developerAPIs.clientNameLabel')}
+            value={orgOAuthClient?.name || ''}
+            copyKey="orgClientName"
+            copyValue={orgOAuthClient?.name || ''}
+          />
+          <InfoRow
+            label={t('developerAPIs.clientDescriptionLabel')}
+            value={orgOAuthClient?.description || ''}
+            copyKey="orgClientDescription"
+            copyValue={orgOAuthClient?.description || ''}
+          />
+          <InfoRow
+            label={t('developerAPIs.clientIdLabel')}
+            value={orgOAuthClient?.client_id || ''}
+            copyKey="orgClientId"
+            copyValue={orgOAuthClient?.client_id || ''}
+          />
+          <InfoRow
+            label={t('developerAPIs.clientSecretLabel')}
+            value={orgOAuthClient?.client_secret || ''}
+            mask={!!orgOAuthClient?.client_secret}
+            copyKey="orgClientSecret"
+            copyValue={orgOAuthClient?.client_secret || ''}
           />
         </Box>
       </Box>
@@ -705,6 +774,157 @@ export default function DeveloperAPIs() {
             fullWidth
             value={editAccessPointEndpoint}
             onChange={(e) => setEditAccessPointEndpoint(e.target.value)}
+            InputProps={{ disableUnderline: false }}
+            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+          />
+        </Box>
+      </RightSidebar>
+
+      {/* RightSidebar for Organisation OAuth2 External Client */}
+      <RightSidebar
+        open={openOrgOAuthConfig}
+        onClose={closeOrgOAuthSidebar}
+        width={580}
+        maxWidth={580}
+        height="100%"
+        footerProps={{ sx: { justifyContent: 'space-between', alignItems: 'center', gap: 1.5 } }}
+        headerContent={(
+          <Box sx={{ width: '100%' }}>
+            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
+              {t('developerAPIs.orgOauth2ClientConfigTitle')}
+            </Typography>
+          </Box>
+        )}
+        showBanner={false}
+        showFooter={true}
+        footerContent={(
+          <>
+            <Box>
+              <Button className="delete-btn" variant="outlined" onClick={closeOrgOAuthSidebar} sx={{ minWidth: 120 }}>
+                {t('common.close')}
+              </Button>
+            </Box>
+            <Box>
+              {!orgOAuthClient && (
+                <Button
+                  className="delete-btn"
+                  variant="outlined"
+                  onClick={() => {
+                    // Validation: all fields mandatory
+                    if (!orgClientName.trim()) { dispatch(setMessage(t('developerAPIs.orgClientNameRequired'))); return; }
+                    if (!orgClientId.trim()) { dispatch(setMessage(t('developerAPIs.orgClientIdRequired'))); return; }
+                    if (!orgClientSecret.trim()) { dispatch(setMessage(t('developerAPIs.orgClientSecretRequired'))); return; }
+                    createOrgOAuth2Client(
+                      { name: orgClientName.trim(), client_id: orgClientId.trim(), client_secret: orgClientSecret.trim(), description: orgClientDescription.trim() || undefined },
+                      {
+                        onSuccess: () => { setOpenOrgOAuthConfig(false); },
+                        onError: () => dispatch(setMessage(t('error.generic')))
+                      }
+                    );
+                  }}
+                  disabled={isCreatingOrgOAuth || !orgClientName.trim() || !orgClientId.trim() || !orgClientSecret.trim()}
+                  sx={{ minWidth: 120 }}
+                >
+                  {isCreatingOrgOAuth ? <CircularProgress size={20} /> : t('developerAPIs.createOrganisationOAuth2Client')}
+                </Button>
+              )}
+              {orgOAuthClient && (
+                <Button
+                  className="delete-btn"
+                  variant="outlined"
+                  onClick={() => {
+                    const isDirty = (
+                      (orgClientName ?? '') !== (orgOAuthClient?.name ?? '') ||
+                      (orgClientId ?? '') !== (orgOAuthClient?.client_id ?? '') ||
+                      (orgClientSecret ?? '') !== (orgOAuthClient?.client_secret ?? '') ||
+                      (orgClientDescription ?? '') !== (orgOAuthClient?.description ?? '')
+                    );
+                    if (!isDirty) return;
+                    // Required validations
+                    if (!orgClientName.trim()) { dispatch(setMessage(t('developerAPIs.orgClientNameRequired'))); return; }
+                    if (!orgClientId.trim()) { dispatch(setMessage(t('developerAPIs.orgClientIdRequired'))); return; }
+                    if (!orgClientSecret.trim()) { dispatch(setMessage(t('developerAPIs.orgClientSecretRequired'))); return; }
+                    updateOrgOAuth2Client(
+                      { clientId: orgOAuthClient.id, name: orgClientName.trim(), client_id: orgClientId.trim(), client_secret: orgClientSecret.trim(), description: orgClientDescription.trim() || undefined },
+                      {
+                        onSuccess: () => { setOpenOrgOAuthConfig(false); },
+                        onError: () => dispatch(setMessage(t('error.generic')))
+                      }
+                    );
+                  }}
+                  disabled={isUpdatingOrgOAuth || !orgClientName.trim() || !orgClientId.trim() || !orgClientSecret.trim()}
+                  sx={{
+                    minWidth: 120,
+                    '&.Mui-disabled': {
+                      opacity: 0.5,
+                      color: '#9e9e9e !important',
+                      borderColor: '#e0e0e0 !important',
+                      pointerEvents: 'auto !important',
+                      cursor: 'not-allowed !important',
+                    }
+                  }}
+                >
+                  {isUpdatingOrgOAuth ? <CircularProgress size={20} /> : t('common.save')}
+                </Button>
+              )}
+            </Box>
+          </>
+        )}
+      >
+        <Box>
+          <Typography variant="body2" mb={0.5}>
+            {t('developerAPIs.orgOauth2ClientNameLabel')}<RequiredAsterisk />
+          </Typography>
+          <TextField
+            placeholder={t('developerAPIs.orgOauth2ClientNamePlaceholder')}
+            autoFocus
+            variant="standard"
+            size="small"
+            fullWidth
+            value={orgClientName}
+            onChange={(e) => setOrgClientName(e.target.value)}
+            InputProps={{ disableUnderline: false }}
+            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+          />
+
+          <Typography variant="body2" mt={0.5} mb={0.5}>
+            {t('developerAPIs.orgOauth2ClientDescriptionLabel')}
+          </Typography>
+          <TextField
+            placeholder={t('developerAPIs.orgOauth2ClientDescriptionPlaceholder')}
+            variant="standard"
+            size="small"
+            fullWidth
+            value={orgClientDescription}
+            onChange={(e) => setOrgClientDescription(e.target.value)}
+            InputProps={{ disableUnderline: false }}
+            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+          />
+
+          <Typography variant="body2" mt={0.5} mb={0.5}>
+            {t('developerAPIs.orgOauth2ClientIdLabel')}<RequiredAsterisk />
+          </Typography>
+          <TextField
+            placeholder={t('developerAPIs.orgOauth2ClientIdPlaceholder')}
+            variant="standard"
+            size="small"
+            fullWidth
+            value={orgClientId}
+            onChange={(e) => setOrgClientId(e.target.value)}
+            InputProps={{ disableUnderline: false }}
+            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+          />
+
+          <Typography variant="body2" mt={0.5} mb={0.5}>
+            {t('developerAPIs.orgOauth2ClientSecretLabel')}<RequiredAsterisk />
+          </Typography>
+          <TextField
+            placeholder={t('developerAPIs.orgOauth2ClientSecretPlaceholder')}
+            variant="standard"
+            size="small"
+            fullWidth
+            value={orgClientSecret}
+            onChange={(e) => setOrgClientSecret(e.target.value)}
             InputProps={{ disableUnderline: false }}
             sx={{ '& .MuiInputBase-input': { color: 'black' } }}
           />
@@ -854,26 +1074,48 @@ export default function DeveloperAPIs() {
         title={vctTitle}
         rows={[
           ...ssRows,
-          // meta rows for issued/expiry (filtered out in component)
           ...(ssObj?.createdAt ? [{ label: '', value: ssObj.createdAt as any, key: '__issued' } as any] : []),
           ...(ssObj?.updatedAt ? [{ label: '', value: ssObj.updatedAt as any, key: '__expiry' } as any] : []),
         ]}
         showValues={ssShowValues}
         setShowValues={setSsShowValues}
-        statusLabel={softwareStatementRes?.status ? t(`developerAPIs.softwareStatementStatus.${softwareStatementRes.status}` as const) : undefined}
-        organisationName={(orgDetails as any)?.name || ''}
-        overview={(orgDetails as any)?.description || ''}
-        onDelete={handleDeleteSoftwareStatement}
-        isDeleteEnabled={false}
-        trusted={orgIdentity?.data?.verified}
-        accessPointEndpoint={(orgDetails as any)?.accessPointEndpoint || ''}
+        enableToggle={true}
+        organisationName={orgName}
+        overview={orgDesc}
+        trusted={orgVerified}
+        isDeleteEnabled={!isDeletingSS}
+        onDelete={() => setOpenDeleteSSModal(true)}
+        coverImageBase64={coverImageBase64 || ''}
+        logoImageBase64={logoImageBase64 || ''}
       />
 
-      
+      <DeleteSoftwareStatementModal
+        open={openDeleteSSModal}
+        setOpen={setOpenDeleteSSModal}
+        onConfirm={handleDeleteSoftwareStatement}
+        isPending={isDeletingSS}
+      />
+
+      <DeleteOrganisationOAuthClientModal
+        open={openDeleteOrgOAuthModal}
+        setOpen={setOpenDeleteOrgOAuthModal}
+        isPending={isDeletingOrgOAuth}
+        onConfirm={() => {
+          const id = orgOAuthClient?.id;
+          if (!id) return;
+          deleteOrgOAuth2Client({ clientId: id }, {
+            onSuccess: () => {
+              setOpenDeleteOrgOAuthModal(false);
+              setOpenOrgOAuthConfig(false);
+            },
+            onError: () => dispatch(setMessage(t('error.generic')))
+          });
+        }}
+      />
+
     </Container>
   );
 };
 function RequiredAsterisk() {
   return <span style={{ color: '#FF0000', marginLeft: 1, fontSize: '16px' }}>*</span>;
 }
-

@@ -121,21 +121,7 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                         {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                         <VerifiedBadge trusted={trusted} />
                     </Typography>
-                    {dataSource?.accessPointEndpoint && (
-                        <Typography variant="body2" sx={{ mb: 1, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2 }}>
-                            <span>{t('developerAPIs.accessPointEndpointLabel')}</span>
-                            <a
-                                href={dataSource.accessPointEndpoint}
-                                title={dataSource.accessPointEndpoint}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="hover-underline"
-                                style={{ color: '#0000FF', textDecoration: 'none', display: 'block', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-                            >
-                                {dataSource.accessPointEndpoint}
-                            </a>
-                        </Typography>
-                    )}
+                    {/* Access Point Endpoint removed from below avatar section */}
                     {dataSource?.location && (
                         <Typography variant="body2" className="datasource-location" sx={{ mb: 1 }}>
                             {dataSource.location}

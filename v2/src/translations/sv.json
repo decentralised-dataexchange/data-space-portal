@@ -374,6 +374,27 @@
     "configuredLabel": "Konfigurerad",
     "configureButton": "Konfigurera",
     "oauth2ClientConfigTitle": "Konfiguration av OAuth 2.0 klient",
+    "orgOauth2Title": "Organisationens OAuth 2.0 klient",
+    "orgOauth2ClientConfigTitle": "Konfiguration av organisationens OAuth 2.0 klient",
+    "orgOauth2ClientNameLabel": "Namn",
+    "orgOauth2ClientNamePlaceholder": "Namn för organisationens OAuth 2.0 klient",
+    "orgOauth2ClientIdLabel": "Client ID",
+    "orgOauth2ClientIdPlaceholder": "Ange Client ID",
+    "orgOauth2ClientSecretLabel": "Client Secret",
+    "orgOauth2ClientSecretPlaceholder": "Ange Client Secret",
+    "createOrganisationOAuth2Client": "Skapa",
+    "orgClientNameRequired": "Klientnamn krävs",
+    "orgClientIdRequired": "Client ID krävs",
+    "orgClientSecretRequired": "Client Secret krävs",
+    "orgOauth2DeleteConfirm": "Är du säker på att du vill radera organisationens OAuth2-klient?",
+    "orgOauth2ClientDescriptionLabel": "Beskrivning",
+    "orgOauth2ClientDescriptionPlaceholder": "Valfri beskrivning",
+    "orgOauth2DeleteModal": {
+      "title": "Radera organisationens OAuth 2.0-klient",
+      "description": "Denna åtgärd kommer permanent radera organisationens OAuth 2.0-klient. För att bekräfta, skriv bekräftelsetexten nedan.",
+      "confirmText": "DELETE",
+      "confirmButton": "Radera"
+    },
     "deploymentStatusLabel": "Implementeringsstatus:",
     "notConfiguredLabel": "Inte konfigurerad",
     "owsBaseUrlRequired": "Bas-URL för innehavare är obligatorisk",
@@ -400,6 +421,12 @@
       "offer_sent": "Erbjudande skickat",
       "offer_received": "Erbjudande mottaget",
       "credential_accepted": "Behörighet accepterad"
+    },
+    "deleteSoftwareStatementModal": {
+      "title": "Radera programvaruintyg",
+      "description": "Du är på väg att radera ditt programvaruintyg. Denna åtgärd kan inte ångras.",
+      "confirmButton": "Radera",
+      "confirmText": "RADERA"
     }
   },
   "dispConnection": {
