@@ -7,7 +7,23 @@
     "manageAdmin": "account/manage-admin",
     "developerApis": "account/developer-apis",
     "dispConnections": "account/disp-connections",
-    "apiDoc": "/data-source/open-api"
+    "apiDoc": "/data-source/open-api",
+    "signed-agreements": "signed-agreements"
+  },
+  "b2bConnections": {
+    "title": "B2B-anslutningar",
+    "subtitle": "Visa din organisations B2B-anslutningar.",
+    "table": {
+      "headers": {
+        "theirClientId": "Deras Client ID",
+        "myClientId": "Mitt Client ID",
+        "nonce": "Nonce",
+        "timestamp": "Tidsstämpel",
+        "connectionId": "Anslutnings-ID",
+        "b2bConnectionId": "B2B-anslutnings-ID"
+      },
+      "noData": "Inga anslutningar att visa"
+    }
   },
   "login": {
     "header": "CRANE dHDSI - Organisationspanel - Logga in",
@@ -54,6 +70,8 @@
     "business-wallet": "Företagsplånboksanslutningar",
     "data-source": "Datakälla",
     "dd-agreements": "Marknadsplatslistning",
+    "dd-agreements-history": "Historik för datautlämningsavtal",
+    "signed-agreements": "Signerade avtal",
     "open-api": "OpenAPI-dokumentation",
     "businessWallet": "Företagsplånbok"
   },
@@ -83,10 +101,31 @@
       "addButton": "Lägg till ny DDA",
       "saveButton": "Spara ändringar"
     },
+    "signedAgreements": {
+      "title": "Signerade avtal"
+    },
+    "b2bConnections": {
+      "title": "B2B-anslutningar"
+    },
     "account": "Konto",
     "manageAdmin": "Hantera admin",
     "developerApis": "Utvecklar-API:er",
     "businessWallet": "Företagsplånbok"
+  },
+  "signedAgreements": {
+    "title": "Signerade avtal",
+    "subtitle": "Visa och hantera din organisations signerade datautlämningsavtal.",
+    "table": {
+      "headers": {
+        "usagePurpose": "Användningssyfte",
+        "version": "Version",
+        "status": "Status",
+        "optIn": "Samtycke",
+        "lawfulBasis": "Rättslig grund för behandling"
+      },
+      "noData": "Inga signerade avtal att visa"
+    },
+    "tooltipView": "Visa signerat avtal"
   },
   "gettingStarted": {
     "public": "Offentlig",
@@ -205,9 +244,12 @@
     "description": "Beskrivning",
     "true": "Sant",
     "false": "Falskt",
+    "yes": "Ja",
+    "no": "Nej",
     "close": "STÄNG",
     "viewAll": "Visa alla",
     "timestamp": "Tidsstämpel",
+    "modifiedAt": "Ändrad",
     "status": "Status",
     "name": "Namn",
     "manageAdmin": "manage-admin",
@@ -295,12 +337,31 @@
         "usagePurpose": "Användningssyfte",
         "version": "Version",
         "status": "Status",
-        "lawfulBasis": "Rättslig grund för behandling"
+        "lawfulBasis": "Rättslig grund för behandling",
+        "lastModified": "Senast ändrad"
       },
       "tooltips": {
-        "listToMarketplace": "Lista på datamarknadsplatsen"
+        "listToMarketplace": "Lista på datamarknaden",
+        "viewHistory": "Visa historik för datautlämningsavtal"
       },
-      "noData": "Ingen data att visa"
+      "noData": "Inga data att visa"
+    },
+    "history": {
+      "title": "Historik för datautlämningsavtal",
+      "subtitle": "Historiska versioner och statusändringar för det valda datautlämningsavtalet.",
+      "agreementLabel": "Avtal",
+      "table": {
+        "headers": {
+          "revision": "Revision",
+          "version": "Version",
+          "status": "Status",
+          "isLatest": "Senaste",
+          "timestamp": "Tidsstämpel",
+          "revisionId": "Revisions-ID",
+          "revisionHash": "Revisionshash"
+        },
+        "noData": "Inga historikposter att visa"
+      }
     }
   },
   "manageAdmin": {

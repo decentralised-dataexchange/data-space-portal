@@ -1,4 +1,4 @@
-import { FilesIcon, HouseLineIcon, LockIcon } from "@phosphor-icons/react";
+// Sidebar configuration (no JSX here; icons are resolved in the SideBar component)
 export interface SubMenuItem {
   name: string;
   translationKey: string; // Key for translation lookup
@@ -8,7 +8,7 @@ export interface SubMenuItem {
 export interface SidebarMenuItem {
   name: string;
   translationKey: string; // Key for translation lookup
-  icon: typeof HouseLineIcon;
+  iconId: 'home' | 'market' | 'signed' | 'b2b' | 'account';
   link: string;
   subMenu: SubMenuItem[];
 }
@@ -17,38 +17,47 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
   {
     name: 'Getting Started',
     translationKey: 'gettingStarted',
-    icon: HouseLineIcon,
+    iconId: 'home',
     link: '/start',
     subMenu: []
   },
-{
-  name: 'Marketplace Listing',
+  {
+    name: 'Marketplace Listing',
     translationKey: 'dataAgreements.title',
-      icon: FilesIcon,
-        link: '/dd-agreements',
-          subMenu: []
-},
-{
-  name: 'Account',
+    iconId: 'market',
+    link: '/dd-agreements',
+    subMenu: []
+  },
+  {
+    name: 'Signed Agreements',
+    translationKey: 'signedAgreements.title',
+    iconId: 'signed',
+    link: '/signed-agreements',
+    subMenu: []
+  },
+  {
+    name: 'B2B Connections',
+    translationKey: 'b2bConnections.title',
+    iconId: 'b2b',
+    link: '/b2b-connections',
+    subMenu: []
+  },
+  {
+    name: 'Account',
     translationKey: 'account',
-      icon: LockIcon,
-        link: '/account',
-          subMenu: [
-            {
-              name: 'Manage Admin',
-              translationKey: 'manageAdmin',
-              link: 'manage-admin',
-            },
-            {
-              name: 'Developer APIs',
-              translationKey: 'developerApis',
-              link: 'developer-apis',
-            },
-            // {
-            //   name: 'Business Wallet',
-            //   translationKey: 'businessWallet',
-            //   link: 'business-wallet',
-            // }
-          ]
-}
+    iconId: 'account',
+    link: '/account',
+    subMenu: [
+      {
+        name: 'Manage Admin',
+        translationKey: 'manageAdmin',
+        link: 'manage-admin',
+      },
+      {
+        name: 'Developer APIs',
+        translationKey: 'developerApis',
+        link: 'developer-apis',
+      },
+    ]
+  }
 ];

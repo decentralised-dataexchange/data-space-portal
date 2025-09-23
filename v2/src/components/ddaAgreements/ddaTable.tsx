@@ -9,9 +9,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
-import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon } from "@phosphor-icons/react";
+import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon, ClockCounterClockwiseIcon } from "@phosphor-icons/react";
 import VersionDropdown from "../VersionDropDown";
 import { TablePagination, Tooltip, Pagination, Box } from "@mui/material";
+import { apiService } from "@/lib/apiService/apiService";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import { getStatus } from "@/utils/dda";
@@ -136,6 +139,8 @@ const DDATable: React.FC<DDATableProps> = ({
   onRowsPerPageChange,
 }) => {
   const t = useTranslations();
+  const router = useRouter();
+  const locale = useLocale();
   // Keep track of selected version per DDA (keyed by templateId)
   const [selectedVersions, setSelectedVersions] = useState<Record<string, string>>({});
 
@@ -184,6 +189,7 @@ const DDATable: React.FC<DDATableProps> = ({
             <StyledTableCell>{t("dataAgreements.table.headers.version")}</StyledTableCell>
             <StyledTableCell>{t("dataAgreements.table.headers.status")}</StyledTableCell>
             <StyledTableCell>{t("dataAgreements.table.headers.lawfulBasis")}</StyledTableCell>
+            <StyledTableCell>{t("dataAgreements.table.headers.lastModified")}</StyledTableCell>
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
@@ -201,6 +207,15 @@ const DDATable: React.FC<DDATableProps> = ({
                 </StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{getStatus(t, row.status)}</StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.lawfulBasis}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>
+                  {(() => {
+                    const selected = getSelectedRevisionData(row) as any;
+                    const ts: any = selected?.updatedAt || selected?.createdAt || (row as any)?.updatedAt || (row as any)?.createdAt;
+                    if (!ts) return '';
+                    const d = new Date(ts);
+                    return isNaN(d.getTime()) ? '' : d.toLocaleString();
+                  })()}
+                </StyledTableCell>
                 <StyledTableCell
                   style={{
                     display: "flex",
@@ -236,6 +251,25 @@ const DDATable: React.FC<DDATableProps> = ({
                         </IconButton>
                       );
                     })()}
+                  </Tooltip>
+
+                  <Tooltip
+                    title={t("dataAgreements.table.tooltips.viewHistory")}
+                    placement="top"
+                  >
+                    <IconButton
+                      aria-label="history"
+                      onClick={() => {
+                        const id = row?.templateId || (row as any)?.dataAgreementId || (row as any)?.["@id"]; 
+                        if (!id) return;
+                        router.push(`/${locale}/dd-agreements/history/${encodeURIComponent(String(id))}`);
+                      }}
+                    >
+                      <ClockCounterClockwiseIcon
+                        style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                        size={17}
+                      />
+                    </IconButton>
                   </Tooltip>
 
                   <Tooltip
@@ -277,7 +311,7 @@ const DDATable: React.FC<DDATableProps> = ({
             ))
           ) : (
             <TableRow>
-              <StyledTableCell colSpan={5} align="center">
+              <StyledTableCell colSpan={6} align="center">
                 {t("common.noResultsFound")}
               </StyledTableCell>
             </TableRow>

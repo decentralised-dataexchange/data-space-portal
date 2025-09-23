@@ -65,11 +65,22 @@ export const ENDPOINTS = {
     listDataDisclosureAgreements: (filter: any, limit: number, offsetValue: number) => {
         return `/config/data-disclosure-agreements/?limit=${limit}&offset=${offsetValue}${filter === "listed" ? `&status=${filter}` : ""}`;
     },
+    // DDA history
+    getDDAHistory: (dataDisclosureAgreementId: string) => {
+        return `/config/data-disclosure-agreement/${dataDisclosureAgreementId}/history/`;
+    },
     updateDDAStatus: (id: any) => {
         return `/config/data-disclosure-agreement/${id}/status/`
     },
     deleteDDA: (id: any) => {
         return `/config/data-disclosure-agreement/${id}/`
+    },
+    // B2B Connections (Organisation)
+    listB2BConnections: (limit: number, offsetValue: number) => {
+        return `/config/organisation/b2b-connections/?limit=${limit}&offset=${offsetValue}`;
+    },
+    readB2BConnection: (b2bConnectionId: string) => {
+        return `/config/organisation/b2b-connection/${b2bConnectionId}/`;
     },
     // Initiate sign/unsign for organisation DDA (auth required)
     organisationDDAInitiate: (id: string) => {
@@ -104,5 +115,12 @@ export const ENDPOINTS = {
     },
     deleteOrganisationOAuth2ClientExternal: (clientId: string) => {
         return `/config/organisation/oauth2-client-external/${clientId}/`;
+    },
+    // Signed Agreements (Organisation)
+    listSignedAgreements: (limit: number, offsetValue: number) => {
+        return `/config/organisation/data-disclosure-agreement-records/?limit=${limit}&offset=${offsetValue}`;
+    },
+    readSignedAgreement: (id: string) => {
+        return `/config/organisation/data-disclosure-agreement-record/${id}/`;
     }
 };

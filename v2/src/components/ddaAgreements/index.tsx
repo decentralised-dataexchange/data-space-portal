@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -19,6 +19,8 @@ import ViewDDAgreementModalInner from "../DataSources/ViewDDAgreementModalInner"
 import GeneralModal from "./generalModal";
 import ListDDAModal from "./listDDAModal";
 import { useDDAgreements } from "@/custom-hooks/dataDisclosureAgreements";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiService } from "@/lib/apiService/apiService";
 import { defaultLogoImg } from "@/constants/defalultImages";
 import { useGetDataSourceList } from "@/custom-hooks/dataSources";
 import styles from "./ddaAgreements.module.scss";
@@ -126,6 +128,35 @@ const DDAgreements = () => {
     limit,
     offsetValue
   );
+
+  // Lazily prefetch DDA history for each item after list loads
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const list = data?.dataDisclosureAgreements || [];
+    if (!list.length) return;
+    let cancelled = false;
+    const run = async () => {
+      for (let i = 0; i < list.length; i++) {
+        if (cancelled) break;
+        const row: any = list[i];
+        const id = row?.templateId || row?.dataAgreementId || row?.["@id"]; 
+        if (!id) continue;
+        try {
+          await queryClient.prefetchQuery({
+            queryKey: ["ddaHistory", String(id)],
+            queryFn: () => apiService.getDDAHistory(String(id)),
+            staleTime: 5 * 60 * 1000,
+          });
+        } catch (e) {
+          // ignore individual prefetch errors
+        }
+        // Stagger requests slightly to avoid bursts
+        await new Promise(res => setTimeout(res, 100));
+      }
+    };
+    run();
+    return () => { cancelled = true; };
+  }, [data?.dataDisclosureAgreements]);
 
   const handleChange = (value: string) => {
     if (value === "complete") {

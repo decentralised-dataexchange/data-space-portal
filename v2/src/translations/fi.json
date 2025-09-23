@@ -7,8 +7,26 @@
     "manageAdmin" : "account/manage-admin",
     "developerApis": "account/developer-apis",
     "dispConnections": "account/disp-connections",
-    "apiDoc": "/data-source/open-api"
+    "apiDoc": "/data-source/open-api",
+    "signed-agreements": "signed-agreements"
   },
+  
+  "b2bConnections": {
+    "title": "B2B-yhteydet",
+    "subtitle": "Näytä organisaatiosi B2B-yhteydet.",
+    "table": {
+      "headers": {
+        "theirClientId": "Heidän Client ID",
+        "myClientId": "Oma Client ID",
+        "nonce": "Nonce",
+        "timestamp": "Aikaleima",
+        "connectionId": "Yhteyden ID",
+        "b2bConnectionId": "B2B-yhteyden ID"
+      },
+      "noData": "Ei yhteyksiä näytettäväksi"
+    }
+  },
+  
   "login": {
     "header": "CRANE dHDSI - Organisaation hallintapaneeli - Kirjaudu",
     "userId": "Käyttäjätunnus",
@@ -53,7 +71,9 @@
     "disp-connections": "DISP-yhteydet",
     "business-wallet": "Yrityslompakoiden yhteydet",
     "data-source": "Tietolähde",
-    "dd-agreements": "Markkinapaikkailmoitukset",
+    "dd-agreements": "Markkinapaikkalistaus",
+    "dd-agreements-history": "Tietojen luovutussopimuksen historia",
+    "signed-agreements": "Allekirjoitetut sopimukset",
     "open-api": "OpenAPI-dokumentaatio",
     "businessWallet": "Yrityslompakko"
   },
@@ -83,11 +103,32 @@
       "addButton": "Lisää uusi DDA",
       "saveButton": "Tallenna muutokset"
     },
+    "signedAgreements": {
+      "title": "Allekirjoitetut sopimukset"
+    },
+    "b2bConnections": {
+      "title": "B2B-yhteydet"
+    },
     "account": "Tili",
     "manageAdmin": "Hallitse ylläpitäjää",
     "developerApis": "Kehittäjä-API:t",
     "businessWallet": "Business Wallet"
 
+  },
+  "signedAgreements": {
+    "title": "Allekirjoitetut sopimukset",
+    "subtitle": "Näytä ja hallitse organisaatiosi allekirjoitettuja tietojen luovutussopimuksia.",
+    "table": {
+      "headers": {
+        "usagePurpose": "Käyttötarkoitus",
+        "version": "Versio",
+        "status": "Tila",
+        "optIn": "Suostumus",
+        "lawfulBasis": "Tietojen käsittelyn oikeusperuste"
+      },
+      "noData": "Ei allekirjoitettuja sopimuksia"
+    },
+    "tooltipView": "Näytä allekirjoitettu sopimus"
   },
   "gettingStarted": {
     "public": "Julkinen",
@@ -236,10 +277,13 @@
     "description": "Kuvaus",
     "true": "Tosi",
     "false": "Epätosi",
+    "yes": "Kyllä",
+    "no": "Ei",
     "delete": "POISTA",
     "close": "SULJE",
     "viewAll": "Näytä kaikki",
     "timestamp": "Aikaleima",
+    "modifiedAt": "Muokattu",
     "status": "Tila",
     "name": "Nimi",
     "businessWallet": "business-wallet",
@@ -308,6 +352,23 @@
     "tooltipDelete": "Poista tietojen luovutussopimus",
     "tooltipAddNew": "Lisää uusi tietojen luovutussopimus",
     "tooltipDownload": "Lataa tietojen luovutussopimus",
+    "history": {
+      "title": "Tietojen luovutussopimuksen historia",
+      "subtitle": "Valitun tietojen luovutussopimuksen versio- ja tilamuutokset.",
+      "agreementLabel": "Sopimus",
+      "table": {
+        "headers": {
+          "revision": "Revisio",
+          "version": "Versio",
+          "status": "Tila",
+          "isLatest": "On uusin",
+          "timestamp": "Aikaleima",
+          "revisionId": "Revision ID",
+          "revisionHash": "Revision tiiviste"
+        },
+        "noData": "Ei historiatietoja näytettävänä"
+      }
+    },
     "pageDescription": "Hallitse organisaatiosi tietojen luovutussopimuksia (DDA).",
     "usagePurpose": "Käyttötarkoitus",
     "version": "Versio",
@@ -325,10 +386,12 @@
         "usagePurpose": "Käyttötarkoitus",
         "version": "Versio",
         "status": "Tila",
-        "lawfulBasis": "Tietojen käsittelyn oikeusperuste"
+        "lawfulBasis": "Tietojen käsittelyn oikeusperuste",
+        "lastModified": "Viimeksi muokattu"
       },
       "tooltips": {
-        "listToMarketplace": "Listaa datamarkkinapaikalle"
+        "listToMarketplace": "Listaa datamarkkinapaikalle",
+        "viewHistory": "Näytä tietojen luovutussopimuksen historia"
       },
       "noData": "Ei näytettäviä tietoja"
     }

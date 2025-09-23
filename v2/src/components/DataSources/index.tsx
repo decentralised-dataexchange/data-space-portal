@@ -157,6 +157,17 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     <Typography sx={{ fontSize: "14px", paddingBottom: "20px", color: '#666666' }}>
                                                         {dataDisclosureAgreement.purposeDescription}
                                                     </Typography>
+                                                    {(() => {
+                                                        const ts: any = (dataDisclosureAgreement as any)?.updatedAt || (dataDisclosureAgreement as any)?.createdAt;
+                                                        if (!ts) return null;
+                                                        const d = new Date(ts);
+                                                        if (isNaN(d.getTime())) return null;
+                                                        return (
+                                                            <Typography sx={{ fontSize: "12px", paddingBottom: "16px", color: '#888888' }}>
+                                                                {t('common.modifiedAt')}: {d.toLocaleString()}
+                                                            </Typography>
+                                                        );
+                                                    })()}
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
                                                         openApiUrl={dataSourceItem?.organisation.openApiUrl || ''}
