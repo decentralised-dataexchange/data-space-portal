@@ -573,7 +573,6 @@ const OrganisationDetailsContainer = (props: Props) => {
             <Box
               sx={{
                 textAlign: { xs: "left", sm: "right" },
-                marginTop: { xs: "12px", sm: "0px" },
                 paddingTop: "8px"
               }}
             >
@@ -611,8 +610,6 @@ const OrganisationDetailsContainer = (props: Props) => {
             sx={{
               cursor: "pointer",
               textAlign: { xs: "left", sm: "right" },
-              marginTop: { xs: "14px", sm: "0px" },
-              padding: "10px",
               marginRight: "0.7rem"
             }}
           >

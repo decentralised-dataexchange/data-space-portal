@@ -41,14 +41,14 @@ export default function DataAgreementPolicyCardModal(props: Props) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   
   const SSIpolicyDetailsForContainer: AttributeRow[] = [
-    { label: "Lawful basis of processing", value: String(selectedData?.lawfulBasis ?? "") },
-    { label: "Data retention period", value: String(selectedData?.dataSharingRestrictions?.dataRetentionPeriod ?? "") },
-    { label: "Policy URL", value: String(selectedData?.dataSharingRestrictions?.policyUrl ?? ""), href: selectedData?.dataSharingRestrictions?.policyUrl || undefined },
-    { label: "Jurisdiction", value: String(selectedData?.dataSharingRestrictions?.jurisdiction ?? "") },
-    { label: "Industry sector", value: String(selectedData?.dataSharingRestrictions?.industrySector ?? "") },
-    { label: "Geographic restriction", value: String(selectedData?.dataSharingRestrictions?.geographicRestriction ?? "") },
-    { label: "Storage location", value: String(selectedData?.dataSharingRestrictions?.storageLocation ?? "") },
-    { label: "Agreement Period", value: String(selectedData?.agreementPeriod ?? "") },
+    { label: t('dataAgreements.policy.lawfulBasis'), value: String(selectedData?.lawfulBasis ?? "") },
+    { label: t('dataAgreements.policy.dataRetentionPeriod'), value: String(selectedData?.dataSharingRestrictions?.dataRetentionPeriod ?? "") },
+    { label: t('dataAgreements.policy.policyUrl'), value: String(selectedData?.dataSharingRestrictions?.policyUrl ?? ""), href: selectedData?.dataSharingRestrictions?.policyUrl || undefined },
+    { label: t('dataAgreements.policy.jurisdiction'), value: String(selectedData?.dataSharingRestrictions?.jurisdiction ?? "") },
+    { label: t('dataAgreements.policy.industrySector'), value: String(selectedData?.dataSharingRestrictions?.industrySector ?? "") },
+    { label: t('dataAgreements.policy.geographicRestriction'), value: String(selectedData?.dataSharingRestrictions?.geographicRestriction ?? "") },
+    { label: t('dataAgreements.policy.storageLocation'), value: String(selectedData?.dataSharingRestrictions?.storageLocation ?? "") },
+    { label: t('dataAgreements.policy.agreementPeriodYears'), value: String(selectedData?.agreementPeriod ?? "") },
   ];
 
   return (

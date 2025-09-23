@@ -276,7 +276,7 @@ export default function DeveloperAPIs() {
     const payload = {
       organisation: {
         ...orgDetails,
-        openApiUrl: editOpenApiUrl,
+        // openApiUrl is deprecated in UI; do not send changes from UI
         verificationRequestURLPrefix: editHolderBaseUrl,
         credentialOfferEndpoint: editCredentialOfferEndpoint?.trim() ? editCredentialOfferEndpoint.trim() : null,
         accessPointEndpoint: editAccessPointEndpoint?.trim() ? editAccessPointEndpoint.trim() : null,
@@ -284,7 +284,6 @@ export default function DeveloperAPIs() {
     } as unknown as { organisation: any };
     updateOrganisation(payload as any, {
       onSuccess: () => {
-        setOpenApiUrl(editOpenApiUrl);
         setVerificationRequestURLPrefix(editHolderBaseUrl);
         setOpenWalletConfig(false);
       },
@@ -453,13 +452,6 @@ export default function DeveloperAPIs() {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <InfoRow
-            label={t('developerAPIs.openApiUrlLabel')}
-            value={openApiUrl || ''}
-            href={openApiUrl || undefined}
-            copyKey="openApiUrl"
-            copyValue={openApiUrl || ''}
-          />
-          <InfoRow
             label={t('developerAPIs.holderBaseUrlLabel')}
             value={verificationRequestURLPrefix || ''}
             href={verificationRequestURLPrefix || undefined}
@@ -543,7 +535,7 @@ export default function DeveloperAPIs() {
         </Box>
       </Box>
 
-      {/* OAuth2 Client display */}
+      {/* OAuth2 Client display - Data Space */}
       <Box className="apiKey" sx={{ padding: '15px 30px' }}>
         <Box
           display="flex"
@@ -554,7 +546,7 @@ export default function DeveloperAPIs() {
           sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
         >
           <Typography color="black" variant="subtitle1" fontWeight="bold">
-            {t('developerAPIs.oauth2Title')}
+            {t('developerAPIs.dataSpaceOauth2Title')}
           </Typography>
           <Box display="flex" alignItems="center" gap={2}>
             <Button
@@ -721,21 +713,6 @@ export default function DeveloperAPIs() {
         )}
       >
         <Box>
-          <Typography variant="body2" mb={0.5}>
-            {t('developerAPIs.openApiUrlLabel')}
-          </Typography>
-          <TextField
-            placeholder={t('developerAPIs.openApiUrlPlaceholder')}
-            autoFocus
-            variant="standard"
-            size="small"
-            fullWidth
-            value={editOpenApiUrl}
-            onChange={(e) => setEditOpenApiUrl(e.target.value)}
-            InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
-          />
-
           <Typography variant="body2" mt={0.5} mb={0.5}>
             {t('developerAPIs.holderBaseUrlLabel')}<RequiredAsterisk />
           </Typography>

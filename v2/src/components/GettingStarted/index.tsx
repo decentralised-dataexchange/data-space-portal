@@ -85,7 +85,7 @@ const GettingStarted = () => {
   const pollTimers = useRef<number[]>([]);
   
   const [formData, setFormData] = useState<any>({});
-  // Hooks for Add Credentials should be declared before any early returns
+  // Hooks for Add Credential should be declared before any early returns
   const addInFlight = useRef(false);
   const [isAddLoading, setIsAddLoading] = useState(false);
 
@@ -177,7 +177,7 @@ const GettingStarted = () => {
         console.error('No vpTokenQrCode returned from createOrgIdentity');
       }
     } catch (e) {
-      console.error('Error handling Add Credentials click:', e);
+      console.error('Error handling Add Credential click:', e);
     } finally {
       setIsAddLoading(false);
       addInFlight.current = false;

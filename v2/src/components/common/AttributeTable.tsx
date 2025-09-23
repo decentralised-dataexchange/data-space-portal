@@ -11,6 +11,8 @@ export type AttributeRow = {
   copy?: boolean;
   mask?: boolean;
   action?: React.ReactNode;
+  // Optional tooltip text to show when hovering the entire row
+  tooltip?: string;
 };
 
 const cardContainerStyle: React.CSSProperties = {
@@ -26,7 +28,8 @@ export const AttributeTable: React.FC<{
   labelMinWidth?: number;
   labelMaxPercent?: number;
   hideEmptyDash?: boolean;
-}> = ({ rows, showValues = true, labelMinWidth = 180, labelMaxPercent = 36, hideEmptyDash = false }) => {
+  hideValueColumn?: boolean; // when true, don't render the right value column
+}> = ({ rows, showValues = true, labelMinWidth = 180, labelMaxPercent = 36, hideEmptyDash = false, hideValueColumn = false }) => {
   return (
     <Box style={cardContainerStyle}>
       {rows.map((row, idx) => {
@@ -36,6 +39,7 @@ export const AttributeTable: React.FC<{
         return (
           <Box key={`${row.label}-${idx}`}>
             <Box sx={{ mt: 1.25, mx: 1.25, mb: 0.625 }}>
+              <Tooltip title={row.tooltip || ''} disableInteractive arrow placement="top-start">
               <Box
                 sx={{
                   ...(isFirst ? { pt: 1.25 } : {}),
@@ -46,7 +50,7 @@ export const AttributeTable: React.FC<{
                 <Box
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: { xs: "1fr", sm: `minmax(${labelMinWidth}px, ${labelMaxPercent}%) 1fr` },
+                    gridTemplateColumns: hideValueColumn ? { xs: "1fr", sm: `minmax(${labelMinWidth}px, ${labelMaxPercent}%)` } : { xs: "1fr", sm: `minmax(${labelMinWidth}px, ${labelMaxPercent}%) 1fr` },
                     alignItems: "center",
                     columnGap: 2,
                     rowGap: 0.5,
@@ -55,6 +59,7 @@ export const AttributeTable: React.FC<{
                   <Typography variant="subtitle2" sx={{ wordBreak: "break-word", lineHeight: '20px', textWrap: "nowrap"}}>
                     {row.label}
                   </Typography>
+                  {!hideValueColumn && (
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0, height: '20px', justifyContent: 'flex-end' }}>
                     {showValues ? (
                       <Box sx={{ flex: 1, minWidth: 0, display: 'block', textAlign: 'right' }}>
@@ -121,8 +126,10 @@ export const AttributeTable: React.FC<{
                       </Box>
                     )}
                   </Box>
+                  )}
                 </Box>
               </Box>
+              </Tooltip>
             </Box>
           </Box>
         );

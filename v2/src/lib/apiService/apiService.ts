@@ -123,6 +123,10 @@ export const apiService = {
     return api.get<B2BConnectionDetailResponse>(ENDPOINTS.readB2BConnection(b2bConnectionId))
       .then(res => res.data);
   },
+  deleteB2BConnection: async (b2bConnectionId: string): Promise<void> => {
+    return api.delete<void>(ENDPOINTS.deleteB2BConnection(b2bConnectionId))
+      .then(res => res.data as unknown as void);
+  },
   // Signed Agreements (Organisation)
   listSignedAgreements: async (
     limit: number,

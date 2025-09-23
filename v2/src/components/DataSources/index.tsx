@@ -86,6 +86,166 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         : ddas.slice(startIndex, endIndex)
     );
 
+    // Helper: convert nested Key/Value list (and arrays) to a JS object suitable for Swagger
+    const kvToObject = (input: any): any => {
+        const isKv = (o: any) => o && typeof o === 'object' && ('Key' in o) && ('Value' in o) && Object.keys(o).length === 2;
+        if (Array.isArray(input)) {
+            // If array elements are Key/Value pairs, convert to object
+            if (input.length > 0 && input.every((el: any) => isKv(el))) {
+                const out: Record<string, any> = {};
+                for (const pair of input) {
+                    const k = String(pair.Key);
+                    out[k] = kvToObject(pair.Value);
+                }
+                return out;
+            }
+            // If array elements are arrays, convert each to object recursively
+            if (input.length > 0 && input.every((el: any) => Array.isArray(el))) {
+                return input.map(kvToObject);
+            }
+            // Mixed or primitives
+            return input.map(kvToObject);
+        }
+        if (isKv(input)) {
+            const obj: Record<string, any> = {};
+            obj[String(input.Key)] = kvToObject(input.Value);
+            return obj;
+        }
+        if (input && typeof input === 'object') {
+            const out: Record<string, any> = {};
+            for (const [k, v] of Object.entries<any>(input)) out[k] = kvToObject(v);
+            return out;
+        }
+        return input;
+    };
+
+    // Normalize kvToObject output into a strict OpenAPI JSON shape for Swagger UI
+    const normalizeOasObject = (root: any): any => {
+        if (!root || typeof root !== 'object') return root;
+        const o = { ...root };
+        // Ensure version field exists and is a string
+        if (!('openapi' in o) && 'OpenApi' in o) {
+            o.openapi = String((o as any).OpenApi);
+            delete (o as any).OpenApi;
+        }
+        if (!('openapi' in o) && 'swagger' in o) {
+            // leave as-is (Swagger UI supports swagger 2.0 too)
+        }
+        if (typeof (o as any).openapi !== 'undefined' && typeof (o as any).openapi !== 'string') {
+            o.openapi = String((o as any).openapi);
+        }
+        if (!('openapi' in o) && !('swagger' in o)) {
+            // Fallback to a safe default if backend omitted explicit version
+            o.openapi = '3.0.3';
+        }
+        // Some Swagger UI builds only accept 3.0.x; coerce 3.1.x to 3.0.3 for compatibility
+        if (typeof (o as any).openapi === 'string' && /^3\.1(\.|$)/.test((o as any).openapi)) {
+            o.openapi = '3.0.3';
+        }
+        // Flatten possible array-wrapped maps from kv encoding
+        const flattenMapArray = (arr: any) => {
+            if (!Array.isArray(arr)) return arr;
+            return arr.map((el: any) => Array.isArray(el) ? Object.assign({}, ...el.map(kvToObject)) : el);
+        };
+        if (Array.isArray(o.paths)) {
+            // convert array of single-entry objects into a single object
+            const merged: Record<string, any> = {};
+            for (const entry of o.paths) {
+                if (entry && typeof entry === 'object') Object.assign(merged, entry);
+            }
+            o.paths = merged;
+        }
+        if (Array.isArray(o.components)) {
+            const merged: Record<string, any> = {};
+            for (const entry of o.components) if (entry && typeof entry === 'object') Object.assign(merged, entry);
+            o.components = merged;
+        }
+        // Within components, schemas/securitySchemes may be arrays of map-entries
+        if (o.components && typeof o.components === 'object') {
+            const c: any = o.components;
+            const mergeMap = (val: any) => {
+                if (!Array.isArray(val)) return val;
+                const merged: Record<string, any> = {};
+                for (const entry of val) if (entry && typeof entry === 'object') Object.assign(merged, entry);
+                return merged;
+            };
+            if (Array.isArray(c.schemas)) c.schemas = mergeMap(c.schemas);
+            if (Array.isArray(c.securitySchemes)) c.securitySchemes = mergeMap(c.securitySchemes);
+            // For each schema, properties may also be array-encoded; merge if needed
+            if (c.schemas && typeof c.schemas === 'object') {
+                for (const key of Object.keys(c.schemas)) {
+                    const sch = c.schemas[key];
+                    if (sch && Array.isArray(sch.properties)) {
+                        const mergedProps: Record<string, any> = {};
+                        for (const entry of sch.properties) if (entry && typeof entry === 'object') Object.assign(mergedProps, entry);
+                        sch.properties = mergedProps;
+                    }
+                }
+            }
+        }
+        if (Array.isArray(o.security)) o.security = flattenMapArray(o.security);
+        if (Array.isArray(o.servers)) o.servers = flattenMapArray(o.servers);
+        // Ensure info exists with minimal required fields
+        if (!o.info || typeof o.info !== 'object') o.info = {};
+        if (!o.info.title) o.info.title = 'API';
+        if (!o.info.version) o.info.version = '1.0.0';
+        return o;
+    };
+
+    const ddaForApi = viewApiFor ? ddas.find(dda => (getDdaId(dda) === viewApiFor || dda.templateId === viewApiFor)) : undefined;
+    const openApiSpecObj = (() => {
+        const tryFrom = (src: any): any | undefined => {
+            if (!src) return undefined;
+            const raw = src.openApiSpecification;
+            if (Array.isArray(raw) && raw.length > 0) {
+                try {
+                    const obj = kvToObject(raw);
+                    return normalizeOasObject(obj);
+                } catch { return undefined; }
+            }
+            return undefined;
+        };
+        // 1) top-level
+        let obj = tryFrom(ddaForApi as any);
+        if (obj) return obj;
+        // 2) nested JSON in objectData
+        try {
+            const rawObjData = (ddaForApi as any)?.objectData;
+            if (rawObjData && typeof rawObjData === 'string') {
+                const parsed = JSON.parse(rawObjData);
+                const fromObjData = tryFrom(parsed);
+                if (fromObjData) return fromObjData;
+            }
+        } catch {}
+        // 3) nested under template revision
+        try {
+            const raw2 = (ddaForApi as any)?.dataDisclosureAgreementTemplateRevision?.objectData;
+            if (raw2 && typeof raw2 === 'string') {
+                const parsed2 = JSON.parse(raw2);
+                const fromObjData2 = tryFrom(parsed2);
+                if (fromObjData2) return fromObjData2;
+            }
+        } catch {}
+        return undefined;
+    })();
+
+    // Helper to detect presence of embedded spec for a DDA item (for enabling the View API button)
+    const hasEmbeddedSpec = (src: any): boolean => {
+        if (!src) return false;
+        try {
+            if ('openApiSpecification' in src) return true;
+            const od = src?.objectData;
+            if (od && typeof od === 'string') {
+                try { const parsed = JSON.parse(od); if (parsed && ('openApiSpecification' in parsed)) return true; } catch {}
+            }
+            const rev = src?.dataDisclosureAgreementTemplateRevision?.objectData;
+            if (rev && typeof rev === 'string') {
+                try { const parsed2 = JSON.parse(rev); if (parsed2 && ('openApiSpecification' in parsed2)) return true; } catch {}
+            }
+        } catch {}
+        return false;
+    };
+
     return (
         <Box className="dataListContainer" sx={{ width: '100%' }}>
             <Grid container spacing={gridSpacing} sx={{ width: '100%', margin: 0 }}>
@@ -157,22 +317,13 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     <Typography sx={{ fontSize: "14px", paddingBottom: "20px", color: '#666666' }}>
                                                         {dataDisclosureAgreement.purposeDescription}
                                                     </Typography>
-                                                    {(() => {
-                                                        const ts: any = (dataDisclosureAgreement as any)?.updatedAt || (dataDisclosureAgreement as any)?.createdAt;
-                                                        if (!ts) return null;
-                                                        const d = new Date(ts);
-                                                        if (isNaN(d.getTime())) return null;
-                                                        return (
-                                                            <Typography sx={{ fontSize: "12px", paddingBottom: "16px", color: '#888888' }}>
-                                                                {t('common.modifiedAt')}: {d.toLocaleString()}
-                                                            </Typography>
-                                                        );
-                                                    })()}
+                                                    {/* Version now displayed inline with action buttons inside DDAActions */}
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
                                                         openApiUrl={dataSourceItem?.organisation.openApiUrl || ''}
                                                         dataSourceSlug={dataSourceSlug}
                                                         apiViewMode={!!viewApiFor}
+                                                        hasEmbeddedSpec={hasEmbeddedSpec(dataDisclosureAgreement)}
                                                     />
                                                 </CardContent>
                                             </Card>
@@ -181,11 +332,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 })}
                             </Grid>
                             {/* Render API docs below the selected card when viewApiFor is present */}
-                            {viewApiFor && (dataSourceItem?.organisation?.openApiUrl) && (
+                            {viewApiFor && (openApiSpecObj || dataSourceItem?.organisation?.openApiUrl) && (
                                 <Box sx={{ mt: 2 }}>
                                     <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                         <CardContent sx={{ padding: '24px' }}>
-                                            <ApiDoc openApiUrl={dataSourceItem.organisation.openApiUrl} />
+                                            <ApiDoc openApiUrl={dataSourceItem.organisation.openApiUrl} spec={openApiSpecObj} />
                                         </CardContent>
                                     </Card>
                                 </Box>

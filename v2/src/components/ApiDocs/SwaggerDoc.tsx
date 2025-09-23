@@ -12,6 +12,7 @@ declare global {
 
 export type SwaggerDocProps = {
   openApiUrl: string;
+  spec?: any;
   uiTweaks?: {
     hideInfoSubsections?: boolean;
     forceShowBar?: boolean;
@@ -21,7 +22,7 @@ export type SwaggerDocProps = {
   };
 };
 
-export default function SwaggerDoc({ openApiUrl, uiTweaks }: SwaggerDocProps) {
+export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const tweaks = {
     hideInfoSubsections: true,
@@ -573,8 +574,10 @@ export default function SwaggerDoc({ openApiUrl, uiTweaks }: SwaggerDocProps) {
           } catch {}
           return null;
         };
-        // Prefetch normalized JSON spec client-side (same-origin only), then feed as `spec`.
-        const preSpec = await fetchAndTransformSpec();
+        // If a spec object was provided, use it; otherwise, prefetch from URL
+        const providedSpec = spec && typeof spec === 'object' ? aliasAndRewrite(spec) : null;
+        if (providedSpec) (providedSpec as any)['x-schema-alias-applied'] = true;
+        const preSpec = providedSpec || await fetchAndTransformSpec();
         const loadUrl = openApiUrl;
         const ui = window.SwaggerUIBundle({
           // Prefer pre-fetched normalized spec to avoid resolver errors; fall back to URL
