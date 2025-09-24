@@ -299,9 +299,9 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                         <Grid size={{ lg: 8, md: 12, sm: 12, xs: 12 }} className='rightContainer'>
                             <Grid container spacing={2}>
                                 {/* Wallet/Org configuration card */}
-                                <Grid size={{ xs: 12 }}>
+                                {/* <Grid size={{ xs: 12 }}>
                                     <OrgConfigCard serviceItem={dataSourceItem} />
-                                </Grid>
+                                </Grid> */}
                                 {currentDdas.map((dataDisclosureAgreement, index) => {
                                     return (
                                         <Grid
