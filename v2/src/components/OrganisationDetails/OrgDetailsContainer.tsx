@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useUpdateOrganisation } from "@/custom-hooks/gettingStarted";
 import { Box, Grid, Typography, TextField, Button, Avatar, IconButton, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import type { SxProps, Theme } from "@mui/material/styles";
 import OrgLogoImageUpload from "@/components/OrganisationDetails/OrgLogoImageUpload";
 import ViewCredentials from "@/components/ViewCredentials";
 import RightSidebar from "@/components/common/RightSidebar";
@@ -22,11 +23,23 @@ const DetailsContainer = styled("div")({
   padding: 10,
 });
 
-const editStyleEnable: React.CSSProperties = {
-  borderWidth: 1,
-  borderBottomStyle: "solid",
-  borderBottomColor: "#DFE0E1",
+const editStyleEnable: SxProps<Theme> = {
+  width: 344,
   height: 23,
+  boxSizing: 'border-box',
+  border: 'none',
+  borderBottomStyle: 'solid',
+  borderBottomColor: '#DFE0E1',
+  borderBottomWidth: 1,
+  '& .MuiInputBase-root': {
+    padding: 0,
+    minHeight: '23px',
+    alignItems: 'center',
+  },
+  '& input': {
+    padding: 0,
+    paddingBottom: 0,
+  },
 };
 
 const buttonStyle = {
@@ -325,19 +338,20 @@ const OrganisationDetailsContainer = (props: Props) => {
                     variant="standard"
                     name='name'
                     value={formValue.name}
-                    sx={{
-                      width: 'auto',
-                      '& .MuiInputBase-root': { width: 'auto', padding: 0, lineHeight: 1.2, minHeight: '23px', alignItems: 'flex-start' },
-                      '& input': { padding: 0, paddingBottom: 0, fontSize: '20px', lineHeight: '1.2', fontWeight: 700, fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', color: 'text.primary' },
-                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-                      },
-                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-                      },
-                    }}
+                    sx={editStyleEnable}
                     InputProps={{
-                      style: { fontSize: 20, fontWeight: 'bold', lineHeight: 1.2 },
+                      disableUnderline: true,
+                    }}
+                    inputProps={{
+                      style: {
+                        padding: 0,
+                        paddingBottom: 0,
+                        fontSize: '20px',
+                        lineHeight: 1.2,
+                        fontWeight: 700,
+                        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                        color: 'rgba(0, 0, 0, 0.87)',
+                      },
                     }}
                   />
                   {!editMode && (isVerify ? (
@@ -402,20 +416,17 @@ const OrganisationDetailsContainer = (props: Props) => {
                     name='sector'
                     onChange={handleChange}
                     placeholder={t('gettingStarted.sector')}
-                    sx={{
-                      width: 'auto',
-                      minWidth: '200px',
-                      '& .MuiInputBase-root': { width: 'auto', padding: 0, lineHeight: 1.5, minHeight: '23px', alignItems: 'flex-start' },
-                      '& input': { padding: 0, paddingBottom: 0, fontSize: '14px', lineHeight: '1.5', fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', color: 'text.primary' },
-                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                    sx={editStyleEnable}
+                    InputProps={{ disableUnderline: true }}
+                    inputProps={{
+                      style: {
+                        padding: 0,
+                        paddingBottom: 0,
+                        fontSize: '14px',
+                        lineHeight: 1.5,
+                        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                        color: 'rgba(0, 0, 0, 0.87)',
                       },
-                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-                      },
-                    }}
-                    InputProps={{
-                      style: { fontSize: 14, lineHeight: 1.5 },
                     }}
                   />
                 </Box>
@@ -425,21 +436,16 @@ const OrganisationDetailsContainer = (props: Props) => {
                     value={formValue.location}
                     name='location'
                     onChange={handleChange}
-                    placeholder={t('gettingStarted.location')}
-                    sx={{
-                      width: 'auto',
-                      minWidth: '200px',
-                      '& .MuiInputBase-root': { width: 'auto', padding: 0, lineHeight: 1.5, minHeight: '23px', alignItems: 'flex-start' },
-                      '& input': { padding: 0, paddingBottom: '4px', fontSize: '14px', lineHeight: '1.5', fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', color: 'text.primary' },
-                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                    sx={editStyleEnable}
+                    InputProps={{ disableUnderline: true }}
+                    inputProps={{
+                      style: {
+                        padding: 0,
+                        paddingBottom: 0,
+                        fontSize: '14px',
+                        lineHeight: 1.5,
+                        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
                       },
-                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-                      },
-                    }}
-                    InputProps={{
-                      style: { fontSize: 14, lineHeight: 1.5 },
                     }}
                   />
                 </Box>
@@ -450,35 +456,19 @@ const OrganisationDetailsContainer = (props: Props) => {
                     value={formValue.policyUrl}
                     name='policyUrl'
                     placeholder={t('gettingStarted.policyUrl')}
-                    fullWidth
-                    sx={{
-                      maxWidth: { xs: '100%', sm: '450px' },
-                      width: '100%',
-                      '& .MuiInputBase-root': { 
-                        width: '100%', 
-                        padding: 0, 
-                        lineHeight: 1,
-                        minHeight: '23px',
-                        alignItems: 'flex-start'
-                      },
-                      '& input': { 
-                        padding: 0, 
-                        paddingBottom: 0, 
-                        width: '100%',
+                    sx={editStyleEnable}
+                    InputProps={{ disableUnderline: true }}
+                    inputProps={{
+                      style: {
+                        padding: 0,
+                        paddingBottom: 0,
                         fontSize: '14px',
-                        lineHeight: '1.5',
-                        color: 'text.primary',
+                        lineHeight: 1.5,
                         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-                        verticalAlign: 'top'
-                      },
-                      '&:after, &:before, &:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
-                      },
-                      '& .Mui-focused:after, & .Mui-focused:before, & .Mui-focused:hover:not(.Mui-disabled):before': {
-                        borderBottom: '1px solid rgba(0, 0, 0, 0.42)',
+                        color: 'rgba(0, 0, 0, 0.87)',
                       },
                     }}
-                  />
+                    />
                 </Box>
               </>
             ) :
