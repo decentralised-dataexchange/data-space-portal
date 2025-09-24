@@ -45,16 +45,28 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
 
   // Detect embedded OpenAPI spec presence (top-level or nested in objectData strings)
   const hasEmbeddedSpec = React.useMemo(() => {
+    const specHasContent = (value: any): boolean => {
+      if (!value) return false;
+      if (Array.isArray(value)) return value.length > 0;
+      if (typeof value === 'object') return Object.keys(value).length > 0;
+      return true;
+    };
     const src: any = dataDisclosureAgreement as any;
     try {
-      if (src && ("openApiSpecification" in src)) return true;
+      if (src && Object.prototype.hasOwnProperty.call(src, "openApiSpecification") && specHasContent(src.openApiSpecification)) return true;
       const objData = src?.objectData;
       if (objData && typeof objData === 'string') {
-        try { const parsed = JSON.parse(objData); if (parsed && ("openApiSpecification" in parsed)) return true; } catch {}
+        try {
+          const parsed = JSON.parse(objData);
+          if (parsed && specHasContent(parsed?.openApiSpecification)) return true;
+        } catch {}
       }
       const revObjData = src?.dataDisclosureAgreementTemplateRevision?.objectData;
       if (revObjData && typeof revObjData === 'string') {
-        try { const parsed2 = JSON.parse(revObjData); if (parsed2 && ("openApiSpecification" in parsed2)) return true; } catch {}
+        try {
+          const parsed2 = JSON.parse(revObjData);
+          if (parsed2 && specHasContent(parsed2?.openApiSpecification)) return true;
+        } catch {}
       }
     } catch {}
     return false;
@@ -108,11 +120,7 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
               '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed', pointerEvents: 'auto' },
             }}
             onClick={handleViewApiClick}
-            disabled={(() => {
-              const hasUrl = typeof openApiUrl === 'string' && openApiUrl.length > 0;
-              const hasSpec = Boolean(parentHasEmbeddedSpec) || hasEmbeddedSpec;
-              return !(hasUrl || hasSpec);
-            })()}
+            disabled={!(Boolean(parentHasEmbeddedSpec) || hasEmbeddedSpec)}
           >
             {t("home.btn-viewMetadata")}
           </Button>
