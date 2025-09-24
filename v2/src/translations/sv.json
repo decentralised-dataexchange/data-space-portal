@@ -15,7 +15,13 @@
     "subtitle": "Visa din organisations B2B-anslutningar.",
     "table": {
       "headers": {
+        "id": "ID",
         "theirClientId": "Deras Client ID",
+        "theirClientSecret": "Deras Client Secret",
+        "mySoftwareStatement": "Mitt software statement",
+        "theirSoftwareStatement": "Deras software statement",
+        "lastModified": "Senast ändrad",
+        "actions": "Åtgärder",
         "myClientId": "Mitt Client ID",
         "nonce": "Nonce",
         "timestamp": "Tidsstämpel",
@@ -117,11 +123,13 @@
     "subtitle": "Visa och hantera din organisations signerade datautlämningsavtal.",
     "table": {
       "headers": {
+        "id": "ID",
         "usagePurpose": "Användningssyfte",
         "version": "Version",
-        "status": "Status",
-        "optIn": "Samtycke",
-        "lawfulBasis": "Rättslig grund för behandling"
+        "agreementEvent": "Avtalshändelse",
+        "dataSourceSignature": "Datakällans signatur",
+        "dataUsingServiceSignature": "Datakonsumentens signatur",
+        "lastModified": "Senast ändrad"
       },
       "noData": "Inga signerade avtal att visa"
     },
@@ -268,7 +276,9 @@
     "copied": "Kopierad",
     "typeToConfirm": "Skriv \"{text}\" för att bekräfta",
     "comingSoon": "Kommer snart",
-    "noDataSelected": "Ingen data vald"
+    "noDataSelected": "Ingen data vald",
+    "optInAction": "Opt-in",
+    "optOutAction": "Opt-out"
   },
   "errors": {
     "generic": "Något gick fel."
@@ -284,6 +294,16 @@
     "loginToSignWithBusinessWallet": "Logga in för att signera med företagsplånbok",
     "loginToUnsignWithBusinessWallet": "Logga in för att ångra signering med företagsplånbok",
     "dataDisclosureAgreementPolicy": "Policy för datautlämningsavtal",
+    "policy": {
+      "lawfulBasis": "Rättslig grund för behandling",
+      "dataRetentionPeriod": "Lagringsperiod för data",
+      "policyUrl": "Policy-URL",
+      "jurisdiction": "Jurisdiktion",
+      "industrySector": "Bransch",
+      "geographicRestriction": "Geografisk begränsning",
+      "storageLocation": "Lagringsplats",
+      "agreementPeriodYears": "Avtalsperiod (år)"
+    },
     "deleteModal": {
       "title": "Ta bort dataavtal",
       "description": "Du är på väg att radera ett befintligt datautlämningsavtal. Skriv RADERA för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
@@ -334,6 +354,7 @@
     "legalID": "Juridiskt ID för datakontrollant",
     "table": {
       "headers": {
+        "id": "ID",
         "usagePurpose": "Användningssyfte",
         "version": "Version",
         "status": "Status",
@@ -352,8 +373,15 @@
       "agreementLabel": "Avtal",
       "table": {
         "headers": {
+          "id": "ID",
           "revision": "Revision",
+          "usagePurpose": "Användningssyfte",
           "version": "Version",
+          "agreementEvent": "Avtalshändelse",
+          "dataSourceSignature": "Datakällans signatur",
+          "dataUsingServiceSignature": "Datakonsumentens signatur",
+          "lastModified": "Senast ändrad",
+          "actions": "Åtgärder",
           "status": "Status",
           "isLatest": "Senaste",
           "timestamp": "Tidsstämpel",
@@ -417,6 +445,7 @@
     "uploadButton": "Ladda upp",
     "oauth2ClientTitle": "OAuth 2.0 klient",
     "oauth2Title": "OAuth 2.0 klient",
+    "dataSpaceOauth2Title": "Dataspace OAuth 2.0-klient",
     "oauth2ClientNameLabel": "Namn",
     "oauth2ClientNamePlaceholder": "Namn för OAuth 2.0 klient",
     "oauth2ClientDescriptionLabel": "Beskrivning",
@@ -434,7 +463,7 @@
     "walletConfigurationTitle": "Konfiguration av organisationsplånbok",
     "configuredLabel": "Konfigurerad",
     "configureButton": "Konfigurera",
-    "oauth2ClientConfigTitle": "Konfiguration av OAuth 2.0 klient",
+    "oauth2ClientConfigTitle": "Data Space Konfiguration av OAuth 2.0 klient",
     "orgOauth2Title": "Organisationens OAuth 2.0 klient",
     "orgOauth2ClientConfigTitle": "Konfiguration av organisationens OAuth 2.0 klient",
     "orgOauth2ClientNameLabel": "Namn",
@@ -512,6 +541,7 @@
     "recommendedCoverSize": "Rekommenderad storlek är 1500x500 px",
     "recommendedLogoSize": "Rekommenderad storlek är 400x400 px"
   },
+  "unknownOrganization": "Okänd organisation",
   "viewCredentials": {
     "legalNameLabel": "Juridiskt namn",
     "identifierLabel": "Identifierare"

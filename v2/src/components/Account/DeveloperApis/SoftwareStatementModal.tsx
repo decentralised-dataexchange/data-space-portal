@@ -28,6 +28,7 @@ export type SoftwareStatementModalProps = {
   enableToggle?: boolean; // show/hide eye toggle, default true
   trusted?: boolean; // whether the organisation is trusted
   drawerWidth?: number; // optional override for right sidebar width
+  showTrustedBadge?: boolean; // whether to show the trusted/untrusted indicator
 };
 
 const formatDateTime = (epochOrIso?: number | string) => {
@@ -54,6 +55,7 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
   drawerWidth = 580,
   coverImageBase64,
   logoImageBase64,
+  showTrustedBadge = true,
 }) => {
   const t = useTranslations();
 
@@ -105,7 +107,7 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
         </Box>
       )}
       footerContent={(
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1.5, width: '100%' }}>
+        <Box sx={{ display: 'flex', justifyContent: isDeleteEnabled ? 'space-between' : 'flex-end', alignItems: 'center', gap: 1.5, width: '100%' }}>
           <Button className="delete-btn" variant="outlined" onClick={onClose} sx={{ minWidth: 120, textTransform: 'none' }}>
             {t('common.close')}
           </Button>
@@ -127,10 +129,12 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
             </Typography>
           </Box>
         )}
-        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: trusted ? '#2e7d32' : '#d32f2f' }}>
-          {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-          <VerifiedBadge trusted={trusted} />
-        </Typography>
+        {showTrustedBadge && (
+          <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: trusted ? '#2e7d32' : '#d32f2f' }}>
+            {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
+            <VerifiedBadge trusted={trusted} />
+          </Typography>
+        )}
         {overview && (
           <>
             <Typography variant="subtitle1" mt={2}>

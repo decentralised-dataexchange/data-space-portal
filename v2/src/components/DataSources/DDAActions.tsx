@@ -14,9 +14,10 @@ interface DDAActionsProps {
   openApiUrl: string;
   dataSourceSlug: string;
   apiViewMode?: boolean; // when true, hide View API and right-align the remaining action
+  hasEmbeddedSpec?: boolean; // optional hint from parent if spec presence was detected externally
 }
 
-export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSourceSlug, apiViewMode = false }: DDAActionsProps) {
+export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSourceSlug, apiViewMode = false, hasEmbeddedSpec: parentHasEmbeddedSpec }: DDAActionsProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const t = useTranslations();
@@ -33,34 +34,69 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
   };
 
   const handleViewApiClick = () => {
+    // If URL exists, store it for downstream consumers
     if (openApiUrl) {
       dispatch(setSelectedOpenApiUrl(openApiUrl));
-      // Navigate to the same datasource read page, showing only this DDA and the API doc below it
-      const viewId = getDdaId(dataDisclosureAgreement) || dataDisclosureAgreement.templateId;
-      router.push(`/${locale}/data-source/read/${dataSourceSlug}?viewApiFor=${viewId}`);
     }
+    // Navigate to the same datasource read page, showing only this DDA and the API doc below it
+    const viewId = getDdaId(dataDisclosureAgreement) || dataDisclosureAgreement.templateId;
+    router.push(`/${locale}/data-source/read/${dataSourceSlug}?viewApiFor=${viewId}`);
   };
 
-  const versionText = String((dataDisclosureAgreement as any)?.version || (dataDisclosureAgreement as any)?.templateVersion || "");
+  // Detect embedded OpenAPI spec presence (top-level or nested in objectData strings)
+  const hasEmbeddedSpec = React.useMemo(() => {
+    const src: any = dataDisclosureAgreement as any;
+    try {
+      if (src && ("openApiSpecification" in src)) return true;
+      const objData = src?.objectData;
+      if (objData && typeof objData === 'string') {
+        try { const parsed = JSON.parse(objData); if (parsed && ("openApiSpecification" in parsed)) return true; } catch {}
+      }
+      const revObjData = src?.dataDisclosureAgreementTemplateRevision?.objectData;
+      if (revObjData && typeof revObjData === 'string') {
+        try { const parsed2 = JSON.parse(revObjData); if (parsed2 && ("openApiSpecification" in parsed2)) return true; } catch {}
+      }
+    } catch {}
+    return false;
+  }, [dataDisclosureAgreement]);
+
+  const getVersionText = () => {
+    const v: any = (dataDisclosureAgreement as any)?.version || (dataDisclosureAgreement as any)?.templateVersion;
+    return v ? String(v) : '';
+  };
+
+  const formatRelativeTime = (val?: string) => {
+    if (!val) return "";
+    const d = new Date(val);
+    if (isNaN(d.getTime())) return "";
+    const diffMs = d.getTime() - Date.now();
+    const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+    const absMs = Math.abs(diffMs);
+    const sec = Math.round(diffMs / 1000);
+    const min = Math.round(diffMs / (60 * 1000));
+    const hr = Math.round(diffMs / (60 * 60 * 1000));
+    const day = Math.round(diffMs / (24 * 60 * 60 * 1000));
+    if (absMs < 60 * 1000) return rtf.format(sec, 'second');
+    if (absMs < 60 * 60 * 1000) return rtf.format(min, 'minute');
+    if (absMs < 24 * 60 * 60 * 1000) return rtf.format(hr, 'hour');
+    return rtf.format(day, 'day');
+  };
+
+  const getModifiedText = () => {
+    const ts: any = (dataDisclosureAgreement as any)?.updatedAt || (dataDisclosureAgreement as any)?.createdAt;
+    if (!ts) return "";
+    const d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleString();
+  };
   return (
-    <Box
-      className="actionListingBtn"
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
-        alignItems: { xs: "flex-start", sm: "center" },
-        gap: 1,
-        marginTop: "auto",
-      }}
-    >
-      <Box sx={{ flex: 1, width: '100%', display: 'flex', justifyContent: { xs: 'flex-start', sm: 'flex-start' } }}>
-        {!!versionText && (
-          <Typography variant="body2" sx={{ color: '#666666' }}>
-            {t('dataAgreements.version')}: {versionText}
-          </Typography>
-        )}
-      </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}>
+    <Box className="actionListingBtn" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, marginTop: 'auto' }}>
+      {/* Top row: Version inline with actions */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, width: '100%' }}>
+        <Typography variant="body2" sx={{ color: '#666666' }}>
+          {(() => { const v = getVersionText(); return v ? `${t('dataAgreements.version')}: ${v}` : ''; })()}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         {!apiViewMode && (
           <Button
             variant="outlined"
@@ -72,7 +108,11 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
               '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed', pointerEvents: 'auto' },
             }}
             onClick={handleViewApiClick}
-            disabled={!openApiUrl}
+            disabled={(() => {
+              const hasUrl = typeof openApiUrl === 'string' && openApiUrl.length > 0;
+              const hasSpec = Boolean(parentHasEmbeddedSpec) || hasEmbeddedSpec;
+              return !(hasUrl || hasSpec);
+            })()}
           >
             {t("home.btn-viewMetadata")}
           </Button>
@@ -85,7 +125,18 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
         >
           {t("home.btn-signData")}
         </Button>
+        </Box>
       </Box>
+      {/* Bottom row: Relative last modified */}
+      {(() => {
+        const rel = formatRelativeTime((dataDisclosureAgreement as any)?.updatedAt || (dataDisclosureAgreement as any)?.createdAt);
+        if (!rel) return null;
+        return (
+          <Typography variant="caption" sx={{ color: '#888888', fontSize: '12px' }}>
+            {`Last Modified: ${rel}`}
+          </Typography>
+        );
+      })()}
     </Box>
   );
 }

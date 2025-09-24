@@ -31,6 +31,7 @@ export const DDAPolicyCard = (props: Props) => {
             mx: 1.25,
             mb: 0.625,
             py: 1.25,
+            pr: 1.25,
           }}
         >
           <Typography variant="subtitle2" color="black" sx={{ fontSize: '14px' }}>

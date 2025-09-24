@@ -166,6 +166,9 @@ export interface DataDisclosureAgreement {
   isLatestVersion: boolean;
   createdAt?: string;
   updatedAt?: string;
+  // Optional embedded OpenAPI specification provided as a nested Key/Value list structure
+  // Example shape: [{ Key: 'openapi', Value: '3.1.0' }, { Key: 'paths', Value: [ { Key: '/path', Value: [ { Key: 'get', Value: [...] } ] } ] }]
+  openApiSpecification?: Array<{ Key: string; Value: any }>;
 }
 
 export interface DataSource {

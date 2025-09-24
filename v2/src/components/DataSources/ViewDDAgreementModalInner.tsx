@@ -176,9 +176,13 @@ export default function ViewDataAgreementModalInner(props: Props) {
             const attrs = Array.isArray((selectedData as any)?.dataAttributes)
               ? (selectedData as any).dataAttributes
               : ((selectedData as any)?.personalData ?? []);
-            const rows: AttributeRow[] = (attrs || []).map((a: any) => ({ label: a?.name ?? a?.attributeName ?? '', value: '' }));
+            const rows: AttributeRow[] = (attrs || []).map((a: any) => {
+              const label = a?.name ?? a?.attributeName ?? '';
+              const desc = a?.description ?? a?.attributeDescription ?? '';
+              return { label, value: '', tooltip: desc } as AttributeRow;
+            });
             return (
-              <AttributeTable rows={rows} showValues={true} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} />
+              <AttributeTable rows={rows} showValues={false} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} hideValueColumn={true} />
             );
           })()}
         </Box>
@@ -190,9 +194,6 @@ export default function ViewDataAgreementModalInner(props: Props) {
             handleCloseViewDDAModal={setOpen}
           />
         </Box>
-
-        {/* Issued/Expiry footer strip below the last card */}
-        <IssuedExpiryStrip issued={(selectedData as any)?.createdAt} expiry={(selectedData as any)?.updatedAt} />
       </Box>
     </RightSidebar>
   );

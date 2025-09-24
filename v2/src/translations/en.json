@@ -15,7 +15,13 @@
     "subtitle": "View your organisation’s B2B connections.",
     "table": {
       "headers": {
+        "id": "ID",
         "theirClientId": "Their Client ID",
+        "theirClientSecret": "Their Client Secret",
+        "mySoftwareStatement": "My Software Statement",
+        "theirSoftwareStatement": "Their Software Statement",
+        "lastModified": "Last Modified",
+        "actions": "Actions",
         "myClientId": "My Client ID",
         "nonce": "Nonce",
         "timestamp": "Timestamp",
@@ -80,11 +86,13 @@
     "subtitle": "View and manage your organisation's signed Data Disclosure Agreement records.",
     "table": {
       "headers": {
+        "id": "ID",
         "usagePurpose": "Usage purpose",
         "version": "Version",
-        "status": "Status",
-        "optIn": "Opt-in",
-        "lawfulBasis": "Lawful Basis of Processing"
+        "agreementEvent": "Agreement Event",
+        "dataSourceSignature": "Data Source Signature",
+        "dataUsingServiceSignature": "Data Using Service Signature",
+        "lastModified": "Last Modified"
       },
       "noData": "No signed agreements to display"
     },
@@ -132,8 +140,8 @@
     "sector": "Sector",
     "overView": "Overview",
     "organisationName": "Organisation Name",
-    "addCredential": "Add Credentials",
-    "viewCredential": "View Credentials",
+    "addCredential": "Add Credential",
+    "viewCredential": "View Credential",
     "edit": "Edit",
     "policyUrl": "Policy URL",
     "location": "Location",
@@ -143,7 +151,7 @@
     "manageAccount": "Manage Account",
     "manageAdminUser": "Manage Admin User",
     "developerDocumentation": "Developer Documentation",
-    "connectWalletTitle": "Add Credentials - ",
+    "connectWalletTitle": "Add Credential - ",
     "connect": "Connect",
     "choose": "Choose",
     "confirm": "Confirm",
@@ -154,7 +162,7 @@
     "cloudWallet": "Cloud Wallet",
     "mobileWallet": "Mobile Wallet",
     "walletDescription": "Paste the connected url",
-    "chooseDescription": "Your business is currently unverified. Add credentials from the connected wallet to verify your business.",
+    "chooseDescription": "Your business is currently unverified. Add credential from the connected wallet to verify your business.",
     "chooseWalletTitle": "CONNECTED WALLET: ",
     "chooseWalletTwo": "North Health Innovation AB",
     "chooseWalletThree": "Issues by:",
@@ -220,7 +228,9 @@
     "copied": "Copied",
     "typeToConfirm": "Type \"{text}\" to confirm",
     "comingSoon": "Coming soon",
-    "noDataSelected": "No data selected"
+    "noDataSelected": "No data selected",
+    "optInAction": "Opt-in",
+    "optOutAction": "Opt-out"
   },
   "errors": {
     "generic": "Something went wrong."
@@ -277,6 +287,16 @@
     "saveButton": "Save changes",
     "noListingsAvailable": "No listings available. Click + to add new listing",
     "dataDisclosureAgreementPolicy": "Data Disclosure Agreement Policy",
+    "policy": {
+      "lawfulBasis": "Lawful basis of processing",
+      "dataRetentionPeriod": "Data retention period",
+      "policyUrl": "Policy URL",
+      "jurisdiction": "Jurisdiction",
+      "industrySector": "Industry sector",
+      "geographicRestriction": "Geographic restriction",
+      "storageLocation": "Storage location",
+      "agreementPeriodYears": "Agreement Period (Years)"
+    },
     "deleteModal": {
       "title": "Delete Data Agreement",
       "description": "You are about to delete an existing data disclosure agreement. Please type DELETE to confirm and click DELETE. This action is not reversible.",
@@ -332,6 +352,7 @@
     "legalID": "Data Controller Legal ID",
     "table": {
       "headers": {
+        "id": "ID",
         "usagePurpose": "Usage purpose",
         "version": "Version",
         "status": "Status",
@@ -350,8 +371,15 @@
       "agreementLabel": "Agreement",
       "table": {
         "headers": {
+          "id": "ID",
           "revision": "Revision",
+          "usagePurpose": "Usage purpose",
           "version": "Version",
+          "agreementEvent": "Agreement event",
+          "dataSourceSignature": "Data Source Signature",
+          "dataUsingServiceSignature": "Data Using Service Signature",
+          "lastModified": "Last Modified",
+          "actions": "Actions",
           "status": "Status",
           "isLatest": "Is Latest",
           "timestamp": "Timestamp",
@@ -415,6 +443,7 @@
     "uploadButton": "Upload",
     "oauth2ClientTitle": "OAuth 2.0 Client",
     "oauth2Title": "OAuth 2.0 Client",
+    "dataSpaceOauth2Title": "Data Space OAuth 2.0 Client",
     "oauth2ClientNameLabel": "Name",
     "oauth2ClientNamePlaceholder": "Name for OAuth 2.0 Client",
     "oauth2ClientDescriptionLabel": "Description",
@@ -432,7 +461,7 @@
     "walletConfigurationTitle": "Organisation Wallet Configuration",
     "configuredLabel": "Configured",
     "configureButton": "Configure",
-    "oauth2ClientConfigTitle": "OAuth 2.0 Client Configuration",
+    "oauth2ClientConfigTitle": "Data Space OAuth 2.0 Client Configuration",
     "orgOauth2Title": "Organisation OAuth 2.0 Client",
     "orgOauth2ClientConfigTitle": "Organisation OAuth 2.0 Client Configuration",
     "orgOauth2ClientNameLabel": "Name",

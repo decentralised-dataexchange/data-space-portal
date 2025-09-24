@@ -12,6 +12,8 @@ import TablePagination from "@mui/material/TablePagination";
 import Pagination from "@mui/material/Pagination";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/system";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useTranslations } from "next-intl";
 import { B2BConnectionItem } from "@/types/b2bConnection";
 
@@ -84,6 +86,8 @@ export default function B2BTable({
   total,
   onPageChange,
   onRowsPerPageChange,
+  onOpenMySoftwareStatement,
+  onOpenTheirSoftwareStatement,
 }: {
   rows: B2BConnectionItem[];
   page: number; // zero-based for MUI
@@ -91,18 +95,28 @@ export default function B2BTable({
   total: number;
   onPageChange: (newPage: number) => void;
   onRowsPerPageChange: (newLimit: number) => void;
+  onOpenMySoftwareStatement?: (item: B2BConnectionItem) => void;
+  onOpenTheirSoftwareStatement?: (item: B2BConnectionItem) => void;
 }) {
   const t = useTranslations();
+
+  const formatLocalDate = (val?: string) => {
+    if (!val) return '';
+    const d = new Date(val);
+    return isNaN(d.getTime()) ? '' : d.toLocaleString();
+  };
 
   return (
     <TableContainer className="dd-container" sx={{ backgroundColor: 'transparent', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
       <Table size="small" aria-label="b2b-connections-table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>{t("b2bConnections.table.headers.b2bConnectionId")}</StyledTableCell>
-            <StyledTableCell>{t("b2bConnections.table.headers.myClientId")}</StyledTableCell>
+            <StyledTableCell>{t("b2bConnections.table.headers.id")}</StyledTableCell>
             <StyledTableCell>{t("b2bConnections.table.headers.theirClientId")}</StyledTableCell>
-            <StyledTableCell>{t("b2bConnections.table.headers.timestamp")}</StyledTableCell>
+            <StyledTableCell>{t("b2bConnections.table.headers.theirClientSecret")}</StyledTableCell>
+            <StyledTableCell>{t("b2bConnections.table.headers.mySoftwareStatement")}</StyledTableCell>
+            <StyledTableCell>{t("b2bConnections.table.headers.theirSoftwareStatement")}</StyledTableCell>
+            <StyledTableCell>Last Modified Date</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
@@ -111,22 +125,38 @@ export default function B2BTable({
               const rec = item.b2bConnectionRecord;
               return (
                 <StyledTableRow key={item.id}>
-                  <TableCell>
-                    <Tooltip title={item?.b2bConnectionId ?? ''}><span>{item?.b2bConnectionId ?? ''}</span></Tooltip>
-                  </TableCell>
-                  <TableCell>{rec?.myClientId ?? ''}</TableCell>
-                  <TableCell>{rec?.theirClientId ?? ''}</TableCell>
-                  <TableCell>
-                    <Tooltip title={rec?.timestamp ? new Date(rec.timestamp).toISOString() : ''}>
-                      <span>{safeDate(rec?.timestamp)}</span>
-                    </Tooltip>
-                  </TableCell>
+                  <StyledTableCell>{rec?.id ?? ''}</StyledTableCell>
+                  <StyledTableCell>{rec?.theirClientId ?? ''}</StyledTableCell>
+                  <StyledTableCell>{rec?.theirClientSecret ?? ''}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, whiteSpace: 'nowrap' }}>
+                      <Tooltip title={t('developerAPIs.softwareStatementViewTooltip')} arrow>
+                        <span>
+                          <IconButton aria-label="view-my-ss" onClick={() => onOpenMySoftwareStatement?.(item)} sx={{ color: '#000' }}>
+                            <VisibilityIcon fontSize="small" />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </Box>
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, whiteSpace: 'nowrap' }}>
+                      <Tooltip title={t('developerAPIs.softwareStatementViewTooltip')} arrow>
+                        <span>
+                          <IconButton aria-label="view-their-ss" onClick={() => onOpenTheirSoftwareStatement?.(item)} sx={{ color: '#000' }}>
+                            <VisibilityIcon fontSize="small" />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </Box>
+                  </StyledTableCell>
+                  <StyledTableCell>{formatLocalDate(item?.updatedAt || item?.createdAt)}</StyledTableCell>
                 </StyledTableRow>
               );
             })
           ) : (
             <TableRow>
-              <TableCell colSpan={6} align="center">{t("b2bConnections.table.noData")}</TableCell>
+              <StyledTableCell colSpan={6} align="center">{t("b2bConnections.table.noData")}</StyledTableCell>
             </TableRow>
           )}
         </TableBody>

@@ -5,7 +5,7 @@ import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import '../styles/globals.scss';
 
 export const metadata: Metadata = {
-  title: 'NordXDataspace (NXD)',
+  title: 'CRANE d-HDSI Dataspace',
   description: 'Enabling trust in the data ecosystem for next-generation data sharing.',
   icons: {
     icon: '/favicon.ico',

@@ -67,7 +67,9 @@ export const ENDPOINTS = {
     },
     // DDA history
     getDDAHistory: (dataDisclosureAgreementId: string) => {
-        return `/config/data-disclosure-agreement/${dataDisclosureAgreementId}/history/`;
+        // Ensure the path segment is safely URL-encoded to support IDs with ':' or '/'
+        const encoded = typeof dataDisclosureAgreementId === 'string' ? encodeURIComponent(dataDisclosureAgreementId) : dataDisclosureAgreementId as any;
+        return `/config/data-disclosure-agreement/${encoded}/history/`;
     },
     updateDDAStatus: (id: any) => {
         return `/config/data-disclosure-agreement/${id}/status/`
@@ -80,6 +82,9 @@ export const ENDPOINTS = {
         return `/config/organisation/b2b-connections/?limit=${limit}&offset=${offsetValue}`;
     },
     readB2BConnection: (b2bConnectionId: string) => {
+        return `/config/organisation/b2b-connection/${b2bConnectionId}/`;
+    },
+    deleteB2BConnection: (b2bConnectionId: string) => {
         return `/config/organisation/b2b-connection/${b2bConnectionId}/`;
     },
     // Initiate sign/unsign for organisation DDA (auth required)

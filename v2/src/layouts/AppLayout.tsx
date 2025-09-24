@@ -95,10 +95,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       const isAuthPath = !!pathname && (pathname.includes('/login') || pathname.includes('/signup'));
       const inPublicRoute = !!pathname && isPublicRoute(pathname);
 
-      // Always render auth routes with MinimalLayout to avoid flicker/remount
+      // Always render auth routes with MinimalLayout. If already authenticated, redirect to /start.
       if (isAuthPath) {
         setCurrentLayout('minimal');
-        // Do not redirect here; login/signup flows handle navigation
+        // Only redirect when auth check is complete and user is authenticated
+        if (!isLoading && isAuthenticated && !isSamePath('/start')) {
+          router.replace(withLocale('/start'));
+        }
         return;
       }
 
@@ -117,7 +120,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     };
     
     checkClientAuth();
-  }, [isAuthenticated, pathname, router]);
+  }, [isAuthenticated, isLoading, pathname, router]);
   
   // Show loading state during server-side rendering
   if (!isClient) {

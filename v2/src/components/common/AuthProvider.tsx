@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
-import { setAuthenticated, setAdminDetails, logout as logoutAction } from '@/store/reducers/authReducer';
+import { setAuthenticated, setAdminDetails, logout as logoutAction, setLoading as setAuthLoading } from '@/store/reducers/authReducer';
 import { useQueryClient } from '@tanstack/react-query';
 import { clearAllBrowserStorage } from '@/utils/browserStorage';
 import { setAxiosAuthState } from '@/lib/apiService/axios';
@@ -53,9 +53,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Signal Redux that auth check is in progress to gate client redirects
+        dispatch(setAuthLoading(true));
         // Check if we're in a browser environment
         if (typeof window === 'undefined') {
           setIsLoading(false);
+          dispatch(setAuthLoading(false));
           return;
         }
         
@@ -67,6 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           dispatch(setAuthenticated(false));
           try { setAxiosAuthState(false); } catch {}
           setIsLoading(false);
+          dispatch(setAuthLoading(false));
           return;
         }
         
@@ -79,6 +83,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           dispatch(setAuthenticated(false));
           try { setAxiosAuthState(false); } catch {}
           setIsLoading(false);
+          dispatch(setAuthLoading(false));
           return;
         }
         
@@ -95,6 +100,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             dispatch(setAuthenticated(false));
             try { setAxiosAuthState(false); } catch {}
             setIsLoading(false);
+            dispatch(setAuthLoading(false));
             return;
           }
           
@@ -121,6 +127,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
         
         setIsLoading(false);
+        dispatch(setAuthLoading(false));
       } catch (error) {
         console.error('Auth check error:', error);
         LocalStorageService.clear();
@@ -128,6 +135,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         dispatch(setAuthenticated(false));
         try { setAxiosAuthState(false); } catch {}
         setIsLoading(false);
+        dispatch(setAuthLoading(false));
       }
     };
 

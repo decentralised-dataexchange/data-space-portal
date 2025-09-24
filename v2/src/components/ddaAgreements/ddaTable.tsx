@@ -185,11 +185,12 @@ const DDATable: React.FC<DDATableProps> = ({
       <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
+            <StyledTableCell>{"DDA Template ID"}</StyledTableCell>
             <StyledTableCell>{t("dataAgreements.table.headers.usagePurpose")}</StyledTableCell>
             <StyledTableCell>{t("dataAgreements.table.headers.version")}</StyledTableCell>
             <StyledTableCell>{t("dataAgreements.table.headers.status")}</StyledTableCell>
             <StyledTableCell>{t("dataAgreements.table.headers.lawfulBasis")}</StyledTableCell>
-            <StyledTableCell>{t("dataAgreements.table.headers.lastModified")}</StyledTableCell>
+            <StyledTableCell>{"Last Modified Date"}</StyledTableCell>
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
@@ -197,6 +198,7 @@ const DDATable: React.FC<DDATableProps> = ({
           {tabledata?.dataDisclosureAgreements?.length > 0 ? (
             tabledata.dataDisclosureAgreements.map((row, index) => (
               <StyledTableRow key={row.templateId} style={{ color: "red" }}>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.templateId || ''}</StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.purpose}</StyledTableCell>
                 <StyledTableCell>
                   <VersionDropdown
@@ -219,7 +221,8 @@ const DDATable: React.FC<DDATableProps> = ({
                 <StyledTableCell
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
+                    gap: 8,
                     border: "none",
                     whiteSpace: 'nowrap',
                   }}
@@ -311,7 +314,7 @@ const DDATable: React.FC<DDATableProps> = ({
             ))
           ) : (
             <TableRow>
-              <StyledTableCell colSpan={6} align="center">
+              <StyledTableCell colSpan={7} align="center">
                 {t("common.noResultsFound")}
               </StyledTableCell>
             </TableRow>

@@ -32,7 +32,6 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
   const status = publicRoute ? ((ssPublic as any)?.status || '') : (softwareStatementRes?.status || '');
   const hasSoftwareStatement = !!ssObj && Object.keys(ssObj).length > 0 && status === 'credential_accepted';
 
-  const openApiUrl = serviceItem?.organisation?.openApiUrl || '';
   const holderBaseUrl = serviceItem?.organisation?.verificationRequestURLPrefix || '';
   const credentialOfferEndpoint = (serviceItem?.organisation as any)?.credentialOfferEndpoint as string | undefined;
   const accessPointEndpoint = (serviceItem?.organisation as any)?.accessPointEndpoint as string | undefined;
@@ -73,18 +72,6 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
             </Typography>
           </Box>
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
-            <Typography color="black" variant='body2'>{t('developerAPIs.openApiUrlLabel')}:</Typography>
-            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75 }}>
-              {openApiUrl ? (
-                <MuiLink href={openApiUrl} target='_blank' rel='noreferrer' underline='hover' sx={{ color: '#0000FF', wordBreak: 'break-all', fontSize: '14px', display: 'block' }}>
-                  {openApiUrl}
-                </MuiLink>
-              ) : (
-                <Typography variant='body2' color='grey'>-</Typography>
-              )}
-              {!!openApiUrl && <CopyButton text={openApiUrl} />}
-            </Box>
-
             <Typography color="black" variant='body2'>{t('developerAPIs.holderBaseUrlLabel')}:</Typography>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75 }}>
               {holderBaseUrl ? (

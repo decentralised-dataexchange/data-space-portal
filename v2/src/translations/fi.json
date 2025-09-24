@@ -16,7 +16,13 @@
     "subtitle": "Näytä organisaatiosi B2B-yhteydet.",
     "table": {
       "headers": {
+        "id": "Tunniste",
         "theirClientId": "Heidän Client ID",
+        "theirClientSecret": "Heidän Client Secret",
+        "mySoftwareStatement": "Oma software statement",
+        "theirSoftwareStatement": "Heidän software statement",
+        "lastModified": "Viimeksi muokattu",
+        "actions": "Toiminnot",
         "myClientId": "Oma Client ID",
         "nonce": "Nonce",
         "timestamp": "Aikaleima",
@@ -120,11 +126,13 @@
     "subtitle": "Näytä ja hallitse organisaatiosi allekirjoitettuja tietojen luovutussopimuksia.",
     "table": {
       "headers": {
+        "id": "Tunniste",
         "usagePurpose": "Käyttötarkoitus",
         "version": "Versio",
-        "status": "Tila",
-        "optIn": "Suostumus",
-        "lawfulBasis": "Tietojen käsittelyn oikeusperuste"
+        "agreementEvent": "Sopimustapahtuma",
+        "dataSourceSignature": "Tietolähteen allekirjoitus",
+        "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
+        "lastModified": "Viimeksi muokattu"
       },
       "noData": "Ei allekirjoitettuja sopimuksia"
     },
@@ -299,7 +307,9 @@
     "copied": "Kopioitu",
     "typeToConfirm": "Kirjoita \"{text}\" vahvistaaksesi",
     "comingSoon": "Tulossa pian",
-    "noDataSelected": "Ei valittua dataa"
+    "noDataSelected": "Ei tietoja valittu",
+    "optInAction": "Hyväksy",
+    "optOutAction": "Kieltäydy"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
@@ -315,6 +325,16 @@
     "loginToSignWithBusinessWallet": "Kirjaudu sisään allekirjoittaaksesi yrityslompakolla",
     "loginToUnsignWithBusinessWallet": "Kirjaudu sisään peruuttaaksesi allekirjoituksen yrityslompakolla",
     "dataDisclosureAgreementPolicy": "Tietojen luovutussopimuksen käytäntö",
+    "policy": {
+      "lawfulBasis": "Käsittelyn oikeusperuste",
+      "dataRetentionPeriod": "Tietojen säilytysaika",
+      "policyUrl": "Käytäntö URL",
+      "jurisdiction": "Toimivalta",
+      "industrySector": "Toimiala",
+      "geographicRestriction": "Maantieteellinen rajoitus",
+      "storageLocation": "Säilytyspaikka",
+      "agreementPeriodYears": "Sopimuskausi (vuotta)"
+    },
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",
@@ -358,8 +378,15 @@
       "agreementLabel": "Sopimus",
       "table": {
         "headers": {
+          "id": "Tunniste",
           "revision": "Revisio",
+          "usagePurpose": "Käyttötarkoitus",
           "version": "Versio",
+          "agreementEvent": "Sopimustapahtuma",
+          "dataSourceSignature": "Tietolähteen allekirjoitus",
+          "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
+          "lastModified": "Viimeksi muokattu",
+          "actions": "Toiminnot",
           "status": "Tila",
           "isLatest": "On uusin",
           "timestamp": "Aikaleima",
@@ -383,6 +410,7 @@
     "legalID": "Tietosuojavastaavan rekisteröintitunnus",
     "table": {
       "headers": {
+        "id": "Tunniste",
         "usagePurpose": "Käyttötarkoitus",
         "version": "Versio",
         "status": "Tila",
@@ -449,6 +477,7 @@
     "uploadButton": "Lataa",
     "oauth2ClientTitle": "OAuth 2.0 asiakas",
     "oauth2Title": "OAuth 2.0 -asiakas",
+    "dataSpaceOauth2Title": "Dataspacen OAuth 2.0 -asiakas",
     "oauth2ClientNameLabel": "Nimi",
     "oauth2ClientNamePlaceholder": "OAuth 2.0 asiakkaan nimi",
     "oauth2ClientDescriptionLabel": "Kuvaus",
@@ -466,7 +495,7 @@
     "walletConfigurationTitle": "Organisaation lompakon konfigurointi",
     "configuredLabel": "Määritetty",
     "configureButton": "Määritä",
-    "oauth2ClientConfigTitle": "OAuth 2.0 asiakkaan konfigurointi",
+    "oauth2ClientConfigTitle": "Data Space OAuth 2.0 asiakkaan konfigurointi",
     "orgOauth2Title": "Organisaation OAuth 2.0 asiakas",
     "orgOauth2ClientConfigTitle": "Organisaation OAuth 2.0 asiakkaan konfigurointi",
     "orgOauth2ClientNameLabel": "Nimi",

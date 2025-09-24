@@ -36,13 +36,6 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
     subMenu: []
   },
   {
-    name: 'B2B Connections',
-    translationKey: 'b2bConnections.title',
-    iconId: 'b2b',
-    link: '/b2b-connections',
-    subMenu: []
-  },
-  {
     name: 'Account',
     translationKey: 'account',
     iconId: 'account',
