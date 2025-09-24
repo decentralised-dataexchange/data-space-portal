@@ -232,15 +232,27 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
     // Helper to detect presence of embedded spec for a DDA item (for enabling the View API button)
     const hasEmbeddedSpec = (src: any): boolean => {
         if (!src) return false;
+        const specHasContent = (value: any): boolean => {
+            if (!value) return false;
+            if (Array.isArray(value)) return value.length > 0;
+            if (typeof value === 'object') return Object.keys(value).length > 0;
+            return true;
+        };
         try {
-            if ('openApiSpecification' in src) return true;
+            if (Object.prototype.hasOwnProperty.call(src, 'openApiSpecification') && specHasContent((src as any).openApiSpecification)) return true;
             const od = src?.objectData;
             if (od && typeof od === 'string') {
-                try { const parsed = JSON.parse(od); if (parsed && ('openApiSpecification' in parsed)) return true; } catch {}
+                try {
+                    const parsed = JSON.parse(od);
+                    if (parsed && specHasContent(parsed?.openApiSpecification)) return true;
+                } catch {}
             }
             const rev = src?.dataDisclosureAgreementTemplateRevision?.objectData;
             if (rev && typeof rev === 'string') {
-                try { const parsed2 = JSON.parse(rev); if (parsed2 && ('openApiSpecification' in parsed2)) return true; } catch {}
+                try {
+                    const parsed2 = JSON.parse(rev);
+                    if (parsed2 && specHasContent(parsed2?.openApiSpecification)) return true;
+                } catch {}
             }
         } catch {}
         return false;
