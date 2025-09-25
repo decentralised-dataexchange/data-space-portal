@@ -63,8 +63,6 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
   // Caller can append hidden rows with keys '__issued' and '__expiry' in the value field
   const metaIssued = rows.find((r: AttributeRow & { key?: string }) => (r as any).key === '__issued') as any;
   const metaExpiry = rows.find((r: AttributeRow & { key?: string }) => (r as any).key === '__expiry') as any;
-  const issued = metaIssued?.value ? formatDateTime(metaIssued.value as any) : '';
-  const expiry = metaExpiry?.value ? formatDateTime(metaExpiry.value as any) : '';
 
   // Prepare display rows (exclude meta rows)
   const displayRows = rows

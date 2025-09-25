@@ -16,7 +16,7 @@
     "subtitle": "Näytä organisaatiosi B2B-yhteydet.",
     "table": {
       "headers": {
-        "id": "Tunniste",
+        "id": "B2B-yhteyden ID",
         "theirClientId": "Heidän Client ID",
         "theirClientSecret": "Heidän Client Secret",
         "mySoftwareStatement": "Oma software statement",
@@ -508,6 +508,7 @@
     "orgClientNameRequired": "Asiakkaan nimi on pakollinen",
     "orgClientIdRequired": "Client ID on pakollinen",
     "orgClientSecretRequired": "Client Secret on pakollinen",
+    "requestCredential": "Pyydä tunnistetietoa",
     "orgOauth2DeleteConfirm": "Haluatko varmasti poistaa organisaation OAuth2-asiakkaan?",
     "orgOauth2ClientDescriptionLabel": "Kuvaus",
     "orgOauth2ClientDescriptionPlaceholder": "Valinnainen kuvaus",

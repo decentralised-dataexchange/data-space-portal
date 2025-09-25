@@ -2,7 +2,7 @@
 import "./style.scss";
 import React from "react";
 
-import { Typography, Box, Avatar, Button, Tooltip, Link as MuiLink } from "@mui/material";
+import { Typography, Box, Avatar, Button, Tooltip, Link as MuiLink, CircularProgress } from "@mui/material";
 
 import { useTranslations } from "next-intl";
 import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
@@ -28,15 +28,14 @@ interface Props {
   drawerWidth?: number;
   signStatus?: 'sign' | 'unsign' | string;
   onSignClick?: () => void;
+  signButtonLoading?: boolean;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
-  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, signStatus, onSignClick } = props;
+  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, signStatus, onSignClick, signButtonLoading } = props;
   const t = useTranslations();
   const isVerified = Boolean(props.trusted);
   const { isAuthenticated } = useAppSelector(state => state.auth);
-  const router = useRouter();
-  const locale = useLocale();
   const isUnsign = signStatus === 'unsign';
   const buttonLabel = isUnsign ? t('dataAgreements.unsignWithBusinessWallet') : t('dataAgreements.signWithBusinessWallet');
   const tooltipText = isAuthenticated
@@ -122,10 +121,29 @@ export default function ViewDataAgreementModalInner(props: Props) {
               onClick={handleSignButtonClick}
               className="delete-btn"
               variant="outlined"
-              sx={{ textTransform: 'none', '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed', pointerEvents: 'auto' } }}
-              disabled={!isAuthenticated}
+              sx={{
+                textTransform: 'none',
+                position: 'relative',
+                '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed', pointerEvents: 'auto' }
+              }}
+              disabled={!isAuthenticated || Boolean(signButtonLoading)}
             >
-              {buttonLabel}
+              {signButtonLoading && (
+                <CircularProgress
+                  size={20}
+                  sx={{
+                    color: 'inherit',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-10px',
+                    marginLeft: '-10px'
+                  }}
+                />
+              )}
+              <Box component="span" sx={{ visibility: signButtonLoading ? 'hidden' : 'visible' }}>
+                {buttonLabel}
+              </Box>
             </Button>
           </span>
         </Tooltip>

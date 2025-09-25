@@ -147,8 +147,8 @@ export const apiService = {
     return api.delete<void>(ENDPOINTS.deleteDDA(ddaId))
       .then(res => res.data as unknown as void);
   },
-  initiateOrganisationDDA: async (ddaId: string): Promise<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }> => {
-    return api.post<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }>(ENDPOINTS.organisationDDAInitiate(ddaId), {})
+  signOrSignWithBusinessWalletInitiate: async (ddaId: string): Promise<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }> => {
+    return api.post<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }>(ENDPOINTS.signOrSignWithBusinessWalletInitiate(ddaId), {})
       .then(res => res.data);
   },
   getAdminDetails: async (): Promise<any> => {

@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import * as React from 'react';
 import { apiService } from '@/lib/apiService/apiService';
 import { useAppDispatch, useAppSelector } from './store';
 import { LocalStorageService } from '@/utils/localStorageService';
@@ -26,6 +27,106 @@ export const useGetAdminDetails = () => {
     retry: 1,
     refetchOnWindowFocus: false,
   });
+};
+
+// LocalStorage key to remember that request-credential was initiated
+const LS_KEY_REQUEST_CREDENTIAL_PENDING = 'developerAPIs:requestCredentialPending';
+
+// Helper to evaluate availability of software statement
+const isSoftwareStatementAvailable = (res: SoftwareStatementResponse | undefined): boolean => {
+  if (!res || !res.softwareStatement) return false;
+  if (Object.keys(res.softwareStatement).length === 0) return false;
+  return res.status === 'credential_accepted';
+};
+
+// Pending statuses indicating an in-progress flow that warrants refocus checks
+const isSoftwareStatementPending = (res: SoftwareStatementResponse | undefined): boolean => {
+  if (!res) return false;
+  const s = (res.status ?? '').toLowerCase();
+  return s === 'offer_sent' || s === 'offer_received' || s === 'credential_acked';
+};
+
+export interface UseSoftwareStatementRequestRefocusResult {
+  requestCredential: () => Promise<SoftwareStatementResponse | undefined>;
+  isRequesting: boolean;
+  clearPendingMarker: () => void;
+}
+
+export interface UseSoftwareStatementRequestRefocusParams {
+  orgId?: string;
+  ttlMs?: number; // how long to keep the pending marker alive
+}
+
+// Hook to manage "Request Credential" flow with tab-refocus recheck
+export const useSoftwareStatementRequestRefocus = (
+  params?: UseSoftwareStatementRequestRefocusParams
+): UseSoftwareStatementRequestRefocusResult => {
+  const queryClient = useQueryClient();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  const requestMutation = useRequestSoftwareStatement();
+  const orgId = params?.orgId;
+  const ttlMs = params?.ttlMs ?? 10 * 60 * 1000; // default 10 minutes
+
+  const clearPendingMarker = React.useCallback(() => {
+    try { localStorage.removeItem(LS_KEY_REQUEST_CREDENTIAL_PENDING); } catch {}
+  }, []);
+
+  const requestCredential = React.useCallback(async (): Promise<SoftwareStatementResponse | undefined> => {
+    try {
+      const res = await requestMutation.mutateAsync();
+      // Mark that we should recheck on next tab focus until available
+      const payload = JSON.stringify({ orgId: orgId ?? null, clickedAt: Date.now() });
+      try { localStorage.setItem(LS_KEY_REQUEST_CREDENTIAL_PENDING, payload); } catch {}
+      return res;
+    } catch (e) {
+      throw e;
+    }
+  }, [requestMutation, orgId]);
+
+  // On window focus, if request was initiated and statement isn't available yet, refetch once
+  React.useEffect(() => {
+    if (!isAuthenticated || !orgId) return;
+    const onFocus = async () => {
+      try {
+        const raw = localStorage.getItem(LS_KEY_REQUEST_CREDENTIAL_PENDING);
+        let marker: { orgId?: string | null; clickedAt?: number } | undefined;
+        if (raw) {
+          try { marker = JSON.parse(raw); } catch { marker = undefined; }
+        }
+        const current = queryClient.getQueryData<SoftwareStatementResponse | undefined>(['softwareStatement']);
+
+        // Evaluate marker validity
+        const markerValid = !!marker && typeof marker.clickedAt === 'number'
+          && (Date.now() - (marker.clickedAt ?? 0) <= ttlMs)
+          && (!marker.orgId || marker.orgId === orgId);
+
+        // Determine if we should refetch on this focus: either marker is valid OR status is pending
+        const shouldRefetch = markerValid || isSoftwareStatementPending(current);
+        if (!shouldRefetch) return;
+
+        if (isSoftwareStatementAvailable(current)) {
+          clearPendingMarker();
+          return;
+        }
+        // Refetch once per focus
+        await queryClient.refetchQueries({ queryKey: ['softwareStatement'], exact: true });
+        const updated = queryClient.getQueryData<SoftwareStatementResponse | undefined>(['softwareStatement']);
+        if (isSoftwareStatementAvailable(updated)) {
+          clearPendingMarker();
+        }
+      } catch {
+        // swallow
+      }
+    };
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [isAuthenticated, queryClient, clearPendingMarker, orgId, ttlMs]);
+
+  return {
+    requestCredential,
+    isRequesting: requestMutation.isPending,
+    clearPendingMarker,
+  };
 };
 
 // Organisation OAuth2 Client - External

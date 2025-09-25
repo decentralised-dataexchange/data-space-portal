@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useRequestSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal } from "@/custom-hooks/developerApis";
+import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal, useSoftwareStatementRequestRefocus } from "@/custom-hooks/developerApis";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
@@ -95,7 +95,7 @@ export default function DeveloperAPIs() {
   const { mutate: updateOrganisation, isPending: isSavingOws } = useUpdateOrganisation();
   // Software Statement hooks
   const { data: softwareStatementRes, isLoading: ssLoading, isError: ssError } = useGetSoftwareStatement();
-  const { mutate: requestSoftwareStatement, isPending: isRequestingSS } = useRequestSoftwareStatement();
+  const { requestCredential, isRequesting: isRequestingSS } = useSoftwareStatementRequestRefocus({ orgId: orgDetails?.id });
   const { mutate: deleteSoftwareStatement, isPending: isDeletingSS } = useDeleteSoftwareStatement();
   const { data: coverImageBase64 } = useGetCoverImage();
   const { data: logoImageBase64 } = useGetLogoImage();
@@ -509,12 +509,14 @@ export default function DeveloperAPIs() {
                         disabled={!hasEndpoints || isRequestingSS}
                         onClick={() => {
                           if (!hasEndpoints || isRequestingSS) return;
-                          requestSoftwareStatement(undefined, {
-                            onSuccess: () => {
-                              // No toast on success; UI will refresh via query invalidation
-                            },
-                            onError: () => dispatch(setMessage(t('error.generic')))
-                          });
+                          (async () => {
+                            try {
+                              await requestCredential();
+                              // No toast on success; React Query invalidates and our refocus hook handles follow-ups
+                            } catch {
+                              dispatch(setMessage(t('error.generic')));
+                            }
+                          })();
                         }}
                         sx={{
                           p: 0,
@@ -524,7 +526,7 @@ export default function DeveloperAPIs() {
                           '&.Mui-disabled': { opacity: 0.6, cursor: 'not-allowed' }
                         }}
                       >
-                        {isRequestingSS ? <CircularProgress size={16} /> : t('gettingStarted.addCredential')}
+                        {isRequestingSS ? <CircularProgress size={16} /> : t('developerAPIs.requestCredential')}
                       </Button>
                     </span>
                   </Tooltip>

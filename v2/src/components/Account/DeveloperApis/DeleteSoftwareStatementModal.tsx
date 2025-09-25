@@ -21,6 +21,13 @@ export default function DeleteSoftwareStatementModal({ open, setOpen, onConfirm,
   const confirmText = dT("deleteSoftwareStatementModal.confirmText");
   const isOk = confirmationTextInput === confirmText;
 
+  // Clear input when the modal is closed externally or via header close
+  React.useEffect(() => {
+    if (!open) {
+      setConfirmationTextInput("");
+    }
+  }, [open]);
+
   const handleClose = () => {
     setOpen(false);
     setConfirmationTextInput("");
