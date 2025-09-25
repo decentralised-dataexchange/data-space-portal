@@ -21,6 +21,13 @@ export default function DeleteOrganisationOAuthClientModal({ open, setOpen, onCo
   const confirmText = dT("orgOauth2DeleteModal.confirmText");
   const isOk = confirmationTextInput === confirmText;
 
+  // Clear input when the modal is closed externally or via header close
+  React.useEffect(() => {
+    if (!open) {
+      setConfirmationTextInput("");
+    }
+  }, [open]);
+
   const handleClose = () => {
     setOpen(false);
     setConfirmationTextInput("");

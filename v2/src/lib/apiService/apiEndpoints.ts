@@ -88,7 +88,7 @@ export const ENDPOINTS = {
         return `/config/organisation/b2b-connection/${b2bConnectionId}/`;
     },
     // Initiate sign/unsign for organisation DDA (auth required)
-    organisationDDAInitiate: (id: string) => {
+    signOrSignWithBusinessWalletInitiate: (id: string) => {
         return `/config/organisation/data-disclosure-agreement/${id}/`;
     },
     // Removed legacy data-source details endpoint

@@ -22,6 +22,13 @@ export default function DeleteCredentialsModal({ open, setOpen, onSuccess }: Pro
   const isOk = confirmationTextInput === confirmText;
   const { mutate: deleteCreds, isPending } = useDeleteOrgIdentity();
 
+  // Clear input when the modal is closed externally or via header close
+  React.useEffect(() => {
+    if (!open) {
+      setConfirmationTextInput("");
+    }
+  }, [open]);
+
   const handleClose = () => {
     setOpen(false);
     setConfirmationTextInput("");

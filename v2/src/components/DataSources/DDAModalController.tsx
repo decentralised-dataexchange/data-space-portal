@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import ViewDataAgreementModalInner from "./ViewDDAgreementModalInner";
 import { clearSelectedDDAId } from "@/store/reducers/dataSourceReducers";
-import { apiService } from "@/lib/apiService/apiService";
+import { useBusinessWalletSigning } from "@/custom-hooks/businessWalletSigning";
 // no i18n needed here
 
 interface Props {
@@ -31,72 +31,36 @@ export default function DDAModalController({
   const selectedDDAId = useAppSelector((state) => state.dataSources.selectedDDAId);
   const { isAuthenticated } = useAppSelector(state => state.auth);
   const open = selectedDDAId !== "";
-  const getDdaId = (dda: any): string | undefined => (dda?.dataAgreementId || dda?.['@id'] || dda?.templateId);
-  const matchesSelected = (d: any, sel: string) => {
-    return (
-      d?.templateId === sel ||
-      d?.['@id'] === sel ||
-      d?.dataAgreementId === sel ||
-      d?.dataAgreementRevisionId === sel ||
-      getDdaId(d) === sel
-    );
-  };
-  const selectedData = dataDisclosureAgreements.find((d) => matchesSelected(d, selectedDDAId));
+  const getDdaId = (dda: DataDisclosureAgreement): string | undefined => (
+    dda.dataAgreementId || dda['@id'] || dda.templateId
+  );
+  const matchesSelected = (d: DataDisclosureAgreement, sel: string): boolean => (
+    d.templateId === sel ||
+    d['@id'] === sel ||
+    d.dataAgreementId === sel ||
+    d.dataAgreementRevisionId === sel ||
+    getDdaId(d) === sel
+  );
+  const selectedData: DataDisclosureAgreement | undefined = dataDisclosureAgreements.find((d) => matchesSelected(d, selectedDDAId));
 
   const handleClose = () => dispatch(clearSelectedDDAId());
-
-  const [signStatus, setSignStatus] = React.useState<"sign" | "unsign" | string>("");
-
-  // Helper to initiate sign/unsign with ID fallback attempts (prefers templateId)
-  const initiateWithFallback = async (d: any) => {
-    const candidates = [d?.templateId, d?.['@id'], d?.dataAgreementId, d?.dataAgreementRevisionId].filter(Boolean) as string[];
-    let lastErr: any = null;
-    for (const cid of candidates) {
-      try {
-        return await apiService.initiateOrganisationDDA(cid);
-      } catch (e: any) {
-        const status = e?.response?.status;
-        lastErr = e;
-        if (status === 404) continue; // try next candidate
-        throw e; // non-404 -> surface immediately
-      }
-    }
-    throw lastErr || new Error('Failed to initiate organisation DDA');
-  };
-
-  // Fetch initial status and verification URL when modal opens (auth only)
-  React.useEffect(() => {
-    let cancelled = false;
-    const fetchInit = async () => {
-      if (!open || !selectedData || !isAuthenticated) return;
-      try {
-        const res = await initiateWithFallback(selectedData as any);
-        if (!cancelled) {
-          setSignStatus(res.status);
-        }
-      } catch (e) {
-        if (!cancelled) {
-          setSignStatus("");
-        }
-      }
-    };
-    fetchInit();
-    return () => { cancelled = true; };
-  }, [open, selectedData, isAuthenticated]);
+  // Hook: manage sign/unsign status and initiation; refetch status on window focus if user previously initiated
+  const { signStatus, initiateSignOrUnsign, isInitiating } = useBusinessWalletSigning({
+    selectedDDA: selectedData,
+    enabled: open && isAuthenticated,
+  });
 
   const handleSignClick = async () => {
     if (!selectedData || !isAuthenticated) return;
     try {
-      const res = await initiateWithFallback(selectedData as any);
-      const url = res.verificationRequest;
+      const res = await initiateSignOrUnsign();
+      const url = res?.verificationRequest;
       if (url) {
-        const win = window.open(url, '_blank', 'noopener,noreferrer');
-        if (win) {
-          win.opener = null;
-        }
+        const win = window.open(url, "_blank", "noopener,noreferrer");
+        if (win) win.opener = null;
       }
-    } catch (e) {
-      // Optionally show a message; keeping silent per spec
+    } catch {
+      // silent per spec
     }
   };
 
@@ -117,6 +81,7 @@ export default function DDAModalController({
       drawerWidth={580}
       signStatus={signStatus}
       onSignClick={handleSignClick}
+      signButtonLoading={isInitiating}
     />
   );
 }

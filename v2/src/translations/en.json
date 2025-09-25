@@ -15,7 +15,7 @@
     "subtitle": "View your organisation’s B2B connections.",
     "table": {
       "headers": {
-        "id": "ID",
+        "id": "B2B Connection ID",
         "theirClientId": "Their Client ID",
         "theirClientSecret": "Their Client Secret",
         "mySoftwareStatement": "My Software Statement",
@@ -474,6 +474,7 @@
     "orgClientNameRequired": "Client name is required",
     "orgClientIdRequired": "Client ID is required",
     "orgClientSecretRequired": "Client Secret is required",
+    "requestCredential": "Request Credential",
     "orgOauth2DeleteConfirm": "Are you sure you want to delete the Organisation OAuth2 client?",
     "orgOauth2ClientDescriptionLabel": "Description",
     "orgOauth2ClientDescriptionPlaceholder": "Optional description",

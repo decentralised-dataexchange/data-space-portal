@@ -15,7 +15,7 @@
     "subtitle": "Visa din organisations B2B-anslutningar.",
     "table": {
       "headers": {
-        "id": "ID",
+        "id": "B2B-anslutnings-ID",
         "theirClientId": "Deras Client ID",
         "theirClientSecret": "Deras Client Secret",
         "mySoftwareStatement": "Mitt software statement",
@@ -476,6 +476,7 @@
     "orgClientNameRequired": "Klientnamn krävs",
     "orgClientIdRequired": "Client ID krävs",
     "orgClientSecretRequired": "Client Secret krävs",
+    "requestCredential": "Begär legitimation",
     "orgOauth2DeleteConfirm": "Är du säker på att du vill radera organisationens OAuth2-klient?",
     "orgOauth2ClientDescriptionLabel": "Beskrivning",
     "orgOauth2ClientDescriptionPlaceholder": "Valfri beskrivning",
