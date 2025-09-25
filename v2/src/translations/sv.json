@@ -94,7 +94,7 @@
     "footerTxt": " NordXData Foundation (CRANE - dHDSI )"
   },
   "appBar": {
-    "header": "CRANE d-HDSI Dataspace",
+    "header": "CRANE d-HDSI Data Marketplace",
     "subHeader": "Sverige - Region Västerbotten",
     "lastVisit": "Senaste besök",
     "settings": "Inställningar",
@@ -445,7 +445,7 @@
     "uploadButton": "Ladda upp",
     "oauth2ClientTitle": "OAuth 2.0 klient",
     "oauth2Title": "OAuth 2.0 klient",
-    "dataSpaceOauth2Title": "Dataspace OAuth 2.0-klient",
+    "dataSpaceOauth2Title": "Data Marketplace OAuth 2.0-klient",
     "oauth2ClientNameLabel": "Namn",
     "oauth2ClientNamePlaceholder": "Namn för OAuth 2.0 klient",
     "oauth2ClientDescriptionLabel": "Beskrivning",
@@ -463,7 +463,7 @@
     "walletConfigurationTitle": "Konfiguration av organisationsplånbok",
     "configuredLabel": "Konfigurerad",
     "configureButton": "Konfigurera",
-    "oauth2ClientConfigTitle": "Data Space Konfiguration av OAuth 2.0 klient",
+    "oauth2ClientConfigTitle": "Data Marketplace Konfiguration av OAuth 2.0 klient",
     "orgOauth2Title": "Organisationens OAuth 2.0 klient",
     "orgOauth2ClientConfigTitle": "Konfiguration av organisationens OAuth 2.0 klient",
     "orgOauth2ClientNameLabel": "Namn",

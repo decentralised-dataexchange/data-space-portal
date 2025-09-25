@@ -96,7 +96,7 @@
     "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) "
   },
   "appBar": {
-    "header": "CRANE d-HDSI Dataspace",
+    "header": "CRANE d-HDSI Data Marketplace",
     "subHeader": "Suomi - Pohjanmaa",
     "lastVisit": "Viimeisin käynti",
     "settings": "Asetukset",
@@ -477,7 +477,7 @@
     "uploadButton": "Lataa",
     "oauth2ClientTitle": "OAuth 2.0 asiakas",
     "oauth2Title": "OAuth 2.0 -asiakas",
-    "dataSpaceOauth2Title": "Dataspacen OAuth 2.0 -asiakas",
+    "dataSpaceOauth2Title": "Data Marketplace OAuth 2.0 -asiakas",
     "oauth2ClientNameLabel": "Nimi",
     "oauth2ClientNamePlaceholder": "OAuth 2.0 asiakkaan nimi",
     "oauth2ClientDescriptionLabel": "Kuvaus",
@@ -495,7 +495,7 @@
     "walletConfigurationTitle": "Organisaation lompakon konfigurointi",
     "configuredLabel": "Määritetty",
     "configureButton": "Määritä",
-    "oauth2ClientConfigTitle": "Data Space OAuth 2.0 asiakkaan konfigurointi",
+    "oauth2ClientConfigTitle": "Data Marketplace OAuth 2.0 asiakkaan konfigurointi",
     "orgOauth2Title": "Organisaation OAuth 2.0 asiakas",
     "orgOauth2ClientConfigTitle": "Organisaation OAuth 2.0 asiakkaan konfigurointi",
     "orgOauth2ClientNameLabel": "Nimi",

@@ -1,6 +1,6 @@
 {
-  "name": "Data Space Portal",
-  "description": "An App for Data Space Portal",
+  "name": "Data Marketplace Portal",
+  "description": "An App for Data Marketplace Portal",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -5,7 +5,7 @@ import ThemeRegistry from '@/components/common/ThemeRegistry/ThemeRegistry';
 import '../styles/globals.scss';
 
 export const metadata: Metadata = {
-  title: 'CRANE d-HDSI Dataspace',
+  title: 'CRANE d-HDSI Data Marketplace',
   description: 'Enabling trust in the data ecosystem for next-generation data sharing.',
   icons: {
     icon: '/favicon.ico',
