@@ -537,7 +537,7 @@ export default function DeveloperAPIs() {
         </Box>
       </Box>
 
-      {/* OAuth2 Client display - Data Space */}
+      {/* OAuth2 Client display - Data Marketplace */}
       <Box className="apiKey" sx={{ padding: '15px 30px' }}>
         <Box
           display="flex"
