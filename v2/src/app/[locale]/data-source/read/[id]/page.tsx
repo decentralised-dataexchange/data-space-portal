@@ -2,7 +2,7 @@ import DataSourceListingPage from "@/components/DataSources";
 
 interface Props {
   params: Promise<{ id: string }>;
-  searchParams?: Promise<{ page?: string; viewApiFor?: string }>;
+  searchParams?: Promise<{ page?: string; viewApiFor?: string; limit?: string }>;
 }
 
 export default function DataSourceReadPage({ params, searchParams }: Props) {

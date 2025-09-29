@@ -350,9 +350,13 @@
     "optInAction": "Hyväksy",
     "optOutAction": "Kieltäydy",
     "signAndContinue": "Allekirjoita ja jatka",
-    "unableToDisplayPdf": "PDF-tiedostoa ei voi näyttää",
+    "unableToDisplayPdf": "Toimintaohjeiden asiakirjaa ei voi näyttää.",
     "openInNewTab": "Avaa uuteen välilehteen",
-    "invalidUrl": "Anna kelvollinen URL-osoite"
+    "invalidUrl": "Anna kelvollinen URL-osoite",
+    "rowsPerPage": "Rivejä sivulla:",
+    "of": "kaikkiaan",
+    "signAction": "Allekirjoita",
+    "unsignAction": "Peru allekirjoitus"
   },
   "errors": {
     "generic": "Jokin meni pieleen."

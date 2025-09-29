@@ -62,6 +62,12 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
     return `/${locale}/coc-fallback`;
   }, [pdfUrl, locale]);
 
+  // Treat explicit fallback as missing CoC from backend
+  const isMissingCoc = React.useMemo(() => {
+    // When API returns fallback path or query errored, consider CoC as missing
+    return (!isLoading) && (isError || pdfUrl === '/coc-fallback');
+  }, [isLoading, isError, pdfUrl]);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
 
@@ -77,58 +83,65 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
           maxHeight: isFullScreen ? '100vh' : undefined,
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', p: 1, borderBottom: '1px solid #eee', backgroundColor: '#fafafa' }}>
-          <Button
-            size="small"
-            variant="outlined"
-            className="delete-btn"
-            onClick={toggleFullScreen}
-            startIcon={isFullScreen ? <FullscreenExit sx={{ fontSize: 18 }} /> : <Fullscreen sx={{ fontSize: 18 }} />}
-            sx={{
-              minHeight: 28,
-              textTransform: 'none',
-              lineHeight: 1.2,
-              display: 'inline-flex',
-              alignItems: 'center',
-              borderColor: '#DFDFDF',
-              color: 'black',
-              '&:hover': { borderColor: 'black' }
-            }}
-          >
-            {isFullScreen ? t('onboarding.controls.exitFullscreen') : t('onboarding.controls.enterFullscreen')}
-          </Button>
-        </Box>
+        {!isMissingCoc && (
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', p: 1, borderBottom: '1px solid #eee', backgroundColor: '#fafafa' }}>
+            <Button
+              size="small"
+              variant="outlined"
+              className="delete-btn"
+              onClick={toggleFullScreen}
+              startIcon={isFullScreen ? <FullscreenExit sx={{ fontSize: 18 }} /> : <Fullscreen sx={{ fontSize: 18 }} />}
+              sx={{
+                minHeight: 28,
+                textTransform: 'none',
+                lineHeight: 1.2,
+                display: 'inline-flex',
+                alignItems: 'center',
+                borderColor: '#DFDFDF',
+                color: 'black',
+                '&:hover': { borderColor: 'black' }
+              }}
+            >
+              {isFullScreen ? t('onboarding.controls.exitFullscreen') : t('onboarding.controls.enterFullscreen')}
+            </Button>
+          </Box>
+        )}
         {isLoading ? (
           <Box sx={{ height: isFullScreen ? '100vh' : 360, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
             <CircularProgress size={24} aria-label="Loading Code of Conduct PDF" />
           </Box>
         ) : (
           <>
-            <Box sx={{ flex: 1, minHeight: 0 }}>
-              <object
-                data={resolvedPdf}
-                type="application/pdf"
-                width="100%"
-                height={isFullScreen ? '100%' : '480px'}
-                role="document"
-                title="Code of Conduct PDF"
-                aria-label="Code of Conduct PDF"
-                tabIndex={0}
-                style={{ display: 'block' }}
-              >
-                <Box sx={{ padding: 2 }}>
-                  <Typography variant="body2">{t('common.unableToDisplayPdf')}</Typography>
-                  <Typography variant="body2"><a href={resolvedPdf} target="_blank" rel="noreferrer" aria-label="Open Code of Conduct PDF in a new tab">{t('common.openInNewTab')}</a></Typography>
+            {isMissingCoc ? (
+              <Box sx={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }} role="alert">
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="body2" sx={{ mb: 0.5 }}>
+                    {/* Prefer specific copy; fall back to generic key if available */}
+                    {t?.('common.unableToDisplayPdf')}
+                  </Typography>
+                  {error?.message ? (
+                    <Typography variant="caption" color="text.secondary">{error.message}</Typography>
+                  ) : null}
                 </Box>
-              </object>
-            </Box>
-            {isError && (
-              <Box sx={{ padding: 2 }} role="status">
-                <Typography variant="body2">{t('common.unableToDisplayPdf')}</Typography>
-                {error?.message ? (
-                  <Typography variant="caption" color="text.secondary">{error.message}</Typography>
-                ) : null}
-                <Typography variant="body2"><a href={resolvedPdf} target="_blank" rel="noreferrer" aria-label="Open Code of Conduct PDF in a new tab">{t('common.openInNewTab')}</a></Typography>
+              </Box>
+            ) : (
+              <Box sx={{ flex: 1, minHeight: 0 }}>
+                <object
+                  data={resolvedPdf}
+                  type="application/pdf"
+                  width="100%"
+                  height={isFullScreen ? '100%' : '480px'}
+                  role="document"
+                  title="Code of Conduct PDF"
+                  aria-label="Code of Conduct PDF"
+                  tabIndex={0}
+                  style={{ display: 'block' }}
+                >
+                  <Box sx={{ padding: 2 }}>
+                    <Typography variant="body2">{t('common.unableToDisplayPdf')}</Typography>
+                    <Typography variant="body2"><a href={resolvedPdf} target="_blank" rel="noreferrer" aria-label="Open Code of Conduct PDF in a new tab">{t('common.openInNewTab')}</a></Typography>
+                  </Box>
+                </object>
               </Box>
             )}
           </>
@@ -140,9 +153,19 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
           type="button"
           variant="outlined"
           className="delete-btn"
-          disabled={isPending}
+          disabled={isPending || isMissingCoc}
           onClick={() => sign(undefined, { onSuccess: () => router.push('/start') })}
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '&.Mui-disabled': {
+              cursor: 'not-allowed',
+              pointerEvents: 'auto',
+              opacity: 0.6,
+              color: '#9e9e9e !important',
+              borderColor: '#E0E0E0 !important',
+              backgroundColor: '#f5f5f5 !important',
+            },
+          }}
         >
           {t('common.signAndContinue')}
         </Button>
