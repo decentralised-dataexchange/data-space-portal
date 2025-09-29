@@ -10,7 +10,8 @@ import Avatar from '@mui/material/Avatar';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import './style.scss';
-import VerifiedBadge from '../common/VerifiedBadge';
+import ViewCredentialsController from '@/components/DataSources/ViewCredentialsController';
+import type { SoftwareStatementRecord } from '@/types/softwareStatement';
 
 export interface DataDisclosureAgreement {
     purpose: string
@@ -74,15 +75,16 @@ interface DataSourceCardProp {
     dataDisclosureAgreements: DataDisclosureAgreement[];
     overviewLabel: string;
     signDataLabel: string;
+    organisationIdentity?: any;
+    softwareStatement?: SoftwareStatementRecord | Record<string, never>;
 }
 
-const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, signDataLabel }: DataSourceCardProp) => {
+const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, signDataLabel, organisationIdentity, softwareStatement }: DataSourceCardProp) => {
     const t = useTranslations();
     const trusted = Boolean(
-        (dataSource as any)?.organisationIdentity?.presentationRecord?.verified ??
-        (dataSource as any)?.organisationIdentity?.isPresentationVerified ??
-        dataSource?.trusted ??
-        false
+        (organisationIdentity as any)?.presentationRecord?.verified ??
+        (organisationIdentity as any)?.isPresentationVerified ??
+        dataSource?.trusted ?? false
     );
     return (
         <>
@@ -116,7 +118,24 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                 <CardContent sx={{ padding: "20px" }}>
                     <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
                         {dataSource?.name}
-                        <VerifiedBadge trusted={trusted} />
+                        {/* Public page shield: show credential if verified, otherwise not-allowed and no click */}
+                        <ViewCredentialsController
+                          organisation={{
+                            id: dataSource?.id,
+                            name: dataSource?.name,
+                            description: dataSource?.description,
+                            location: dataSource?.location,
+                            sector: dataSource?.sector,
+                            policyUrl: dataSource?.policyUrl,
+                            logoUrl: dataSource?.logoUrl,
+                            coverImageUrl: dataSource?.coverImageUrl,
+                            verificationRequestURLPrefix: '',
+                            openApiUrl: '',
+                            softwareStatement: softwareStatement as any,
+                          } as any}
+                          organisationIdentity={organisationIdentity}
+                          trustedOverride={trusted}
+                        />
                     </Typography>
                     {/* Access Point Endpoint removed from below avatar section */}
                     {dataSource?.location && (

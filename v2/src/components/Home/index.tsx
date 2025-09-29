@@ -45,6 +45,9 @@ export default async function HomePage({ params, searchParams }: Props) {
       // Map org verification to trusted
       trusted: item.organisationIdentity?.isPresentationVerified ?? false,
     },
+    // Carry extra fields used by the ViewCredentialsController modal
+    organisationIdentity: item.organisationIdentity,
+    softwareStatement: (item as any)?.organisation?.softwareStatement ?? {},
     dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
   }));
 
@@ -99,6 +102,8 @@ export default async function HomePage({ params, searchParams }: Props) {
                                             signDataLabel={t('home.btn-signData')}
                                             dataSource={dataSourceItem.dataSource}
                                             dataDisclosureAgreements={dataSourceItem.dataDisclosureAgreements}
+                                            organisationIdentity={dataSourceItem.organisationIdentity}
+                                            softwareStatement={dataSourceItem.softwareStatement}
                                         />
                                     </Grid>
                                 );
