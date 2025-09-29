@@ -44,7 +44,7 @@ export interface SignupOrganisationPayload {
     location: string
     policyUrl: string
     description: string
-    verificationRequestURLPrefix: string
+    verificationRequestURLPrefix?: string
 }
 
 export interface SignupPayload {

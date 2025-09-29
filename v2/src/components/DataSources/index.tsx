@@ -284,11 +284,8 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                         paddingTop: "48px",
                                         transform: "none"
                                     }}>
-                                        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
+                                        <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: 1 }}>
                                             {dataSourceItem?.organisation?.name}
-                                        </Typography>
-                                        <Typography variant="body2" className="datasource-location" sx={{ fontSize: '14px', mb: 0.5, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
-                                            {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                                             <VerifiedBadge trusted={trusted} />
                                         </Typography>
                                         {/* Access Point Endpoint is intentionally hidden on this page's left panel */}

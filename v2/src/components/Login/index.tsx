@@ -13,7 +13,7 @@ import {
 import { ArrowCircleRightIcon, UserIcon, LockOpenIcon } from "@phosphor-icons/react";
 import Logo from '@/assets/img/logo.jpg';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useLogin } from '@/custom-hooks/auth';
 import Image from 'next/image';
 import './style.scss';
@@ -25,9 +25,12 @@ interface FormValue {
 
 const Login = () => {
   const t = useTranslations();
+  const locale = useLocale();
   const [formValue, setFormValue] = useState<FormValue>({ email: '', password: '' });
   const { email, password } = formValue;
   const { login } = useLogin();
+
+  const onboardingHref = locale ? `/${locale}/onboarding` : '/onboarding';
 
   // Determine if form is valid for enabling submit
   const isFormValid = !!email && !!password;
@@ -74,8 +77,7 @@ const Login = () => {
             gap: "1rem"
           }}
         >
-          <p className='titleTxt'>{t('common.orgDashboardTitle')}</p>
-          <p className='titleTxt'>{t('login.title')}</p>
+          <h1 className='titleTxt'>{t('common.orgDashboardTitle')}</h1>
         </Box>
         <form onSubmit={handleSubmit}>
           <Box className='text-field'>
@@ -161,7 +163,7 @@ const Login = () => {
           <Typography variant="body2" style={{ color: "#A1A1A1" }}>
             {t('login.noAccount')}
             {' '}
-            <Link className="appLink" href="/signup">{t('login.createNow')}</Link>
+            <Link className="appLink" href={onboardingHref}>{t('login.createNow')}</Link>
           </Typography>
         </Box>
       </Box>

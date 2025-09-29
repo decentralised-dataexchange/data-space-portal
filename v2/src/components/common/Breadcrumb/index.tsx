@@ -78,11 +78,12 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
           .toLowerCase()
           .replace(/\b\w/g, (c) => c.toUpperCase());
         const isViewingApi = Boolean(viewApiFor)
+        const readPath = `/data-source/read/${slug}`;
         // Always show the specific item name as the last crumb; do not append a generic "API" crumb
         breadcrumbs.push({
-          path: pathname,
+          path: readPath,
           name: display || slug,
-          isClickable: false,
+          isClickable: isViewingApi,
         });
       }
     }

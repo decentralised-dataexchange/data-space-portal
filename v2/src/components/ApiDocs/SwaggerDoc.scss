@@ -1,5 +1,22 @@
 /* Swagger UI styles scoped to the SwaggerDoc component */
 
+.swagger-doc {
+  position: relative;
+  min-height: 220px;
+}
+
+.swagger-doc__spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 220px;
+}
+
+.swagger-doc__content {
+  transition: opacity 0.2s ease-in-out;
+}
+
 /* Do not force uppercase in Swagger UI controls */
 .swagger-doc .swagger-ui button,
 .swagger-doc .swagger-ui .btn,

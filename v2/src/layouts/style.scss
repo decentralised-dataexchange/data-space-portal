@@ -49,6 +49,12 @@
     color: rgb(77 75 75);
 }
 
+// Subtle hover underline for clickable breadcrumb links only
+.breadCrumb .link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 .linkfont {
     // font-size: 0.90rem;
     font-weight: 500;

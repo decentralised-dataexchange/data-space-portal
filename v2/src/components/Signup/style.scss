@@ -51,6 +51,21 @@
   width: 350px;
 }
 
+.primaryButton {
+  background-color: #003d4d !important;
+  color: #fff !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  border-radius: 999px !important;
+  padding: 0.9rem 1.5rem !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background-color: #012a35 !important;
+    box-shadow: none !important;
+  }
+}
+
 .MuiInputBase-input {
   font-size: 0.875rem;
 }

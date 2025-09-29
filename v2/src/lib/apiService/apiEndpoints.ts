@@ -127,5 +127,12 @@ export const ENDPOINTS = {
     },
     readSignedAgreement: (id: string) => {
         return `/config/organisation/data-disclosure-agreement-record/${id}/`;
+    },
+    // Onboarding: Code of Conduct
+    codeOfConductPdf: () => {
+        return "/onboard/code-of-conduct/";
+    },
+    signCodeOfConduct: () => {
+        return "/config/organisation/code-of-conduct";
     }
 };

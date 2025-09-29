@@ -55,14 +55,11 @@ const ConfirmComponent: React.FC<ConfirmComponentProps> = ({ showValues: propSho
   return (
     <Box>
       <Box display="flex" alignItems="center" gap={1} sx={{ marginTop: '20px' }}>
-        <Typography variant="h6" sx={{ fontSize: '16px' }}>
+        <Typography variant="h6" sx={{ fontSize: '16px', display: 'flex', alignItems: 'center', gap: 1 }}>
           {name}
+          <VerifiedBadge trusted={isVerified} />
         </Typography>
       </Box>
-      <Typography color="black" variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
-        {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-        <VerifiedBadge trusted={isVerified} />
-      </Typography>
       {/* Access Point Endpoint removed from below avatar section */}
       <Typography variant="subtitle1" mt={2}>
         {t('common.overView')}

@@ -57,13 +57,52 @@
     "sector": "Sector",
     "location": "Location",
     "policyUrl": "Policy URL",
-    "description": "Description",
+    "description": "Organisation Description",
     "owsBaseUrl": "OWS Base URL",
-    "verificationRequestURLPrefix": "Verification Request URL Prefix",
+    "verificationRequestURLPrefix": "Business Wallet Address",
     "optional": "Optional",
     "required": "Required",
     "requiredFieldsMissing": "Please fill in all required fields",
     "passwordLength": "Password must be 8 to 20 characters"
+  },
+  "onboarding": {
+    "title": "Create Your Data Marketplace Account",
+    "subtitle": "Let's start with your login credentials",
+    "controls": {
+      "enterFullscreen": "Full screen",
+      "exitFullscreen": "Exit full screen"
+    },
+    "step1": {
+      "title": "Step 01: Enter your desired login details"
+    },
+    "step2": {
+      "title": "Step 02: Additional organisation details",
+      "placeholder": "Continue to the next step to provide your organisation information."
+    },
+    "step3": {
+      "successMessage": "Your Data Marketplace account is successfully created. Press continue to verify or <loginLink>{loginText}</loginLink>."
+    },
+    "stepSubtitles": {
+      "step1": "Step 01: Enter your desired login details",
+      "step2": "Step 02: Enter your organisation details",
+      "step3": "Step 03: Verify your organisation with your Business Wallet",
+      "step4": "Step 04: Sign the Code Of Conduct"
+    },
+    "fields": {
+      "adminName": "Admin Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholders": {
+      "adminName": "Your Admin Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "validation": {
+      "invalidEmail": "Enter a valid email address"
+    }
   },
   "breadcrumbs": {
     "home": "Home",
@@ -177,7 +216,7 @@
     }
   },
   "common": {
-    "orgDashboardTitle": "CRANE dHDSI - Organisation dashboard",
+    "orgDashboardTitle": "Login to CRANE dHDSI Data Marketplace",
     "trustedServiceProvider": "Trusted Service Provider",
     "untrustedServiceProvider": "Untrusted Service Provider",
     "continue": "Continue",
@@ -230,7 +269,11 @@
     "comingSoon": "Coming soon",
     "noDataSelected": "No data selected",
     "optInAction": "Opt-in",
-    "optOutAction": "Opt-out"
+    "optOutAction": "Opt-out",
+    "signAndContinue": "Sign and Continue",
+    "unableToDisplayPdf": "Unable to display PDF",
+    "openInNewTab": "Open in new tab",
+    "invalidUrl": "Enter a valid URL"
   },
   "errors": {
     "generic": "Something went wrong."
@@ -434,7 +477,7 @@
     "openApiUpdateFailed": "Updating open API specification URL failed",
     "configureOpenApi": "Configure OpenAPI Specification",
     "openApiUrlLabel": "OpenAPI Specification URL",
-    "holderBaseUrlLabel": "Holder Base URL",
+    "holderBaseUrlLabel": "Business Wallet Address",
     "openApiUrlPlaceholder": "Enter OpenAPI URL",
     "credentialOfferEndpointLabel": "Credential Offer Endpoint",
     "credentialOfferEndpointPlaceholder": "Enter Credential Offer endpoint URL",
@@ -454,8 +497,8 @@
     "clientIdLabel": "Client ID",
     "clientSecretLabel": "Client Secret",
     "organisationWalletTitle": "Organisation Wallet",
-    "owsBaseUrlLabel": "Base URL",
-    "owsBaseUrlPlaceholder": "Enter Base URL for Organisation Wallet",
+    "owsBaseUrlLabel": "Business Wallet Address",
+    "owsBaseUrlPlaceholder": "Enter Business Wallet Address",
     "saveButton": "Save",
     "owsBaseUrlUpdateFailed": "Updating Organisation Wallet Base URL failed",
     "walletConfigurationTitle": "Organisation Wallet Configuration",
@@ -486,7 +529,7 @@
     },
     "deploymentStatusLabel": "Deployment Status:",
     "notConfiguredLabel": "Not Configured",
-    "owsBaseUrlRequired": "Holder Base URL is required",
+    "owsBaseUrlRequired": "Business Wallet Address is required",
     "credentialOfferEndpointRequired": "Credential Offer endpoint is required",
     "accessPointEndpointRequired": "Access Point endpoint is required",
     "clientNameRequired": "Client name is required",

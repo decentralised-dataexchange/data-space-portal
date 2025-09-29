@@ -25,15 +25,17 @@
     "jwt-decode": "^4.0.0",
     "next": "15.3.3",
     "next-intl": "^4.1.0",
+    "pdfjs-dist": "^5.4.149",
     "rapidoc": "^9.3.8",
-    "swagger-ui-dist": "4.19.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-image-crop": "^11.0.10",
     "react-image-file-resizer": "^0.4.8",
+    "react-pdf": "^10.1.0",
     "react-redux": "^9.2.0",
     "sass": "^1.84.0",
-    "styled-components": "^6.1.18"
+    "styled-components": "^6.1.18",
+    "swagger-ui-dist": "4.19.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

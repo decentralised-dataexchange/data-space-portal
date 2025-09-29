@@ -43,27 +43,65 @@
     "createNow": "Skapa ditt nu."
   },
   "signup": {
-    "header": "CRANE dHDSI - Organisationspanel - Skapa konto",
-    "name": "Namn",
+    "header": "CRANE dHDSI - Organisationspanel - Logga in",
     "userName": "Ditt namn",
     "organisationName": "Organisationsnamn",
     "email": "E-post",
+    "userId": "Användar-ID",
     "confirmPassword": "Bekräfta lösenord",
     "passwordMismatch": "Lösenorden matchar inte",
-    "userId": "Användar-ID",
     "haveAccount": "Har du redan ett konto?",
     "login": "Logga in",
     "title": "Skapa konto",
     "sector": "Sektor",
     "location": "Plats",
     "policyUrl": "Policy-URL",
-    "description": "Beskrivning",
+    "description": "Organisationsbeskrivning",
     "owsBaseUrl": "OWS Base URL",
     "verificationRequestURLPrefix": "Verifieringsförfrågans URL-prefix",
     "optional": "Valfritt",
     "required": "Obligatorisk",
     "requiredFieldsMissing": "Fyll i alla obligatoriska fält",
     "passwordLength": "Lösenordet måste vara 8 till 20 tecken"
+  },
+  "onboarding": {
+    "title": "Skapa ditt konto på datamarknadsplatsen",
+    "subtitle": "Vi börjar med dina inloggningsuppgifter",
+    "controls": {
+      "enterFullscreen": "Helskärm",
+      "exitFullscreen": "Avsluta helskärm"
+    },
+    "step1": {
+      "title": "Steg 01: Ange dina önskade inloggningsuppgifter"
+    },
+    "step2": {
+      "title": "Steg 02: Ytterligare organisationsuppgifter",
+      "placeholder": "Fortsätt till nästa steg för att lämna din organisations information."
+    },
+    "step3": {
+      "successMessage": "Ditt konto på datamarknadsplatsen har skapats. Fortsätt för att verifiera eller <loginLink>{loginText}</loginLink>."
+    },
+    "stepSubtitles": {
+      "step1": "Steg 01: Ange dina önskade inloggningsuppgifter",
+      "step2": "Steg 02: Ange din organisationsuppgifter",
+      "step3": "Steg 03: Verifiera din organisation med din Business Wallet",
+      "step4": "Steg 04: Signera uppförandekoden"
+    },
+    "fields": {
+      "adminName": "Administratörsnamn",
+      "email": "E-post",
+      "password": "Lösenord",
+      "confirmPassword": "Bekräfta lösenord"
+    },
+    "placeholders": {
+      "adminName": "Administratörsnamn",
+      "email": "E-post",
+      "password": "Lösenord",
+      "confirmPassword": "Bekräfta lösenord"
+    },
+    "validation": {
+      "invalidEmail": "Ange en giltig e-postadress"
+    }
   },
   "breadcrumbs": {
     "home": "Hem",
@@ -223,7 +261,7 @@
     }
   },
   "common": {
-    "orgDashboardTitle": "CRANE dHDSI - Organisationspanel",
+    "orgDashboardTitle": "Logga in på CRANE dHDSI datamarknadsplats",
     "trustedServiceProvider": "Pålitlig tjänsteleverantör",
     "untrustedServiceProvider": "Opålitlig tjänsteleverantör",
     "continue": "Fortsätt",
@@ -278,7 +316,11 @@
     "comingSoon": "Kommer snart",
     "noDataSelected": "Ingen data vald",
     "optInAction": "Opt-in",
-    "optOutAction": "Opt-out"
+    "optOutAction": "Opt-out",
+    "signAndContinue": "Signera och fortsätt",
+    "unableToDisplayPdf": "Det går inte att visa PDF",
+    "openInNewTab": "Öppna i ny flik",
+    "invalidUrl": "Ange en giltig URL"
   },
   "errors": {
     "generic": "Något gick fel."
