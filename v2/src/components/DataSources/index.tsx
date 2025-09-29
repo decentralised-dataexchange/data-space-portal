@@ -5,7 +5,7 @@ import { gridSpacing } from '@/constants/grid';
 import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
-import VerifiedBadge from '../common/VerifiedBadge';
+import ViewCredentialsController from '@/components/DataSources/ViewCredentialsController';
 
 import ClientPagination from '../Home/ClientPagination';
 import ApiDoc from '@/components/ApiDocs';
@@ -286,7 +286,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                     }}>
                                         <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: 1 }}>
                                             {dataSourceItem?.organisation?.name}
-                                            <VerifiedBadge trusted={trusted} />
+                                            {/* Clickable shield: opens View Credentials when verified; not-allowed cursor when unverified */}
+                                            <ViewCredentialsController 
+                                              organisation={dataSourceItem.organisation}
+                                              organisationIdentity={dataSourceItem.organisationIdentity}
+                                            />
                                         </Typography>
                                         {/* Access Point Endpoint is intentionally hidden on this page's left panel */}
                                         <Typography className='datasource-location'>
