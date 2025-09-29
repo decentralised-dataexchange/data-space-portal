@@ -59,13 +59,52 @@
     "sector": "Sektori",
     "location": "Sijainti",
     "policyUrl": "Käytäntö URL",
-    "description": "Kuvaus",
+    "description": "Organisaation kuvaus",
     "owsBaseUrl": "OWS-perus-URL",
     "verificationRequestURLPrefix": "Vahvistuspyynnön URL-etuliite",
     "optional": "Valinnainen",
     "required": "Pakollinen",
     "requiredFieldsMissing": "Täytä kaikki pakolliset kentät",
     "passwordLength": "Salasanan tulee olla 8–20 merkkiä"
+  },
+  "onboarding": {
+    "title": "Luo datamarkkinapaikan tili",
+    "subtitle": "Aloitetaan kirjautumistiedoillasi",
+    "controls": {
+      "enterFullscreen": "Koko näyttö",
+      "exitFullscreen": "Poistu koko näytöstä"
+    },
+    "step1": {
+      "title": "Vaihe 01: Syötä haluamasi kirjautumistiedot"
+    },
+    "step2": {
+      "title": "Vaihe 02: Lisätietoja organisaatiostasi",
+      "placeholder": "Siirry seuraavaan vaiheeseen antaaksesi organisaatiosi tiedot."
+    },
+    "step3": {
+      "successMessage": "Datamarkkinapaikan tilisi on luotu onnistuneesti. Jatka varmistaaksesi tai <loginLink>{loginText}</loginLink>."
+    },
+    "stepSubtitles": {
+      "step1": "Vaihe 01: Syötä haluamasi kirjautumistiedot",
+      "step2": "Vaihe 02: Syötä organisaatiosi tiedot",
+      "step3": "Vaihe 03: Varmenna organisaatiosi Business Walletilla",
+      "step4": "Vaihe 04: Allekirjoita toimintaohjeet"
+    },
+    "fields": {
+      "adminName": "Ylläpitäjän nimi",
+      "email": "Sähköposti",
+      "password": "Salasana",
+      "confirmPassword": "Vahvista salasana"
+    },
+    "placeholders": {
+      "adminName": "Ylläpitäjän nimi",
+      "email": "Sähköposti",
+      "password": "Salasana",
+      "confirmPassword": "Vahvista salasana"
+    },
+    "validation": {
+      "invalidEmail": "Anna kelvollinen sähköpostiosoite"
+    }
   },
   "breadcrumbs" : {
     "home": "Koti",
@@ -256,7 +295,7 @@
     }
   },
   "common": {
-    "orgDashboardTitle": "CRANE dHDSI - Organisaation hallintapaneeli",
+    "orgDashboardTitle": "Kirjaudu CRANE dHDSI datamarkkinapaikalle",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
     "untrustedServiceProvider": "Luottamaton palveluntarjoaja",
     "continue": "Jatka",
@@ -309,7 +348,11 @@
     "comingSoon": "Tulossa pian",
     "noDataSelected": "Ei tietoja valittu",
     "optInAction": "Hyväksy",
-    "optOutAction": "Kieltäydy"
+    "optOutAction": "Kieltäydy",
+    "signAndContinue": "Allekirjoita ja jatka",
+    "unableToDisplayPdf": "PDF-tiedostoa ei voi näyttää",
+    "openInNewTab": "Avaa uuteen välilehteen",
+    "invalidUrl": "Anna kelvollinen URL-osoite"
   },
   "errors": {
     "generic": "Jokin meni pieleen."

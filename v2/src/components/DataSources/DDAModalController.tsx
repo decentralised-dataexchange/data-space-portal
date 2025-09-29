@@ -45,7 +45,7 @@ export default function DDAModalController({
 
   const handleClose = () => dispatch(clearSelectedDDAId());
   // Hook: manage sign/unsign status and initiation; refetch status on window focus if user previously initiated
-  const { signStatus, initiateSignOrUnsign, isInitiating } = useBusinessWalletSigning({
+  const { signStatus, initiateSignOrUnsign, isInitiating, isFetchingStatus } = useBusinessWalletSigning({
     selectedDDA: selectedData,
     enabled: open && isAuthenticated,
   });
@@ -81,7 +81,7 @@ export default function DDAModalController({
       drawerWidth={580}
       signStatus={signStatus}
       onSignClick={handleSignClick}
-      signButtonLoading={isInitiating}
+      signButtonLoading={isInitiating || isFetchingStatus}
     />
   );
 }

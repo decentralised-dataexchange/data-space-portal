@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { CircularProgress } from '@mui/material';
 import 'swagger-ui-dist/swagger-ui.css';
 import './SwaggerDoc.scss';
 
@@ -33,11 +34,14 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
     ...(uiTweaks || {}),
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+
   // CSS is bundled via import above; no dynamic injection needed
 
   // Load the Swagger UI bundle script (CDN) and initialize
   useEffect(() => {
     let cancelled = false;
+    setIsLoading(true);
     const scriptId = 'swagger-ui-bundle-js';
     const ensureScript = () => new Promise<void>((resolve, reject) => {
       if (window.SwaggerUIBundle) return resolve();
@@ -77,6 +81,7 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
     });
 
     const init = async () => {
+      if (cancelled) return;
       try {
         await ensureScript();
         // Preload YAML parser so interceptors can parse YAML synchronously
@@ -588,12 +593,10 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
           displayRequestDuration: true,
           showExtensions: true,
           tryItOutEnabled: true,
-          persistAuthorization: true,
-          syntaxHighlight: {
-            activate: true,
-          },
           onComplete: () => {
-            // Post-load: transform spec in-memory to guarantee resolution regardless of transport
+            if (!cancelled) {
+              setIsLoading(false);
+            }
             try {
               const sys = (ui && ui.getSystem) ? ui.getSystem() : undefined;
               const current = sys?.specSelectors?.specJson?.();
@@ -603,212 +606,34 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
                 fixed['x-schema-alias-applied'] = true;
                 sys?.specActions?.updateJsonSpec?.(fixed);
               }
-              // Ensure Auth UI and Servers are available:
-              // - If spec lacks securitySchemes, inject a default bearer scheme (Swagger-only)
-              // - If spec lacks servers (OAS3) or host/schemes (OAS2), inject defaults from current origin
-              try {
-                let hasServers = !!(toJs && (toJs.servers?.length || toJs.host || toJs.basePath));
-                let hasSec = !!(toJs && (toJs.components?.securitySchemes || toJs.securityDefinitions));
-                if (tweaks.injectDefaultSecurity && toJs && !hasSec) {
-                  toJs.components = toJs.components || {};
-                  toJs.components.securitySchemes = toJs.components.securitySchemes || {
-                    bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
-                  };
-                  toJs.security = toJs.security || [{ bearerAuth: [] }];
-                  hasSec = true;
-                }
-                if (tweaks.injectDefaultServers && toJs && !hasServers) {
-                  try {
-                    const here = new URL(window.location.href);
-                    if (toJs.openapi) {
-                      // OAS3
-                      toJs.servers = toJs.servers || [
-                        { url: `${here.origin}` }
-                      ];
-                    } else if (toJs.swagger) {
-                      // OAS2
-                      toJs.schemes = toJs.schemes || [here.protocol.replace(':','')];
-                      toJs.host = toJs.host || here.host;
-                      toJs.basePath = toJs.basePath || '';
-                    }
-                    hasServers = true;
-                  } catch {}
-                }
-                if (!toJs['x-swagger-ui-meta-applied']) {
-                  toJs['x-swagger-ui-meta-applied'] = true;
-                  sys?.specActions?.updateJsonSpec?.(toJs);
-                }
-                if (tweaks.forceShowBar) {
-                  const root = containerRef.current as HTMLElement | null;
-                  if (root) {
-                    const sel = '.swagger-ui .scheme-container, .swagger-ui .schemes-wrapper, .swagger-ui .schemes.wrapper, .swagger-ui .servers';
-                    const bar = root.querySelector(sel) as HTMLElement | null;
-                    if (bar) {
-                      bar.style.display = 'flex';
-                      (bar.style as any).visibility = 'visible';
-                      bar.style.opacity = '1';
-                    }
-                    const auth = root.querySelector('.swagger-ui .auth-wrapper') as HTMLElement | null;
-                    if (auth) {
-                      auth.style.display = 'block';
-                      (auth.style as any).visibility = 'visible';
-                      auth.style.opacity = '1';
-                    }
-                    // Keep DOM pristine; rely on scoped CSS for label sizing and alignment
-                    // Collapse empty info wrappers that create stray gaps above the bar
-                    try {
-                      const wrappers = root.querySelectorAll('.swagger-ui .information-container.wrapper, .swagger-ui .information-container .wrapper');
-                      wrappers.forEach((node) => {
-                        const el = node as HTMLElement;
-                        const hasServers = !!el.querySelector('.servers');
-                        const hasAuth = !!el.querySelector('.auth-wrapper');
-                        if (!hasServers && !hasAuth && el.children.length === 0) {
-                          el.style.display = 'none';
-                          el.style.margin = '0';
-                          el.style.padding = '0';
-                        } else if (hasServers || hasAuth) {
-                          el.style.padding = '0 16px';
-                          el.style.margin = '0 0 12px 0';
-                        }
-                      });
-                    } catch {}
-                  }
-                }
-              } catch {}
             } catch {}
           },
-          requestInterceptor: (req: any) => {
-            try {
-              // Determine if this is the spec fetch (for token injection policy only)
-              let isSpecFetchOverall = false;
-              let isSameOrigin = false;
-              if (req && typeof req.url === 'string') {
-                try {
-                  const u = new URL(req.url, window.location.origin);
-                  isSameOrigin = u.origin === window.location.origin;
-                  let isSpecFetch = /\.(yaml|yml|json)$/i.test(u.pathname);
-                  try {
-                    const specUrl = new URL(loadUrl, window.location.origin);
-                    const specPath = specUrl.pathname;
-                    const specDirPath = specPath.endsWith('/') ? specPath : specPath.replace(/[^/]+$/, '');
-                    if (u.pathname === specPath) isSpecFetch = true;
-                    if (!isSpecFetch && u.pathname.startsWith(specDirPath) && /\.(yaml|yml|json)$/i.test(u.pathname)) {
-                      isSpecFetch = true; // external $refs near the spec
-                    }
-                  } catch {}
-                  isSpecFetchOverall = isSpecFetch;
-                } catch {
-                  // If URL ctor fails (e.g., swagger passes path only), attempt lightweight detection
-                  const m = req.url.match(/^(https?:\/\/[^/]+)?([^?#]*)(.*)$/i);
-                  if (m) {
-                    const prefix = m[1] || '';
-                    const pathOnly = (m[2] || '');
-                    if (!prefix) {
-                      isSameOrigin = true;
-                    } else {
-                      try {
-                        const originCandidate = new URL(prefix + '/', window.location.origin).origin;
-                        isSameOrigin = originCandidate === window.location.origin;
-                      } catch {}
-                    }
-                    let isSpecFetch = /\.(yaml|yml|json)$/i.test(pathOnly);
-                    try {
-                      const specUrl = new URL(loadUrl, window.location.origin);
-                      const specPath = specUrl.pathname;
-                      const specDirPath = specPath.endsWith('/') ? specPath : specPath.replace(/[^/]+$/, '');
-                      if (pathOnly === specPath) isSpecFetch = true;
-                      if (!isSpecFetch && pathOnly.startsWith(specDirPath) && /\.(yaml|yml|json)$/i.test(pathOnly)) {
-                        isSpecFetch = true;
-                      }
-                    } catch {}
-                    isSpecFetchOverall = isSpecFetch;
-                  }
-                }
-              }
-              // Inject bearer token for non-spec API calls; for spec/$ref only when same-origin
-              if (!isSpecFetchOverall || isSameOrigin) {
-                const token = localStorage.getItem('token');
-                if (token) {
-                  req.headers = req.headers || {};
-                  req.headers['Authorization'] = `Bearer ${token}`;
-                }
-              }
-            } catch {}
-            return req;
-          },
-          // Fix-up spec responses where component schema names use '.' but $ref uses '+' (or vice-versa).
-          // We alias schema keys to include both variants to improve client-side $ref resolution.
-          responseInterceptor: (res: any) => {
-            try {
-              const bodyText = (res.text ?? res.data ?? '').toString();
-              // Transform the primary spec AND any adjacent JSON files (external $refs) under the same directory
-              let isSpecRelated = (() => {
-                try {
-                  const u = new URL(res.url || '', window.location.origin);
-                  const specUrl = new URL(loadUrl, window.location.origin);
-                  const specPath = specUrl.pathname;
-                  const specDirPath = specPath.endsWith('/') ? specPath : specPath.replace(/[^/]+$/, '');
-                  if (u.pathname === specPath) return true;
-                  if (u.pathname.startsWith(specDirPath) && /\.(yaml|yml|json)$/i.test(u.pathname)) return true;
-                  return false;
-                } catch { return false; }
-              })();
-              // Broaden detection: if the response parses into an OpenAPI-like object,
-              // treat it as spec-related regardless of URL location.
-              if (!isSpecRelated && bodyText) {
-                const trimmedSniff = bodyText.trim();
-                if (trimmedSniff.startsWith('{')) {
-                  try {
-                    const obj = JSON.parse(trimmedSniff);
-                    if (obj && typeof obj === 'object' && (obj.openapi || obj.swagger || obj.paths || obj.components || obj.definitions)) {
-                      isSpecRelated = true;
-                    }
-                  } catch { /* noop */ }
-                } else if (/(\n|^)\s*(openapi:|swagger:|info:|paths:|components:|definitions:)/i.test(bodyText)) {
-                  isSpecRelated = true;
-                }
-              }
-              if (isSpecRelated && bodyText) {
-                const trimmed = bodyText.trim();
-                if (trimmed.startsWith('{')) {
-                  try {
-                    const spec = JSON.parse(trimmed);
-                    const fixedObj = aliasAndRewrite(spec);
-                    const fixed = JSON.stringify(fixedObj);
-                    res.text = fixed;
-                    res.data = fixed;
-                  } catch { /* ignore parse errors */ }
-                } else if (/(\n|^)\s*(openapi:|swagger:|info:|paths:|components:|definitions:)/i.test(bodyText)) {
-                  // Likely YAML: attempt parse -> normalize -> return JSON text
-                  try {
-                    const y = (window as any).jsyaml?.load?.(bodyText);
-                    if (y && typeof y === 'object') {
-                      const fixedObj = aliasAndRewrite(y);
-                      const fixed = JSON.stringify(fixedObj);
-                      res.text = fixed;
-                      res.data = fixed;
-                    }
-                  } catch { /* ignore */ }
-                }
-              }
-            } catch { /* no-op */ }
-            return res;
-          },
-          plugins: [schemaAliasPlugin],
         });
         // Keep reference if needed for future cleanup
         (containerRef.current as any).__swaggerUI__ = ui;
       } catch (e) {
         console.error(e);
+        if (!cancelled) {
+          setIsLoading(false);
+        }
       }
     };
     init();
     return () => { cancelled = true; };
-  }, [openApiUrl]);
+  }, [openApiUrl, spec]);
 
   return (
     <div className={`api-doc-root swagger-doc${tweaks.hideInfoSubsections ? ' tweaks-hide-info' : ''}${tweaks.removeHeaderBorder ? ' tweaks-no-border' : ''}`}>
-      <div ref={containerRef} />
+      {isLoading && (
+        <div className="swagger-doc__spinner">
+          <CircularProgress size={28} />
+        </div>
+      )}
+      <div
+        ref={containerRef}
+        className="swagger-doc__content"
+        style={{ display: isLoading ? 'none' : 'block' }}
+      />
     </div>
   );
 }

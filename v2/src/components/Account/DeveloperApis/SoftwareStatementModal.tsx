@@ -122,16 +122,11 @@ const SoftwareStatementModal: React.FC<SoftwareStatementModalProps> = ({
       <Box sx={{ display: 'flex', flexDirection: 'column', paddingTop: '40px' }}>
         {organisationName && (
           <Box display="flex" alignItems="center" gap={1}>
-            <Typography variant="h6" sx={{ fontSize: '16px' }}>
+            <Typography variant="h6" sx={{ fontSize: '16px', display: 'flex', alignItems: 'center', gap: 1 }}>
               {organisationName}
+              <VerifiedBadge trusted={trusted} />
             </Typography>
           </Box>
-        )}
-        {showTrustedBadge && (
-          <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: trusted ? '#2e7d32' : '#d32f2f' }}>
-            {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-            <VerifiedBadge trusted={trusted} />
-          </Typography>
         )}
         {overview && (
           <>

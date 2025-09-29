@@ -41,6 +41,25 @@ export default async function middleware(request: NextRequest) {
   // Get the token from cookies or headers (server-side only)
   const token = request.cookies.get('access_token')?.value || 
                request.headers.get('Authorization')?.split(' ')[1];
+  // Use a lightweight client-auth cookie to reflect client-side logout instantly
+  const clientAuth = request.cookies.get('client_auth')?.value;
+
+  // Helper: light JWT exp validation without external libs
+  const isValidJwt = (jwt: string | null | undefined): boolean => {
+    if (!jwt) return false;
+    const parts = jwt.split('.');
+    if (parts.length !== 3) return false;
+    try {
+      const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('utf-8')) as any;
+      const exp = payload?.exp;
+      if (!exp || typeof exp !== 'number') return false;
+      const now = Math.floor(Date.now() / 1000);
+      return exp > now;
+    } catch {
+      return false;
+    }
+  };
+  const isAuthenticated = Boolean(token && clientAuth && isValidJwt(token));
   
   // Determine locale and normalized path (strip locale prefix if present)
   let currentLocale: string | null = null;
@@ -55,13 +74,13 @@ export default async function middleware(request: NextRequest) {
 
   // If user is already authenticated and visiting auth pages, redirect to /start
   const isAuthRoute = ['/login', '/signup'].some(route => pathWithoutLocale === route || pathWithoutLocale.startsWith(`${route}/`));
-  if (token && isAuthRoute) {
+  if (isAuthenticated && isAuthRoute) {
     const redirectUrl = new URL(currentLocale ? `/${currentLocale}/start` : '/start', request.url);
     return NextResponse.redirect(redirectUrl);
   }
   
-  // If it's not a public route and there's no token, redirect to localized login
-  if (!isPublicRoute && !token) {
+  // If it's not a public route and user is not authenticated, redirect to localized login
+  if (!isPublicRoute && !isAuthenticated) {
     const loginPath = currentLocale ? `/${currentLocale}/login` : '/login';
     const loginUrl = new URL(loginPath, request.url);
     return NextResponse.redirect(loginUrl);

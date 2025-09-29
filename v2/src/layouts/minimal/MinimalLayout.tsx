@@ -9,12 +9,14 @@ import Breadcrumb from '@/components/common/Breadcrumb';
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const isAuthRoute = pathname.includes('/login') || pathname.includes('/signup');
+  const isOnboardingRoute = pathname.includes('/onboarding');
   return (
     <>
-      {isAuthRoute ? null : <MinimalAppBar />}
+      {/* Hide app bar on onboarding and auth routes */}
+      {isAuthRoute || isOnboardingRoute ? null : <MinimalAppBar />}
       <Box className="leftNavigationContainer">
-        <Box component="main" sx={{ paddingTop: isAuthRoute ? 0 : '80px', flex: 1, backgroundColor: isAuthRoute ? '#FFFFFF' : 'transparent' }}>
-          {!isAuthRoute && (
+        <Box component="main" sx={{ paddingTop: (isAuthRoute || isOnboardingRoute) ? 0 : '80px', flex: 1, backgroundColor: isAuthRoute ? '#FFFFFF' : 'transparent' }}>
+          {!isAuthRoute && !isOnboardingRoute && (
             <Suspense fallback={null}>
               <Breadcrumb />
             </Suspense>

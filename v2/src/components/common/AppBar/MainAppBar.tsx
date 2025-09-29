@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/custom-hooks/store";
 import { ListIcon } from "@phosphor-icons/react";
+import { usePathname } from "next/navigation";
 
 interface Props {
     handleOpenMenu: () => void;
@@ -20,7 +21,16 @@ interface Props {
 export default function MainAppBar({ handleOpenMenu }: Props) {
     const t = useTranslations();
     const router = useRouter();
+    const pathname = usePathname();
     const adminData = useAppSelector((state) => state.auth.adminDetails);
+
+    // Determine if we're on onboarding (strip locale prefix like /en, /fi, /sv)
+    const isOnOnboarding = React.useMemo(() => {
+        if (!pathname) return false;
+        const match = pathname.match(/^\/(en|fi|sv)(?:\/|$)(.*)/);
+        const pathNoLocale = match ? `/${match[2]}` : pathname;
+        return pathNoLocale.startsWith('/onboarding');
+    }, [pathname]);
     return (
         <Box className="appBarContainer">
             <AppBar
@@ -49,36 +59,38 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                             priority
                         />
                     </Link>
-                    <Box className='flex-column' onClick={() => router.push('/')} sx={{ cursor: 'pointer' }}>
-                        <Typography
-                            sx={{
-                                xs: {
-                                    fontSize: '1rem',
-                                    lineHeight: 1
-                                },
-                                md: {
-                                    fontSize: '1.5rem',
-                                    lineHeight: 1
-                                }
-                            }}
-                        >
-                            {t('appBar.header')}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                xs: {
-                                    fontSize: '0.6rem',
-                                    lineHeight: 1
-                                },
-                                md: {
-                                    fontSize: '1.1rem',
-                                    lineHeight: 1
-                                }
-                            }}
-                        >
-                            {t('appBar.subHeader')}
-                        </Typography>
-                    </Box>
+                    {!isOnOnboarding && (
+                        <Box className='flex-column' onClick={() => router.push('/')} sx={{ cursor: 'pointer' }}>
+                            <Typography
+                                sx={{
+                                    xs: {
+                                        fontSize: '1rem',
+                                        lineHeight: 1
+                                    },
+                                    md: {
+                                        fontSize: '1.5rem',
+                                        lineHeight: 1
+                                    }
+                                }}
+                            >
+                                {t('appBar.header')}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    xs: {
+                                        fontSize: '0.6rem',
+                                        lineHeight: 1
+                                    },
+                                    md: {
+                                        fontSize: '1.1rem',
+                                        lineHeight: 1
+                                    }
+                                }}
+                            >
+                                {t('appBar.subHeader')}
+                            </Typography>
+                        </Box>
+                    )}
 
                     <MainAppBarMenu
                         firstName={adminData?.name || ''}

@@ -1,6 +1,8 @@
+// Deprecated: Scalar API docs implementation retained only for reference. Not used in current app flow.
 "use client"
 import { ApiReferenceConfiguration, ApiReferenceReact } from '@scalar/api-reference-react'
 import { useEffect, useRef, useState } from "react"
+import { Box, CircularProgress } from "@mui/material"
 import '@scalar/api-reference-react/style.css'
 import './ScalarImpl.scss'
 
@@ -103,8 +105,33 @@ export default function ScalarImpl({ openApiUrl }: { openApiUrl: string }) {
 
   // Minimal client-side transform: lowercase only path keys
   const [spec, setSpec] = useState<any>(null)
+  const [specUrl, setSpecUrl] = useState<string | null>(null)
   const [useProxy, setUseProxy] = useState(true)
   const containerRef = useRef<HTMLDivElement | null>(null)
+
+  // Prefetch spec via proxy first; fall back to non-proxy loader on failure
+  useEffect(() => {
+    let cancelled = false
+    const fetchViaProxy = async () => {
+      try {
+        const effectiveUrl = `/api/openapi-lower?target=${encodeURIComponent(openApiUrl)}`
+        const res = await fetch(effectiveUrl, { headers: { Accept: 'application/json' } })
+        if (!res.ok) throw new Error('Failed to load via proxy')
+        const data = await res.json()
+        if (!cancelled) {
+          setSpec(data)
+          setUseProxy(true)
+        }
+      } catch (e) {
+        if (!cancelled) {
+          // Trigger non-proxy loader effect below
+          setUseProxy(false)
+        }
+      }
+    }
+    fetchViaProxy()
+    return () => { cancelled = true }
+  }, [openApiUrl])
 
   useEffect(() => {
     if (useProxy) return
@@ -1061,24 +1088,26 @@ export default function ScalarImpl({ openApiUrl }: { openApiUrl: string }) {
   }, [])
 
 
+  // Only render API reference once spec is ready; show a centered spinner otherwise
+  if (!specUrl) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '220px', width: '100%' }}>
+        <CircularProgress size={28} />
+      </Box>
+    )
+  }
+
   return (
-    (() => {
-      const effectiveUrl = useProxy
-        ? `/api/openapi-lower?target=${encodeURIComponent(openApiUrl)}`
-        : openApiUrl
-      return (
-        <div className="api-doc-root" ref={containerRef}>
-          <ApiReferenceReact
-            key={spec ? 'with-spec' : `with-url:${effectiveUrl}`}
-            configuration={{
-              ...(spec ? { spec } : { url: effectiveUrl }),
-              forceDarkModeState: "light",
-              hideDarkModeToggle: true,
-              authentication: auth,
-            }}
-          />
-        </div>
-      )
-    })()
+    <div className="api-doc-root" ref={containerRef}>
+      <ApiReferenceReact
+        key={'with-spec-url'}
+        configuration={{
+          url: specUrl,
+          forceDarkModeState: "light",
+          hideDarkModeToggle: true,
+          authentication: auth,
+        }}
+      />
+    </div>
   )
 }

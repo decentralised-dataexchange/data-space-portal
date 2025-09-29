@@ -38,6 +38,39 @@ export const useGetOrgIdentity = (orgId: string) => {
   });
 };
 
+// Code of Conduct: fetch PDF (blob URL)
+export const useGetCodeOfConductPdf = () => {
+  const { isAuthenticated } = useAppSelector(state => state.auth);
+  return useQuery<string, Error>({
+    queryKey: ['codeOfConductPdf'],
+    queryFn: async (): Promise<string> => {
+      const url = await apiService.getCodeOfConductPdf();
+      return url;
+    },
+    enabled: isAuthenticated,
+    staleTime: 0,
+    refetchOnWindowFocus: false,
+    retry: (failureCount, error: any) => {
+      // Do not retry for explicit 404 errors
+      const status = error?.status ?? error?.response?.status;
+      if (status === 404) return false;
+      // Otherwise, at most one retry
+      return failureCount < 1;
+    },
+  });
+};
+
+// Code of Conduct: sign
+export const useSignCodeOfConduct = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, Error, void>({
+    mutationFn: () => apiService.signCodeOfConduct(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['organisation'] });
+    },
+  });
+};
+
 // Delete organisation identity (credentials)
 export const useDeleteOrgIdentity = () => {
   const queryClient = useQueryClient();
@@ -164,7 +197,7 @@ export const useUpdateOrganisation = () => {
 };
 
 // Cover Image: fetch
-export const useGetCoverImage = () => {
+export const useGetCoverImage = (enabledExtra: boolean = true) => {
   const dispatch = useAppDispatch();
   const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery<string, Error>({
@@ -186,12 +219,12 @@ export const useGetCoverImage = () => {
     retry: 1,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && enabledExtra,
   });
 };
 
 // Logo Image: fetch
-export const useGetLogoImage = () => {
+export const useGetLogoImage = (enabledExtra: boolean = true) => {
   const dispatch = useAppDispatch();
   const { isAuthenticated } = useAppSelector(state => state.auth);
   return useQuery<string, Error>({

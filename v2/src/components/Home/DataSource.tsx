@@ -114,11 +114,8 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                     />
                 </CardMedia>
                 <CardContent sx={{ padding: "20px" }}>
-                    <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1 }}>
+                    <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
                         {dataSource?.name}
-                    </Typography>
-                    <Typography variant="body2" className="datasource-location" sx={{ mb: 0.5, display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: trusted ? '#2e7d32' : '#d32f2f' }}>
-                        {trusted ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
                         <VerifiedBadge trusted={trusted} />
                     </Typography>
                     {/* Access Point Endpoint removed from below avatar section */}

@@ -169,7 +169,19 @@ const OrganisationDetailsContainer = (props: Props) => {
     }
   }
 
-  const addCredentialClass = isVerify ? 'view-credential' : !isEnableAddCredential ? 'add-credential cursorNotAllowed' : 'add-credential';
+  const badgeLabel = isVerify
+    ? t('gettingStarted.viewCredential')
+    : t('gettingStarted.addCredential');
+  const canTriggerBadgeAction = isVerify || (!!props.isEnableAddCredential && !props.addCredentialsLoading);
+  const handleBadgeAction = () => {
+    if (props.addCredentialsLoading) return;
+    if (isVerify) {
+      callRightSideDrawer();
+    } else if (props.isEnableAddCredential) {
+      props.onAddCredentialsClick?.();
+    }
+  };
+
   return (
     <DetailsContainer
       sx={{
@@ -220,19 +232,19 @@ const OrganisationDetailsContainer = (props: Props) => {
                 {showValues ? <EyeSlashIcon size={20} color="white" /> : <EyeIcon size={20} color="white" />}
               </IconButton>
               <Box sx={{ position: "relative", height: '65px', left: -25 }}>
-                      <Avatar
-                        src={props.logoImageBase64 || defaultLogoImg}
-                        sx={{
-                          position: 'absolute',
-                          left: 50,
-                          top: -65,
-                          width: 110,
-                          height: 110,
-                          border: '6px solid white',
-                          backgroundColor: 'white'
-                        }}
-                      />
-                    </Box>
+                  <Avatar
+                    src={props.logoImageBase64 || defaultLogoImg}
+                    sx={{
+                      position: 'absolute',
+                      left: 50,
+                      top: -65,
+                      width: 110,
+                      height: 110,
+                      border: '6px solid white',
+                      backgroundColor: 'white'
+                    }}
+                  />
+              </Box>
             </Box>
           </>
         }
@@ -331,7 +343,7 @@ const OrganisationDetailsContainer = (props: Props) => {
           >
             {editMode ? (
               <>
-                <Box sx={{ display: "flex", alignItems: 'flex-end', height: '24px' }} mt={"-7px"}>
+                <Box sx={{ display: "flex", alignItems: 'flex-end', height: '24px', gap: 1 }} mt={"-7px"}>
                   <TextField
                     autoFocus
                     onChange={handleChange}
@@ -354,61 +366,45 @@ const OrganisationDetailsContainer = (props: Props) => {
                       },
                     }}
                   />
-                  {!editMode && (isVerify ? (
-                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                      <p
-                        style={{ marginLeft: '0.5rem' }}
-                        className={addCredentialClass}
-                        onClick={callRightSideDrawer}
-                      >
-                        {t('gettingStarted.viewCredential')}
-                      </p>
+                  <Tooltip title={badgeLabel} placement="top">
+                    <Box
+                      component="button"
+                      type="button"
+                      onClick={handleBadgeAction}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          handleBadgeAction();
+                        }
+                      }}
+                      aria-label={badgeLabel}
+                      disabled={!canTriggerBadgeAction}
+                      sx={{
+                        ml: 0.5,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'transparent',
+                        border: 'none',
+                        padding: 0,
+                        cursor: canTriggerBadgeAction ? 'pointer' : 'not-allowed',
+                        opacity: canTriggerBadgeAction ? 1 : 0.5,
+                        '&:focus-visible': {
+                          outline: '2px solid #03182b',
+                          outlineOffset: 2,
+                        },
+                        '&:disabled': {
+                          cursor: 'not-allowed',
+                        },
+                      }}
+                    >
+                      <VerifiedBadge trusted={isVerify} />
                     </Box>
-                  ) : props.isEnableAddCredential ? (
-                    <Button
-                      variant="text"
-                      className={'view-credential'}
-                      onClick={props.addCredentialsLoading ? undefined : props.onAddCredentialsClick}
-                      disabled={!!props.addCredentialsLoading}
-                      sx={{
-                        ml: '0.5rem',
-                        minWidth: 'auto',
-                        padding: 0,
-                        lineHeight: 1,
-                        textTransform: 'none !important',
-                        '&:hover': { backgroundColor: 'transparent' },
-                        '&.Mui-disabled': { opacity: 0.6 },
-                      }}
-                    >
-                      {props.addCredentialsLoading ? t('common.pleaseWait') : t('gettingStarted.addCredential')}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="text"
-                      className={'view-credential'}
-                      disabled
-                      sx={{
-                        ml: '0.5rem',
-                        minWidth: 'auto',
-                        padding: 0,
-                        lineHeight: 1,
-                        textTransform: 'none !important',
-                        '&:hover': { backgroundColor: 'transparent' },
-                        '&.Mui-disabled': { opacity: 0.6 }
-                      }}
-                    >
-                      {t('gettingStarted.addCredential')}
-                    </Button>
-                  ))}
+                  </Tooltip>
                 </Box>
                 {editMode ? (
                   <Box sx={{ height: '15px' }} />
-                ) : (
-                  <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, paddingTop: '3px', color: isVerify ? '#2e7d32' : '#d32f2f' }}>
-                    {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-                    <VerifiedBadge trusted={isVerify} />
-                  </Typography>
-                )}
+                ) : null}
                 <Box sx={{ height: '23px', display: 'flex', alignItems: 'center' }}>
                   <TextField
                     variant="standard"
@@ -474,64 +470,45 @@ const OrganisationDetailsContainer = (props: Props) => {
             ) :
               <>
                 <Box sx={{ display: "flex", alignItems: 'flex-end', height: '24px' }} mt={"-7px"} >
-                  <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', lineHeight: '1.2' }}>
+                  <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', lineHeight: '1.2', display: 'flex', alignItems: 'center', gap: 1 }}>
                     {organisationDetails?.name}
-                  </Typography>
-                  {!editMode && (isVerify ? (
-                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                      <p
-                        style={{ marginLeft: '0.5rem' }}
-                        className={addCredentialClass}
-                        onClick={callRightSideDrawer}
+                    <Tooltip title={badgeLabel} placement="top">
+                      <Box
+                        component="button"
+                        type="button"
+                        onClick={handleBadgeAction}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            handleBadgeAction();
+                          }
+                        }}
+                        aria-label={badgeLabel}
+                        disabled={!canTriggerBadgeAction}
+                        sx={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: 'transparent',
+                          border: 'none',
+                          padding: 0,
+                          cursor: canTriggerBadgeAction ? 'pointer' : 'not-allowed',
+                          opacity: canTriggerBadgeAction ? 1 : 0.5,
+                          '&:focus-visible': {
+                            outline: '2px solid #03182b',
+                            outlineOffset: 2,
+                          },
+                          '&:disabled': {
+                            cursor: 'not-allowed',
+                          },
+                        }}
                       >
-                        {t('gettingStarted.viewCredential')}
-                      </p>
-                    </Box>
-                  ) : props.isEnableAddCredential ? (
-                    <Button
-                      variant="text"
-                      className={'view-credential'}
-                      onClick={props.addCredentialsLoading ? undefined : props.onAddCredentialsClick}
-                      disabled={!!props.addCredentialsLoading}
-                      sx={{
-                        ml: '0.5rem',
-                        minWidth: 'auto',
-                        padding: 0,
-                        lineHeight: 1,
-                        textTransform: 'none !important',
-                        '&:hover': { backgroundColor: 'transparent' },
-                        '&.Mui-disabled': { opacity: 0.6 },
-                      }}
-                    >
-                      {props.addCredentialsLoading ? t('common.pleaseWait') : t('gettingStarted.addCredential')}
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="text"
-                      className={'view-credential'}
-                      disabled
-                      sx={{
-                        ml: '0.5rem',
-                        minWidth: 'auto',
-                        padding: 0,
-                        lineHeight: 1,
-                        textTransform: 'none !important',
-                        '&:hover': { backgroundColor: 'transparent' },
-                        '&.Mui-disabled': { opacity: 0.6 }
-                      }}
-                    >
-                      {t('gettingStarted.addCredential')}
-                    </Button>
-                  ))}
+                        <VerifiedBadge trusted={isVerify} />
+                      </Box>
+                    </Tooltip>
+                  </Typography>
                 </Box>
-                <Box sx={{ height: '24px', display: 'flex', alignItems: 'center' }}>
-                  {!editMode && (
-                    <Typography color="text.secondary" variant="body2" sx={{ fontSize: '14px', display: 'flex', alignItems: 'center', gap: 1, color: isVerify ? '#2e7d32' : '#d32f2f' }}>
-                      {isVerify ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-                      <VerifiedBadge trusted={isVerify} />
-                    </Typography>
-                  )}
-                </Box>
+                <Box sx={{ height: '24px' }} />
                 <Typography variant="body2" height="23px" sx={{ fontSize: '14px', lineHeight: '1.5' }}>
                   {(t('gettingStarted.sector'))}:&nbsp;
                   {organisationDetails?.sector}

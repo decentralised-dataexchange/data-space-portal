@@ -12,6 +12,8 @@ export interface Organisation {
   // New fields for Software Statement prerequisites
   credentialOfferEndpoint: string | null;
   accessPointEndpoint: string | null;
+  // Onboarding completion flags
+  codeOfConduct?: boolean;
 }
 
 export interface OrganisationResponse {

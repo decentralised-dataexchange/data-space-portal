@@ -165,14 +165,11 @@ export default function ViewDataAgreementModalInner(props: Props) {
     >
       <Box sx={{ marginTop: '20px', paddingBottom: '70px' }}>
         <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px' }}>
+          <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', display: 'flex', alignItems: 'center', gap: 1 }}>
             {dataSourceName || t('unknownOrganization')}
+            <VerifiedBadge trusted={isVerified} />
           </Typography>
         </Box>
-        <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1, paddingTop: "3px", color: isVerified ? '#2e7d32' : '#d32f2f' }}>
-          {isVerified ? t('common.trustedServiceProvider') : t('common.untrustedServiceProvider')}
-          <VerifiedBadge trusted={isVerified} />
-        </Typography>
         {/* Access Point Endpoint removed from below avatar section */}
         <Typography variant="subtitle1" mt={2} sx={{ fontSize: '16px' }}>
           {t('common.usagePurpose')}

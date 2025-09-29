@@ -26,6 +26,65 @@ export const apiService = {
       { email, password }
     ).then(res => res.data);
   },
+  // Onboarding: Code of Conduct PDF (returns a Blob URL string)
+  getCodeOfConductPdf: async (): Promise<string> => {
+    const primaryUrl = ENDPOINTS.codeOfConductPdf();
+    try {
+      const res = await axiosInstanceWithArrayBufferResType.get(primaryUrl);
+      const contentType = (res.headers?.['content-type'] as string | undefined) || 'application/pdf';
+      const blob = new Blob([res.data], { type: contentType.includes('pdf') ? 'application/pdf' : contentType });
+      return URL.createObjectURL(blob);
+    } catch (err: any) {
+      // If backend explicitly returns 404, do not retry other variants; serve app-level fallback
+      const status = err?.response?.status ?? err?.status;
+      if (status === 404) {
+        // Return route path directly so the viewer streams it without needing a blob URL
+        return '/coc-fallback';
+      }
+
+      // Non-404 errors: attempt a couple of graceful fallbacks before surfacing error
+      // 1) Fallback: try without/with trailing slash
+      try {
+        const fallbackUrl = primaryUrl.endsWith('/') ? primaryUrl.slice(0, -1) : primaryUrl + '/';
+        const res = await axiosInstanceWithArrayBufferResType.get(fallbackUrl);
+        const contentType = (res.headers?.['content-type'] as string | undefined) || 'application/pdf';
+        const blob = new Blob([res.data], { type: contentType.includes('pdf') ? 'application/pdf' : contentType });
+        return URL.createObjectURL(blob);
+      } catch (e1: any) {
+        if (e1?.response?.status === 404) return '/coc-fallback';
+      }
+
+      // 2) Fallback: try JSON via standard api client; accept that backend may return a url field
+      try {
+        const jsonRes = await api.get<any>(primaryUrl);
+        const data = jsonRes.data;
+        const urlCandidate = (typeof data === 'string') ? data : (data?.url || data?.pdfUrl || data?.href);
+        if (urlCandidate) {
+          // If it's an absolute URL, return it directly; otherwise, fetch and blob it
+          if (/^https?:\/\//i.test(urlCandidate)) {
+            return urlCandidate; // stream directly
+          }
+        }
+      } catch (e2: any) {
+        if (e2?.response?.status === 404) return '/coc-fallback';
+      }
+
+      // 3) Final fallback: fetch with credentials and no explicit Accept
+      try {
+        const f = await fetch(primaryUrl, { credentials: 'include' });
+        if (f.status === 404) return '/coc-fallback';
+        const blob = await f.blob();
+        return URL.createObjectURL(blob);
+      } catch {}
+
+      // If all else fails and status unknown, surface  fallback to avoid blocking UI
+      return '/coc-fallback';
+    }
+  },
+  signCodeOfConduct: async (): Promise<void> => {
+    await api.put(ENDPOINTS.signCodeOfConduct(), { codeOfConduct: true });
+    return;
+  },
   // Software Statement for Organisation
   getSoftwareStatement: async (): Promise<SoftwareStatementResponse> => {
     try {
@@ -59,6 +118,13 @@ export const apiService = {
       ENDPOINTS.signup(),
       payload
     ).then(res => res.data);
+  },
+  // Public sectors (external service)
+  getSectorsPublic: async (): Promise<import('@/types/onboarding').SectorsResponse> => {
+    // Use absolute URL to bypass baseURL
+    const url = 'https://api.nxd.foundation/onboard/sectors';
+    return api.get<import('@/types/onboarding').SectorsResponse>(url)
+      .then(res => res.data);
   },
   organisationList: async (): Promise<OrganisationListResponse> => {
     return api.get<OrganisationListResponse>(ENDPOINTS.organisationList())
