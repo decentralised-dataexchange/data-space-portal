@@ -323,8 +323,8 @@
     "invalidUrl": "Ange en giltig URL",
     "rowsPerPage": "Rader per sida:",
     "of": "av",
-    "signAction": "Signera",
-    "unsignAction": "Ångra signering"
+    "signAction": "Signerad",
+    "unsignAction": "Osignerad"
   },
   "errors": {
     "generic": "Något gick fel."

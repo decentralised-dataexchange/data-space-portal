@@ -358,7 +358,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                         </Grid>
                         {/* Pagination */}
                         {!viewApiFor && totalItems > 0 && (
-                            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 2, width: '100%' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4, mb: 2, width: '100%' }}>
                                 <PaginationControls totalItems={totalItems} defaultRowsPerPage={DEFAULT_LIMIT} rowsPerPageOptions={[4, 8, 12, 24]} />
                             </Box>
                         )}
