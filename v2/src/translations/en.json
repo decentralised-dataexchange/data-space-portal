@@ -271,9 +271,13 @@
     "optInAction": "Opt-in",
     "optOutAction": "Opt-out",
     "signAndContinue": "Sign and Continue",
-    "unableToDisplayPdf": "Unable to display PDF",
+    "unableToDisplayPdf": "Unable to display Code of Conduct document.",
     "openInNewTab": "Open in new tab",
-    "invalidUrl": "Enter a valid URL"
+    "invalidUrl": "Enter a valid URL",
+    "rowsPerPage": "Rows per page:",
+    "of": "of",
+    "signAction": "Sign",
+    "unsignAction": "Unsign"
   },
   "errors": {
     "generic": "Something went wrong."

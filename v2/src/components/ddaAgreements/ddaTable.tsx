@@ -11,7 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
 import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon, ClockCounterClockwiseIcon } from "@phosphor-icons/react";
 import VersionDropdown from "../VersionDropDown";
-import { TablePagination, Tooltip, Pagination, Box } from "@mui/material";
+import { Tooltip, Pagination, Box } from "@mui/material";
+import PaginationControls from "@/components/common/PaginationControls";
 import { apiService } from "@/lib/apiService/apiService";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -324,74 +325,21 @@ const DDATable: React.FC<DDATableProps> = ({
 
       {tabledata?.dataDisclosureAgreements?.length > 0 && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={tabledata?.pagination?.totalItems}
-            rowsPerPage={limit}
-            page={Math.max(
-              0,
-              Math.min(
-                Math.ceil((tabledata?.pagination?.totalItems || 0) / (limit || 1)) - 1,
-                Math.floor(offset / (limit || 1))
-              )
-            )}
-            onPageChange={onPageChange}
-            onRowsPerPageChange={onRowsPerPageChange}
-            ActionsComponent={NumericPaginationActions}
-            labelRowsPerPage={"Rows:"}
-            labelDisplayedRows={({ from, to, count, page }) => {
-              const totalPages = Math.max(1, Math.ceil((count || 0) / (limit || 1)));
-              return `Page ${page + 1}/${totalPages}`;
-            }}
-            sx={{
-              '& .MuiTablePagination-toolbar': {
-                flexWrap: 'nowrap',
-                gap: 1,
-                paddingLeft: 0,
-                paddingRight: 0,
-                justifyContent: 'flex-end',
-                width: '100%',
-              },
-              '& .MuiTablePagination-spacer': {
-                display: 'none',
-              },
-              '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
-                margin: 0,
-                fontSize: '12px',
-              },
-              '& .MuiTablePagination-displayedRows': {
-                minWidth: 'auto',
-              },
-              '& .MuiTablePagination-actions': {
-                marginLeft: 'auto',
-              },
-              ".MuiSelect-select": {
-                padding: 0,
-                paddingTop: "0.1rem",
-                fontSize: "12px",
-                minWidth: '52px'
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "black",
-                borderWidth: "1px"
-              }
-            }}
-            SelectProps={{
-              MenuProps: {
-                PaperProps: {
-                  sx: {
-                    '& .MuiMenuItem-root.Mui-selected': {
-                      backgroundColor: '#e0e0e0 !important',
-                    },
-                    '& .MuiMenuItem-root.Mui-selected:hover': {
-                      backgroundColor: '#e0e0e0 !important',
-                    },
-                  },
-                },
-              },
-            }}
-          />
+          {(() => {
+            const total = tabledata?.pagination?.totalItems || 0;
+            const currentPage = Math.max(1, Math.floor((offset || 0) / Math.max(1, limit)) + 1);
+            return (
+              <PaginationControls
+                totalItems={total}
+                defaultRowsPerPage={limit}
+                rowsPerPageOptions={[5, 10, 25]}
+                page={currentPage}
+                rowsPerPage={limit}
+                onChangePage={(next) => onPageChange(null, next - 1)}
+                onChangeRowsPerPage={(next) => onRowsPerPageChange({ target: { value: String(next) } } as any)}
+              />
+            );
+          })()}
         </Box>
       )}
     </TableContainer>

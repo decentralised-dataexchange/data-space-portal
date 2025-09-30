@@ -7,14 +7,14 @@ import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
 import ViewCredentialsController from '@/components/DataSources/ViewCredentialsController';
 
-import ClientPagination from '../Home/ClientPagination';
+import PaginationControls from '@/components/common/PaginationControls';
 import ApiDoc from '@/components/ApiDocs';
 import './style.scss';
 import OrgConfigCard from '@/components/DataSources/OrgConfigCard';
 
 type Props = {
     params: Promise<{ id?: string; slug?: string }>;
-    searchParams?: Promise<{ page?: string; viewApiFor?: string }>;
+    searchParams?: Promise<{ page?: string; viewApiFor?: string; limit?: string }>;
 };
 
 export default async function DataSourceListingPage({ params, searchParams }: Props) {
@@ -73,7 +73,8 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
     const viewApiFor = sp?.viewApiFor;
     const dataSourceSlug = slugify(dataSourceItem?.organisation?.name || '');
     // pagination setup (disabled when viewing API for a specific DDA)
-    const itemsPerPage = 4;
+    const DEFAULT_LIMIT = 4;
+    const itemsPerPage = sp?.limit && !isNaN(parseInt(sp.limit, 10)) ? Math.max(1, parseInt(sp.limit, 10)) : DEFAULT_LIMIT;
     const totalItems = ddas.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
     const pageParam = sp?.page;
@@ -356,9 +357,9 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                             )}
                         </Grid>
                         {/* Pagination */}
-                        {!viewApiFor && totalPages > 1 && (
+                        {!viewApiFor && totalItems > 0 && (
                             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 2, width: '100%' }}>
-                                <ClientPagination currentPage={currentPage} totalPages={totalPages} />
+                                <PaginationControls totalItems={totalItems} defaultRowsPerPage={DEFAULT_LIMIT} rowsPerPageOptions={[4, 8, 12, 24]} />
                             </Box>
                         )}
                     </Grid>

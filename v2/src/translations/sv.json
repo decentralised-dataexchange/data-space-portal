@@ -318,9 +318,13 @@
     "optInAction": "Opt-in",
     "optOutAction": "Opt-out",
     "signAndContinue": "Signera och fortsätt",
-    "unableToDisplayPdf": "Det går inte att visa PDF",
+    "unableToDisplayPdf": "Det går inte att visa dokumentet för uppförandekoden.",
     "openInNewTab": "Öppna i ny flik",
-    "invalidUrl": "Ange en giltig URL"
+    "invalidUrl": "Ange en giltig URL",
+    "rowsPerPage": "Rader per sida:",
+    "of": "av",
+    "signAction": "Signera",
+    "unsignAction": "Ångra signering"
   },
   "errors": {
     "generic": "Något gick fel."

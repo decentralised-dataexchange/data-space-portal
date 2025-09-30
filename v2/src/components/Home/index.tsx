@@ -1,7 +1,7 @@
 import {Locale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {Box, FormControl, FormControlLabel, Grid, Radio, RadioGroup, Typography} from '@mui/material';
-import ClientPagination from './ClientPagination';
+import PaginationControls from '@/components/common/PaginationControls';
 import Loader from '@/components/common/Loader';
 import {apiService} from '@/lib/apiService/apiService';
 import DataSourceCard from '@/components/Home/DataSource';
@@ -9,12 +9,14 @@ import {gridSpacing} from '@/constants/grid';
 
 type Props = {
   params: Promise<{ locale: Locale }>;
-  searchParams?: Promise<{ page?: string }>;
+  searchParams?: Promise<{ page?: string; limit?: string }>; 
 };
 
 export default async function HomePage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const pageParam = (await searchParams)?.page;
+  const sp = await searchParams;
+  const pageParam = sp?.page;
+  const limitParam = sp?.limit;
   
 
   
@@ -51,8 +53,9 @@ export default async function HomePage({ params, searchParams }: Props) {
     dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
   }));
 
-  // Server-side pagination
-  const itemsPerPage = 12;
+  // Server-side pagination (align with client control's limit param)
+  const DEFAULT_LIMIT = 12;
+  const itemsPerPage = limitParam && !isNaN(parseInt(limitParam, 10)) ? Math.max(1, parseInt(limitParam, 10)) : DEFAULT_LIMIT;
   const totalItems = dataSourceItems.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   
@@ -114,9 +117,9 @@ export default async function HomePage({ params, searchParams }: Props) {
             </Box>
             
             {/* Pagination */}
-            {totalPages > 1 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4, mb: 2 }}>
-                    <ClientPagination currentPage={currentPage} totalPages={totalPages} />
+            {totalItems > 0 && (
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <PaginationControls totalItems={totalItems} defaultRowsPerPage={DEFAULT_LIMIT} rowsPerPageOptions={[5, 12, 24, 48]} />
                 </Box>
             )}
         </Box>
