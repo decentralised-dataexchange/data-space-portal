@@ -361,7 +361,8 @@
       "confirmButton": "Publicera"
     },
     "viewModal": {
-      "title": "Visa dataavtal"
+      "title": "Visa dataavtal",
+      "publicTitle": "Visa och signera dataavtal"
     },
     "all": "Alla",
     "list": "Listade",

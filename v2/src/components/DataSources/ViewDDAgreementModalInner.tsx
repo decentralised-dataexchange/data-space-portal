@@ -29,6 +29,7 @@ interface Props {
   signStatus?: 'sign' | 'unsign' | string;
   onSignClick?: () => void;
   signButtonLoading?: boolean;
+  titleOverride?: string;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
@@ -46,11 +47,15 @@ export default function ViewDataAgreementModalInner(props: Props) {
     if (!isAuthenticated) return;
     onSignClick && onSignClick();
   };
+  const titleText = props.titleOverride ?? t('dataAgreements.viewModal.title');
+  const usagePurposeDescription = selectedData?.purposeDescription?.trim()
+    ? selectedData?.purposeDescription
+    : dataSourceDescription;
   // Custom header content showing purpose, template ID and Version
   const headerContent = (
     <Box sx={{ width: "100%" }}>
       <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px' }}>
-        {t('dataAgreements.viewModal.title')}: {selectedData?.purpose}
+        {titleText}: {selectedData?.purpose}
       </Typography>
       {mode !== "Create" && (
         <>
@@ -179,7 +184,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
           mt={0.5}
           sx={{ wordWrap: "break-word", fontSize: '14px' }}
         >
-          {dataSourceDescription}
+          {usagePurposeDescription}
         </Typography>
 
         <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
@@ -194,10 +199,30 @@ export default function ViewDataAgreementModalInner(props: Props) {
             const rows: AttributeRow[] = (attrs || []).map((a: any) => {
               const label = a?.name ?? a?.attributeName ?? '';
               const desc = a?.description ?? a?.attributeDescription ?? '';
-              return { label, value: '', tooltip: desc } as AttributeRow;
+              return { label, value: '', tooltip: null, description: desc } as AttributeRow;
             });
             return (
-              <AttributeTable rows={rows} showValues={false} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} hideValueColumn={true} />
+              <AttributeTable
+                rows={rows}
+                showValues={false}
+                hideEmptyDash={true}
+                labelMinWidth={200}
+                labelMaxPercent={40}
+                hideValueColumn={true}
+                fullWidthLabel={true}
+                renderLabelCell={(row) => (
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 0.5, minWidth: 0 }}>
+                    <Typography variant="subtitle2" sx={{ wordBreak: 'break-word', lineHeight: '20px', textWrap: 'nowrap' }}>
+                      {row.label}
+                    </Typography>
+                    {row.description && (
+                      <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '14px', lineHeight: '20px', wordBreak: 'break-word' }}>
+                        {row.description}
+                      </Typography>
+                    )}
+                  </Box>
+                )}
+              />
             );
           })()}
         </Box>

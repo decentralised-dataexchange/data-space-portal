@@ -359,7 +359,8 @@
       "confirmButton": "Publish"
     },
     "viewModal": {
-      "title": "View Data Agreement"
+      "title": "View Data Agreement",
+      "publicTitle": "View and Sign Data Agreement"
     },
     "dataAgreementPolicy": "Data Agreement Policy",
     "all": "All",
