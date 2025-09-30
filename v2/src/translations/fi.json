@@ -394,7 +394,8 @@
       "confirmButton": "Julkaise"
     },
     "viewModal": {
-      "title": "Näytä tietosopimus"
+      "title": "Näytä tietosopimus",
+      "publicTitle": "Näytä ja allekirjoita tietosopimus"
     },
     "all": "Kaikki",
     "list": "Listatut",

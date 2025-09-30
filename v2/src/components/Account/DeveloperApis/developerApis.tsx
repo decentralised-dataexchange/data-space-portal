@@ -10,7 +10,7 @@ import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
 import RightSidebar from "@/components/common/RightSidebar";
 import CopyButton from "@/components/common/CopyButton";
-import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
+import { AttributeRow } from "@/components/common/AttributeTable";
 import DeleteOrganisationOAuthClientModal from "@/components/Account/DeveloperApis/DeleteOrganisationOAuthClientModal";
 import SoftwareStatementModal from "@/components/Account/DeveloperApis/SoftwareStatementModal";
 import DeleteSoftwareStatementModal from "@/components/Account/DeveloperApis/DeleteSoftwareStatementModal";

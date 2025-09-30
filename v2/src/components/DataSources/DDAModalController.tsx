@@ -6,6 +6,7 @@ import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import ViewDataAgreementModalInner from "./ViewDDAgreementModalInner";
 import { clearSelectedDDAId } from "@/store/reducers/dataSourceReducers";
 import { useBusinessWalletSigning } from "@/custom-hooks/businessWalletSigning";
+import { useTranslations } from "next-intl";
 // no i18n needed here
 
 interface Props {
@@ -28,6 +29,7 @@ export default function DDAModalController({
   trusted,
 }: Props) {
   const dispatch = useAppDispatch();
+  const t = useTranslations();
   const selectedDDAId = useAppSelector((state) => state.dataSources.selectedDDAId);
   const { isAuthenticated } = useAppSelector(state => state.auth);
   const open = selectedDDAId !== "";
@@ -82,6 +84,7 @@ export default function DDAModalController({
       signStatus={signStatus}
       onSignClick={handleSignClick}
       signButtonLoading={isInitiating || isFetchingStatus}
+      titleOverride={t('dataAgreements.viewModal.publicTitle')}
     />
   );
 }
