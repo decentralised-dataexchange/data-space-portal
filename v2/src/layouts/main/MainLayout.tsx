@@ -9,6 +9,7 @@ import Breadcrumb from '@/components/common/Breadcrumb';
 import '../style.scss';
 import { usePathname } from 'next/navigation';
 import { isPublicRoute } from '@/lib/apiService/utils';
+import { APP_VERSION } from '@/constants/version';
 
 interface Props {
   children: React.ReactNode;
@@ -60,7 +61,7 @@ const MainLayout = ({ children }: Props) => {
           {children}
         </Box>
         <Box className="footerContainer d-flex-center">
-          <Footer txt={'v2024.03.1'} />
+          <Footer txt={APP_VERSION} />
         </Box>
       </Box>
     </>

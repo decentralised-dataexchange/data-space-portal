@@ -4,20 +4,19 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import { useAppDispatch } from "@/custom-hooks/store";
-import { setSelectedDDAId, setSelectedOpenApiUrl } from "@/store/reducers/dataSourceReducers";
+import { setSelectedDDAId } from "@/store/reducers/dataSourceReducers";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 
 interface DDAActionsProps {
   dataDisclosureAgreement: DataDisclosureAgreement;
-  openApiUrl: string;
   dataSourceSlug: string;
   apiViewMode?: boolean; // when true, hide View API and right-align the remaining action
   hasEmbeddedSpec?: boolean; // optional hint from parent if spec presence was detected externally
 }
 
-export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSourceSlug, apiViewMode = false, hasEmbeddedSpec: parentHasEmbeddedSpec }: DDAActionsProps) {
+export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, apiViewMode = false, hasEmbeddedSpec: parentHasEmbeddedSpec }: DDAActionsProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const t = useTranslations();
@@ -34,10 +33,6 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
   };
 
   const handleViewApiClick = () => {
-    // If URL exists, store it for downstream consumers
-    if (openApiUrl) {
-      dispatch(setSelectedOpenApiUrl(openApiUrl));
-    }
     // Navigate to the same datasource read page, showing only this DDA and the API doc below it
     const viewId = getDdaId(dataDisclosureAgreement) || dataDisclosureAgreement.templateId;
     router.push(`/${locale}/data-source/read/${dataSourceSlug}?viewApiFor=${viewId}`);
@@ -148,3 +143,4 @@ export default function DDAActions({ dataDisclosureAgreement, openApiUrl, dataSo
     </Box>
   );
 }
+

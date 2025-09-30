@@ -6,6 +6,7 @@ import { apiService } from '@/lib/apiService/apiService';
 import DDAActions from '@/components/DataSources/DDAActions';
 import DDAModalController from '@/components/DataSources/DDAModalController';
 import ViewCredentialsController from '@/components/DataSources/ViewCredentialsController';
+import { load as yamlLoad } from 'js-yaml';
 
 import PaginationControls from '@/components/common/PaginationControls';
 import ApiDoc from '@/components/ApiDocs';
@@ -120,7 +121,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         return input;
     };
 
-    // Normalize kvToObject output into a strict OpenAPI JSON shape for Swagger UI
+    // Normalize kvToObject output into an OpenAPI-compliant JSON shape for Swagger UI
     const normalizeOasObject = (root: any): any => {
         if (!root || typeof root !== 'object') return root;
         const o = { ...root };
@@ -135,14 +136,8 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         if (typeof (o as any).openapi !== 'undefined' && typeof (o as any).openapi !== 'string') {
             o.openapi = String((o as any).openapi);
         }
-        if (!('openapi' in o) && !('swagger' in o)) {
-            // Fallback to a safe default if backend omitted explicit version
-            o.openapi = '3.0.3';
-        }
-        // Some Swagger UI builds only accept 3.0.x; coerce 3.1.x to 3.0.3 for compatibility
-        if (typeof (o as any).openapi === 'string' && /^3\.1(\.|$)/.test((o as any).openapi)) {
-            o.openapi = '3.0.3';
-        }
+        // Do not inject a default version; if neither 'openapi' nor 'swagger' is present, treat as invalid later.
+        // Do not coerce 3.1.x to 3.0.x; keep the declared OpenAPI version to align with the spec.
         // Flatten possible array-wrapped maps from kv encoding
         const flattenMapArray = (arr: any) => {
             if (!Array.isArray(arr)) return arr;
@@ -186,35 +181,67 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         }
         if (Array.isArray(o.security)) o.security = flattenMapArray(o.security);
         if (Array.isArray(o.servers)) o.servers = flattenMapArray(o.servers);
-        // Ensure info exists with minimal required fields
-        if (!o.info || typeof o.info !== 'object') o.info = {};
-        if (!o.info.title) o.info.title = 'API';
-        if (!o.info.version) o.info.version = '1.0.0';
+        // Do not inject synthetic info fields; validate presence later to align strictly with the spec.
+
+        // Final validation aligned with OpenAPI: require recognizable version and structural keys
+        const hasOas3 = typeof (o as any).openapi === 'string' && /^3\./.test((o as any).openapi);
+        const hasOas2 = typeof (o as any).swagger === 'string' && (o as any).swagger === '2.0';
+        const hasPathsObj = o.paths && typeof o.paths === 'object';
+        const hasWebhooksObj = (o as any).webhooks && typeof (o as any).webhooks === 'object'; // OpenAPI 3.1+
+        const hasInfoObj = o.info && typeof o.info === 'object' && typeof o.info.title === 'string' && typeof o.info.version === 'string';
+        const structurallyValid = hasInfoObj && (hasPathsObj || (hasOas3 && hasWebhooksObj));
+        if (!(hasOas3 || hasOas2) || !structurallyValid) {
+            return undefined;
+        }
         return o;
     };
 
     const ddaForApi = viewApiFor ? ddas.find(dda => (getDdaId(dda) === viewApiFor || dda.templateId === viewApiFor)) : undefined;
     const openApiSpecObj = (() => {
-        const tryFrom = (src: any): any | undefined => {
-            if (!src) return undefined;
-            const raw = src.openApiSpecification;
-            if (Array.isArray(raw) && raw.length > 0) {
-                try {
-                    const obj = kvToObject(raw);
+        const normalizeIfObject = (val: any): any | undefined => {
+            if (!val) return undefined;
+            try {
+                // KV-array -> object
+                if (Array.isArray(val)) {
+                    const obj = kvToObject(val);
                     return normalizeOasObject(obj);
-                } catch { return undefined; }
-            }
+                }
+                // Plain object
+                if (typeof val === 'object') {
+                    return normalizeOasObject(val);
+                }
+                // JSON string
+                if (typeof val === 'string') {
+                    const trimmed = val.trim();
+                    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+                        const parsed = JSON.parse(trimmed);
+                        return normalizeIfObject(parsed);
+                    }
+                    // YAML string
+                    try {
+                        const parsedYaml = yamlLoad(trimmed);
+                        if (parsedYaml && typeof parsedYaml === 'object') {
+                            return normalizeIfObject(parsedYaml);
+                        }
+                    } catch {}
+                }
+            } catch {}
             return undefined;
         };
+        const tryFromContainer = (src: any): any | undefined => {
+            if (!src) return undefined;
+            const raw = (src as any).openApiSpecification;
+            return normalizeIfObject(raw);
+        };
         // 1) top-level
-        let obj = tryFrom(ddaForApi as any);
+        let obj = tryFromContainer(ddaForApi as any);
         if (obj) return obj;
         // 2) nested JSON in objectData
         try {
             const rawObjData = (ddaForApi as any)?.objectData;
             if (rawObjData && typeof rawObjData === 'string') {
                 const parsed = JSON.parse(rawObjData);
-                const fromObjData = tryFrom(parsed);
+                const fromObjData = tryFromContainer(parsed);
                 if (fromObjData) return fromObjData;
             }
         } catch {}
@@ -223,7 +250,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
             const raw2 = (ddaForApi as any)?.dataDisclosureAgreementTemplateRevision?.objectData;
             if (raw2 && typeof raw2 === 'string') {
                 const parsed2 = JSON.parse(raw2);
-                const fromObjData2 = tryFrom(parsed2);
+                const fromObjData2 = tryFromContainer(parsed2);
                 if (fromObjData2) return fromObjData2;
             }
         } catch {}
@@ -334,7 +361,6 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     {/* Version now displayed inline with action buttons inside DDAActions */}
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
-                                                        openApiUrl={dataSourceItem?.organisation.openApiUrl || ''}
                                                         dataSourceSlug={dataSourceSlug}
                                                         apiViewMode={!!viewApiFor}
                                                         hasEmbeddedSpec={hasEmbeddedSpec(dataDisclosureAgreement)}
@@ -346,11 +372,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                 })}
                             </Grid>
                             {/* Render API docs below the selected card when viewApiFor is present */}
-                            {viewApiFor && (openApiSpecObj || dataSourceItem?.organisation?.openApiUrl) && (
+                            {viewApiFor && openApiSpecObj && (
                                 <Box sx={{ mt: 2 }}>
                                     <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                         <CardContent sx={{ padding: '24px' }}>
-                                            <ApiDoc openApiUrl={dataSourceItem.organisation.openApiUrl} spec={openApiSpecObj} />
+                                            <ApiDoc spec={openApiSpecObj} />
                                         </CardContent>
                                     </Card>
                                 </Box>
