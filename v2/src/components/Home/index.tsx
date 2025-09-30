@@ -118,7 +118,7 @@ export default async function HomePage({ params, searchParams }: Props) {
             
             {/* Pagination */}
             {totalItems > 0 && (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                     <PaginationControls totalItems={totalItems} defaultRowsPerPage={DEFAULT_LIMIT} rowsPerPageOptions={[5, 12, 24, 48]} />
                 </Box>
             )}

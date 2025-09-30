@@ -276,8 +276,8 @@
     "invalidUrl": "Enter a valid URL",
     "rowsPerPage": "Rows per page:",
     "of": "of",
-    "signAction": "Sign",
-    "unsignAction": "Unsign"
+    "signAction": "Signed",
+    "unsignAction": "Unsigned"
   },
   "errors": {
     "generic": "Something went wrong."

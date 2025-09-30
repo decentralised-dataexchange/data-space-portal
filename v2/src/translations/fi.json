@@ -355,8 +355,8 @@
     "invalidUrl": "Anna kelvollinen URL-osoite",
     "rowsPerPage": "Rivejä sivulla:",
     "of": "kaikkiaan",
-    "signAction": "Allekirjoita",
-    "unsignAction": "Peru allekirjoitus"
+    "signAction": "Allekirjoitettu",
+    "unsignAction": "Allekirjoittamaton"
   },
   "errors": {
     "generic": "Jokin meni pieleen."
