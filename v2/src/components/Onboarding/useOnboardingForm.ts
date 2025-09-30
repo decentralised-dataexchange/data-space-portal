@@ -53,7 +53,18 @@ const ADMIN_FIELD_NAMES = Object.keys(INITIAL_ADMIN_FIELDS) as Array<keyof Onboa
 const ORGANISATION_FIELD_NAMES = Object.keys(INITIAL_ORGANISATION_FIELDS) as Array<keyof OnboardingOrganisationFields>;
 
 export const useOnboardingForm = () => {
-  const [currentStep, setCurrentStep] = useState<Step>(1);
+  // Initialize from URL (?step=1..5) if present, otherwise default to 1
+  const initialStep: Step = (() => {
+    try {
+      if (typeof window === 'undefined') return 1 as Step;
+      const params = new URLSearchParams(window.location.search || '');
+      const stepParam = params.get('step');
+      const n = stepParam ? parseInt(stepParam, 10) : NaN;
+      if (n === 1 || n === 2 || n === 3 || n === 4 || n === 5) return n as Step;
+    } catch {}
+    return 1 as Step;
+  })();
+  const [currentStep, setCurrentStep] = useState<Step>(initialStep);
   const [adminCredentials, setAdminCredentials] = useState<OnboardingAdminFields>(INITIAL_ADMIN_FIELDS);
   const [organisationDetails, setOrganisationDetails] = useState<OnboardingOrganisationFields>(INITIAL_ORGANISATION_FIELDS);
   const [showErrors, setShowErrors] = useState({ step1: false, step2: false });

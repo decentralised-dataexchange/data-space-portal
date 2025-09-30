@@ -14,7 +14,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (token: any, userData: any) => void;
-  logout: () => void;
+  logout: (redirectTo?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -156,7 +156,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Local state will be updated via the useEffect that watches reduxIsAuthenticated
   };
 
-  const logout = () => {
+  const logout = (redirectTo?: string) => {
     // Block axios requests immediately
     try { setAxiosAuthState(false); } catch {}
 
@@ -178,12 +178,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     // Finally redirect
     try {
-      const path = typeof window !== 'undefined' ? window.location.pathname : null;
-      const match = path ? path.match(/^\/(en|fi|sv)(?:\/|$)/) : null;
-      const localizedLogin = match ? `/${match[1]}/login` : '/login';
-      router.replace(localizedLogin);
+      if (redirectTo) {
+        router.replace(redirectTo);
+      } else {
+        const path = typeof window !== 'undefined' ? window.location.pathname : null;
+        const match = path ? path.match(/^\/(en|fi|sv)(?:\/|$)/) : null;
+        const localizedLogin = match ? `/${match[1]}/login` : '/login';
+        router.replace(localizedLogin);
+      }
     } catch {
-      router.replace('/login');
+      router.replace(redirectTo || '/login');
     }
   };
 

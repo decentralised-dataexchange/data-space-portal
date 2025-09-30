@@ -8,6 +8,7 @@ import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import CheckIcon from '@mui/icons-material/Check';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import { useAuth } from '@/components/common/AuthProvider';
 
 import { useOnboardingForm, MAX_SHORT, MAX_DESC, PASSWORD_MAX, OnboardingAdminFields, OnboardingOrganisationFields } from './useOnboardingForm';
 import { useSectors } from '@/custom-hooks/onboarding';
@@ -443,6 +444,8 @@ StepFour.displayName = 'StepFour';
 const Onboarding: React.FC = () => {
   const t = useTranslations();
   const router = useRouter();
+  const locale = useLocale();
+  const { logout } = useAuth();
   // Set to true locally during development when you need to jump between steps for debugging
   const showStepDebugControls = false;
   const {
@@ -485,25 +488,18 @@ const Onboarding: React.FC = () => {
 
   // Avoid routing from within onboarding to reduce URL jumping; AppLayout handles redirects.
 
-  // When authenticated (organisation loaded), force onboarding to show only protected steps (4/5)
-  React.useEffect(() => {
-    if (orgLoading || idLoading) return;
-    if (!organisation) return; // unauthenticated flow uses steps 1-3
-    // Decide which protected step to show
-    if (!cocSigned) {
-      if (missingWallet || !isVerified) {
-        goToStepFourNav();
-      } else {
-        goToStepFiveNav();
-      }
-    } else {
-      if (missingWallet || !isVerified) {
-        goToStepFourNav();
-      } else {
-        goToStepFiveNav();
-      }
-    }
-  }, [orgLoading, idLoading, organisation, cocSigned, missingWallet, isVerified, isProtectedMode, goToStepFourNav, goToStepFiveNav]);
+  // Derive the target step for protected mode to avoid flicker from transient incorrect steps
+  const determiningProtectedStep = isProtectedMode && (orgLoading || idLoading);
+  const protectedTargetStep = React.useMemo<4 | 5 | undefined>(() => {
+    if (!isProtectedMode || determiningProtectedStep) return undefined;
+    return (missingWallet || !isVerified) ? 4 : 5;
+  }, [isProtectedMode, determiningProtectedStep, missingWallet, isVerified]);
+
+  // Effective step used for header/subtitle mapping (unprotected uses currentStep)
+  const effectiveStep = React.useMemo<1 | 2 | 3 | 4 | 5 | undefined>(() => {
+    if (isProtectedMode) return protectedTargetStep;
+    return currentStep;
+  }, [isProtectedMode, protectedTargetStep, currentStep]);
 
   return (
     <Box className="loginWrapper">
@@ -514,10 +510,14 @@ const Onboarding: React.FC = () => {
             <Typography variant="h5" fontWeight={700}>{t('onboarding.title')}</Typography>
             {(() => {
               let subtitleKey: string | null = null;
-              if (currentStep === 1) subtitleKey = 'onboarding.stepSubtitles.step1';
-              else if (currentStep === 2) subtitleKey = 'onboarding.stepSubtitles.step2';
-              else if (currentStep === 4) subtitleKey = 'onboarding.stepSubtitles.step3';
-              else if (currentStep === 5) subtitleKey = 'onboarding.stepSubtitles.step4';
+              // Use derived step to avoid showing wrong subtitle during protected step resolution
+              if (!isProtectedMode) {
+                if (effectiveStep === 1) subtitleKey = 'onboarding.stepSubtitles.step1';
+                else if (effectiveStep === 2) subtitleKey = 'onboarding.stepSubtitles.step2';
+              } else {
+                if (protectedTargetStep === 4) subtitleKey = 'onboarding.stepSubtitles.step3';
+                else if (protectedTargetStep === 5) subtitleKey = 'onboarding.stepSubtitles.step4';
+              }
 
               return subtitleKey ? (
                 <Typography
@@ -544,12 +544,23 @@ const Onboarding: React.FC = () => {
         {
           // If authenticated (organisation present), never show steps 1-3.
           isProtectedMode ? (
-            (orgLoading || idLoading) ? (
+            determiningProtectedStep ? (
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 240 }}>
                 <CircularProgress size={24} aria-label="Loading onboarding step" />
               </Box>
-            ) : currentStep === 4 ? (
-              <StepFour t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+            ) : protectedTargetStep === 4 ? (
+              <StepFour
+                t={t}
+                onBack={() => {
+                  // Move UI back to step 3, then logout and redirect back to onboarding step 3
+                  try { goToStepThreeNav(); } catch {}
+                  const redirectTo = locale ? `/${locale}/onboarding?step=3` : '/onboarding?step=3';
+                  logout(redirectTo);
+                }}
+                organisation={organisation}
+                orgIdentity={orgIdentity}
+                onNext={goToStepFiveNav}
+              />
             ) : (
               <StepFive t={t} />
             )
@@ -583,8 +594,12 @@ const Onboarding: React.FC = () => {
                 sectors={sectors}
                 sectorsLoading={sectorsLoading}
               />
-            ) : (
+            ) : currentStep === 3 ? (
               <StepThree t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
+            ) : (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 240 }}>
+                <CircularProgress size={24} aria-label="Loading onboarding step" />
+              </Box>
             )
           )
         }
