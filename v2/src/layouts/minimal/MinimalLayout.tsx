@@ -5,6 +5,7 @@ import Footer from '@/components/common/Footer';
 import '../style.scss';
 import { usePathname } from 'next/navigation';
 import Breadcrumb from '@/components/common/Breadcrumb';
+import { APP_VERSION } from '@/constants/version';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -24,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </Box>
         <Box className="footerContainer d-flex-center">
-          <Footer txt={'v2024.03.1'} />
+          <Footer txt={APP_VERSION} />
         </Box>
       </Box>
     </>
