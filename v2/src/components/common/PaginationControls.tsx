@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Box, Select, MenuItem, Typography, Pagination } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import type { SxProps } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -20,6 +21,14 @@ export type PaginationControlsProps = {
   onChangePage?: (nextPage: number) => void;
   onChangeRowsPerPage?: (nextRowsPerPage: number) => void;
 };
+
+const StyledPagination = styled(Pagination)(() => ({
+  '& .MuiPaginationItem-root.Mui-selected': {
+    backgroundColor: '#000',
+    color: '#fff',
+    '&:hover': { backgroundColor: '#000' },
+  },
+}));
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
   totalItems,
@@ -94,7 +103,14 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
 
   if (totalItems === 0) return null;
 
-  const baseSx = { display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap', marginBlock: 2 } as const;
+  const baseSx = {
+    display: 'flex',
+    alignItems: 'center',
+    columnGap: 2,
+    rowGap: 0,
+    flexWrap: 'wrap',
+    marginBlock: 2,
+  } as const;
   return (
     <Box sx={[baseSx, containerSx] as any}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -108,14 +124,16 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           sx={{
             minWidth: 70,
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'rgba(0,0,0,0.23)',
+              border: 'none',
             },
-            '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'rgba(0,0,0,0.23) !important',
-              borderWidth: '1px',
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
             },
-            '& .MuiOutlinedInput-root.Mui-focused, &.Mui-focused': {
-              boxShadow: 'none',
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+            },
+            '& .MuiSelect-select': {
+              paddingY: 0.75,
             },
           }}
           MenuProps={{
@@ -138,7 +156,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
         {startIndex}-{endIndex} {t('common.of')} {totalItems}
       </Typography>
       {totalPages > 1 && (
-        <Pagination
+        <StyledPagination
           count={totalPages}
           page={currentPage}
           onChange={handleChangePage}
@@ -146,13 +164,6 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           showLastButton
           siblingCount={1}
           boundaryCount={1}
-          sx={{
-            '& .MuiPaginationItem-root.Mui-selected': {
-              backgroundColor: '#000',
-              color: '#fff',
-              '&:hover': { backgroundColor: '#000' }
-            }
-          }}
         />
       )}
     </Box>

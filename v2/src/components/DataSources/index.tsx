@@ -263,7 +263,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         <Box className="dataListContainer" sx={{ width: '100%' }}>
             <Grid container spacing={gridSpacing} sx={{ width: '100%', margin: 0 }}>
                 <Grid size={{ xs: 12 }}>
-                    <Grid container spacing={gridSpacing} justifyContent="center">
+                    <Grid container spacing={gridSpacing} sx={{rowGap: 0}} justifyContent="center">
                         {/* Left info box */}
                         <Grid size={{ lg: 4, md: 12, sm: 12, xs: 12 }} className='leftContainer'>
                             <Card className='leftSection'>
@@ -358,7 +358,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                         </Grid>
                         {/* Pagination */}
                         {!viewApiFor && totalItems > 0 && (
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4, mb: 2, width: '100%' }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2, width: '100%' }}>
                                 <PaginationControls totalItems={totalItems} defaultRowsPerPage={DEFAULT_LIMIT} rowsPerPageOptions={[4, 8, 12, 24]} />
                             </Box>
                         )}
