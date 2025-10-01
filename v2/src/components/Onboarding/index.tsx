@@ -598,7 +598,17 @@ const Onboarding: React.FC = () => {
               variant="outlined"
               className="delete-btn"
               disabled={!canSkipStepOne && !isStepOneValid}
-              sx={{ maxWidth: 350, width: '100%' }}
+              sx={{ 
+                width: '100%', 
+                maxWidth: 350,
+                '&.MuiButton-root': {
+                  height: '48px',
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                }
+              }}
             >
               {t('common.continue')}
             </Button>
@@ -901,14 +911,35 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
           </TextField>
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', width: '100%', maxWidth: 350 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          gap: '12px', 
+          width: '100%', 
+          maxWidth: 350,
+          margin: '0 auto',
+          '& .MuiButton-root': {
+            height: '48px',
+            borderRadius: '8px',
+            textTransform: 'none',
+            fontSize: '1rem',
+            fontWeight: 500,
+          }
+        }}>
           <Button
             type="button"
             variant="outlined"
             className="delete-btn"
             onClick={onBack}
             disabled={isSubmitting}
-            sx={{ flex: 1, minWidth: 140 }}
+            sx={{ 
+              flex: '0 0 30%',
+              maxWidth: '30%',
+              minWidth: 'auto',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}
           >
             {t('common.back')}
           </Button>
@@ -917,7 +948,11 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             variant="outlined"
             className="delete-btn"
             disabled={!isValid || isSubmitting}
-            sx={{ flex: 1, minWidth: 140 }}
+            sx={{ 
+              flex: '0 0 68%',
+              maxWidth: '68%',
+              minWidth: 'auto'
+            }}
           >
             {t('common.continue')}
           </Button>
@@ -968,14 +1003,35 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
         </Typography>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', width: '100%', maxWidth: 350, mt: 2 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        gap: '12px', 
+        width: '100%', 
+        maxWidth: 350,
+        margin: '24px auto 0',
+        '& .MuiButton-root': {
+          height: '48px',
+          borderRadius: '8px',
+          textTransform: 'none',
+          fontSize: '1rem',
+          fontWeight: 500,
+        }
+      }}>
         <Button
           type="button"
           variant="outlined"
           className="delete-btn"
           onClick={onBack}
           disabled={isSubmitting}
-          sx={{ flex: 1, minWidth: 140 }}
+          sx={{ 
+            flex: '0 0 30%',
+            maxWidth: '30%',
+            minWidth: 'auto',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }}
         >
           {t('common.back')}
         </Button>
@@ -985,7 +1041,12 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
           className="delete-btn"
           onClick={onContinue}
           disabled={isSubmitting}
-          sx={{ flex: 1, minWidth: 140, position: 'relative' }}
+          sx={{ 
+            flex: '0 0 68%',
+            maxWidth: '68%',
+            minWidth: 'auto',
+            position: 'relative'
+          }}
         >
           {isSubmitting ? (
             <>
