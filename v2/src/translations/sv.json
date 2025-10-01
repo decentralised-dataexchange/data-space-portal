@@ -416,7 +416,7 @@
     },
     "history": {
       "title": "Historik för datautlämningsavtal",
-      "subtitle": "Historiska versioner och statusändringar för det valda datautlämningsavtalet.",
+      "subtitle": "Visa historik för datautlämningsavtalet",
       "agreementLabel": "Avtal",
       "table": {
         "headers": {

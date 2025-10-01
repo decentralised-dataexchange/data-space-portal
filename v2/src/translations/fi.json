@@ -422,7 +422,7 @@
     "tooltipDownload": "Lataa tietojen luovutussopimus",
     "history": {
       "title": "Tietojen luovutussopimuksen historia",
-      "subtitle": "Valitun tietojen luovutussopimuksen versio- ja tilamuutokset.",
+      "subtitle": "Tarkastele tietojen luovutussopimuksen historiaa",
       "agreementLabel": "Sopimus",
       "table": {
         "headers": {

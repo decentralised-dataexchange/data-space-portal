@@ -415,7 +415,7 @@
     },
     "history": {
       "title": "Data Disclosure Agreement History",
-      "subtitle": "Historical versions and status changes of the selected Data Disclosure Agreement.",
+      "subtitle": "View history for the Data Disclosure Agreement",
       "agreementLabel": "Agreement",
       "table": {
         "headers": {

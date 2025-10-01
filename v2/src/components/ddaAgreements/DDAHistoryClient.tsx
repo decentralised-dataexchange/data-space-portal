@@ -5,6 +5,8 @@ import { useTranslations } from "next-intl";
 import { useQuery } from "@tanstack/react-query";
 import { apiService } from "@/lib/apiService/apiService";
 import Table from "@mui/material/Table";
+import PaginationControls from "@/components/common/PaginationControls";
+import { useState, useMemo } from "react";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -40,6 +42,8 @@ type HistoryRow = {
 };
 
 export default function DDAHistoryClient({ id }: { id: string }) {
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const t = useTranslations();
   const [openView, setOpenView] = React.useState(false);
   const [selected, setSelected] = React.useState<any | null>(null);
@@ -51,15 +55,6 @@ export default function DDAHistoryClient({ id }: { id: string }) {
       setCopied({ key });
       window.setTimeout(() => setCopied({ key: null }), 1200);
     } catch {}
-  };
-
-  const tryGet = (obj: Record<string, unknown> | null | undefined, path: string[]): any => {
-    let cur: any = obj;
-    for (const k of path) {
-      if (!cur || typeof cur !== 'object') return undefined;
-      cur = cur[k];
-    }
-    return cur;
   };
 
   const transformForModal = (raw: unknown): any => {
@@ -370,8 +365,26 @@ export default function DDAHistoryClient({ id }: { id: string }) {
     return isNaN(d.getTime()) ? "" : d.toLocaleString();
   };
 
+  // Pagination logic
+  const sortedData = useMemo(() => {
+    if (!Array.isArray(data)) return [];
+    return [...data]
+      .map((raw) => ({ raw, row: normalize(raw) }))
+      .sort((a, b) => {
+        const at = new Date(a.row.updatedAt || a.row.createdAt || '').getTime();
+        const bt = new Date(b.row.updatedAt || b.row.createdAt || '').getTime();
+        return bt - at;
+      });
+  }, [data]);
+
+  // Get current items
+  const currentItems = useMemo(() => {
+    const startIndex = (page - 1) * rowsPerPage;
+    return sortedData.slice(startIndex, startIndex + rowsPerPage);
+  }, [sortedData, page, rowsPerPage]);
+
   // Try to determine a DDA name/purpose from the history payload
-  const ddaName = React.useMemo(() => {
+  const ddaName = useMemo(() => {
     const list = Array.isArray(data) ? data : [];
     const count = Math.min(5, list.length);
     for (let i = 0; i < count; i++) {
@@ -420,7 +433,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
           </div>
           <div className={styles.subtitleContainer}>
             <p className={styles.subtitle}>
-              {t("dataAgreements.history.subtitle")} — {t("dataAgreements.history.agreementLabel")}: {ddaName}
+              {t("dataAgreements.history.subtitle")}: {ddaName}
             </p>
           </div>
         </div>
@@ -451,15 +464,8 @@ export default function DDAHistoryClient({ id }: { id: string }) {
               </TableRow>
             </TableHead>
             <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
-              {Array.isArray(data) && data.length > 0 ? (
-                (() => {
-                  const list = data.map((raw) => ({ raw, row: normalize(raw) }))
-                    .sort((a, b) => {
-                      const at = new Date(a.row.updatedAt || a.row.createdAt || '').getTime();
-                      const bt = new Date(b.row.updatedAt || b.row.createdAt || '').getTime();
-                      return bt - at;
-                    });
-                  return list.map(({ raw, row }, idx) => {
+              {currentItems.length > 0 ? (
+                currentItems.map(({ raw, row }, idx) => {
                     const dsSig = row.dataSourceSignature || '';
                     const dusSig = row.dataUsingServiceSignature || '';
                     return (
@@ -467,7 +473,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                         <StyledTableCell>{row.recordId ?? ''}</StyledTableCell>
                         <StyledTableCell>{row.purpose ?? ''}</StyledTableCell>
                         <StyledTableCell>{row.version ?? ''}</StyledTableCell>
-                        <StyledTableCell>{(row.optIn === true) ? t('common.optInAction') : (row.optIn === false) ? t('common.optOutAction') : (row.event ?? '')}</StyledTableCell>
+                        <StyledTableCell>{(row.optIn === true) ? t('common.signAction') : (row.optIn === false) ? t('common.unsignAction') : (row.event ?? '')}</StyledTableCell>
                         <StyledTableCell>
                           <Tooltip
                             title={t('common.copied')}
@@ -516,7 +522,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                         <StyledTableCell
                           style={{ display: 'flex', justifyContent: 'center', gap: 8, border: 'none', whiteSpace: 'nowrap' }}
                         >
-                          <Tooltip title={t("signedAgreements.tooltipView")} placement="top">
+                          <Tooltip title={t("dataAgreements.table.tooltips.viewHistory")} placement="top">
                             <IconButton aria-label="view" onClick={() => handleView(raw)} sx={{ color: '#000' }}>
                               <EyeIcon size={17} />
                             </IconButton>
@@ -524,15 +530,34 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                         </StyledTableCell>
                       </StyledTableRow>
                     );
-                  });
-                })()
-              ) : (
+                  })
+                ) : (
                 <TableRow>
                   <StyledTableCell colSpan={8} align="center">{t("dataAgreements.history.table.noData")}</StyledTableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+          {sortedData.length > 0 && (
+            <PaginationControls
+              totalItems={sortedData.length}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              onChangePage={setPage}
+              onChangeRowsPerPage={(newRowsPerPage) => {
+                setRowsPerPage(newRowsPerPage);
+                setPage(1); // Reset to first page when changing rows per page
+              }}
+              containerSx={{
+                justifyContent: 'flex-end',
+                mt: 2,
+                mr: 2,
+                '& .MuiPagination-ul': {
+                  flexWrap: 'nowrap',
+                },
+              }}
+            />
+          )}
         </TableContainer>
       )}
 
