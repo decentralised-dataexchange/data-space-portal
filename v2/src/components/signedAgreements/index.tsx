@@ -114,7 +114,7 @@ export default function SignedAgreementsPage() {
     if (error) {
       return (
         <Alert severity="error" sx={{ my: 2 }}>
-          {commonT("errors.generic")}
+          {t("errors.generic")}
         </Alert>
       );
     }
