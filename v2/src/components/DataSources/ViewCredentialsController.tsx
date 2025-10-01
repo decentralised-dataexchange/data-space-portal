@@ -6,13 +6,12 @@ import { useTranslations } from "next-intl";
 import RightSidebar from "@/components/common/RightSidebar";
 import VerifiedBadge from "@/components/common/VerifiedBadge";
 import ViewCredentials from "@/components/ViewCredentials";
-import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
-import IssuedExpiryStrip from "@/components/common/IssuedExpiryStrip";
 import { Eye as EyeIcon, EyeSlash as EyeSlashIcon } from "@phosphor-icons/react";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
 import type { ServiceOrganisationItemOrg } from "@/types/serviceOrganisation";
 import type { OrgIdentityResponse } from "@/types/orgIdentity";
 import { apiService } from "@/lib/apiService/apiService";
+import SoftwareStatementSection from "@/components/ViewCredentials/SoftwareStatementSection";
 
 interface Props {
   organisation: ServiceOrganisationItemOrg;
@@ -71,20 +70,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
   }, [publicIdentity, organisationIdentity, organisation?.id, trusted]);
 
   // Software statement rows from local state (which may be fetched on demand)
-  const { ssTitle, ssRows } = React.useMemo(() => {
-    const rows: AttributeRow[] = [];
-    const ssLocal: any = ss;
-    if (!ssLocal || Object.keys(ssLocal).length === 0) return { ssTitle: undefined as string | undefined, ssRows: rows };
-    const vct: string | undefined = ssLocal?.credential?.vct;
-    const clientUri: string | undefined = ssLocal?.credential?.claims?.client_uri;
-    // Build section title from VCT when present; otherwise fallback to generic Software Statement title
-    const title = vct
-      ? vct.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2').trim()
-      : t('developerAPIs.softwareStatementTitle');
-    // Only include Client URI row (omit VCT row as per spec)
-    rows.push({ label: t('developerAPIs.softwareStatementClientUriLabel'), value: clientUri || '', href: clientUri || undefined, copy: false });
-    return { ssTitle: title, ssRows: rows };
-  }, [ss, t]);
+  // Keep ss in local state; rendering delegated to SoftwareStatementSection
 
   const badgeLabel = trusted ? t('gettingStarted.viewCredential') : 'Credential Unavailable';
 
@@ -239,19 +225,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
         />
 
         {/* Software Statement section (if available) */}
-        {ssRows.length > 0 && (
-          <Box sx={{ mt: 3 }}>
-            <Typography color="grey" mt={2} variant="subtitle1">
-              {ssTitle}
-            </Typography>
-            <Box sx={{ mt: 1 }}>
-              <AttributeTable rows={ssRows} showValues={showValues} labelMinWidth={200} labelMaxPercent={40} />
-            </Box>
-            <Box sx={{ mt: 2 }}>
-              <IssuedExpiryStrip issued={(ss as any)?.createdAt} expiry={(ss as any)?.updatedAt} />
-            </Box>
-          </Box>
-        )}
+        <SoftwareStatementSection ss={ss as any} showValues={showValues} />
       </RightSidebar>
     </>
   );
