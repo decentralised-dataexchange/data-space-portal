@@ -3,15 +3,15 @@ import React from 'react';
 import { getTranslations } from "next-intl/server";
 import { gridSpacing } from '@/constants/grid';
 import { apiService } from '@/lib/apiService/apiService';
-import DDAActions from '@/components/DataSources/DDAActions';
-import DDAModalController from '@/components/DataSources/DDAModalController';
 import ViewCredentialsController from '@/components/DataSources/ViewCredentialsController';
 import { load as yamlLoad } from 'js-yaml';
 
 import PaginationControls from '@/components/common/PaginationControls';
 import ApiDoc from '@/components/ApiDocs';
 import './style.scss';
-import OrgConfigCard from '@/components/DataSources/OrgConfigCard';
+// import OrgConfigCard from '@/components/DataSources/OrgConfigCard';
+import DDAActions from './DDAActions';
+import DDAModalController from './DDAModalController';
 
 type Props = {
     params: Promise<{ id?: string; slug?: string }>;

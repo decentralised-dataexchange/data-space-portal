@@ -305,19 +305,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
         </Box>
       )}
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: isVerified ? '1fr' : '3fr 7fr', gap: '12px', width: '100%', maxWidth: 500, mt: 1.5 }}>
-        {!isVerified && (
-          <Button
-            type="button"
-            variant="outlined"
-            className="delete-btn"
-            onClick={onBack}
-            disabled={updating || creating}
-            sx={{ width: '100%', ...DISABLED_BUTTON_SX }}
-          >
-            {t('common.back')}
-          </Button>
-        )}
+      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', width: '100%', maxWidth: 500, mt: 1.5 }}>
         <Button
           type="button"
           variant="outlined"
@@ -490,6 +478,11 @@ const Onboarding: React.FC = () => {
     showGlobalSpinner,
   } = onboarding;
 
+  // Use heading width only when the header is visible; otherwise default to full available width (capped by maxWidth)
+  const contentWidth = React.useMemo(() => {
+    return displayStep !== 3 && headingWidth ? headingWidth : '100%';
+  }, [displayStep, headingWidth]);
+
   // Centralize CoC PDF loading to avoid an internal spinner in the CoC step
   const { data: pdfUrl, isLoading: pdfLoading, isError: pdfIsError, error: pdfError } = useGetCodeOfConductPdf();
 
@@ -563,7 +556,7 @@ const Onboarding: React.FC = () => {
         {manualStepOverrideRef.current ? (
             // Manual override: render exact step by currentStep
             currentStep === 1 ? (
-              <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
                 <AdminCredentialsStep
                   t={t}
                   values={adminCredentials}
@@ -578,7 +571,7 @@ const Onboarding: React.FC = () => {
                 />
               </Box>
             ) : currentStep === 2 ? (
-              <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
                 <OrganisationDetailsStep
                   t={t}
                   values={organisationDetails}
@@ -594,7 +587,7 @@ const Onboarding: React.FC = () => {
                 />
               </Box>
             ) : currentStep === 3 ? (
-              <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
                 <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
               </Box>
             ) : renderStep === 4 ? (
@@ -614,7 +607,7 @@ const Onboarding: React.FC = () => {
               // Unauthenticated: show registration steps 1-3 normally. If user has progressed to step >= 4 (after silent login),
               // the authenticated branch will render Step 4/5.
               currentStep === 1 ? (
-                <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
                   <AdminCredentialsStep
                     t={t}
                     values={adminCredentials}
@@ -629,7 +622,7 @@ const Onboarding: React.FC = () => {
                   />
                 </Box>
               ) : currentStep === 2 ? (
-                <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
                   <OrganisationDetailsStep
                     t={t}
                     values={organisationDetails}
@@ -645,7 +638,7 @@ const Onboarding: React.FC = () => {
                   />
                 </Box>
               ) : (
-                <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
                   <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
                 </Box>
               )
@@ -654,7 +647,7 @@ const Onboarding: React.FC = () => {
         }
 
         {displayStep === 1 && (
-          <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto', marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
             <Button
               type={canSkipStepOne ? 'button' : 'submit'}
               form={canSkipStepOne ? undefined : STEP_ONE_FORM_ID}
@@ -1051,8 +1044,8 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
   });
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', maxWidth: 500 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', maxWidth: 500, minWidth: 0 }}>
         <Box
           sx={{
             width: 32,
@@ -1067,7 +1060,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         >
           <CheckIcon fontSize="inherit" sx={{ color: '#FFFFFF', fontSize: 20 }} />
         </Box>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: 0, wordBreak: 'break-word', whiteSpace: 'normal' }}>
           {successContent}
         </Typography>
       </Box>
@@ -1078,6 +1071,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         gap: '12px',
         width: '100%',
         maxWidth: 500,
+        minWidth: 0,
         margin: '24px auto 0',
         '& .MuiButton-root': {
           height: '48px',

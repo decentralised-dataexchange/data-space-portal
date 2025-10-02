@@ -209,7 +209,7 @@ const DDATable: React.FC<DDATableProps> = ({
                   />
                 </StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{getStatus(t, row.status)}</StyledTableCell>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.lawfulBasis}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black", textTransform: "capitalize" }}>{row.lawfulBasis}</StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>
                   {(() => {
                     const selected = getSelectedRevisionData(row) as any;
