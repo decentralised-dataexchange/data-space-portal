@@ -60,9 +60,17 @@ export const apiService = {
         const data = jsonRes.data;
         const urlCandidate = (typeof data === 'string') ? data : (data?.url || data?.pdfUrl || data?.href);
         if (urlCandidate) {
-          // If it's an absolute URL, return it directly; otherwise, fetch and blob it
-          if (/^https?:\/\//i.test(urlCandidate)) {
-            return urlCandidate; // stream directly
+          // Attempt to fetch the candidate URL and return a blob URL to avoid cross-origin/credential issues
+          try {
+            const res2 = await axiosInstanceWithArrayBufferResType.get(urlCandidate);
+            const contentType2 = (res2.headers?.['content-type'] as string | undefined) || 'application/pdf';
+            const blob2 = new Blob([res2.data], { type: contentType2.includes('pdf') ? 'application/pdf' : contentType2 });
+            return URL.createObjectURL(blob2);
+          } catch (inner) {
+            // As a last resort, for public absolute URLs, return the URL directly so the browser can attempt to stream it
+            if (/^https?:\/\//i.test(urlCandidate)) {
+              return urlCandidate;
+            }
           }
         }
       } catch (e2: any) {

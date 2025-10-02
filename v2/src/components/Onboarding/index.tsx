@@ -9,9 +9,9 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { useOnboardingForm, MAX_SHORT, MAX_DESC, PASSWORD_MAX, OnboardingAdminFields, OnboardingOrganisationFields } from './useOnboardingForm';
-import { useSectors } from '@/custom-hooks/onboarding';
-import { useGetOrganisation, useGetOrgIdentity, useUpdateOrganisation, useCreateOrgIdentity, useGetCoverImage, useGetLogoImage, useOrgIdentityPolling, useGetCodeOfConductPdf, useSignCodeOfConduct } from '@/custom-hooks/gettingStarted';
+import { MAX_SHORT, MAX_DESC, PASSWORD_MAX, OnboardingAdminFields, OnboardingOrganisationFields } from './useOnboardingForm';
+import { useOnboarding } from './useOnboarding';
+import { useUpdateOrganisation, useCreateOrgIdentity, useGetCoverImage, useGetLogoImage, useOrgIdentityPolling, useGetCodeOfConductPdf, useSignCodeOfConduct } from '@/custom-hooks/gettingStarted';
 import { useQueryClient } from '@tanstack/react-query';
 import { defaultLogoImg } from '@/constants/defalultImages';
 import RightSidebar from '@/components/common/RightSidebar';
@@ -25,21 +25,16 @@ import '../Account/style.scss';
 type Translate = ReturnType<typeof useTranslations>;
 
 // Step 5: Code of Conduct signing
-const StepFive = React.memo(({ t }: { t: Translate }) => {
+const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Translate; pdfUrl?: string; isError?: boolean; error?: Error | null; }) => {
   const router = useRouter();
   const locale = useLocale();
-  const { data: pdfUrl, isLoading, isError, error } = useGetCodeOfConductPdf();
   const { mutate: sign, isPending } = useSignCodeOfConduct();
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [isFullScreen, setIsFullScreen] = React.useState(false);
   // Note: App-level gating handles redirect after completion; avoid doing it here to prevent URL jumping.
 
-  // Revoke blob URL when component unmounts or URL changes
-  React.useEffect(() => {
-    return () => {
-      try { if (pdfUrl && pdfUrl.startsWith('blob:')) URL.revokeObjectURL(pdfUrl); } catch {}
-    };
-  }, [pdfUrl]);
+  // Do not revoke blob URL on unmount. Keeping the object URL alive avoids breaking the PDF
+  // if the user navigates away from this step and returns without refetching it.
 
   React.useEffect(() => {
     const onFsChange = () => setIsFullScreen(Boolean(document.fullscreenElement));
@@ -65,16 +60,16 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
   // Treat explicit fallback as missing CoC from backend
   const isMissingCoc = React.useMemo(() => {
     // When API returns fallback path or query errored, consider CoC as missing
-    return (!isLoading) && (isError || pdfUrl === '/coc-fallback');
-  }, [isLoading, isError, pdfUrl]);
+    return Boolean(isError || !pdfUrl || pdfUrl === '/coc-fallback');
+  }, [isError, pdfUrl]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
 
       <Box
-        sx={{ width: '100%', maxWidth: 600, minHeight: 360, border: '1px solid #C9C9C9', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}
+        sx={{ width: '100%', maxWidth: 500, minHeight: 360, border: '1px solid #C9C9C9', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}
         aria-live="polite"
-        aria-busy={isLoading ? 'true' : 'false'}
+        aria-busy={false}
         ref={containerRef}
         style={{
           display: 'flex',
@@ -106,18 +101,12 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
             </Button>
           </Box>
         )}
-        {isLoading ? (
-          <Box sx={{ height: isFullScreen ? '100vh' : 360, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-            <CircularProgress size={24} aria-label="Loading Code of Conduct PDF" />
-          </Box>
-        ) : (
-          <>
-            {isMissingCoc ? (
+        <>
+          {isMissingCoc ? (
               <Box sx={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }} role="alert">
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="body2" sx={{ mb: 0.5 }}>
-                    {/* Prefer specific copy; fall back to generic key if available */}
-                    {t?.('common.unableToDisplayPdf')}
+                    {t('common.unableToDisplayPdf')}
                   </Typography>
                   {error?.message ? (
                     <Typography variant="caption" color="text.secondary">{error.message}</Typography>
@@ -145,10 +134,9 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
               </Box>
             )}
           </>
-        )}
       </Box>
 
-      <Box sx={{ width: '100%', maxWidth: 600, mt: 2 }}>
+      <Box sx={{ width: '100%', maxWidth: 500, mt: 2 }}>
         <Button
           type="button"
           variant="outlined"
@@ -157,14 +145,7 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
           onClick={() => sign(undefined, { onSuccess: () => router.push('/start') })}
           sx={{
             width: '100%',
-            '&.Mui-disabled': {
-              cursor: 'not-allowed',
-              pointerEvents: 'auto',
-              opacity: 0.6,
-              color: '#9e9e9e !important',
-              borderColor: '#E0E0E0 !important',
-              backgroundColor: '#f5f5f5 !important',
-            },
+            ...DISABLED_BUTTON_SX,
           }}
         >
           {t('common.signAndContinue')}
@@ -174,7 +155,7 @@ const StepFive = React.memo(({ t }: { t: Translate }) => {
   );
 });
 
-StepFive.displayName = 'StepFive';
+CodeOfConductSetup.displayName = 'StepFive';
 
 const STEP_ONE_FORM_ID = 'onboarding-step-one-form';
 const STEP_TWO_FORM_ID = 'onboarding-step-two-form';
@@ -185,15 +166,27 @@ const PLACEHOLDER_SX = {
   },
 };
 
+// Consistent disabled styles for all onboarding buttons
+const DISABLED_BUTTON_SX = {
+  '&.Mui-disabled': {
+    cursor: 'not-allowed',
+    pointerEvents: 'auto',
+    color: '#9e9e9e !important',
+    borderColor: '#E0E0E0 !important',
+    backgroundColor: '#f5f5f5 !important',
+  },
+  '&.Mui-disabled:hover': {
+    backgroundColor: '#f5f5f5 !important',
+    borderColor: '#E0E0E0 !important',
+    color: '#9e9e9e !important',
+  },
+} as const;
+
 // Step 4: Business Wallet verification and credentials
-const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: { t: Translate; onBack: () => void; organisation: any | undefined; orgIdentity: any | undefined; onNext: () => void; }) => {
+const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: { t: Translate; onBack: () => void; organisation: any | undefined; orgIdentity: any | undefined; onNext: () => void; }) => {
   const [walletUrl, setWalletUrl] = React.useState('');
-  const [walletTouched, setWalletTouched] = React.useState(false);
-  const [submitted, setSubmitted] = React.useState(false);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [openDeleteCredentials, setOpenDeleteCredentials] = React.useState(false);
-  const [popupBlocked, setPopupBlocked] = React.useState(false);
-  const [qrUrlFallback, setQrUrlFallback] = React.useState<string | null>(null);
   const isValidUrl = React.useMemo(() => {
     try {
       if (!walletUrl) return false;
@@ -220,10 +213,10 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
   // Prefill wallet address from existing organisation value if available and input not touched
   React.useEffect(() => {
     const existing = organisation?.verificationRequestURLPrefix || '';
-    if (!walletTouched && existing && walletUrl !== existing) {
+    if (existing && !walletUrl) {
       setWalletUrl(existing);
     }
-  }, [organisation?.verificationRequestURLPrefix, walletTouched, walletUrl]);
+  }, [organisation?.verificationRequestURLPrefix, walletUrl]);
 
   // If a verification URL prefix exists, force-fetch org identity on load so the button can appear immediately when verified
   React.useEffect(() => {
@@ -264,23 +257,12 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
       const qr = (created as any)?.organisationalIdentity?.vpTokenQrCode as string | undefined;
       if (qr) {
         try {
-          const newTab = window.open(qr, '_blank', 'noopener');
-          if (!newTab) {
-            // Pop-up likely blocked. Do not navigate current tab; show a safe fallback link instead.
-            setPopupBlocked(true);
-            setQrUrlFallback(qr);
-          } else {
-            setPopupBlocked(false);
-            setQrUrlFallback(null);
-          }
+          window.open(qr, '_blank', 'noopener');
         } catch {
-          // Do not change current tab. Provide a fallback link for the user to click manually.
-          setPopupBlocked(true);
-          setQrUrlFallback(qr);
+          // ignore popup errors – user can retry from the app
         }
       }
       queryClient.invalidateQueries({ queryKey: ['orgIdentity', orgId] });
-      setSubmitted(true);
     } catch (e) {
       // swallow for now; error toasts are handled globally by hooks
     }
@@ -288,12 +270,12 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
-      <Box sx={{ width: '100%', maxWidth: 350 }}>
+      <Box sx={{ width: '100%', maxWidth: 500 }}>
         <TextField
           variant="outlined"
           placeholder={t('signup.verificationRequestURLPrefix')}
           value={walletUrl}
-          onChange={(e) => { setWalletUrl(e.target.value); setWalletTouched(true); }}
+          onChange={(e) => setWalletUrl(e.target.value)}
           fullWidth
           error={!!walletUrl && !isValidUrl}
           helperText={!!walletUrl && !isValidUrl ? t('common.invalidUrl') : undefined}
@@ -311,7 +293,7 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
       </Box>
 
       {isVerified && (
-        <Box sx={{ width: '100%', maxWidth: 350, mt: 2, textAlign: 'left' }}>
+        <Box sx={{ width: '100%', maxWidth: 500, mt: 2, textAlign: 'left' }}>
           <Button
             variant="outlined"
             className="delete-btn"
@@ -323,7 +305,7 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
         </Box>
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', width: '100%', maxWidth: 350, mt: 1.5 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: isVerified ? '1fr' : '3fr 7fr', gap: '12px', width: '100%', maxWidth: 500, mt: 1.5 }}>
         {!isVerified && (
           <Button
             type="button"
@@ -331,7 +313,7 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
             className="delete-btn"
             onClick={onBack}
             disabled={updating || creating}
-            sx={{ flex: 1, minWidth: 140 }}
+            sx={{ width: '100%', ...DISABLED_BUTTON_SX }}
           >
             {t('common.back')}
           </Button>
@@ -342,7 +324,7 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
           className="delete-btn"
           onClick={() => { if (isVerified) { onNext(); } else { handleContinue(); } }}
           disabled={isVerified ? (updating || creating) : ((walletUrl ? !isValidUrl : false) || updating || creating)}
-          sx={{ flex: isVerified ? '1 0 100%' : 1, minWidth: 140, width: isVerified ? '100%' : undefined }}
+          sx={{ width: '100%', ...DISABLED_BUTTON_SX }}
         >
           {updating || creating ? (
             <>
@@ -352,11 +334,9 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
         </Button>
       </Box>
 
-      {/* Fallback text intentionally removed per requirement */}
-
       <RightSidebar
         open={drawerOpen}
-        onClose={(_, __) => setDrawerOpen(false)}
+        onClose={() => setDrawerOpen(false)}
         width={580}
         maxWidth={580}
         keepMounted
@@ -438,14 +418,44 @@ const StepFour = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: {
     </Box>
   );
 });
-StepFour.displayName = 'StepFour';
+
+OrgIdentitySetup.displayName = 'StepFour';
 
 const Onboarding: React.FC = () => {
   const t = useTranslations();
-  const router = useRouter();
-  // Set to true locally during development when you need to jump between steps for debugging
+  // central hook with all logic
+  const onboarding = useOnboarding();
+  // Measure heading/subtitle actual rendered width to synchronize form and buttons width
+  const headingRef = React.useRef<HTMLDivElement | null>(null);
+  const [headingWidth, setHeadingWidth] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    const el = headingRef.current;
+    if (!el) return;
+    const update = () => {
+      try {
+        const rect = el.getBoundingClientRect();
+        setHeadingWidth(Math.min(500, Math.max(0, Math.round(rect.width))));
+      } catch {}
+    };
+    update();
+    let ro: ResizeObserver | null = null;
+    try {
+      ro = new ResizeObserver(update);
+      ro.observe(el);
+    } catch {
+      // fallback: window resize
+      window.addEventListener('resize', update);
+    }
+    return () => {
+      try { ro?.disconnect(); } catch {}
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+  // Debug controls hidden by default
   const showStepDebugControls = false;
   const {
+    // form
     currentStep,
     adminCredentials,
     organisationDetails,
@@ -466,131 +476,185 @@ const Onboarding: React.FC = () => {
     goToStepThreeNav,
     goToStepFourNav,
     goToStepFiveNav,
-  } = useOnboardingForm();
+    // datasets
+    sectors,
+    sectorsLoading,
+    // flags
+    manualStepOverrideRef,
+    organisation,
+    orgIdentity,
+    isProtectedMode,
+    canSkipStepOne,
+    displayStep,
+    renderStep,
+    showGlobalSpinner,
+  } = onboarding;
 
-  const { data: sectorsRes, isLoading: sectorsLoading } = useSectors();
-  const sectors = sectorsRes?.sectors ?? [];
+  // Centralize CoC PDF loading to avoid an internal spinner in the CoC step
+  const { data: pdfUrl, isLoading: pdfLoading, isError: pdfIsError, error: pdfError } = useGetCodeOfConductPdf();
 
-  // Gating for protected steps after success
-  const { data: organisationResponse, isLoading: orgLoading } = useGetOrganisation();
-  const organisation = organisationResponse?.organisation;
-  const orgId = organisation?.id || 'current';
-  const { data: orgIdentity, isLoading: idLoading } = useGetOrgIdentity(orgId);
-  const isVerified = React.useMemo(() => Boolean(orgIdentity?.verified || (orgIdentity as any)?.organisationalIdentity?.verified), [orgIdentity]);
-  const missingWallet = React.useMemo(() => !organisation?.verificationRequestURLPrefix, [organisation?.verificationRequestURLPrefix]);
-  const cocSigned = React.useMemo(() => Boolean(organisation?.codeOfConduct), [organisation?.codeOfConduct]);
-  // Logged-in users should only see protected steps (4/5)
-  const isProtectedMode = Boolean(organisation);
-  const canSkipStepOne = Boolean(organisation);
-
-  // Avoid routing from within onboarding to reduce URL jumping; AppLayout handles redirects.
-
-  // When authenticated (organisation loaded), force onboarding to show only protected steps (4/5)
-  React.useEffect(() => {
-    if (orgLoading || idLoading) return;
-    if (!organisation) return; // unauthenticated flow uses steps 1-3
-    // Decide which protected step to show
-    if (!cocSigned) {
-      if (missingWallet || !isVerified) {
-        goToStepFourNav();
-      } else {
-        goToStepFiveNav();
-      }
-    } else {
-      if (missingWallet || !isVerified) {
-        goToStepFourNav();
-      } else {
-        goToStepFiveNav();
-      }
-    }
-  }, [orgLoading, idLoading, organisation, cocSigned, missingWallet, isVerified, isProtectedMode, goToStepFourNav, goToStepFiveNav]);
+  // Early return during loading/redirect
+  if (showGlobalSpinner || (renderStep === 5 && pdfLoading)) {
+    return (
+      <Box className="loginWrapper">
+        <Box className="loginContainer">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 240 }}>
+            <CircularProgress size={24} aria-label="Loading onboarding step" />
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box className="loginWrapper">
-      <Box className="loginContainer">
+      <Box
+        className="loginContainer"
+        sx={{
+          // Force onboarding text-field containers to align with header width and be centered
+          '& .text-field': {
+            width: '100% !important',
+            maxWidth: 500,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            boxSizing: 'border-box',
+          },
+        }}
+      >
         {/* Onboarding page header (title + optional subtitle). Hidden on step 3 (post-register success screen). */}
-        {currentStep !== 3 && (
+        {displayStep !== 3 && (
           <Box sx={{ mt: '1rem', mb: '1.5rem', textAlign: 'center' }}>
-            <Typography variant="h5" fontWeight={700}>{t('onboarding.title')}</Typography>
-            {(() => {
-              let subtitleKey: string | null = null;
-              if (currentStep === 1) subtitleKey = 'onboarding.stepSubtitles.step1';
-              else if (currentStep === 2) subtitleKey = 'onboarding.stepSubtitles.step2';
-              else if (currentStep === 4) subtitleKey = 'onboarding.stepSubtitles.step3';
-              else if (currentStep === 5) subtitleKey = 'onboarding.stepSubtitles.step4';
+            <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', textAlign: 'center' }}>
+              <Box ref={headingRef} sx={{ display: 'inline-block', maxWidth: 500, textAlign: 'center' }}>
+                <Typography variant="h5" fontWeight={700}>{t('onboarding.title')}</Typography>
+                {(() => {
+                  let subtitleKey: string | null = null;
+                  if (displayStep === 1) subtitleKey = 'onboarding.stepSubtitles.step1';
+                  else if (displayStep === 2) subtitleKey = 'onboarding.stepSubtitles.step2';
+                  else if (displayStep === 4) subtitleKey = 'onboarding.stepSubtitles.step3';
+                  else if (displayStep === 5) subtitleKey = 'onboarding.stepSubtitles.step4';
 
-              return subtitleKey ? (
-                <Typography
-                  variant="h6"
-                  sx={{ mt: 1.25, color: 'inherit', fontWeight: 600 }}
-                >
-                  {t(subtitleKey)}
-                </Typography>
-              ) : null;
-            })()}
-          </Box>
-        )}
-
-        {showStepDebugControls && process.env.NODE_ENV !== 'production' && (
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', mb: 2 }}>
-            <Button size="small" variant="outlined" onClick={() => goToStepOne()} disabled={currentStep === 1}>Step 1</Button>
-            <Button size="small" variant="outlined" onClick={() => goToStepTwoNav()} disabled={currentStep === 2}>Step 2</Button>
-            <Button size="small" variant="outlined" onClick={() => goToStepThreeNav()} disabled={currentStep === 3}>Step 3</Button>
-            <Button size="small" variant="outlined" onClick={() => { if (typeof goToStepFourNav === 'function') goToStepFourNav(); }} disabled={currentStep === 4}>Protected</Button>
-            <Button size="small" variant="outlined" onClick={() => { if (typeof goToStepFiveNav === 'function') goToStepFiveNav(); }} disabled={currentStep === 5}>Code of Conduct</Button>
-          </Box>
-        )}
-
-        {
-          // If authenticated (organisation present), never show steps 1-3.
-          isProtectedMode ? (
-            (orgLoading || idLoading) ? (
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 240 }}>
-                <CircularProgress size={24} aria-label="Loading onboarding step" />
+                  return subtitleKey ? (
+                    <Typography
+                      variant="h6"
+                      sx={{ mt: 1.25, color: 'inherit', fontWeight: 600 }}
+                    >
+                      {t(subtitleKey)}
+                    </Typography>
+                  ) : null;
+                })()}
               </Box>
-            ) : currentStep === 4 ? (
-              <StepFour t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+            </Box>
+          </Box>
+        )}
+
+        {/* Step switch controls: allow freely switching between steps (unauthenticated and protected) */}
+        {showStepDebugControls && (
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', mb: 2 }}>
+            <Box sx={{ width: '100%', maxWidth: 500, display: 'flex', gap: 1, mx: 'auto', justifyContent: 'center' }}>
+              <Button size="small" variant="outlined" className="delete-btn" onClick={() => { manualStepOverrideRef.current = true; goToStepOne(); }}>Step 1</Button>
+              <Button size="small" variant="outlined" className="delete-btn" onClick={() => { manualStepOverrideRef.current = true; goToStepTwoNav(); }}>Step 2</Button>
+              <Button size="small" variant="outlined" className="delete-btn" onClick={() => { manualStepOverrideRef.current = true; goToStepThreeNav(); }}>Step 3</Button>
+              <Button size="small" variant="outlined" className="delete-btn" onClick={() => { manualStepOverrideRef.current = true; if (typeof goToStepFourNav === 'function') goToStepFourNav(); }}>Step 4</Button>
+            </Box>
+          </Box>
+        )}
+
+        {manualStepOverrideRef.current ? (
+            // Manual override: render exact step by currentStep
+            currentStep === 1 ? (
+              <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                <AdminCredentialsStep
+                  t={t}
+                  values={adminCredentials}
+                  showErrors={showErrors.step1}
+                  onChange={updateField}
+                  onSubmit={goToStepTwo}
+                  emailInvalid={emailInvalid}
+                  passwordLengthInvalid={passwordLengthInvalid}
+                  passwordsMismatch={passwordsMismatch}
+                  formId={STEP_ONE_FORM_ID}
+                  isValid={isStepOneValid}
+                />
+              </Box>
+            ) : currentStep === 2 ? (
+              <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                <OrganisationDetailsStep
+                  t={t}
+                  values={organisationDetails}
+                  showErrors={showErrors.step2}
+                  onChange={updateField}
+                  onSubmit={submitOrganisationDetails}
+                  onBack={goToStepOne}
+                  formId={STEP_TWO_FORM_ID}
+                  isValid={isStepTwoValid}
+                  isSubmitting={isRegistering}
+                  sectors={sectors}
+                  sectorsLoading={sectorsLoading}
+                />
+              </Box>
+            ) : currentStep === 3 ? (
+              <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
+              </Box>
+            ) : renderStep === 4 ? (
+              <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
             ) : (
-              <StepFive t={t} />
+              <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
             )
           ) : (
-            // Unauthenticated: show registration steps 1-3 normally. If user has progressed to step >= 4 (after silent login),
-            // show a loading state while authenticated data loads, then the authenticated branch will render Step 4/5.
-            currentStep === 1 ? (
-              <AdminCredentialsStep
-                t={t}
-                values={adminCredentials}
-                showErrors={showErrors.step1}
-                onChange={updateField}
-                onSubmit={goToStepTwo}
-                emailInvalid={emailInvalid}
-                passwordLengthInvalid={passwordLengthInvalid}
-                passwordsMismatch={passwordsMismatch}
-                formId={STEP_ONE_FORM_ID}
-                isValid={isStepOneValid}
-              />
-            ) : currentStep === 2 ? (
-              <OrganisationDetailsStep
-                t={t}
-                values={organisationDetails}
-                showErrors={showErrors.step2}
-                onChange={updateField}
-                onSubmit={submitOrganisationDetails}
-                onBack={goToStepOne}
-                formId={STEP_TWO_FORM_ID}
-                isValid={isStepTwoValid}
-                isSubmitting={isRegistering}
-                sectors={sectors}
-                sectorsLoading={sectorsLoading}
-              />
+            // If authenticated (organisation present), never show steps 1-3.
+            isProtectedMode ? (
+              renderStep === 4 ? (
+                <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+              ) : (
+                <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
+              )
             ) : (
-              <StepThree t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
+              // Unauthenticated: show registration steps 1-3 normally. If user has progressed to step >= 4 (after silent login),
+              // the authenticated branch will render Step 4/5.
+              currentStep === 1 ? (
+                <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                  <AdminCredentialsStep
+                    t={t}
+                    values={adminCredentials}
+                    showErrors={showErrors.step1}
+                    onChange={updateField}
+                    onSubmit={goToStepTwo}
+                    emailInvalid={emailInvalid}
+                    passwordLengthInvalid={passwordLengthInvalid}
+                    passwordsMismatch={passwordsMismatch}
+                    formId={STEP_ONE_FORM_ID}
+                    isValid={isStepOneValid}
+                  />
+                </Box>
+              ) : currentStep === 2 ? (
+                <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                  <OrganisationDetailsStep
+                    t={t}
+                    values={organisationDetails}
+                    showErrors={showErrors.step2}
+                    onChange={updateField}
+                    onSubmit={submitOrganisationDetails}
+                    onBack={goToStepOne}
+                    formId={STEP_TWO_FORM_ID}
+                    isValid={isStepTwoValid}
+                    isSubmitting={isRegistering}
+                    sectors={sectors}
+                    sectorsLoading={sectorsLoading}
+                  />
+                </Box>
+              ) : (
+                <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto' }}>
+                  <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
+                </Box>
+              )
             )
           )
         }
 
-        {currentStep === 1 && (
-          <Box sx={{ width: '100%', marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+        {displayStep === 1 && (
+          <Box sx={{ width: headingWidth ?? '100%', maxWidth: 500, mx: 'auto', marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
             <Button
               type={canSkipStepOne ? 'button' : 'submit'}
               form={canSkipStepOne ? undefined : STEP_ONE_FORM_ID}
@@ -600,7 +664,8 @@ const Onboarding: React.FC = () => {
               disabled={!canSkipStepOne && !isStepOneValid}
               sx={{ 
                 width: '100%', 
-                maxWidth: 350,
+                maxWidth: 500,
+                ...DISABLED_BUTTON_SX,
                 '&.MuiButton-root': {
                   height: '48px',
                   borderRadius: '8px',
@@ -615,7 +680,7 @@ const Onboarding: React.FC = () => {
           </Box>
         )}
 
-        {currentStep <= 2 && (
+        {displayStep <= 2 && (
           <Typography variant="body2" sx={{ color: '#A1A1A1', marginTop: '1.5rem', textAlign: 'center' }}>
             {t('signup.haveAccount')}{' '}
             <Link className="appLink" href="/login">
@@ -670,8 +735,9 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
 
   return (
     <form id={formId} noValidate onSubmit={onSubmit}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
-        <Box className="text-field" sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', width: '100%' }}>
+        <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto' }}>
+          <Box className="text-field" sx={{ display: 'flex', flexDirection: 'column', width: '100%' }} style={{ width: '100%' }}>
           <TextField
             name="userName"
             type="text"
@@ -679,7 +745,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.userName')}
+            placeholder="Your Admin Name"
             fullWidth
             error={Boolean(isInvalid.userName)}
             helperText={isInvalid.userName ? t('signup.required') : ''}
@@ -697,7 +763,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.userId')}
+            placeholder="Email"
             fullWidth
             error={Boolean(isInvalid.email)}
             helperText={
@@ -721,7 +787,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.confirmPassword')}
+            placeholder="Confirm Password"
             fullWidth
             error={Boolean(isInvalid.confirmPassword)}
             helperText={
@@ -745,7 +811,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('login.password')}
+            placeholder="Password"
             fullWidth
             error={Boolean(isInvalid.password)}
             helperText={
@@ -760,6 +826,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
             sx={PLACEHOLDER_SX}
             InputProps={{ disableUnderline: true }}
           />
+          </Box>
         </Box>
       </Box>
     </form>
@@ -805,8 +872,9 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
 
   return (
     <form id={formId} noValidate onSubmit={onSubmit}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
-        <Box className="text-field" sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', width: '100%' }}>
+        <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto' }}>
+        <Box className="text-field" sx={{ display: 'flex', flexDirection: 'column', width: '100%' }} style={{ width: '100%' }}>
           <TextField
             name="organisationName"
             type="text"
@@ -814,7 +882,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.organisationName')}
+            placeholder="Organisation Name"
             fullWidth
             inputProps={{ maxLength: MAX_SHORT }}
             error={showErrors && !organisationName}
@@ -833,7 +901,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.description')}
+            placeholder="Organisation Description"
             fullWidth
             inputProps={{ maxLength: MAX_DESC }}
             helperText={showErrors && !organisationDescription ? t('signup.required') : undefined}
@@ -853,7 +921,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             onChange={onChange}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.policyUrl')}
+            placeholder="Policy URL"
             fullWidth
             inputProps={{ maxLength: MAX_SHORT }}
             error={showErrors && !policyUrl}
@@ -870,7 +938,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             onChange={(e) => onChange({ target: { name: 'sector', value: e.target.value } } as any)}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.sector')}
+            placeholder="Sector"
             fullWidth
             error={showErrors && !sector}
             helperText={showErrors && !sector ? t('signup.required') : ''}
@@ -879,7 +947,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             SelectProps={{ displayEmpty: true }}
           >
             <MenuItem value="" disabled>
-              {sectorsLoading ? t('common.loading') : t('signup.sector')}
+              {sectorsLoading ? t('common.loading') : 'Sector'}
             </MenuItem>
             {sectors.map((s) => (
               <MenuItem key={s.id} value={s.sectorName}>{s.sectorName}</MenuItem>
@@ -894,7 +962,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             onChange={(e) => onChange({ target: { name: 'location', value: e.target.value } } as any)}
             onKeyDown={handleKeyDown}
             variant="standard"
-            placeholder={t('signup.location')}
+            placeholder="Country"
             fullWidth
             error={showErrors && !location}
             helperText={showErrors && !location ? t('signup.required') : ''}
@@ -903,20 +971,21 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             SelectProps={{ displayEmpty: true }}
           >
             <MenuItem value="" disabled>
-              {t('signup.location')}
+              Country
             </MenuItem>
             {countries.map((c) => (
               <MenuItem key={c.value} value={c.label}>{c.label}</MenuItem>
             ))}
           </TextField>
         </Box>
+        </Box>
 
         <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          gap: '12px', 
-          width: '100%', 
-          maxWidth: 350,
+          display: 'grid',
+          gridTemplateColumns: '3fr 7fr',
+          gap: '12px',
+          width: '100%',
+          maxWidth: 500,
           margin: '0 auto',
           '& .MuiButton-root': {
             height: '48px',
@@ -933,12 +1002,12 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             onClick={onBack}
             disabled={isSubmitting}
             sx={{ 
-              flex: '0 0 30%',
-              maxWidth: '30%',
+              width: '100%',
               minWidth: 'auto',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              textOverflow: 'ellipsis',
+              ...DISABLED_BUTTON_SX,
             }}
           >
             {t('common.back')}
@@ -949,9 +1018,9 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
             className="delete-btn"
             disabled={!isValid || isSubmitting}
             sx={{ 
-              flex: '0 0 68%',
-              maxWidth: '68%',
-              minWidth: 'auto'
+              width: '100%',
+              minWidth: 'auto',
+              ...DISABLED_BUTTON_SX,
             }}
           >
             {t('common.continue')}
@@ -969,7 +1038,7 @@ interface StepThreeProps {
   isSubmitting: boolean;
 }
 
-const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue, isSubmitting }) => {
+const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue, isSubmitting }) => {
   const locale = useLocale();
   const loginHref = locale ? `/${locale}/login` : '/login';
   const successContent = t.rich('onboarding.step3.successMessage', {
@@ -983,7 +1052,7 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', maxWidth: 480 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', maxWidth: 500 }}>
         <Box
           sx={{
             width: 32,
@@ -1004,11 +1073,11 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
       </Box>
 
       <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        gap: '12px', 
-        width: '100%', 
-        maxWidth: 350,
+        display: 'grid',
+        gridTemplateColumns: '3fr 7fr',
+        gap: '12px',
+        width: '100%',
+        maxWidth: 500,
         margin: '24px auto 0',
         '& .MuiButton-root': {
           height: '48px',
@@ -1025,12 +1094,12 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
           onClick={onBack}
           disabled={isSubmitting}
           sx={{ 
-            flex: '0 0 30%',
-            maxWidth: '30%',
+            width: '100%',
             minWidth: 'auto',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            ...DISABLED_BUTTON_SX,
           }}
         >
           {t('common.back')}
@@ -1042,10 +1111,10 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
           onClick={onContinue}
           disabled={isSubmitting}
           sx={{ 
-            flex: '0 0 68%',
-            maxWidth: '68%',
+            width: '100%',
             minWidth: 'auto',
-            position: 'relative'
+            position: 'relative',
+            ...DISABLED_BUTTON_SX,
           }}
         >
           {isSubmitting ? (
@@ -1058,7 +1127,7 @@ const StepThree: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinue,
     </Box>
   );
 });
-StepThree.displayName = 'StepThree';
+LoginAssist.displayName = 'StepThree';
 
 OrganisationDetailsStep.displayName = 'OrganisationDetailsStep';
 
