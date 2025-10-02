@@ -146,7 +146,10 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         if (!orgLoading && !idLoading) {
           const cocSigned = Boolean(organisation?.codeOfConduct);
           const isVerified = Boolean((orgIdentity as any)?.verified || (orgIdentity as any)?.organisationalIdentity?.verified);
-          if (!cocSigned && !isOnOnboarding) {
+          // Determine if current route is public (locale-aware)
+          const inPublic = isPublicPath(pathname);
+          // If CoC is not signed, only force redirect to onboarding when NOT on a public route
+          if (!cocSigned && !isOnOnboarding && !inPublic) {
             router.replace(withLocale('/onboarding'));
             return;
           }
