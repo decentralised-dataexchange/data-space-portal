@@ -15,6 +15,8 @@ import { Eye as EyeIcon, EyeSlash as EyeSlashIcon } from "@phosphor-icons/react"
 import { Organisation } from "@/types/organisation";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
+import SoftwareStatementSection from "@/components/ViewCredentials/SoftwareStatementSection";
+import { useGetSoftwareStatement } from "@/custom-hooks/developerApis";
 
 const DetailsContainer = styled("div")({
   height: "auto",
@@ -103,6 +105,9 @@ const OrganisationDetailsContainer = (props: Props) => {
     false
   );
   const hasIdentity = !!props.orgIdentity && Object.keys((props.orgIdentity as any)?.organisationalIdentity || {}).length > 0;
+  // Prefetch Software Statement as soon as organisation is verified
+  // so that the modal has data ready instantly when opened
+  const { data: softwareStatementRes } = useGetSoftwareStatement({ enabled: isVerify });
 
   const callRightSideDrawer = () => {
     setOpenViewCredentialsModal(!openViewCredentialsModal)
@@ -300,6 +305,8 @@ const OrganisationDetailsContainer = (props: Props) => {
           organisation={props.originalOrganisation}
           showValues={showValues}
         />
+        {/* Software Statement section (if available) */}
+        <SoftwareStatementSection ss={softwareStatementRes?.softwareStatement as any} showValues={showValues} />
       </RightSidebar>
       <DeleteCredentialsModal
         open={openDeleteCredentials}
