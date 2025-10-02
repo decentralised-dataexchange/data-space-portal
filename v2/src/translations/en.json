@@ -126,7 +126,7 @@
     "table": {
       "headers": {
         "id": "ID",
-        "usagePurpose": "Usage purpose",
+        "usagePurpose": "Usage Purpose",
         "version": "Version",
         "agreementEvent": "Agreement Event",
         "dataSourceSignature": "Data Source Signature",
@@ -401,7 +401,7 @@
     "table": {
       "headers": {
         "id": "ID",
-        "usagePurpose": "Usage purpose",
+        "usagePurpose": "Usage Purpose",
         "version": "Version",
         "status": "Status",
         "lawfulBasis": "Lawful Basis of Processing",
@@ -421,7 +421,7 @@
         "headers": {
           "id": "ID",
           "revision": "Revision",
-          "usagePurpose": "Usage purpose",
+          "usagePurpose": "Usage Purpose",
           "version": "Version",
           "agreementEvent": "Agreement event",
           "dataSourceSignature": "Data Source Signature",

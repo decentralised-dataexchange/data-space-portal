@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
-import { useAppDispatch } from "@/custom-hooks/store";
+import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setSelectedDDAId } from "@/store/reducers/dataSourceReducers";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
+import { useBusinessWalletSigning } from "@/custom-hooks/businessWalletSigning";
 
 interface DDAActionsProps {
   dataDisclosureAgreement: DataDisclosureAgreement;
@@ -21,15 +22,33 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
+  const { isAuthenticated } = useAppSelector(state => state.auth);
 
   const getDdaId = (dda: any): string | undefined => {
     return dda?.dataAgreementId || dda?.['@id'] || dda?.templateId;
   };
 
-  const handleDDAClick = () => {
+  // Prepare sign/unsign initiator without auto-fetch on mount
+  const { initiateSignOrUnsign, isInitiating } = useBusinessWalletSigning({
+    selectedDDA: dataDisclosureAgreement as any,
+    enabled: false,
+  });
+
+  const handleDDAClick = async () => {
     // For modal selection and subsequent signing, use templateId as the stable key
     const templateId = (dataDisclosureAgreement as DataDisclosureAgreement)?.templateId;
-    if (templateId) dispatch(setSelectedDDAId(templateId));
+    if (!templateId) return;
+    try {
+      // If authenticated, initiate sign/unsign first and show spinner on this button
+      if (isAuthenticated) {
+        await initiateSignOrUnsign();
+      }
+    } catch {
+      // Silent per spec
+    } finally {
+      // Open the modal only after the above completes (or immediately if not authenticated)
+      dispatch(setSelectedDDAId(templateId));
+    }
   };
 
   const handleViewApiClick = () => {
@@ -123,10 +142,26 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
         <Button
           variant="outlined"
           size="medium"
-          sx={{ fontSize: "14px", textTransform: "none", fontWeight: "medium" }}
+          sx={{ fontSize: "14px", textTransform: "none", fontWeight: "medium", position: 'relative' }}
           onClick={handleDDAClick}
+          disabled={Boolean(isInitiating)}
         >
-          {t("home.btn-signData")}
+          {isInitiating && (
+            <CircularProgress
+              size={18}
+              sx={{
+                color: 'inherit',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-9px',
+                marginLeft: '-9px'
+              }}
+            />
+          )}
+          <Box component="span" sx={{ visibility: isInitiating ? 'hidden' : 'visible' }}>
+            {t("home.btn-signData")}
+          </Box>
         </Button>
         </Box>
       </Box>

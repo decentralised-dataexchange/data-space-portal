@@ -53,7 +53,7 @@ const ADMIN_FIELD_NAMES = Object.keys(INITIAL_ADMIN_FIELDS) as Array<keyof Onboa
 const ORGANISATION_FIELD_NAMES = Object.keys(INITIAL_ORGANISATION_FIELDS) as Array<keyof OnboardingOrganisationFields>;
 
 export const useOnboardingForm = () => {
-  const [currentStep, setCurrentStep] = useState<Step>(1);
+  const [currentStep, setCurrentStep] = useState<Step>(3);
   const [adminCredentials, setAdminCredentials] = useState<OnboardingAdminFields>(INITIAL_ADMIN_FIELDS);
   const [organisationDetails, setOrganisationDetails] = useState<OnboardingOrganisationFields>(INITIAL_ORGANISATION_FIELDS);
   const [showErrors, setShowErrors] = useState({ step1: false, step2: false });

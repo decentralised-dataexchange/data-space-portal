@@ -20,6 +20,8 @@ export type PaginationControlsProps = {
   rowsPerPage?: number; // current rows per page
   onChangePage?: (nextPage: number) => void;
   onChangeRowsPerPage?: (nextRowsPerPage: number) => void;
+  // Optional label override for the "Rows per page" text
+  rowsPerPageLabel?: React.ReactNode;
 };
 
 const StyledPagination = styled(Pagination)(() => ({
@@ -41,6 +43,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   onChangePage,
   onChangeRowsPerPage,
   containerSx,
+  rowsPerPageLabel,
 }) => {
   const t = useTranslations();
   const router = useRouter();
@@ -115,7 +118,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
     <Box sx={[baseSx, containerSx] as any}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography variant="body2" color="text.secondary">
-          {t('common.rowsPerPage')}
+          {rowsPerPageLabel ?? t('common.rowsPerPage')}
         </Typography>
         <Select
           size="small"
