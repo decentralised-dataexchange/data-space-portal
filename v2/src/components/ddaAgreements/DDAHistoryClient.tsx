@@ -533,7 +533,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                   })
                 ) : (
                 <TableRow>
-                  <StyledTableCell colSpan={8} align="center">{t("dataAgreements.history.table.noData")}</StyledTableCell>
+                  <StyledTableCell colSpan={8} align="center">{t("common.noResultsFound")}</StyledTableCell>
                 </TableRow>
               )}
             </TableBody>
