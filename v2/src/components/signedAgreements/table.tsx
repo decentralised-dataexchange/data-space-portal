@@ -204,7 +204,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
           ) : (
             <TableRow>
               <StyledTableCell colSpan={8} align="center">
-                {t("signedAgreements.table.noData")}
+                {t("common.noResultsFound")}
               </StyledTableCell>
             </TableRow>
           )}

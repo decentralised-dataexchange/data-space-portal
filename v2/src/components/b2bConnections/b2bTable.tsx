@@ -126,7 +126,7 @@ export default function B2BTable({
             })
           ) : (
             <TableRow>
-              <StyledTableCell colSpan={6} align="center">{t("b2bConnections.table.noData")}</StyledTableCell>
+              <StyledTableCell colSpan={6} align="center">{t("common.noResultsFound")}</StyledTableCell>
             </TableRow>
           )}
         </TableBody>
