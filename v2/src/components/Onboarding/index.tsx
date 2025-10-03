@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Box, Button, Divider, TextField, Typography, MenuItem, CircularProgress, Avatar } from '@mui/material';
+import { Box, Button, TextField, Typography, MenuItem, CircularProgress, Avatar } from '@mui/material';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
 import CheckIcon from '@mui/icons-material/Check';
@@ -64,18 +64,16 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
   }, [isError, pdfUrl]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
 
       <Box
-        sx={{ width: '100%', maxWidth: 500, minHeight: 360, border: '1px solid #C9C9C9', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}
+        sx={{ width: '100%', maxWidth: 500, minHeight: 360, height: isFullScreen ? '100vh' : { xs: '60vh', sm: '480px' }, border: '1px solid #C9C9C9', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}
         aria-live="polite"
         aria-busy={false}
         ref={containerRef}
         style={{
           display: 'flex',
           flexDirection: 'column',
-          height: isFullScreen ? '100vh' : undefined,
-          maxHeight: isFullScreen ? '100vh' : undefined,
         }}
       >
         {!isMissingCoc && (
@@ -114,17 +112,17 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
                 </Box>
               </Box>
             ) : (
-              <Box sx={{ flex: 1, minHeight: 0 }}>
+              <Box sx={{ flex: 1, minHeight: 0, display: 'flex' }}>
                 <object
                   data={resolvedPdf}
                   type="application/pdf"
                   width="100%"
-                  height={isFullScreen ? '100%' : '480px'}
+                  height={'100%'}
                   role="document"
                   title="Code of Conduct PDF"
                   aria-label="Code of Conduct PDF"
                   tabIndex={0}
-                  style={{ display: 'block' }}
+                  style={{ display: 'block', width: '100%', height: '100%', flex: 1 }}
                 >
                   <Box sx={{ padding: 2 }}>
                     <Typography variant="body2">{t('common.unableToDisplayPdf')}</Typography>
@@ -136,7 +134,7 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
           </>
       </Box>
 
-      <Box sx={{ width: '100%', maxWidth: 500, mt: 2 }}>
+      <Box sx={{ width: '100%', maxWidth: 500, mt: '12px' }}>
         <Button
           type="button"
           variant="outlined"
@@ -159,6 +157,7 @@ CodeOfConductSetup.displayName = 'StepFive';
 
 const STEP_ONE_FORM_ID = 'onboarding-step-one-form';
 const STEP_TWO_FORM_ID = 'onboarding-step-two-form';
+const FORM_MIN_WIDTH = 320;
 const PLACEHOLDER_SX = {
   '& .MuiInputBase-input::placeholder': {
     opacity: 1,
@@ -166,7 +165,12 @@ const PLACEHOLDER_SX = {
   },
 };
 
-// Consistent disabled styles for all onboarding buttons
+const OUTLINED_INPUT_SX = {
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '7px',
+  },
+} as const;
+
 const DISABLED_BUTTON_SX = {
   '&.Mui-disabled': {
     cursor: 'not-allowed',
@@ -269,7 +273,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
       <Box sx={{ width: '100%', maxWidth: 500 }}>
         <TextField
           variant="outlined"
@@ -293,7 +297,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
       </Box>
 
       {isVerified && (
-        <Box sx={{ width: '100%', maxWidth: 500, mt: 2, textAlign: 'left' }}>
+        <Box sx={{ width: '100%', maxWidth: 500, textAlign: 'left' }}>
           <Button
             variant="outlined"
             className="delete-btn"
@@ -305,7 +309,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
         </Box>
       )}
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', width: '100%', maxWidth: 500, mt: 1.5 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', width: '100%', maxWidth: 500 }}>
         <Button
           type="button"
           variant="outlined"
@@ -478,10 +482,11 @@ const Onboarding: React.FC = () => {
     showGlobalSpinner,
   } = onboarding;
 
-  // Use heading width only when the header is visible; otherwise default to full available width (capped by maxWidth)
+  // Make the form width match the heading/subtitle width across steps.
+  // If heading is hidden (e.g., step 3), reuse the last measured heading width.
   const contentWidth = React.useMemo(() => {
-    return displayStep !== 3 && headingWidth ? headingWidth : '100%';
-  }, [displayStep, headingWidth]);
+    return typeof headingWidth === 'number' ? headingWidth : '100%';
+  }, [headingWidth]);
 
   // Centralize CoC PDF loading to avoid an internal spinner in the CoC step
   const { data: pdfUrl, isLoading: pdfLoading, isError: pdfIsError, error: pdfError } = useGetCodeOfConductPdf();
@@ -504,6 +509,8 @@ const Onboarding: React.FC = () => {
       <Box
         className="loginContainer"
         sx={{
+          width: '100%',
+          px: { xs: 2, sm: 0 },
           // Force onboarding text-field containers to align with header width and be centered
           '& .text-field': {
             width: '100% !important',
@@ -556,7 +563,7 @@ const Onboarding: React.FC = () => {
         {manualStepOverrideRef.current ? (
             // Manual override: render exact step by currentStep
             currentStep === 1 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0 }}>
                 <AdminCredentialsStep
                   t={t}
                   values={adminCredentials}
@@ -571,7 +578,7 @@ const Onboarding: React.FC = () => {
                 />
               </Box>
             ) : currentStep === 2 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0 }}>
                 <OrganisationDetailsStep
                   t={t}
                   values={organisationDetails}
@@ -587,27 +594,35 @@ const Onboarding: React.FC = () => {
                 />
               </Box>
             ) : currentStep === 3 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                 <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
               </Box>
             ) : renderStep === 4 ? (
-              <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+              </Box>
             ) : (
-              <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
+              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
+              </Box>
             )
           ) : (
             // If authenticated (organisation present), never show steps 1-3.
             isProtectedMode ? (
               renderStep === 4 ? (
-                <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                  <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
+                </Box>
               ) : (
-                <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                  <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
+                </Box>
               )
             ) : (
               // Unauthenticated: show registration steps 1-3 normally. If user has progressed to step >= 4 (after silent login),
               // the authenticated branch will render Step 4/5.
               currentStep === 1 ? (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                   <AdminCredentialsStep
                     t={t}
                     values={adminCredentials}
@@ -622,7 +637,7 @@ const Onboarding: React.FC = () => {
                   />
                 </Box>
               ) : currentStep === 2 ? (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                   <OrganisationDetailsStep
                     t={t}
                     values={organisationDetails}
@@ -638,7 +653,7 @@ const Onboarding: React.FC = () => {
                   />
                 </Box>
               ) : (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto' }}>
+                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                   <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
                 </Box>
               )
@@ -647,7 +662,7 @@ const Onboarding: React.FC = () => {
         }
 
         {displayStep === 1 && (
-          <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH, mt: '12px', display: 'flex', justifyContent: 'center' }}>
             <Button
               type={canSkipStepOne ? 'button' : 'submit'}
               form={canSkipStepOne ? undefined : STEP_ONE_FORM_ID}
@@ -728,97 +743,90 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
 
   return (
     <form id={formId} noValidate onSubmit={onSubmit}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', width: '100%' }}>
         <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto' }}>
-          <Box className="text-field" sx={{ display: 'flex', flexDirection: 'column', width: '100%' }} style={{ width: '100%' }}>
-          <TextField
-            name="userName"
-            type="text"
-            value={userName}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Your Admin Name"
-            fullWidth
-            error={Boolean(isInvalid.userName)}
-            helperText={isInvalid.userName ? t('signup.required') : ''}
-            inputProps={{ maxLength: MAX_SHORT }}
-            autoComplete="name"
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-          />
-          <Divider />
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '12px' }}>
+            <TextField
+              name="userName"
+              type="text"
+              value={userName}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Your Admin Name"
+              fullWidth
+              error={Boolean(isInvalid.userName)}
+              helperText={isInvalid.userName ? t('signup.required') : ''}
+              inputProps={{ maxLength: MAX_SHORT }}
+              autoComplete="name"
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+            />
 
-          <TextField
-            name="email"
-            type="email"
-            value={email}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Email"
-            fullWidth
-            error={Boolean(isInvalid.email)}
-            helperText={
-              isInvalid.email
-                ? email && emailInvalid
-                  ? t('onboarding.validation.invalidEmail')
-                  : t('signup.required')
-                : ''
-            }
-            inputProps={{ maxLength: MAX_SHORT }}
-            autoComplete="email"
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-          />
-          <Divider />
+            <TextField
+              name="email"
+              type="email"
+              value={email}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Email"
+              fullWidth
+              error={Boolean(isInvalid.email)}
+              helperText={
+                isInvalid.email
+                  ? email && emailInvalid
+                    ? t('onboarding.validation.invalidEmail')
+                    : t('signup.required')
+                  : ''
+              }
+              inputProps={{ maxLength: MAX_SHORT }}
+              autoComplete="email"
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+            />
 
-          <TextField
-            name="confirmPassword"
-            type="password"
-            value={confirmPassword}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Confirm Password"
-            fullWidth
-            error={Boolean(isInvalid.confirmPassword)}
-            helperText={
-              isInvalid.confirmPassword
-                ? passwordsMismatch
-                  ? t('signup.passwordMismatch')
-                  : t('signup.required')
-                : ''
-            }
-            inputProps={{ maxLength: PASSWORD_MAX, minLength: 8 }}
-            autoComplete="new-password"
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-          />
-          <Divider />
+            <TextField
+              name="password"
+              type="password"
+              value={password}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Password"
+              fullWidth
+              error={Boolean(isInvalid.password)}
+              helperText={
+                isInvalid.password
+                  ? passwordLengthInvalid
+                    ? t('signup.passwordLength')
+                    : t('signup.required')
+                  : ''
+              }
+              inputProps={{ maxLength: PASSWORD_MAX, minLength: 8 }}
+              autoComplete="new-password"
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+            />
 
-          <TextField
-            name="password"
-            type="password"
-            value={password}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Password"
-            fullWidth
-            error={Boolean(isInvalid.password)}
-            helperText={
-              isInvalid.password
-                ? passwordLengthInvalid
-                  ? t('signup.passwordLength')
-                  : t('signup.required')
-                : ''
-            }
-            inputProps={{ maxLength: PASSWORD_MAX, minLength: 8 }}
-            autoComplete="new-password"
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-          />
+            <TextField
+              name="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Confirm Password"
+              fullWidth
+              error={Boolean(isInvalid.confirmPassword)}
+              helperText={
+                isInvalid.confirmPassword
+                  ? passwordsMismatch
+                    ? t('signup.passwordMismatch')
+                    : t('signup.required')
+                  : ''
+              }
+              inputProps={{ maxLength: PASSWORD_MAX, minLength: 8 }}
+              autoComplete="new-password"
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+            />
           </Box>
         </Box>
       </Box>
@@ -865,121 +873,114 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
 
   return (
     <form id={formId} noValidate onSubmit={onSubmit}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', width: '100%' }}>
         <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto' }}>
-        <Box className="text-field" sx={{ display: 'flex', flexDirection: 'column', width: '100%' }} style={{ width: '100%' }}>
-          <TextField
-            name="organisationName"
-            type="text"
-            value={organisationName}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Organisation Name"
-            fullWidth
-            inputProps={{ maxLength: MAX_SHORT }}
-            error={showErrors && !organisationName}
-            helperText={showErrors && !organisationName ? t('signup.required') : ''}
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-          />
-          <Divider />
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '12px' }}>
+            <TextField
+              name="organisationName"
+              type="text"
+              value={organisationName}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Organisation Name"
+              fullWidth
+              inputProps={{ maxLength: MAX_SHORT }}
+              error={showErrors && !organisationName}
+              helperText={showErrors && !organisationName ? t('signup.required') : ''}
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+            />
 
-          <TextField
-            name="organisationDescription"
-            multiline
-            minRows={1}
-            maxRows={6}
-            value={organisationDescription}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Organisation Description"
-            fullWidth
-            inputProps={{ maxLength: MAX_DESC }}
-            helperText={showErrors && !organisationDescription ? t('signup.required') : undefined}
-            error={showErrors && !organisationDescription}
-            sx={{
-              '& .MuiInputBase-root': { alignItems: 'center', minHeight: 48, paddingTop: 0, paddingBottom: 0 },
-              '& .MuiInputBase-inputMultiline': { paddingTop: 0, paddingBottom: 0, lineHeight: '1.4375em', minHeight: '1.4375em' },
-            }}
-            InputProps={{ disableUnderline: true }}
-          />
-          <Divider />
+            <TextField
+              name="organisationDescription"
+              multiline
+              minRows={3}
+              maxRows={6}
+              value={organisationDescription}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Organisation Description"
+              fullWidth
+              inputProps={{ maxLength: MAX_DESC }}
+              helperText={showErrors && !organisationDescription ? t('signup.required') : undefined}
+              error={showErrors && !organisationDescription}
+              sx={{
+                ...PLACEHOLDER_SX,
+                ...OUTLINED_INPUT_SX,
+                '& .MuiInputBase-root': { alignItems: 'center' },
+              }}
+            />
 
-          <TextField
-            name="policyUrl"
-            type="url"
-            value={policyUrl}
-            onChange={onChange}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Policy URL"
-            fullWidth
-            inputProps={{ maxLength: MAX_SHORT }}
-            error={showErrors && !policyUrl}
-            helperText={showErrors && !policyUrl ? t('signup.required') : ''}
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-          />
-          <Divider />
+            <TextField
+              name="policyUrl"
+              type="url"
+              value={policyUrl}
+              onChange={onChange}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Policy URL"
+              fullWidth
+              inputProps={{ maxLength: MAX_SHORT }}
+              error={showErrors && !policyUrl}
+              helperText={showErrors && !policyUrl ? t('signup.required') : ''}
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+            />
 
-          <TextField
-            select
-            name="sector"
-            value={sector}
-            onChange={(e) => onChange({ target: { name: 'sector', value: e.target.value } } as any)}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Sector"
-            fullWidth
-            error={showErrors && !sector}
-            helperText={showErrors && !sector ? t('signup.required') : ''}
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-            SelectProps={{ displayEmpty: true }}
-          >
-            <MenuItem value="" disabled>
-              {sectorsLoading ? t('common.loading') : 'Sector'}
-            </MenuItem>
-            {sectors.map((s) => (
-              <MenuItem key={s.id} value={s.sectorName}>{s.sectorName}</MenuItem>
-            ))}
-          </TextField>
-          <Divider />
+            <TextField
+              select
+              name="sector"
+              value={sector}
+              onChange={(e) => onChange({ target: { name: 'sector', value: e.target.value } } as any)}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Sector"
+              fullWidth
+              error={showErrors && !sector}
+              helperText={showErrors && !sector ? t('signup.required') : ''}
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+              SelectProps={{ displayEmpty: true }}
+            >
+              <MenuItem value="" disabled>
+                {sectorsLoading ? t('common.loading') : 'Sector'}
+              </MenuItem>
+              {sectors.map((s) => (
+                <MenuItem key={s.id} value={s.sectorName}>{s.sectorName}</MenuItem>
+              ))}
+            </TextField>
 
-          <TextField
-            select
-            name="location"
-            value={location}
-            onChange={(e) => onChange({ target: { name: 'location', value: e.target.value } } as any)}
-            onKeyDown={handleKeyDown}
-            variant="standard"
-            placeholder="Country"
-            fullWidth
-            error={showErrors && !location}
-            helperText={showErrors && !location ? t('signup.required') : ''}
-            sx={PLACEHOLDER_SX}
-            InputProps={{ disableUnderline: true }}
-            SelectProps={{ displayEmpty: true }}
-          >
-            <MenuItem value="" disabled>
-              Country
-            </MenuItem>
-            {countries.map((c) => (
-              <MenuItem key={c.value} value={c.label}>{c.label}</MenuItem>
-            ))}
-          </TextField>
-        </Box>
+            <TextField
+              select
+              name="location"
+              value={location}
+              onChange={(e) => onChange({ target: { name: 'location', value: e.target.value } } as any)}
+              onKeyDown={handleKeyDown}
+              variant="outlined"
+              placeholder="Country"
+              fullWidth
+              error={showErrors && !location}
+              helperText={showErrors && !location ? t('signup.required') : ''}
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+              SelectProps={{ displayEmpty: true }}
+            >
+              <MenuItem value="" disabled>
+                Country
+              </MenuItem>
+              {countries.map((c) => (
+                <MenuItem key={c.value} value={c.label}>{c.label}</MenuItem>
+              ))}
+            </TextField>
+          </Box>
         </Box>
 
         <Box sx={{ 
           display: 'grid',
-          gridTemplateColumns: '3fr 7fr',
+          gridTemplateColumns: { xs: '1fr', md: '3fr 7fr' },
           gap: '12px',
           width: '100%',
           maxWidth: 500,
-          margin: '0 auto',
+          mx: 'auto',
+          minWidth: 0,
           '& .MuiButton-root': {
             height: '48px',
             borderRadius: '8px',
@@ -1044,7 +1045,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
   });
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', maxWidth: 500, minWidth: 0 }}>
         <Box
           sx={{
@@ -1067,12 +1068,13 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
 
       <Box sx={{ 
         display: 'grid',
-        gridTemplateColumns: '3fr 7fr',
+        gridTemplateColumns: { xs: '1fr', md: '3fr 7fr' },
         gap: '12px',
         width: '100%',
         maxWidth: 500,
         minWidth: 0,
-        margin: '24px auto 0',
+        mx: 'auto',
+        mt: '12px',
         '& .MuiButton-root': {
           height: '48px',
           borderRadius: '8px',
