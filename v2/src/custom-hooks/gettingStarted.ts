@@ -66,6 +66,15 @@ export const useSignCodeOfConduct = () => {
   return useMutation<void, Error, void>({
     mutationFn: () => apiService.signCodeOfConduct(),
     onSuccess: () => {
+      // Optimistically mark CoC as signed to avoid redirect oscillation
+      try {
+        queryClient.setQueryData<any>(['organisation'], (prev) => {
+          if (!prev || typeof prev !== 'object') return prev;
+          const org = (prev as any).organisation || {};
+          return { ...(prev as any), organisation: { ...org, codeOfConduct: true } };
+        });
+      } catch {}
+      // Then refetch to sync with backend
       queryClient.invalidateQueries({ queryKey: ['organisation'] });
     },
   });

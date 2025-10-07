@@ -5,6 +5,7 @@ import type { SignupPayload, AccessToken } from "@/types/auth";
 import { useAppDispatch } from "./store";
 import { setAuthenticated, setMessage, setSuccessMessage, setAdminDetails } from "@/store/reducers/authReducer";
 import { LocalStorageService } from "@/utils/localStorageService";
+import { setAxiosAuthState } from "@/lib/apiService/axios";
 
 export const useSectors = () => {
   return useQuery<SectorsResponse>({
@@ -32,11 +33,18 @@ export const useSilentLogin = () => {
         refresh_expires_in: 86400,
         token_type: 'Bearer'
       };
+      // Use LocalStorageService which properly sets cookies including client_auth
       LocalStorageService.updateToken(token);
+      
+      // Update Redux state
       dispatch(setAuthenticated(true));
       dispatch(setMessage(''));
       dispatch(setSuccessMessage(''));
-      // fetch admin details non-blocking
+      
+      // Enable axios auth state so API requests can proceed
+      try { setAxiosAuthState(true); } catch {}
+      
+      // Fetch admin details non-blocking
       setTimeout(() => {
         apiService.getAdminDetails()
           .then(userData => {
