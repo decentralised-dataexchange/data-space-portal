@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useSectors } from '@/custom-hooks/onboarding';
 import { useGetOrganisation, useGetOrgIdentity } from '@/custom-hooks/gettingStarted';
 import { useOnboardingForm } from './useOnboardingForm';
+import { useAppSelector } from '@/custom-hooks/store';
 
 export type DerivedStep = 1 | 2 | 3 | 4 | 5;
 
@@ -12,14 +13,18 @@ export const useOnboarding = () => {
   // Core onboarding form state and actions
   const form = useOnboardingForm();
 
-  // External datasets used by steps
+  // Get auth state - wait for auth check to complete before showing content
+  const { loading: authLoading, isAuthenticated } = useAppSelector(state => state.auth);
+
+  // External datasets used by steps (sectors can be fetched without auth)
   const { data: sectorsRes, isLoading: sectorsLoading } = useSectors();
   const sectors = sectorsRes?.sectors ?? [];
 
   // Manual override ref used by debug step switch
   const manualStepOverrideRef = React.useRef(false);
 
-  // Organisation gating data
+  // Organisation gating data - only fetch when authenticated
+  // These hooks already have enabled: isAuthenticated, but we also check authLoading
   const { data: organisationResponse, isLoading: orgLoading } = useGetOrganisation();
   const organisation = organisationResponse?.organisation;
   const orgId = organisation?.id || 'current';
@@ -38,39 +43,50 @@ export const useOnboarding = () => {
     [organisation?.codeOfConduct]
   );
 
-  // Modes
-  const isProtectedMode = Boolean(organisation);
-  const canSkipStepOne = Boolean(organisation);
+  // Modes - only determine after auth check is complete to avoid flicker
+  const isProtectedMode = !authLoading && isAuthenticated && Boolean(organisation);
+  const canSkipStepOne = !authLoading && isAuthenticated && Boolean(organisation);
 
   // Decide which step should be displayed in header/buttons to avoid flicker
-  // For logged-in onboarding, default to Step 4 (OrgIdentitySetup). Only show Step 5 when user explicitly navigates.
-  const displayStep: DerivedStep = (!manualStepOverrideRef.current && isProtectedMode && !orgLoading && !idLoading)
-    ? (form.currentStep === 5 ? 5 : 4)
-    : (form.currentStep as DerivedStep);
+  // Wait for auth and org data to load before calculating protected mode steps
+  const displayStep: DerivedStep = React.useMemo(() => {
+    // If auth is still loading, default to current step to avoid flicker
+    if (authLoading) return form.currentStep as DerivedStep;
+    
+    // For logged-in onboarding, default to Step 4 (OrgIdentitySetup). Only show Step 5 when user explicitly navigates.
+    if (!manualStepOverrideRef.current && isProtectedMode && !orgLoading && !idLoading) {
+      return form.currentStep === 5 ? 5 : 4;
+    }
+    
+    return form.currentStep as DerivedStep;
+  }, [authLoading, isProtectedMode, orgLoading, idLoading, form.currentStep, manualStepOverrideRef]);
 
   // Decide which protected step content to render (4 or 5) when not overridden
-  // Keep user on Step 4 unless they explicitly moved to Step 5
   const protectedRenderStep: 4 | 5 = (form.currentStep === 5 ? 5 : 4);
   const renderStep: DerivedStep = manualStepOverrideRef.current
     ? (form.currentStep as DerivedStep)
     : (isProtectedMode ? protectedRenderStep : (form.currentStep as DerivedStep));
 
-  // Spinner gating
-  const shouldShowInitialSpinner = orgLoading || (Boolean(organisation) && idLoading);
-  const shouldRedirectToStart = isProtectedMode && !orgLoading && !idLoading && !missingWallet && isVerified && cocSigned;
+  // Spinner gating - show spinner during auth check or data loading
+  const shouldShowInitialSpinner = authLoading || orgLoading || (isAuthenticated && Boolean(organisation) && idLoading);
+  const shouldRedirectToStart = !authLoading && isProtectedMode && !orgLoading && !idLoading && !missingWallet && isVerified && cocSigned;
   const showGlobalSpinner = shouldShowInitialSpinner || shouldRedirectToStart;
 
   // Redirect or set step after data is ready
   React.useEffect(() => {
     if (manualStepOverrideRef.current) return;
-    if (orgLoading || idLoading) return;
-    if (!organisation) return;
+    // Wait for auth check to complete
+    if (authLoading) return;
+    // Wait for org data if authenticated
+    if (isAuthenticated && (orgLoading || idLoading)) return;
+    // Only redirect if authenticated with organisation
+    if (!isAuthenticated || !organisation) return;
 
     // If both identity is verified and CoC signed, redirect to /start
     if (isVerified && cocSigned) {
-      router.push('/start');
+      router.replace('/start');
     }
-  }, [manualStepOverrideRef, orgLoading, idLoading, organisation, isVerified, missingWallet, cocSigned, form, router]);
+  }, [manualStepOverrideRef, authLoading, isAuthenticated, orgLoading, idLoading, organisation, isVerified, cocSigned, router]);
 
   return {
     // form
@@ -87,5 +103,6 @@ export const useOnboarding = () => {
     displayStep,
     renderStep,
     showGlobalSpinner,
+    authLoading,
   } as const;
 };

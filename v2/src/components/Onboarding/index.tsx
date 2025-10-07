@@ -140,7 +140,7 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
           variant="outlined"
           className="delete-btn"
           disabled={isPending || isMissingCoc}
-          onClick={() => sign(undefined, { onSuccess: () => router.push('/start') })}
+          onClick={() => sign()}
           sx={{
             width: '100%',
             ...DISABLED_BUTTON_SX,

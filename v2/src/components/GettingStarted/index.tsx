@@ -19,6 +19,7 @@ import {
 } from '@/custom-hooks/gettingStarted';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppSelector } from '@/custom-hooks/store';
+import { useOnboardingGuard } from '@/custom-hooks/useOnboardingGuard';
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -75,6 +76,9 @@ const GettingStarted = () => {
   const router = useRouter();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
+  // Guard: Redirect to onboarding if CoC is not signed
+  const { isCheckingOnboarding, onboardingComplete } = useOnboardingGuard();
+
   const { data: organisationResponse, isLoading: isOrganisationLoading } = useGetOrganisation();
   const { data: coverImageBase64, isLoading: isCoverImageLoading } = useGetCoverImage();
   const { data: logoImageBase64 } = useGetLogoImage();
@@ -122,8 +126,9 @@ const GettingStarted = () => {
   const isLoading = useMemo(() => {
     // Only consider loading states when authenticated
     if (!isAuthenticated) return false;
-    return isOrganisationLoading || isCoverImageLoading;
-  }, [isAuthenticated, isOrganisationLoading, isCoverImageLoading]);
+    // Include onboarding guard check to prevent flicker
+    return isCheckingOnboarding || isOrganisationLoading || isCoverImageLoading;
+  }, [isAuthenticated, isCheckingOnboarding, isOrganisationLoading, isCoverImageLoading]);
 
   const hasError = useMemo(() => {
     // Do not show page-level error when unauthenticated (during logout redirect)
