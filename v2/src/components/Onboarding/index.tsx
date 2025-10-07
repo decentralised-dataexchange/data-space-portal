@@ -420,14 +420,15 @@ const Onboarding: React.FC = () => {
   // Measure heading/subtitle actual rendered width to synchronize form and buttons width
   const headingRef = React.useRef<HTMLDivElement | null>(null);
   const [headingWidth, setHeadingWidth] = React.useState<number | null>(null);
-
+  
   React.useEffect(() => {
     const el = headingRef.current;
     if (!el) return;
     const update = () => {
       try {
         const rect = el.getBoundingClientRect();
-        setHeadingWidth(Math.min(500, Math.max(0, Math.round(rect.width))));
+        // Ensure a sensible minimum width of 400px for better form sizing
+        setHeadingWidth(Math.min(500, Math.max(400, Math.round(rect.width))));
       } catch {}
     };
     update();
@@ -524,8 +525,8 @@ const Onboarding: React.FC = () => {
         {/* Onboarding page header (title + optional subtitle). Hidden on step 3 (post-register success screen). */}
         {displayStep !== 3 && (
           <Box sx={{ mt: '1rem', mb: '1.5rem', textAlign: 'center' }}>
-            <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', textAlign: 'center' }}>
-              <Box ref={headingRef} sx={{ display: 'inline-block', maxWidth: 500, textAlign: 'center' }}>
+            <Box ref={headingRef} sx={{ width: '100%', maxWidth: 500, mx: 'auto', textAlign: 'center' }}>
+              <Box sx={{ display: 'inline-block', maxWidth: 500, textAlign: 'center' }}>
                 <Typography variant="h5" fontWeight={700}>{t('onboarding.title')}</Typography>
                 {(() => {
                   let subtitleKey: string | null = null;
@@ -1045,7 +1046,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
   });
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%', minWidth: "min(450px, 60vw)" }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', maxWidth: 500, minWidth: 0 }}>
         <Box
           sx={{
@@ -1061,7 +1062,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         >
           <CheckIcon fontSize="inherit" sx={{ color: '#FFFFFF', fontSize: 20 }} />
         </Box>
-        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: 0, wordBreak: 'break-word', whiteSpace: 'normal' }}>
+        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: "fit-content", wordBreak: 'break-word', whiteSpace: 'normal' }}>
           {successContent}
         </Typography>
       </Box>
