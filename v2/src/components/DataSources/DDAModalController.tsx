@@ -49,8 +49,9 @@ export default function DDAModalController({
   // Hook: manage sign/unsign status and initiation; refetch status on window focus if user previously initiated
   const { signStatus, initiateSignOrUnsign, isInitiating } = useBusinessWalletSigning({
     selectedDDA: selectedData,
-    // Do not auto-fetch on open; status will be determined on explicit actions
-    enabled: false,
+    // Auto-fetch on open to ensure status is available inside the modal
+    enabled: true,
+    enableFocusRefresh: true,
   });
 
   const handleSignClick = async () => {

@@ -225,6 +225,11 @@ export const apiService = {
     return api.post<{ verificationRequest: string; status: 'sign' | 'unsign' | string; }>(ENDPOINTS.signOrSignWithBusinessWalletInitiate(ddaId), {})
       .then(res => res.data);
   },
+  // GET current sign/unsign status for organisation DDA (auth required)
+  getOrganisationDDAStatus: async (ddaId: string): Promise<{ status: 'sign' | 'unsign' | string; }> => {
+    return api.get<{ status: 'sign' | 'unsign' | string; }>(ENDPOINTS.organisationDDAStatus(ddaId))
+      .then(res => res.data);
+  },
   getAdminDetails: async (): Promise<any> => {
     return api.get<any>(ENDPOINTS.getAdminDetails())
       .then(res => res.data);

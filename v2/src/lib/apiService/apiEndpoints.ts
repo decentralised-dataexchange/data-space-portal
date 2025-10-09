@@ -91,6 +91,10 @@ export const ENDPOINTS = {
     signOrSignWithBusinessWalletInitiate: (id: string) => {
         return `/config/organisation/data-disclosure-agreement/${id}/`;
     },
+    // Get sign/unsign status for organisation DDA (auth required)
+    organisationDDAStatus: (id: string) => {
+        return `/config/organisation/data-disclosure-agreement/${id}/status/`;
+    },
     // Removed legacy data-source details endpoint
     updateOpenApiUrl: () => {
         return "/config/open-api/url";

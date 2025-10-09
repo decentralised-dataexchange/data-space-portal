@@ -28,20 +28,26 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
     return dda?.dataAgreementId || dda?.['@id'] || dda?.templateId;
   };
 
-  // Prepare sign/unsign initiator without auto-fetch on mount
-  const { initiateSignOrUnsign, isInitiating } = useBusinessWalletSigning({
+  // Prepare status fetcher without auto-fetch on mount; POST initiate happens inside modal
+  const { refetchStatus } = useBusinessWalletSigning({
     selectedDDA: dataDisclosureAgreement as any,
     enabled: false,
   });
+  const [isPrefetchingStatus, setIsPrefetchingStatus] = React.useState(false);
 
   const handleDDAClick = async () => {
     // For modal selection and subsequent signing, use templateId as the stable key
     const templateId = (dataDisclosureAgreement as DataDisclosureAgreement)?.templateId;
     if (!templateId) return;
     try {
-      // If authenticated, initiate sign/unsign first and show spinner on this button
+      // If authenticated, prefetch GET status before opening the modal
       if (isAuthenticated) {
-        await initiateSignOrUnsign();
+        setIsPrefetchingStatus(true);
+        try {
+          await refetchStatus();
+        } finally {
+          setIsPrefetchingStatus(false);
+        }
       }
     } catch {
       // Silent per spec
@@ -144,9 +150,9 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
           size="medium"
           sx={{ fontSize: "14px", textTransform: "none", fontWeight: "medium", position: 'relative' }}
           onClick={handleDDAClick}
-          disabled={Boolean(isInitiating)}
+          disabled={Boolean(isPrefetchingStatus)}
         >
-          {isInitiating && (
+          {isPrefetchingStatus && (
             <CircularProgress
               size={18}
               sx={{
@@ -159,7 +165,7 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
               }}
             />
           )}
-          <Box component="span" sx={{ visibility: isInitiating ? 'hidden' : 'visible' }}>
+          <Box component="span" sx={{ visibility: isPrefetchingStatus ? 'hidden' : 'visible' }}>
             {t("home.btn-signData")}
           </Box>
         </Button>

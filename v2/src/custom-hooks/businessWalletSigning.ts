@@ -10,8 +10,9 @@ export interface BusinessWalletInitiateResponse {
   status: 'sign' | 'unsign' | string;
 }
 
-// LocalStorage key to remember last clicked DDA for refocus recheck
-const LS_KEY_LAST_DDA = 'businessWallet:lastDdaId';
+export interface BusinessWalletStatusResponse {
+  status: 'sign' | 'unsign' | string;
+}
 
 // Helper to collect candidate IDs for a DDA
 const collectCandidateIds = (d: DataDisclosureAgreement | undefined): string[] => {
@@ -29,22 +30,26 @@ const collectCandidateIds = (d: DataDisclosureAgreement | undefined): string[] =
 const initiateForId = async (ddaId: string): Promise<BusinessWalletInitiateResponse> => {
   return apiService.signOrSignWithBusinessWalletInitiate(ddaId);
 };
+const getStatusForId = async (ddaId: string): Promise<BusinessWalletStatusResponse> => {
+  return apiService.getOrganisationDDAStatus(ddaId);
+};
 
 export interface UseBusinessWalletSigningParams {
   selectedDDA?: DataDisclosureAgreement;
   enabled?: boolean; // when true, fetch initial status for selectedDDA
+  enableFocusRefresh?: boolean; // when true, attach a single window focus listener to refresh status after external redirect
 }
 
 export interface UseBusinessWalletSigningResult {
   signStatus: 'sign' | 'unsign' | '';
   isFetchingStatus: boolean;
   initiateSignOrUnsign: () => Promise<BusinessWalletInitiateResponse | undefined>;
-  refetchStatus: () => Promise<BusinessWalletInitiateResponse | undefined>;
+  refetchStatus: () => Promise<BusinessWalletStatusResponse | undefined>;
   isInitiating: boolean;
 }
 
 export function useBusinessWalletSigning(
-  { selectedDDA, enabled = false }: UseBusinessWalletSigningParams
+  { selectedDDA, enabled = false, enableFocusRefresh = false }: UseBusinessWalletSigningParams
 ): UseBusinessWalletSigningResult {
   const queryClient = useQueryClient();
   const { isAuthenticated } = useAppSelector(state => state.auth);
@@ -52,8 +57,7 @@ export function useBusinessWalletSigning(
   const candidateIds = React.useMemo(() => collectCandidateIds(selectedDDA), [selectedDDA]);
   const selectedId = candidateIds[0]; // prefer templateId when present
 
-  // Query to get current status for the selected DDA (calls POST endpoint by design)
-  // Helper: try multiple candidate IDs sequentially (treat 404 as try-next)
+  // Helper: try multiple candidate IDs sequentially (treat 404 as try-next) for POST initiate
   const initiateWithFallback = React.useCallback(async (ids: string[]): Promise<BusinessWalletInitiateResponse> => {
     let lastErr: unknown = undefined;
     for (const id of ids) {
@@ -69,15 +73,22 @@ export function useBusinessWalletSigning(
     throw lastErr ?? new Error('Failed to initiate business wallet flow');
   }, []);
 
-  const statusQuery = useQuery<BusinessWalletInitiateResponse>({
+  // GET status: use only the preferred selectedId (typically templateId) to avoid multiple requests
+  const getStatusDirect = React.useCallback(async (): Promise<BusinessWalletStatusResponse> => {
+    if (!selectedId) throw new Error('Missing DDA id');
+    return getStatusForId(selectedId);
+  }, [selectedId]);
+
+  const statusQuery = useQuery<BusinessWalletStatusResponse>({
     queryKey: ['businessWalletStatus', selectedId],
     queryFn: async () => {
       if (!selectedId) throw new Error('Missing DDA id');
-      return initiateWithFallback(candidateIds);
+      return getStatusDirect();
     },
     enabled: Boolean(enabled && isAuthenticated && selectedId),
-    retry: 1,
+    retry: 0,
     refetchOnWindowFocus: false,
+    refetchOnMount: 'always',
   });
 
   const signStatus: 'sign' | 'unsign' | '' = statusQuery.data?.status === 'sign' || statusQuery.data?.status === 'unsign'
@@ -88,10 +99,8 @@ export function useBusinessWalletSigning(
   const initiateMutation = useMutation<BusinessWalletInitiateResponse, unknown, string>({
     mutationFn: async (ddaId: string) => initiateForId(ddaId),
     onSuccess: (data, ddaId) => {
-      // Cache status for this DDA id
-      queryClient.setQueryData(['businessWalletStatus', ddaId], data);
-      // Remember last clicked DDA for refocus recheck
-      try { localStorage.setItem(LS_KEY_LAST_DDA, ddaId); } catch {}
+      // Cache status for this DDA id (only status field relevant)
+      queryClient.setQueryData(['businessWalletStatus', ddaId], { status: data.status } satisfies BusinessWalletStatusResponse);
     },
   });
 
@@ -112,36 +121,36 @@ export function useBusinessWalletSigning(
     return undefined;
   }, [candidateIds, initiateMutation, isAuthenticated]);
 
-  // Manual refetch for current selected DDA
-  const refetchStatus = React.useCallback(async (): Promise<BusinessWalletInitiateResponse | undefined> => {
+  // Manual refetch for current selected DDA (called by parents explicitly)
+  const refetchStatus = React.useCallback(async (): Promise<BusinessWalletStatusResponse | undefined> => {
     if (!isAuthenticated || !selectedId) return undefined;
     try {
-      const res = await initiateWithFallback(candidateIds);
+      const res = await getStatusDirect();
       queryClient.setQueryData(['businessWalletStatus', selectedId], res);
       return res;
     } catch {
       return undefined;
     }
-  }, [candidateIds, initiateWithFallback, isAuthenticated, queryClient, selectedId]);
+  }, [getStatusDirect, isAuthenticated, queryClient, selectedId]);
 
-  // On window focus, if the user previously clicked sign/unsign, recheck status for that DDA id
+  // On window focus, if modal is open (enableFocusRefresh), recheck status for the currently selected DDA id
   React.useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !enableFocusRefresh || !selectedId) return;
+    let inProgress = false;
     const onFocus = async () => {
+      if (inProgress) return;
+      inProgress = true;
       try {
-        const lastId = localStorage.getItem(LS_KEY_LAST_DDA);
-        if (!lastId) return;
-        const res = await initiateForId(lastId);
-        queryClient.setQueryData(['businessWalletStatus', lastId], res);
-        // Clear the marker to avoid repeated calls on every focus
-        localStorage.removeItem(LS_KEY_LAST_DDA);
-      } catch {
-        // swallow
+        await refetchStatus();
+      } finally {
+        inProgress = false;
       }
     };
     window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
-  }, [isAuthenticated, queryClient]);
+    return () => {
+      window.removeEventListener('focus', onFocus);
+    };
+  }, [isAuthenticated, enableFocusRefresh, refetchStatus, selectedId]);
 
   return {
     signStatus,
