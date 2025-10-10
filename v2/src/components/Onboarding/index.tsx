@@ -168,8 +168,23 @@ const PLACEHOLDER_SX = {
 const OUTLINED_INPUT_SX = {
   '& .MuiOutlinedInput-root': {
     borderRadius: '7px',
+    '& .MuiInputBase-input': {
+      paddingBlock: "18px"
+    }
   },
 } as const;
+
+const SELECT_SX = {
+  ...OUTLINED_INPUT_SX, 
+  '& .MuiOutlinedInput-root': {
+    ...OUTLINED_INPUT_SX['& .MuiOutlinedInput-root'],
+    '& .MuiInputBase-input': {
+      paddingBlock: "16.5px"
+    }
+  }
+} as const;
+
+console.log("{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX }", { ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX })
 
 const DISABLED_BUTTON_SX = {
   '&.Mui-disabled': {
@@ -421,30 +436,43 @@ const Onboarding: React.FC = () => {
   const headingRef = React.useRef<HTMLDivElement | null>(null);
   const [headingWidth, setHeadingWidth] = React.useState<number | null>(null);
   
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
+    // Recalculate when the step changes, as the header may mount after assisted login
     const el = headingRef.current;
-    if (!el) return;
     const update = () => {
       try {
-        const rect = el.getBoundingClientRect();
-        // Ensure a sensible minimum width of 400px for better form sizing
-        setHeadingWidth(Math.min(500, Math.max(400, Math.round(rect.width))));
+        const target = headingRef.current;
+        if (!target) return;
+        const rect = target.getBoundingClientRect();
+        // Ensure a sensible minimum width between 400 and 500px for better form sizing
+        setHeadingWidth(Math.min(500, Math.max(300, Math.round(rect.width))));
       } catch {}
     };
-    update();
+
     let ro: ResizeObserver | null = null;
-    try {
-      ro = new ResizeObserver(update);
-      ro.observe(el);
-    } catch {
-      // fallback: window resize
-      window.addEventListener('resize', update);
+    let rafId: number | null = null;
+
+    if (el) {
+      // Element is present; observe it
+      // Measure on next frame to ensure styles are applied
+      rafId = window.requestAnimationFrame(update);
+      try {
+        ro = new ResizeObserver(update);
+        ro.observe(el);
+      } catch {
+        window.addEventListener('resize', update);
+      }
+    } else {
+      // Element not yet mounted; retry shortly after render
+      rafId = window.requestAnimationFrame(update);
     }
+
     return () => {
       try { ro?.disconnect(); } catch {}
       window.removeEventListener('resize', update);
+      if (rafId) window.cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [/* re-run when step changes so header mount is detected */ onboarding.displayStep, onboarding.renderStep]);
   // Debug controls hidden by default
   const showStepDebugControls = false;
   const {
@@ -486,7 +514,8 @@ const Onboarding: React.FC = () => {
   // Make the form width match the heading/subtitle width across steps.
   // If heading is hidden (e.g., step 3), reuse the last measured heading width.
   const contentWidth = React.useMemo(() => {
-    return typeof headingWidth === 'number' ? headingWidth : '100%';
+    // Default to 500px if not yet measured to avoid rendering too-narrow containers on client navigation
+    return typeof headingWidth === 'number' ? headingWidth : 500;
   }, [headingWidth]);
 
   // Centralize CoC PDF loading to avoid an internal spinner in the CoC step
@@ -527,7 +556,17 @@ const Onboarding: React.FC = () => {
           <Box sx={{ mt: '1rem', mb: '1.5rem', textAlign: 'center' }}>
             <Box ref={headingRef} sx={{ width: '100%', maxWidth: 500, mx: 'auto', textAlign: 'center' }}>
               <Box sx={{ display: 'inline-block', maxWidth: 500, textAlign: 'center' }}>
-                <Typography variant="h5" fontWeight={700}>{t('onboarding.title')}</Typography>
+                <Typography
+                  variant="h5"
+                  fontWeight={700}
+                  sx={{
+                    fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.5rem' },
+                    lineHeight: { xs: 1.3, sm: 1.35, md: 1.4 },
+                    wordBreak: 'break-word',
+                  }}
+                >
+                  {t('onboarding.title')}
+                </Typography>
                 {(() => {
                   let subtitleKey: string | null = null;
                   if (displayStep === 1) subtitleKey = 'onboarding.stepSubtitles.step1';
@@ -538,7 +577,14 @@ const Onboarding: React.FC = () => {
                   return subtitleKey ? (
                     <Typography
                       variant="h6"
-                      sx={{ mt: 1.25, color: 'inherit', fontWeight: 600 }}
+                      sx={{
+                        mt: { xs: 1, sm: 1.25 },
+                        color: 'inherit',
+                        fontWeight: 600,
+                        fontSize: { xs: '1rem', sm: '1.25rem', md: '1.25rem' },
+                        lineHeight: { xs: 1.35, sm: 1.4, md: 1.45 },
+                        wordBreak: 'break-word',
+                      }}
                     >
                       {t(subtitleKey)}
                     </Typography>
@@ -939,7 +985,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               fullWidth
               error={showErrors && !sector}
               helperText={showErrors && !sector ? t('signup.required') : ''}
-              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX }}
               SelectProps={{ displayEmpty: true }}
             >
               <MenuItem value="" disabled>
@@ -961,7 +1007,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               fullWidth
               error={showErrors && !location}
               helperText={showErrors && !location ? t('signup.required') : ''}
-              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX }}
+              sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX }}
               SelectProps={{ displayEmpty: true }}
             >
               <MenuItem value="" disabled>
