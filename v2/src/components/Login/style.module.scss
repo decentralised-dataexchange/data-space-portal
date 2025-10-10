@@ -17,7 +17,7 @@
   max-width: 440px; // keep content readable on large screens
 }
 
-.d-flex-center {
+.dFlexCenter {
   display: flex;
   justify-content: center;
 }
@@ -27,7 +27,7 @@
   border-radius: 50%;
 }
 
-.text-field {
+.textField {
   box-sizing: border-box;
   padding: 0.3rem;
   border: 1px solid #cecece;
@@ -40,12 +40,13 @@
   }
 }
 
-.MuiInputBase-input {
+/* Scope MUI input font size only within this component */
+.loginWrapper :global(.MuiInputBase-input) {
   font-size: 0.875rem;
 }
 
 @media (max-width: 768px) {
-  .titleTxt {
+  :global(.titleTxt) {
     font-size: 1rem !important;
   }
 }

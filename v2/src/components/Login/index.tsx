@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { useLogin } from '@/custom-hooks/auth';
 import Image from 'next/image';
-import './style.scss';
+import styles from './style.module.scss';
 
 interface FormValue {
   email: string,
@@ -59,13 +59,29 @@ const Login = () => {
     });
   };
 
+  // Shared styles to ensure both inputs look identical with 56px height
+  const inputSx = {
+    '& .MuiInputBase-root': {
+      height: 56,
+      minHeight: 56,
+      alignItems: 'center',
+      marginTop: 0,
+    },
+    '& .MuiInputBase-input': {
+      height: 56,
+      lineHeight: '56px',
+      padding: 0,
+      fontSize: '0.875rem',
+    },
+  } as const;
+
   return (
-    <Box className="loginWrapper">
+    <Box className={styles.loginWrapper}>
       {/* No local Snackbar; using global Snackbar in AppLayout */}
-      <Box className='loginContainer'>
-        <Box className='d-flex-center'>
+      <Box className={styles.loginContainer}>
+        <Box className={styles.dFlexCenter}>
           <Link href="/">
-            <Image className="logoImg" src={Logo} alt="Logo" width={180} height={180} priority />
+            <Image className={styles.logoImg} src={Logo} alt="Logo" width={180} height={180} priority />
           </Link>
         </Box>
         <Box
@@ -80,12 +96,12 @@ const Login = () => {
           <h1 className='titleTxt'>{t('common.orgDashboardTitle')}</h1>
         </Box>
         <form onSubmit={handleSubmit}>
-          <Box className='text-field'>
+          <Box className={styles.textField}>
             <TextField
               autoFocus
               name="email"
               type="email"
-              style={{ marginTop: "-0.5rem" }}
+              sx={inputSx}
               value={email}
               onChange={handleChange}
               variant="standard"
@@ -112,16 +128,18 @@ const Login = () => {
               label={false}
               placeholder={t('login.password')}
               fullWidth
+              sx={inputSx}
               slotProps={{
                 input: {
-                  startAdornment: <LockOpenIcon size={22} style={{ color: "#777", marginRight: "0.5rem", transform: "translateY(-2px)" }} />,
+                  startAdornment: <LockOpenIcon size={22} style={{ color: "#777", marginRight: "0.5rem"
+                    
+                  }} />,
                   disableUnderline: true,
                   onKeyPress: handleKeyPress,
                   endAdornment: (
                     <IconButton type="submit" disabled={!isFormValid} sx={{ '&.Mui-disabled': { pointerEvents: 'all', cursor: 'not-allowed' } }}>
                       <ArrowCircleRightIcon
                         size={22}
-
                         style={{ color: "#888", transform: "translateY(-2px)" }}
                       />
                     </IconButton>
