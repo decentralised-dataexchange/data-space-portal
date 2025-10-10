@@ -45,8 +45,10 @@
   font-size: 0.875rem;
 }
 
-@media (max-width: 768px) {
-  :global(.titleTxt) {
-    font-size: 1rem !important;
+.loginWrapper {
+  @media (max-width: 768px) {
+    :global(.titleTxt) {
+      font-size: 1rem !important;
+    }
   }
 }

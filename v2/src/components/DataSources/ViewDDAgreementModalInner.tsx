@@ -9,10 +9,7 @@ import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable
 import { DDAPolicyCard } from "./dataPolicyCard";
 import RightSidebar from "../common/RightSidebar";
 import VerifiedBadge from "../common/VerifiedBadge";
-import IssuedExpiryStrip from "../common/IssuedExpiryStrip";
 import { useAppSelector } from "@/custom-hooks/store";
-import { useRouter } from "next/navigation";
-import { useLocale } from "next-intl";
 
 interface Props {
   open: boolean;
@@ -30,10 +27,11 @@ interface Props {
   onSignClick?: () => void;
   signButtonLoading?: boolean;
   titleOverride?: string;
+  showSignatureDecoded?: boolean;
 }
 
 export default function ViewDataAgreementModalInner(props: Props) {
-  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, signStatus, onSignClick, signButtonLoading } = props;
+  const { open, setOpen, mode, selectedData, dataSourceName, dataSourceLocation, dataSourceDescription, coverImage, logoImage, signStatus, onSignClick, signButtonLoading, showSignatureDecoded } = props;
   const t = useTranslations();
   const isVerified = Boolean(props.trusted);
   const { isAuthenticated } = useAppSelector(state => state.auth);
@@ -232,6 +230,8 @@ export default function ViewDataAgreementModalInner(props: Props) {
           <DDAPolicyCard
             selectedData={selectedData}
             handleCloseViewDDAModal={setOpen}
+            dataSourceSignatureDecoded={showSignatureDecoded ? selectedData?.dataSourceSignatureDecoded : undefined}
+            dataUsingServiceSignatureDecoded={showSignatureDecoded ? selectedData?.dataUsingServiceSignatureDecoded : undefined}
           />
         </Box>
       </Box>

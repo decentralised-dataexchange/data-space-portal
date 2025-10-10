@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Box, Typography, CircularProgress, Alert } from "@mui/material";
+import { Box, CircularProgress, Alert } from "@mui/material";
 import styles from "../ddaAgreements/ddaAgreements.module.scss";
 import { useTranslations } from "next-intl";
 import { useSignedAgreements } from "@/custom-hooks/signedAgreements";
@@ -53,6 +53,9 @@ export default function SignedAgreementsPage() {
       dataController: obj?.dataController || r?.dataController || {},
       createdAt: record?.createdAt,
       updatedAt: record?.updatedAt,
+      // Pass signature decoded data for signed agreements modal
+      dataSourceSignatureDecoded: r?.dataSourceSignature?.signatureDecoded,
+      dataUsingServiceSignatureDecoded: r?.dataUsingServiceSignature?.signatureDecoded,
     };
   };
 
@@ -163,6 +166,8 @@ export default function SignedAgreementsPage() {
           coverImage={getDataSourceDetails(selected).coverImage}
           logoImage={getDataSourceDetails(selected).logoImage}
           trusted={getDataSourceDetails(selected).trusted}
+          showSignatureDecoded={true}
+          titleOverride={t("signedAgreements.viewModal.title")}
         />
       )}
     </div>

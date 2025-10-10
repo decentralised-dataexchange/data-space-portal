@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
-import { Eye as EyeIcon, Signature as SignatureIcon } from "@phosphor-icons/react";
+import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
 import { Tooltip, Pagination, Box } from "@mui/material";
 import PaginationControls from "@/components/common/PaginationControls";
 import { getStatus } from "@/utils/dda";
@@ -106,13 +106,12 @@ const SignedAgreementsTable: React.FC<Props> = ({
       <Table size="small" aria-label="signed agreements table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>{"DDA Record ID"}</StyledTableCell>
+            <StyledTableCell>{t("signedAgreements.table.headers.dataSource")}</StyledTableCell>
+            <StyledTableCell>{t("signedAgreements.table.headers.ddaRecordId")}</StyledTableCell>
             <StyledTableCell>{t("signedAgreements.table.headers.usagePurpose")}</StyledTableCell>
             <StyledTableCell>{t("signedAgreements.table.headers.version")}</StyledTableCell>
             <StyledTableCell>{t("signedAgreements.table.headers.agreementEvent")}</StyledTableCell>
-            <StyledTableCell>{t("signedAgreements.table.headers.dataSourceSignature")}</StyledTableCell>
-            <StyledTableCell>{t("signedAgreements.table.headers.dataUsingServiceSignature")}</StyledTableCell>
-            <StyledTableCell>{"Last Modified Date"}</StyledTableCell>
+            <StyledTableCell>{t("signedAgreements.table.headers.lastModifiedDate")}</StyledTableCell>
             <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
@@ -132,63 +131,52 @@ const SignedAgreementsTable: React.FC<Props> = ({
               const recordId = row?.dataDisclosureAgreementRecordId || '';
               const purpose = obj?.purpose || '';
               const version = obj?.version || obj?.templateVersion || '';
-              const opt = typeof rec?.optIn === 'boolean' ? rec?.optIn : (typeof row?.optIn === 'boolean' ? row?.optIn : undefined);
-              const eventLabel = (opt === true)
-                ? t('common.signAction')
-                : (opt === false)
-                  ? t('common.unsignAction')
-                  : (getStatus ? getStatus(t, String(row?.state ?? rec?.state ?? '')) : (row?.state ?? rec?.state ?? ''));
+              const dataSourceName = rec?.dataSourceSignature?.signatureDecoded?.name || '';
               const dsSig = rec?.dataSourceSignature?.signature || '';
               const dusSig = rec?.dataUsingServiceSignature?.signature || '';
               return (
                 <StyledTableRow key={row?.id || rec?.id || rec?.dataDisclosureAgreementTemplateRevision?.id}>
+                  <StyledTableCell>{dataSourceName}</StyledTableCell>
                   <StyledTableCell>{recordId}</StyledTableCell>
                   <StyledTableCell>{purpose}</StyledTableCell>
                   <StyledTableCell>{version}</StyledTableCell>
-                  <StyledTableCell>{eventLabel}</StyledTableCell>
-                  <StyledTableCell>
-                    <Tooltip
-                      title={t('common.copied')}
-                      open={!!dsSig && (copied.key === String(row?.id || rec?.id) + '-ds')}
-                      disableHoverListener
-                      disableFocusListener
-                      disableTouchListener
-                      placement="top"
-                    >
-                      <span style={{ cursor: dsSig ? 'pointer' : 'not-allowed' }}>
-                        <IconButton
-                          aria-label="copy-data-source-signature"
-                          size="small"
-                          onClick={() => dsSig && handleCopy(dsSig, String(row?.id || rec?.id) + '-ds')}
-                          disabled={!dsSig}
-                          sx={{ color: dsSig ? '#000' : '#BDBDBD' }}
-                        >
-                          <SignatureIcon size={19} />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  </StyledTableCell>
-                  <StyledTableCell>
-                    <Tooltip
-                      title={t('common.copied')}
-                      open={!!dusSig && (copied.key === String(row?.id || rec?.id) + '-dus')}
-                      disableHoverListener
-                      disableFocusListener
-                      disableTouchListener
-                      placement="top"
-                    >
-                      <span style={{ cursor: dusSig ? 'pointer' : 'not-allowed' }}>
-                        <IconButton
-                          aria-label="copy-data-using-service-signature"
-                          size="small"
-                          onClick={() => dusSig && handleCopy(dusSig, String(row?.id || rec?.id) + '-dus')}
-                          disabled={!dusSig}
-                          sx={{ color: dusSig ? '#000' : '#BDBDBD' }}
-                        >
-                          <SignatureIcon size={19} />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
+                  <StyledTableCell sx={{ width: '80px' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5 }}>
+                      {/* Data Source Signature */}
+                      <Tooltip
+                        title={copied.key === String(row?.id || rec?.id) + '-ds' ? t('common.copied') : t('signedAgreements.signatures.dataSource')}
+                        placement="top"
+                      >
+                        <span style={{ cursor: dsSig ? 'pointer' : 'not-allowed' }}>
+                          <IconButton
+                            aria-label="copy-data-source-signature"
+                            size="small"
+                            onClick={() => dsSig && handleCopy(dsSig, String(row?.id || rec?.id) + '-ds')}
+                            disabled={!dsSig}
+                            sx={{ color: dsSig ? '#000' : '#BDBDBD', padding: '4px' }}
+                          >
+                            <SignOutIcon size={18} />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                      {/* Data Using Service Signature */}
+                      <Tooltip
+                        title={copied.key === String(row?.id || rec?.id) + '-dus' ? t('common.copied') : (dusSig ? t('signedAgreements.signatures.dataUsingService') : null)}
+                        placement="top"
+                      >
+                        <span style={{ cursor: dusSig ? 'pointer' : 'not-allowed' }}>
+                          <IconButton
+                            aria-label="copy-data-using-service-signature"
+                            size="small"
+                            onClick={() => dusSig && handleCopy(dusSig, String(row?.id || rec?.id) + '-dus')}
+                            disabled={!dusSig}
+                            sx={{ color: dusSig ? '#000' : '#BDBDBD', padding: '4px' }}
+                          >
+                            <SignInIcon size={18} />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </Box>
                   </StyledTableCell>
                   <StyledTableCell>{formatLocalDate(row?.updatedAt || row?.createdAt)}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'center' }} style={{ border: 'none' }}>
@@ -203,7 +191,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
             })
           ) : (
             <TableRow>
-              <StyledTableCell colSpan={8} align="center">
+              <StyledTableCell colSpan={7} align="center">
                 {t("common.noResultsFound")}
               </StyledTableCell>
             </TableRow>

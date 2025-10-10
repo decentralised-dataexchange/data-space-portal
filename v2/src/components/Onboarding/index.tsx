@@ -184,8 +184,6 @@ const SELECT_SX = {
   }
 } as const;
 
-console.log("{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX }", { ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX })
-
 const DISABLED_BUTTON_SX = {
   '&.Mui-disabled': {
     cursor: 'not-allowed',

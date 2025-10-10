@@ -125,17 +125,29 @@
     "subtitle": "View and manage your organisation's signed Data Disclosure Agreement records.",
     "table": {
       "headers": {
+        "dataSource": "Data Source",
+        "ddaRecordId": "DDA Record ID",
         "id": "ID",
         "usagePurpose": "Usage Purpose",
         "version": "Version",
         "agreementEvent": "Agreement Event",
         "dataSourceSignature": "Data Source Signature",
         "dataUsingServiceSignature": "Data Using Service Signature",
-        "lastModified": "Last Modified"
+        "lastModified": "Last Modified",
+        "lastModifiedDate": "Last Modified Date"
       },
       "noData": "No signed agreements to display"
     },
-    "tooltipView": "View Signed Agreement"
+    "tooltipView": "View Signed Agreement",
+    "viewModal": {
+      "title": "View Signed Agreement"
+    },
+    "signatures": {
+      "dataSource": "Data Source",
+      "dataUsingService": "Data Using Service",
+      "dataSourceSignature": "Data Source Signature",
+      "dataUsingServiceSignature": "Data Using Service Signature"
+    }
   },
   "home": {
     "header": "HOME",

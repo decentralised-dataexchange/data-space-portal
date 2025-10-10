@@ -17,6 +17,8 @@ interface Props {
   headerText: string;
   selectedData: any;
   handleCloseViewDDAModal: (open: boolean) => void;
+  dataSourceSignatureDecoded?: any;
+  dataUsingServiceSignatureDecoded?: any;
 }
 
 const titleAttrRestrictionStyle = {
@@ -34,7 +36,7 @@ const titleAttrRestrictionStyle = {
 export default function DataAgreementPolicyCardModal(props: Props) {
   const t = useTranslations();
   const theme = useTheme();
-  const { open, setOpen, headerText, selectedData, handleCloseViewDDAModal } =
+  const { open, setOpen, headerText, selectedData, handleCloseViewDDAModal, dataSourceSignatureDecoded, dataUsingServiceSignatureDecoded } =
     props;
   
   // Create ref for the container
@@ -93,6 +95,87 @@ export default function DataAgreementPolicyCardModal(props: Props) {
               <AttributeTable rows={SSIpolicyDetailsForContainer} showValues={true} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} />
             </Box>
 
+            {/* Data Source Signature */}
+            {dataSourceSignatureDecoded && (
+              <Box m={1.5}>
+                <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
+                  {t('signedAgreements.signatures.dataSourceSignature')}
+                </Typography>
+                <Box sx={{ marginTop: '16px' }}>
+                  <AttributeTable
+                  rows={(() => {
+                    const excludedKeys = ["exp", "iat", "iss", "jti", "nbf", "sub", "status", "cnf", "kb", "vct"];
+                    const decoded = dataSourceSignatureDecoded;
+                    const rows: AttributeRow[] = [];
+                    
+                    Object.keys(decoded).forEach((key) => {
+                      if (!excludedKeys.includes(key)) {
+                        const value = decoded[key];
+                        // Check if value is a URL
+                        const isUrl = typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
+                        // Convert value to string for display
+                        const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value);
+                        rows.push({
+                          label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                          value: displayValue,
+                          tooltip: null,
+                          description: '',
+                          href: isUrl ? displayValue : undefined
+                        });
+                      }
+                    });
+                    
+                    return rows;
+                  })()}
+                  showValues={true}
+                  hideEmptyDash={false}
+                  labelMinWidth={200}
+                  labelMaxPercent={40}
+                  />
+                </Box>
+              </Box>
+            )}
+
+            {/* Data Using Service Signature */}
+            {dataUsingServiceSignatureDecoded && (
+              <Box m={1.5}>
+                <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
+                  {t('signedAgreements.signatures.dataUsingServiceSignature')}
+                </Typography>
+                <Box sx={{ marginTop: '16px' }}>
+                  <AttributeTable
+                  rows={(() => {
+                    const excludedKeys = ["exp", "iat", "iss", "jti", "nbf", "sub", "status", "cnf", "kb", "vct"];
+                    const decoded = dataUsingServiceSignatureDecoded;
+                    const rows: AttributeRow[] = [];
+                    
+                    Object.keys(decoded).forEach((key) => {
+                      if (!excludedKeys.includes(key)) {
+                        const value = decoded[key];
+                        // Check if value is a URL
+                        const isUrl = typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
+                        // Convert value to string for display
+                        const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value);
+                        rows.push({
+                          label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                          value: displayValue,
+                          tooltip: null,
+                          description: '',
+                          href: isUrl ? displayValue : undefined
+                        });
+                      }
+                    });
+                    
+                    return rows;
+                  })()}
+                  showValues={true}
+                  hideEmptyDash={false}
+                  labelMinWidth={200}
+                  labelMaxPercent={40}
+                  />
+                </Box>
+              </Box>
+            )}
         
           </Box>
           <Box className="modal-footer" sx={{
