@@ -8,11 +8,13 @@ import { CaretRight as CaretRightIcon } from "@phosphor-icons/react";
 interface Props {
   selectedData: any;
   handleCloseViewDDAModal: (open: boolean) => void;
+  dataSourceSignatureDecoded?: any;
+  dataUsingServiceSignatureDecoded?: any;
 }
 
 export const DDAPolicyCard = (props: Props) => {
   const t = useTranslations();
-  const { selectedData, handleCloseViewDDAModal } = props;
+  const { selectedData, handleCloseViewDDAModal, dataSourceSignatureDecoded, dataUsingServiceSignatureDecoded } = props;
   const [openDataAgreementPolicyModal, setOpenDataAgreementPolicyModal] = useState(false);
 
   return (
@@ -46,6 +48,8 @@ export const DDAPolicyCard = (props: Props) => {
         headerText={t("dataAgreements.dataDisclosureAgreementPolicy")}
         selectedData={selectedData}
         handleCloseViewDDAModal={handleCloseViewDDAModal}
+        dataSourceSignatureDecoded={dataSourceSignatureDecoded}
+        dataUsingServiceSignatureDecoded={dataUsingServiceSignatureDecoded}
       />
     </>
   );

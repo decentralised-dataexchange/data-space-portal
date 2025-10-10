@@ -165,17 +165,29 @@
     "subtitle": "Näytä ja hallitse organisaatiosi allekirjoitettuja tietojen luovutussopimuksia.",
     "table": {
       "headers": {
+        "dataSource": "Tietolähde",
+        "ddaRecordId": "DDA-tietueen tunniste",
         "id": "Tunniste",
         "usagePurpose": "Käyttötarkoitus",
         "version": "Versio",
         "agreementEvent": "Sopimustapahtuma",
         "dataSourceSignature": "Tietolähteen allekirjoitus",
         "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
-        "lastModified": "Viimeksi muokattu"
+        "lastModified": "Viimeksi muokattu",
+        "lastModifiedDate": "Viimeksi muokattu päivämäärä"
       },
       "noData": "Ei allekirjoitettuja sopimuksia"
     },
-    "tooltipView": "Näytä allekirjoitettu sopimus"
+    "tooltipView": "Näytä allekirjoitettu sopimus",
+    "viewModal": {
+      "title": "Näytä allekirjoitettu sopimus"
+    },
+    "signatures": {
+      "dataSource": "Tietolähde",
+      "dataUsingService": "Tietoja käyttävä palvelu",
+      "dataSourceSignature": "Tietolähteen allekirjoitus",
+      "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus"
+    }
   },
   "gettingStarted": {
     "public": "Julkinen",

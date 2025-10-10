@@ -57,16 +57,47 @@ export interface DDARecordTemplateRevision {
   successorId: string;
   serializedHash: string;
   serializedSnapshot: string; // JSON string
+  organisationId: string;
+}
+
+export interface DDASignatureDecoded {
+  cnf?: {
+    jwk?: {
+      x?: string;
+      y?: string;
+      crv?: string;
+      kty?: string;
+    };
+  };
+  exp?: number;
+  iat?: number;
+  iss?: string;
+  jti?: string;
+  nbf?: number;
+  sub?: string;
+  vct?: string;
+  name?: string;
+  status?: {
+    status_list?: {
+      idx?: number;
+      uri?: string;
+    };
+  };
+  location?: string;
+  client_uri?: string;
+  industry_sector?: string;
+  [key: string]: any; // Allow additional properties
 }
 
 export interface DDASignature {
   id: string;
   payload: string;
   signature: string;
+  signatureDecoded?: DDASignatureDecoded | null;
   verificationMethod: string;
   verificationPayload: string;
   verificationPayloadHash: string;
-  verificationArtifact: string;
+  verificationArtifact?: string;
   verificationSignedBy: string;
   verificationSignedAs: string;
   verificationJwsHeader: string;
@@ -77,25 +108,29 @@ export interface DDASignature {
 }
 
 export interface DataDisclosureAgreementRecord {
-  canonicalId: string;
-  dataDisclosureAgreementTemplateRevision: DDARecordTemplateRevision;
-  dataSourceSignature: DDASignature;
-  dataUsingServiceSignature: DDASignature;
+  canonicalId?: string;
+  dataDisclosureAgreementTemplateRevision?: DDARecordTemplateRevision;
+  dataSourceSignature?: DDASignature;
+  dataUsingServiceSignature?: DDASignature;
   optIn: boolean;
   timestamp: string;
+  organisationId?: string;
+  organisationRole?: string;
+  isDeleted?: boolean;
+  id?: string;
 }
 
 export interface SignedAgreementRecord {
   id: string;
   state: 'unsigned' | 'signed';
-  organisationId: string; // serializer returns FK id
   dataDisclosureAgreementRecord: DataDisclosureAgreementRecord;
-  dataDisclosureAgreementTemplateId: string;
-  dataDisclosureAgreementTemplateRevisionId: string;
-  dataDisclosureAgreementRecordId: string;
-  optIn: boolean;
-  createdAt: string;
-  updatedAt: string;
+  organisationId?: string; // serializer returns FK id
+  dataDisclosureAgreementTemplateId?: string;
+  dataDisclosureAgreementTemplateRevisionId?: string;
+  dataDisclosureAgreementRecordId?: string;
+  optIn?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface SignedAgreementsListResponse {

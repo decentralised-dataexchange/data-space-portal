@@ -161,17 +161,29 @@
     "subtitle": "Visa och hantera din organisations signerade datautlämningsavtal.",
     "table": {
       "headers": {
+        "dataSource": "Datakälla",
+        "ddaRecordId": "DDA-post-ID",
         "id": "ID",
         "usagePurpose": "Användningssyfte",
         "version": "Version",
         "agreementEvent": "Avtalshändelse",
         "dataSourceSignature": "Datakällans signatur",
         "dataUsingServiceSignature": "Datakonsumentens signatur",
-        "lastModified": "Senast ändrad"
+        "lastModified": "Senast ändrad",
+        "lastModifiedDate": "Senast ändrad datum"
       },
       "noData": "Inga signerade avtal att visa"
     },
-    "tooltipView": "Visa signerat avtal"
+    "tooltipView": "Visa signerat avtal",
+    "viewModal": {
+      "title": "Visa signerat avtal"
+    },
+    "signatures": {
+      "dataSource": "Datakälla",
+      "dataUsingService": "Datakonsument",
+      "dataSourceSignature": "Datakällans signatur",
+      "dataUsingServiceSignature": "Datakonsumentens signatur"
+    }
   },
   "gettingStarted": {
     "public": "Offentlig",
