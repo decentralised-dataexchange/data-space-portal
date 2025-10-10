@@ -40,9 +40,9 @@ export const MainAppBarMenu = (props: Props) => {
   const orgFromRedux = (organisationDetails as any)?.organisation || organisationDetails || {};
   const orgName = orgFromHook?.name || orgFromRedux?.name || 'Organisation';
   const orgLocation = orgFromHook?.location || orgFromRedux?.location || 'Location';
-  // Prefer user avatar over organization logo for the navbar avatar
-  const localUserAvatar = LocalStorageService.getUserProfilePic();
-  const userAvatarUrl = (adminDetails as any)?.avatarImageUrl || localUserAvatar || defaultLogoImg;
+  // Use organization logo instead of user avatar for the navbar avatar
+  const orgLogoFromImages = orgImages?.logo;
+  const orgLogoUrl = orgLogoFromImages || orgFromHook?.logoUrl || orgFromRedux?.logoUrl || defaultLogoImg;
 
 
   const handleClickLogOut = () => {
@@ -76,8 +76,8 @@ export const MainAppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={userAvatarUrl}
-            alt={`User avatar`}
+            src={orgLogoUrl}
+            alt={`Organization logo`}
           />
         </IconButton>
       </Box>
@@ -106,8 +106,8 @@ export const MainAppBarMenu = (props: Props) => {
         >
           <img
             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-            src={userAvatarUrl}
-            alt={`User avatar`}
+            src={orgLogoUrl}
+            alt={`Organization logo`}
           />
           <Typography
             variant="body2"
