@@ -5,8 +5,6 @@ import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 import { defaultLogoImg } from "@/constants/defalultImages";
 import { LocalStorageService } from "@/utils/localStorageService";
-import { GenericImageUpload } from "@/components/common/ImageUpload";
-import { useUpdateAdminAvatar } from "@/custom-hooks/manageAdmin";
 
 
 type Props = {
@@ -21,24 +19,9 @@ type Props = {
 const ManageAdminProfilePicUpload = (props: Props) => {
   const {
     editMode,
-    setFormDataForImageUpload,
     previewImage,
-    setPreviewImage,
     logoImageBase64
   } = props;
-
-  const updateAdminAvatarMutation = useUpdateAdminAvatar();
-
-  // Image selection and upload are handled by GenericImageUpload
-
-  const handleImageUpdate = async (file: File, imageBase64: string) => {
-    const formData = new FormData();
-    formData.append("avatarimage", file);
-    await updateAdminAvatarMutation.mutateAsync(formData);
-    setPreviewImage(imageBase64);
-    LocalStorageService.updateProfilePic(imageBase64);
-    setFormDataForImageUpload("");
-  };
 
   // Use MUI breakpoints instead of getDevice
   const theme = useTheme();
@@ -88,31 +71,7 @@ const ManageAdminProfilePicUpload = (props: Props) => {
           backgroundColor: "#fff",
         }}
       />
-      <GenericImageUpload
-        editMode={editMode}
-        imageUrl={baseAvatar}
-        defaultImage={defaultLogoImg}
-        onImageUpdate={handleImageUpdate}
-        aspectRatio={1}
-        minWidth={256}
-        minHeight={256}
-        recommendedSize="Recommended size is 256x256px"
-        outputWidth={256}
-        outputHeight={256}
-        outputQuality={0.82}
-        modalSize="medium"
-        containerStyle={{
-          position: 'absolute',
-          top: `${whiteRing}px`,
-          left: `${whiteRing}px`,
-          width: `${innerSize}px`,
-          height: `${innerSize}px`,
-          pointerEvents: editMode ? 'auto' : 'none'
-        }}
-        imageStyle={{ display: 'none' }}
-        iconPosition={{ top: `${iconOffset}px`, right: `${iconOffset}px` }}
-        acceptedFileTypes="image/jpeg,image/jpg,image/png"
-      />
+      {/* Avatar image upload is disabled - pencil icon hidden */}
     </Box>
   );
 };
