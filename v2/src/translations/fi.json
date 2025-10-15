@@ -171,6 +171,7 @@
         "usagePurpose": "Käyttötarkoitus",
         "version": "Versio",
         "agreementEvent": "Sopimustapahtuma",
+        "signatureStatus": "Signatuuritila",
         "dataSourceSignature": "Tietolähteen allekirjoitus",
         "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
         "lastModified": "Viimeksi muokattu",
@@ -186,7 +187,9 @@
       "dataSource": "Tietolähde",
       "dataUsingService": "Tietoja käyttävä palvelu",
       "dataSourceSignature": "Tietolähteen allekirjoitus",
-      "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus"
+      "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
+      "mutuallySigned": "Molemmin puolin allekirjoitettu",
+      "dataSourceSigned": "Tietolähde allekirjoitettu"
     }
   },
   "gettingStarted": {

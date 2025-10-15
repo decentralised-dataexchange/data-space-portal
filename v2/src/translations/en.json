@@ -131,6 +131,7 @@
         "usagePurpose": "Usage Purpose",
         "version": "Version",
         "agreementEvent": "Agreement Event",
+        "signatureStatus": "Signature Status",
         "dataSourceSignature": "Data Source Signature",
         "dataUsingServiceSignature": "Data Using Service Signature",
         "lastModified": "Last Modified",
@@ -146,7 +147,9 @@
       "dataSource": "Data Source",
       "dataUsingService": "Data Using Service",
       "dataSourceSignature": "Data Source Signature",
-      "dataUsingServiceSignature": "Data Using Service Signature"
+      "dataUsingServiceSignature": "Data Using Service Signature",
+      "mutuallySigned": "Mutually Signed",
+      "dataSourceSigned": "Data Source Signed"
     }
   },
   "home": {
