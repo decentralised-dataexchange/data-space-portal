@@ -167,6 +167,7 @@
         "usagePurpose": "Användningssyfte",
         "version": "Version",
         "agreementEvent": "Avtalshändelse",
+        "signatureStatus": "Signaturstatus",
         "dataSourceSignature": "Datakällans signatur",
         "dataUsingServiceSignature": "Datakonsumentens signatur",
         "lastModified": "Senast ändrad",
