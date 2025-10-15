@@ -130,7 +130,7 @@ export const apiService = {
   // Public sectors (external service)
   getSectorsPublic: async (): Promise<import('@/types/onboarding').SectorsResponse> => {
     // Use absolute URL to bypass baseURL
-    const url = 'https://api.nxd.foundation/onboard/sectors';
+    const url = 'https://demo-api.nxd.foundation/onboard/sectors';
     return api.get<import('@/types/onboarding').SectorsResponse>(url)
       .then(res => res.data);
   },

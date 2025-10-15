@@ -1,1 +1,1 @@
-export const baseURL = "https://api.nxd.foundation";
+export const baseURL = "https://demo-api.nxd.foundation";
