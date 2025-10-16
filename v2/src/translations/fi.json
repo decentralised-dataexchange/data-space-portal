@@ -189,7 +189,9 @@
       "dataSourceSignature": "Tietolähteen allekirjoitus",
       "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
       "mutuallySigned": "Molemmin puolin allekirjoitettu",
-      "dataSourceSigned": "Tietolähde allekirjoitettu"
+      "dataSourceSigned": "Tietolähde allekirjoitettu",
+      "dataUsingServiceSigned": "Tietoja käyttävä palvelu allekirjoitettu",
+      "dataUsingServiceUnsigned": "Tietoja käyttävä palvelu allekirjoittamaton"
     }
   },
   "gettingStarted": {
@@ -448,6 +450,7 @@
           "agreementEvent": "Sopimustapahtuma",
           "dataSourceSignature": "Tietolähteen allekirjoitus",
           "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
+          "signatureStatus": "Allekirjoitusstatus",
           "lastModified": "Viimeksi muokattu",
           "actions": "Toiminnot",
           "status": "Tila",
@@ -457,6 +460,12 @@
           "revisionHash": "Revision tiiviste"
         },
         "noData": "Ei historiatietoja näytettävänä"
+      },
+      "signatures": {
+        "mutuallySigned": "Molemmin puolin allekirjoitettu",
+        "dataSourceSigned": "Tietolähde allekirjoitettu",
+        "dataUsingServiceSigned": "Tietoja käyttävä palvelu allekirjoitettu",
+        "dataUsingServiceUnsigned": "Tietoja käyttävä palvelu allekirjoittamaton"
       }
     },
     "pageDescription": "Hallitse organisaatiosi tietojen luovutussopimuksia (DDA).",

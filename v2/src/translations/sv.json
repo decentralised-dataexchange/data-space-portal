@@ -183,7 +183,11 @@
       "dataSource": "Datakälla",
       "dataUsingService": "Datakonsument",
       "dataSourceSignature": "Datakällans signatur",
-      "dataUsingServiceSignature": "Datakonsumentens signatur"
+      "dataUsingServiceSignature": "Datakonsumentens signatur",
+      "mutuallySigned": "Ömsesidigt signerat",
+      "dataSourceSigned": "Datakälla signerad",
+      "dataUsingServiceSigned": "Datakonsument signerad",
+      "dataUsingServiceUnsigned": "Datakonsument osignerad"
     }
   },
   "gettingStarted": {
@@ -440,6 +444,7 @@
           "agreementEvent": "Avtalshändelse",
           "dataSourceSignature": "Datakällans signatur",
           "dataUsingServiceSignature": "Datakonsumentens signatur",
+          "signatureStatus": "Signaturstatus",
           "lastModified": "Senast ändrad",
           "actions": "Åtgärder",
           "status": "Status",
@@ -449,6 +454,12 @@
           "revisionHash": "Revisionshash"
         },
         "noData": "Inga historikposter att visa"
+      },
+      "signatures": {
+        "mutuallySigned": "Ömsesidigt signerat",
+        "dataSourceSigned": "Datakälla signerad",
+        "dataUsingServiceSigned": "Datakonsument signerad",
+        "dataUsingServiceUnsigned": "Datakonsument osignerad"
       }
     }
   },

@@ -156,7 +156,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         {/* Data Source Signature */}
                         <Tooltip
-                          title={copied.key === String(row?.id || rec?.id) + '-ds' ? t('common.copied') : t('signedAgreements.signatures.dataSource')}
+                          title={copied.key === String(row?.id || rec?.id) + '-ds' ? t('common.copied') : t('signedAgreements.signatures.dataSourceSigned')}
                           placement="top"
                         >
                           <span style={{ cursor: dsSig ? 'pointer' : 'not-allowed' }}>
@@ -173,7 +173,13 @@ const SignedAgreementsTable: React.FC<Props> = ({
                         </Tooltip>
                         {/* Data Using Service Signature */}
                         <Tooltip
-                          title={copied.key === String(row?.id || rec?.id) + '-dus' ? t('common.copied') : (dusSig ? t('signedAgreements.signatures.dataUsingService') : null)}
+                          title={
+                            copied.key === String(row?.id || rec?.id) + '-dus'
+                              ? t('common.copied')
+                              : (dusSig
+                                  ? t('signedAgreements.signatures.dataUsingServiceSigned')
+                                  : t('signedAgreements.signatures.dataUsingServiceUnsigned'))
+                          }
                           placement="top"
                         >
                           <span style={{ cursor: dusSig ? 'pointer' : 'not-allowed' }}>
