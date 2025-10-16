@@ -137,11 +137,17 @@
         "lastModified": "Last Modified",
         "lastModifiedDate": "Last Modified Date"
       },
-      "noData": "No signed agreements to display"
+      "noData": "No signed agreements to display",
+      "tooltips": {
+        "viewJson": "View Signed Agreement Record"
+      }
     },
     "tooltipView": "View Signed Agreement",
     "viewModal": {
       "title": "View Signed Agreement"
+    },
+    "jsonViewer": {
+      "title": "View Signed Agreement Record"
     },
     "signatures": {
       "dataSource": "Data Source",
