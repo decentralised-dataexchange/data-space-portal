@@ -5,8 +5,7 @@ const DataControllerCard = ({ selectedData }) => {
   const dc = selectedData?.dataController || {};
   const rows: AttributeRow[] = [
     { label: "Name", value: String(dc.name ?? "") },
-    { label: "Legal ID", value: String(dc.legalId ?? "") },
-    { label: "URL", value: String(dc.url ?? ""), href: dc.url || undefined },
+    { label: "Policy URL", value: String(dc.url ?? ""), href: dc.url || undefined },
     { label: "Industry Sector", value: String(dc.industrySector ?? "") },
   ];
   return (

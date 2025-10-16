@@ -395,7 +395,9 @@
       "industrySector": "Toimiala",
       "geographicRestriction": "Maantieteellinen rajoitus",
       "storageLocation": "Säilytyspaikka",
-      "agreementPeriodYears": "Sopimuskausi (vuotta)"
+      "agreementPeriodYears": "Sopimuskausi (vuotta)",
+      "dataControllerTitle": "Rekisterinpitäjä",
+      "dataSharingRestrictionsTitle": "Tietojen jakamisen rajoitukset"
     },
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {

@@ -56,6 +56,9 @@ export default function SignedAgreementsPage() {
       // Pass signature decoded data for signed agreements modal
       dataSourceSignatureDecoded: r?.dataSourceSignature?.signatureDecoded,
       dataUsingServiceSignatureDecoded: r?.dataUsingServiceSignature?.signatureDecoded,
+      // Pass timestamps explicitly for signature cards
+      dataSourceSignature: r?.dataSourceSignature ? { timestamp: r?.dataSourceSignature?.timestamp } : undefined,
+      dataUsingServiceSignature: r?.dataUsingServiceSignature ? { timestamp: r?.dataUsingServiceSignature?.timestamp } : undefined,
     };
   };
 

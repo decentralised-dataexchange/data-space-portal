@@ -361,7 +361,9 @@
       "industrySector": "Bransch",
       "geographicRestriction": "Geografisk begränsning",
       "storageLocation": "Lagringsplats",
-      "agreementPeriodYears": "Avtalsperiod (år)"
+      "agreementPeriodYears": "Avtalsperiod (år)",
+      "dataControllerTitle": "Datakontrollant",
+      "dataSharingRestrictionsTitle": "Begränsningar för datadelning"
     },
     "deleteModal": {
       "title": "Ta bort dataavtal",

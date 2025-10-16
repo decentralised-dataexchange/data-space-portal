@@ -104,7 +104,6 @@ export const useSignup = () => {
 
   const { mutate, isPending, isSuccess, error, data } = useMutation({
     mutationFn: (payload: SignupPayload) => {
-      console.log("payload", payload);
       return apiService.signup(payload);
     },
     onSuccess: () => {

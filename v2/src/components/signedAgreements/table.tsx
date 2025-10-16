@@ -119,7 +119,6 @@ const SignedAgreementsTable: React.FC<Props> = ({
         <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
           {rows.length > 0 ? (
             rows.map((row: any) => {
-              console.log("row", row);
               // Support both SignedAgreementRecord (with nested dataDisclosureAgreementRecord)
               // and flat DataDisclosureAgreementRecord items
               const rec = row?.dataDisclosureAgreementRecord || row || {};
