@@ -42,12 +42,42 @@ type HistoryRow = {
   optIn?: boolean;
 };
 
+type SelectedDDAData = {
+  purpose?: string;
+  purposeDescription?: string;
+  templateId?: string;
+  version?: string;
+  lawfulBasis?: string;
+  dataAttributes?: Array<{
+    name?: string;
+    attributeName?: string;
+    description?: string;
+    attributeDescription?: string;
+  }>;
+  personalData?: Array<{
+    name?: string;
+    attributeName?: string;
+    description?: string;
+    attributeDescription?: string;
+  }>;
+  dataController?: {
+    name?: string;
+    industrySector?: string;
+    [k: string]: unknown;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+  // Optional decoded signatures used by embedded policy card
+  dataSourceSignatureDecoded?: unknown;
+  dataUsingServiceSignatureDecoded?: unknown;
+};
+
 export default function DDAHistoryClient({ id }: { id: string }) {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const t = useTranslations();
   const [openView, setOpenView] = React.useState(false);
-  const [selected, setSelected] = React.useState<any | null>(null);
+  const [selected, setSelected] = React.useState<SelectedDDAData | null>(null);
   const [copied, setCopied] = React.useState<{ key: string | null }>({ key: null });
 
   const handleCopy = async (text: string, key: string) => {
@@ -58,32 +88,156 @@ export default function DDAHistoryClient({ id }: { id: string }) {
     } catch {}
   };
 
-  const transformForModal = (raw: unknown): any => {
-    const o = isObj(raw) ? raw : {};
-    const snapshotStr = (o["serializedSnapshot"] || o["snapshot"] || o["objectData"] ||
-      (isObj(o["dataAgreement"]) && (o["dataAgreement"] as Record<string, unknown>)["serializedSnapshot"]) ||
-      (isObj(o["dataDisclosureAgreement"]) && (o["dataDisclosureAgreement"] as Record<string, unknown>)["serializedSnapshot"])) as string | undefined;
-    const snap = tryParseJSON(snapshotStr) || {};
+  const transformForModal = (raw: unknown): SelectedDDAData => {
+    const root: Record<string, unknown> = isObj(raw) ? raw : {};
 
-    // Extract from snapshot first, then from object
-    const obj: any = {
-      purpose: (snap["purpose"] || o["purpose"]) as string | undefined,
-      purposeDescription: (snap["purposeDescription"] || snap["description"] || (o as any)["purposeDescription"] || (o as any)["description"]) as string | undefined,
-      templateId: (
-        (o as any)?.dataDisclosureAgreementTemplateId ||
-        snap?.templateId ||
-        (snap as any)?.templateID ||
-        (o as any)?.templateId || (o as any)?.templateID
-      ) as string | undefined,
-      version: (snap["version"] || snap["templateVersion"] || (o as any)["version"] || (o as any)["templateVersion"]) as string | undefined,
-      lawfulBasis: (snap["lawfulBasis"] || (o as any)["lawfulBasis"]) as string | undefined,
-      dataAttributes: Array.isArray((snap as any)?.dataAttributes) ? (snap as any).dataAttributes : undefined,
-      personalData: Array.isArray((snap as any)?.personalData) ? (snap as any).personalData : [],
-      dataController: (snap as any)?.dataController || (o as any)?.dataController || {},
-      createdAt: (o as any)?.createdAt,
-      updatedAt: (o as any)?.updatedAt,
+    const sources: Array<Record<string, unknown>> = [root];
+    const addIfObj = (v: unknown) => {
+      if (isObj(v)) sources.push(v as Record<string, unknown>);
     };
-    return obj;
+
+    const snapshotCandidates: Array<string | Record<string, unknown> | undefined> = [
+      root["serializedSnapshot"] as string | undefined,
+      root["snapshot"] as string | undefined,
+      root["objectData"] as string | undefined,
+    ];
+
+    // Known direct containers
+    for (const key of ["dataAgreement", "dataDisclosureAgreement", "dataDisclosureAgreementTemplateRevision"]) {
+      const cont = root[key];
+      if (isObj(cont)) {
+        const obj = cont as Record<string, unknown>;
+        sources.push(obj);
+        snapshotCandidates.push(obj["serializedSnapshot"] as string | undefined);
+        snapshotCandidates.push(obj["objectData"] as string | undefined);
+      }
+    }
+
+    // dataDisclosureAgreementRecord -> dataDisclosureAgreementTemplateRevision
+    const record = root["dataDisclosureAgreementRecord"];
+    if (isObj(record)) {
+      const recObj = record as Record<string, unknown>;
+      sources.push(recObj);
+      snapshotCandidates.push(recObj["serializedSnapshot"] as string | undefined);
+      snapshotCandidates.push(recObj["objectData"] as string | undefined);
+      const rev = recObj["dataDisclosureAgreementTemplateRevision"];
+      if (isObj(rev)) {
+        const revObj = rev as Record<string, unknown>;
+        sources.push(revObj);
+        snapshotCandidates.push(revObj["serializedSnapshot"] as string | undefined);
+        snapshotCandidates.push(revObj["objectData"] as string | undefined);
+      }
+    }
+
+    const parsedSnapshots: Array<Record<string, unknown>> = [];
+    for (const cand of snapshotCandidates) {
+      if (typeof cand === "string") {
+        const parsed = tryParseJSON(cand);
+        if (parsed) {
+          parsedSnapshots.push(parsed);
+          const inner = parsed["objectData"];
+          if (typeof inner === "string") {
+            const innerParsed = tryParseJSON(inner);
+            if (innerParsed) parsedSnapshots.push(innerParsed);
+          }
+          const innerSerialized = parsed["serializedSnapshot"];
+          if (typeof innerSerialized === "string") {
+            const inner2 = tryParseJSON(innerSerialized);
+            if (inner2) parsedSnapshots.push(inner2);
+          }
+        }
+      } else if (isObj(cand)) {
+        parsedSnapshots.push(cand as Record<string, unknown>);
+      }
+    }
+    for (const ps of parsedSnapshots) addIfObj(ps);
+
+    const pickString = (keys: string[]): string | undefined => {
+      for (const src of sources) {
+        for (const k of keys) {
+          const v = src[k];
+          if ((typeof v === "string" || typeof v === "number") && String(v).trim() !== "") {
+            return String(v);
+          }
+        }
+      }
+      return undefined;
+    };
+
+    const pickObject = (key: string): Record<string, unknown> | undefined => {
+      for (const src of sources) {
+        const v = src[key];
+        if (isObj(v)) return v as Record<string, unknown>;
+      }
+      return undefined;
+    };
+
+    const extractAttributes = (): SelectedDDAData["dataAttributes"] => {
+      for (const src of sources) {
+        const v = (src as Record<string, unknown>)["dataAttributes"];
+        if (Array.isArray(v)) {
+          const out: NonNullable<SelectedDDAData["dataAttributes"]> = [];
+          for (const item of v) {
+            if (isObj(item)) {
+              const obj = item as Record<string, unknown>;
+              out.push({
+                name: typeof obj["name"] === "string" ? (obj["name"] as string) : undefined,
+                attributeName: typeof obj["attributeName"] === "string" ? (obj["attributeName"] as string) : undefined,
+                description: typeof obj["description"] === "string" ? (obj["description"] as string) : undefined,
+                attributeDescription: typeof obj["attributeDescription"] === "string" ? (obj["attributeDescription"] as string) : undefined,
+              });
+            }
+          }
+          if (out.length > 0) return out;
+        }
+      }
+      return undefined;
+    };
+
+    const extractPersonalData = (): SelectedDDAData["personalData"] => {
+      for (const src of sources) {
+        const v = (src as Record<string, unknown>)["personalData"];
+        if (Array.isArray(v)) {
+          const out: NonNullable<SelectedDDAData["personalData"]> = [];
+          for (const item of v) {
+            if (isObj(item)) {
+              const obj = item as Record<string, unknown>;
+              out.push({
+                name: typeof obj["name"] === "string" ? (obj["name"] as string) : undefined,
+                attributeName: typeof obj["attributeName"] === "string" ? (obj["attributeName"] as string) : undefined,
+                description: typeof obj["description"] === "string" ? (obj["description"] as string) : undefined,
+                attributeDescription: typeof obj["attributeDescription"] === "string" ? (obj["attributeDescription"] as string) : undefined,
+              });
+            }
+          }
+          if (out.length > 0) return out;
+        }
+      }
+      return [];
+    };
+
+    const snapPurpose = pickString(["purpose"]) || pickString(["usagePurpose"]);
+    const snapPurposeDesc = pickString(["purposeDescription", "description"]);
+    const templateId = pickString(["dataDisclosureAgreementTemplateId", "templateId", "templateID"]);
+    const version = pickString(["version", "templateVersion", "dataAgreementVersion"]);
+    const lawfulBasis = pickString(["lawfulBasis"]);
+    const dataController = pickObject("dataController");
+
+    const dataAttributes = extractAttributes();
+    const personalData = extractPersonalData();
+
+    return {
+      purpose: snapPurpose,
+      purposeDescription: snapPurposeDesc,
+      templateId,
+      version,
+      lawfulBasis,
+      dataAttributes,
+      personalData,
+      dataController: dataController as SelectedDDAData["dataController"],
+      createdAt: pickString(["createdAt", "created_at"]),
+      updatedAt: pickString(["updatedAt", "updated_at"]),
+    };
   };
 
   const { dataSourceItems } = useGetDataSourceList();
