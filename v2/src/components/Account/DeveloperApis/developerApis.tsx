@@ -5,6 +5,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
 import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal, useSoftwareStatementRequestRefocus } from "@/custom-hooks/developerApis";
+import { SoftwareStatementRecord } from "@/types/softwareStatement";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
@@ -101,9 +102,14 @@ export default function DeveloperAPIs() {
   const { data: logoImageBase64 } = useGetLogoImage();
 
   // Derived title from VCT, matching ViewCredentials behavior
-  const ssObj = softwareStatementRes?.softwareStatement as any | undefined;
-  const vctRaw = ssObj?.credential?.vct as string | undefined;
+  const ssRecord = softwareStatementRes?.softwareStatement as SoftwareStatementRecord | undefined;
+  const hasCredential = Boolean(ssRecord && ssRecord.credential);
+  const vctRaw = ssRecord?.credential?.vct;
   const orgIdentity = useGetOrgIdentity(orgData?.id);
+  // Safely extract claims and read logo/cover urls when present
+  const claims = ssRecord?.credential?.claims as ({ client_uri?: string; logo_url?: string; cover_url?: string } | undefined);
+  const ssLogoUrl = claims?.logo_url ?? '';
+  const ssCoverUrl = claims?.cover_url ?? '';
   const vctTitle = useMemo(() => {
     const vct = vctRaw;
     if (!vct) return t('developerAPIs.softwareStatementTitle');
@@ -120,11 +126,11 @@ export default function DeveloperAPIs() {
 
   // Build rows for the common AttributeTable: only client_uri as per spec
   const ssRows = useMemo<AttributeRow[]>(() => {
-    const clientUri = (ssObj?.credential?.claims as any)?.client_uri as string | undefined;
+    const clientUri = claims?.client_uri;
     const rows: AttributeRow[] = [];
     rows.push({ label: t('developerAPIs.softwareStatementClientUriLabel'), value: clientUri || '', href: clientUri || undefined, copy: true });
     return rows;
-  }, [ssObj, t]);
+  }, [claims?.client_uri, t]);
 
   // Set the OpenAPI URL when organization data is loaded
   useEffect(() => {
@@ -1053,8 +1059,8 @@ export default function DeveloperAPIs() {
         title={vctTitle}
         rows={[
           ...ssRows,
-          ...(ssObj?.createdAt ? [{ label: '', value: ssObj.createdAt as any, key: '__issued' } as any] : []),
-          ...(ssObj?.updatedAt ? [{ label: '', value: ssObj.updatedAt as any, key: '__expiry' } as any] : []),
+          ...(typeof ssRecord?.createdAt === 'number' ? [{ label: '', value: ssRecord.createdAt as number, key: '__issued' } as any] : []),
+          ...(typeof ssRecord?.updatedAt === 'number' ? [{ label: '', value: ssRecord.updatedAt as number, key: '__expiry' } as any] : []),
         ]}
         showValues={ssShowValues}
         setShowValues={setSsShowValues}
@@ -1064,8 +1070,8 @@ export default function DeveloperAPIs() {
         trusted={orgVerified}
         isDeleteEnabled={!isDeletingSS}
         onDelete={() => setOpenDeleteSSModal(true)}
-        coverImageBase64={coverImageBase64 || ''}
-        logoImageBase64={logoImageBase64 || ''}
+        coverImageBase64={ssCoverUrl || coverImageBase64 || ''}
+        logoImageBase64={ssLogoUrl || logoImageBase64 || ''}
       />
 
       <DeleteSoftwareStatementModal

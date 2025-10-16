@@ -29,6 +29,8 @@ export interface SoftwareStatementDecoded {
     }
   };
   client_uri?: string;
+  logo_url?: string;
+  cover_url?: string;
 }
 
 export interface B2BConnectionRecord {

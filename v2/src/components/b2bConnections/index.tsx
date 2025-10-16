@@ -73,28 +73,32 @@ export default function B2BConnections() {
   };
 
   const openMySoftwareStatement = (item: B2BConnectionItem) => {
-    const dec = item?.b2bConnectionRecord?.mySoftwareStatementDecoded;
+    const dec = item?.b2bConnectionRecord?.mySoftwareStatementDecoded as any;
     setSsRows(buildSoftwareStatementRows(dec));
     setSsTitle(humanizeVct(dec?.vct));
     // Show our organisation name from organisation details
     setSsOrgName((orgDetails as any)?.organisation?.name || '');
     setSsShowTrustedBadge(true);
-    setSsCoverImage(coverImageBase64 || defaultCoverImage);
-    setSsLogoImage(logoImageBase64 || defaultLogoImg);
+    const decCover = (dec?.cover_url as string) || '';
+    const decLogo = (dec?.logo_url as string) || '';
+    setSsCoverImage(decCover || coverImageBase64 || defaultCoverImage);
+    setSsLogoImage(decLogo || logoImageBase64 || defaultLogoImg);
     setSsShowValues(false);
     setSsOpen(true);
   };
 
   const openTheirSoftwareStatement = (item: B2BConnectionItem) => {
-    const dec = item?.b2bConnectionRecord?.theirSoftwareStatementDecoded;
+    const dec = item?.b2bConnectionRecord?.theirSoftwareStatementDecoded as any;
     setSsRows(buildSoftwareStatementRows(dec));
     setSsTitle(humanizeVct(dec?.vct));
     // For their software statement, show Unknown
     setSsOrgName(t('unknownOrganization'));
     // Hide trusted/untrusted indicator and use default images
     setSsShowTrustedBadge(false);
-    setSsCoverImage(defaultCoverImage);
-    setSsLogoImage(defaultLogoImg);
+    const decCover = (dec?.cover_url as string) || '';
+    const decLogo = (dec?.logo_url as string) || '';
+    setSsCoverImage(decCover || defaultCoverImage);
+    setSsLogoImage(decLogo || defaultLogoImg);
     setSsShowValues(false);
     setSsOpen(true);
   };
