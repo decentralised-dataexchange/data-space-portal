@@ -10,7 +10,10 @@ import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
 import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
-import { Tooltip, Pagination, Box } from "@mui/material";
+import { Tooltip, Pagination, Box, Button } from "@mui/material";
+import IntegrationInstructionsOutlinedIcon from "@mui/icons-material/IntegrationInstructionsOutlined";
+import RightSidebar from "../common/RightSidebar";
+import Editor from "@monaco-editor/react";
 import PaginationControls from "@/components/common/PaginationControls";
 import { getStatus } from "@/utils/dda";
 import { useTranslations } from "next-intl";
@@ -87,6 +90,8 @@ const SignedAgreementsTable: React.FC<Props> = ({
 
   const rows = (tabledata?.dataDisclosureAgreementRecord || []) as any[];
   const [copied, setCopied] = React.useState<{ key: string | null }>(() => ({ key: null }));
+  const [openJson, setOpenJson] = React.useState(false);
+  const [jsonContent, setJsonContent] = React.useState<string>("");
   const handleCopy = async (text: string, key: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -95,6 +100,58 @@ const SignedAgreementsTable: React.FC<Props> = ({
     } catch {}
   };
 
+  const openJsonViewer = (rawRow: any) => {
+    const rec = rawRow?.dataDisclosureAgreementRecord || rawRow || {};
+    try {
+      // Prefer pretty-printing the full record object. If it is a string, parse first.
+      const toShow = typeof rec === 'string' ? JSON.parse(rec) : rec;
+      setJsonContent(JSON.stringify(toShow, null, 2));
+    } catch {
+      // As a fallback, show string form
+      setJsonContent(typeof rec === 'string' ? rec : JSON.stringify(rec));
+    }
+    setOpenJson(true);
+  };
+
+  const headerContent = (
+    <Box sx={{ width: '100%' }}>
+      {/* Reuse generic header styling */}
+      <span style={{ color: '#F3F3F6', fontSize: 16 }}>{t('signedAgreements.jsonViewer.title')}</span>
+    </Box>
+  );
+
+  const footerContent = (
+    <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+      <Button onClick={() => setOpenJson(false)} className="delete-btn" variant="outlined">
+        {t('common.close')}
+      </Button>
+      <Tooltip
+        title={copied.key === 'json' ? t('common.copied') : t('common.copy')}
+        placement="top"
+        open={copied.key === 'json' || undefined}
+        disableHoverListener={copied.key === 'json'}
+        disableFocusListener={copied.key === 'json'}
+        disableTouchListener={copied.key === 'json'}
+      >
+        <span>
+          <Button
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(jsonContent || '');
+                setCopied({ key: 'json' });
+                window.setTimeout(() => setCopied({ key: null }), 1200);
+              } catch {}
+            }}
+            className="delete-btn"
+            variant="outlined"
+          >
+            {t('common.copy')}
+          </Button>
+        </span>
+      </Tooltip>
+    </Box>
+  );
+
   const formatLocalDate = (val?: string) => {
     if (!val) return "";
     const d = new Date(val);
@@ -102,6 +159,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
   };
 
   return (
+    <>
     <TableContainer className="dd-container" sx={{ backgroundColor: 'transparent', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
       <Table size="small" aria-label="signed agreements table">
         <TableHead>
@@ -197,10 +255,15 @@ const SignedAgreementsTable: React.FC<Props> = ({
                     </Box>
                   </StyledTableCell>
                   <StyledTableCell>{formatLocalDate(row?.updatedAt || row?.createdAt)}</StyledTableCell>
-                  <StyledTableCell align="center" sx={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'center' }} style={{ border: 'none' }}>
+                  <StyledTableCell align="center" sx={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'center', gap: 1 }} style={{ border: 'none' }}>
                     <Tooltip title={t("signedAgreements.tooltipView")} placement="top">
                       <IconButton aria-label="view" onClick={() => onView(row)} sx={{ color: '#000' }}>
                         <EyeIcon size={17} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('signedAgreements.table.tooltips.viewJson')} placement="top">
+                      <IconButton aria-label="view-json" onClick={() => openJsonViewer(row)} sx={{ color: '#000' }}>
+                        <IntegrationInstructionsOutlinedIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                   </StyledTableCell>
@@ -237,6 +300,30 @@ const SignedAgreementsTable: React.FC<Props> = ({
         </Box>
       )}
     </TableContainer>
+
+    {/* Right-side modal for JSON viewer */}
+    <RightSidebar
+      open={openJson}
+      onClose={() => setOpenJson(false)}
+      headerContent={headerContent}
+      showBanner={false}
+      footerContent={footerContent}
+      className="drawer-dda"
+      width={580}
+      maxWidth={580}
+    >
+      <Box sx={{ mt: 2 }}>
+        <Editor
+          height="70vh"
+          defaultLanguage="json"
+          language="json"
+          theme="vs-light"
+          value={jsonContent}
+          options={{ readOnly: true, minimap: { enabled: false }, wordWrap: 'on', scrollBeyondLastLine: false }}
+        />
+      </Box>
+    </RightSidebar>
+    </>
   );
 };
 

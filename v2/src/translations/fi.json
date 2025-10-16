@@ -177,11 +177,17 @@
         "lastModified": "Viimeksi muokattu",
         "lastModifiedDate": "Viimeksi muokattu päivämäärä"
       },
-      "noData": "Ei allekirjoitettuja sopimuksia"
+      "noData": "Ei allekirjoitettuja sopimuksia",
+      "tooltips": {
+        "viewJson": "View Signed Agreement Record"
+      }
     },
     "tooltipView": "Näytä allekirjoitettu sopimus",
     "viewModal": {
       "title": "Näytä allekirjoitettu sopimus"
+    },
+    "jsonViewer": {
+      "title": "View Signed Agreement Record"
     },
     "signatures": {
       "dataSource": "Tietolähde",

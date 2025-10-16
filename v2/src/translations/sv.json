@@ -173,11 +173,17 @@
         "lastModified": "Senast ändrad",
         "lastModifiedDate": "Senast ändrad datum"
       },
-      "noData": "Inga signerade avtal att visa"
+      "noData": "Inga signerade avtal att visa",
+      "tooltips": {
+        "viewJson": "View Signed Agreement Record"
+      }
     },
     "tooltipView": "Visa signerat avtal",
     "viewModal": {
       "title": "Visa signerat avtal"
+    },
+    "jsonViewer": {
+      "title": "View Signed Agreement Record"
     },
     "signatures": {
       "dataSource": "Datakälla",
