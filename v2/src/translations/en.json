@@ -350,14 +350,16 @@
     "noListingsAvailable": "No listings available. Click + to add new listing",
     "dataDisclosureAgreementPolicy": "Data Disclosure Agreement Policy",
     "policy": {
-      "lawfulBasis": "Lawful basis of processing",
-      "dataRetentionPeriod": "Data retention period",
+      "lawfulBasis": "Lawful Basis of Processing",
+      "dataRetentionPeriod": "Data Retention Period In Year(s)",
       "policyUrl": "Policy URL",
       "jurisdiction": "Jurisdiction",
-      "industrySector": "Industry sector",
-      "geographicRestriction": "Geographic restriction",
-      "storageLocation": "Storage location",
-      "agreementPeriodYears": "Agreement Period (Years)"
+      "industrySector": "Industry Sector",
+      "geographicRestriction": "Geographic Restriction",
+      "storageLocation": "Storage Location",
+      "agreementPeriodYears": "Agreement Period In Year(s)",
+      "dataControllerTitle": "Data Controller",
+      "dataSharingRestrictionsTitle": "Data Sharing Restrictions"
     },
     "deleteModal": {
       "title": "Delete Data Agreement",

@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Dispatch, SetStateAction } from "react";
 
-import { Drawer, Typography, Button, Box, useTheme } from "@mui/material";
+import { Drawer, Typography, Button, Box, useTheme, Avatar } from "@mui/material";
 
 import { useTranslations } from "next-intl";
 import { CaretLeftIcon, XIcon } from "@phosphor-icons/react";
@@ -53,6 +53,47 @@ export default function DataAgreementPolicyCardModal(props: Props) {
     { label: t('dataAgreements.policy.agreementPeriodYears'), value: String(selectedData?.agreementPeriod ?? "") },
   ];
 
+  const formatLocalDateTime = (val?: string | number): string => {
+    if (val == null || val === "") return "";
+    const d = typeof val === 'number' ? new Date(val) : new Date(String(val));
+    if (isNaN(d.getTime())) return "";
+    const months = [
+      'January','February','March','April','May','June',
+      'July','August','September','October','November','December'
+    ];
+    const day = d.getDate();
+    const suffix = (n: number) => {
+      if (n % 100 >= 11 && n % 100 <= 13) return 'th';
+      switch (n % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    };
+    const hours24 = d.getHours();
+    const hours12 = hours24 % 12 || 12;
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const ampm = hours24 >= 12 ? 'PM' : 'AM';
+    return `${months[d.getMonth()]} ${day}${suffix(day)} ${d.getFullYear()}, ${hours12}:${minutes}${ampm}`;
+  };
+
+  const getSignatureDisplay = (decoded: any) => {
+    if (!decoded) return { name: '', country: '', logoUrl: '', timestamp: undefined as string | number | undefined };
+    const name = decoded?.name || decoded?.organizationName || decoded?.orgName || '';
+    const country = decoded?.country || decoded?.location || decoded?.addressCountry || '';
+    // Prefer snake_case logo_url if present, then common alternates
+    const logoUrl = decoded?.logo_url || decoded?.logoUrl || decoded?.organization_logo_url || decoded?.logo || decoded?.image || '';
+    const timestamp = decoded?.timestamp as string | number | undefined;
+    return { name: String(name || ''), country: String(country || ''), logoUrl: String(logoUrl || ''), timestamp };
+  };
+
+  // Prepare signature card data outside JSX
+  const dsInfo = getSignatureDisplay(props.dataSourceSignatureDecoded);
+  const dusInfo = getSignatureDisplay(props.dataUsingServiceSignatureDecoded);
+  const dsSignedAt = selectedData?.dataSourceSignature?.timestamp ?? dsInfo.timestamp;
+  const dusSignedAt = selectedData?.dataUsingServiceSignature?.timestamp ?? dusInfo.timestamp;
+
   return (
     <React.Fragment>
       <Drawer 
@@ -89,9 +130,15 @@ export default function DataAgreementPolicyCardModal(props: Props) {
 
           <Box className="dd-modal-details" style={{ paddingBottom: "70px", backgroundColor: '#F7F6F6' }}>
             <Box m={1.5}>
+              <Typography variant="subtitle1" sx={{ fontSize: '16px', mb: 1 }}>
+                {t('dataAgreements.policy.dataControllerTitle')}
+              </Typography>
               <DataControllerCard selectedData={selectedData} />
             </Box>
             <Box m={1.5}>
+              <Typography variant="subtitle1" sx={{ fontSize: '16px', mb: 1 }}>
+                {t('dataAgreements.policy.dataSharingRestrictionsTitle')}
+              </Typography>
               <AttributeTable rows={SSIpolicyDetailsForContainer} showValues={true} hideEmptyDash={true} labelMinWidth={200} labelMaxPercent={40} />
             </Box>
 
@@ -101,37 +148,21 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                 <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
                   {t('signedAgreements.signatures.dataSourceSignature')}
                 </Typography>
-                <Box sx={{ marginTop: '16px' }}>
-                  <AttributeTable
-                  rows={(() => {
-                    const excludedKeys = ["exp", "iat", "iss", "jti", "nbf", "sub", "status", "cnf", "kb", "vct"];
-                    const decoded = dataSourceSignatureDecoded;
-                    const rows: AttributeRow[] = [];
-                    
-                    Object.keys(decoded).forEach((key) => {
-                      if (!excludedKeys.includes(key)) {
-                        const value = decoded[key];
-                        // Check if value is a URL
-                        const isUrl = typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
-                        // Convert value to string for display
-                        const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value);
-                        rows.push({
-                          label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                          value: displayValue,
-                          tooltip: null,
-                          description: '',
-                          href: isUrl ? displayValue : undefined
-                        });
-                      }
-                    });
-                    
-                    return rows;
-                  })()}
-                  showValues={true}
-                  hideEmptyDash={false}
-                  labelMinWidth={200}
-                  labelMaxPercent={40}
-                  />
+                <Box sx={{ mt: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, borderRadius: 1, bgcolor: '#FFFFFF', boxShadow: '0px 2px 6px rgba(0,0,0,0.08)', border: '1px solid #DFE0E1' }}>
+                    {dsInfo.logoUrl ? (
+                      <Avatar src={dsInfo.logoUrl} alt={dsInfo.name} sx={{ width: 50, height: 50 }} />
+                    ) : (
+                      <Avatar sx={{ width: 50, height: 50 }}>{(dsInfo.name || '?').slice(0,1).toUpperCase()}</Avatar>
+                    )}
+                    <Box>
+                      <Typography sx={{ fontWeight: 600, lineHeight: 1.2 }}>{dsInfo.name}</Typography>
+                      <Typography sx={{ color: 'text.secondary', fontSize: '0.9rem' }}>{dsInfo.country}</Typography>
+                    </Box>
+                  </Box>
+                  <Typography sx={{ textAlign: 'center', mt: 1.5, color: 'text.secondary', fontSize: '0.9rem' }}>
+                    {t('common.signAction')}: {formatLocalDateTime(dsSignedAt)}
+                  </Typography>
                 </Box>
               </Box>
             )}
@@ -142,37 +173,21 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                 <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
                   {t('signedAgreements.signatures.dataUsingServiceSignature')}
                 </Typography>
-                <Box sx={{ marginTop: '16px' }}>
-                  <AttributeTable
-                  rows={(() => {
-                    const excludedKeys = ["exp", "iat", "iss", "jti", "nbf", "sub", "status", "cnf", "kb", "vct"];
-                    const decoded = dataUsingServiceSignatureDecoded;
-                    const rows: AttributeRow[] = [];
-                    
-                    Object.keys(decoded).forEach((key) => {
-                      if (!excludedKeys.includes(key)) {
-                        const value = decoded[key];
-                        // Check if value is a URL
-                        const isUrl = typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
-                        // Convert value to string for display
-                        const displayValue = typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value);
-                        rows.push({
-                          label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                          value: displayValue,
-                          tooltip: null,
-                          description: '',
-                          href: isUrl ? displayValue : undefined
-                        });
-                      }
-                    });
-                    
-                    return rows;
-                  })()}
-                  showValues={true}
-                  hideEmptyDash={false}
-                  labelMinWidth={200}
-                  labelMaxPercent={40}
-                  />
+                <Box sx={{ mt: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, borderRadius: 1, bgcolor: '#FFFFFF', boxShadow: '0px 2px 6px rgba(0,0,0,0.08)', border: '1px solid #DFE0E1' }}>
+                    {dusInfo.logoUrl ? (
+                      <Avatar src={dusInfo.logoUrl} alt={dusInfo.name} sx={{ width: 50, height: 50 }} />
+                    ) : (
+                      <Avatar sx={{ width: 50, height: 50 }}>{(dusInfo.name || '?').slice(0,1).toUpperCase()}</Avatar>
+                    )}
+                    <Box>
+                      <Typography sx={{ fontWeight: 600, lineHeight: 1.2 }}>{dusInfo.name}</Typography>
+                      <Typography sx={{ color: 'text.secondary', fontSize: '0.9rem' }}>{dusInfo.country}</Typography>
+                    </Box>
+                  </Box>
+                  <Typography sx={{ textAlign: 'center', mt: 1.5, color: 'text.secondary', fontSize: '0.9rem' }}>
+                    {t('common.signAction')}: {formatLocalDateTime(dusSignedAt)}
+                  </Typography>
                 </Box>
               </Box>
             )}
