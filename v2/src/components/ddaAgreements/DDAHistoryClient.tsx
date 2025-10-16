@@ -13,12 +13,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
 import { styled } from "@mui/system";
 import styles from "./ddaAgreements.module.scss";
 import CircularProgress from "@mui/material/CircularProgress";
 import Tooltip from "@mui/material/Tooltip";
 import { getStatus } from "@/utils/dda";
-import { EyeIcon, SignatureIcon } from "@phosphor-icons/react";
+import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
 import ViewDDAgreementModalInner from "@/components/DataSources/ViewDDAgreementModalInner";
 import { useGetDataSourceList } from "@/custom-hooks/dataSources";
 import { defaultLogoImg, defaultCoverImage } from "@/constants/defalultImages";
@@ -457,8 +458,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                 <StyledTableCell>{t("dataAgreements.history.table.headers.usagePurpose")}</StyledTableCell>
                 <StyledTableCell>{t("dataAgreements.history.table.headers.version")}</StyledTableCell>
                 <StyledTableCell>{t("dataAgreements.history.table.headers.agreementEvent")}</StyledTableCell>
-                <StyledTableCell>{t("dataAgreements.history.table.headers.dataSourceSignature")}</StyledTableCell>
-                <StyledTableCell>{t("dataAgreements.history.table.headers.dataUsingServiceSignature")}</StyledTableCell>
+                <StyledTableCell>{t("dataAgreements.history.table.headers.signatureStatus")}</StyledTableCell>
                 <StyledTableCell>{"Last Modified Date"}</StyledTableCell>
                 <StyledTableCell align="center"></StyledTableCell>
               </TableRow>
@@ -468,55 +468,65 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                 currentItems.map(({ raw, row }, idx) => {
                     const dsSig = row.dataSourceSignature || '';
                     const dusSig = row.dataUsingServiceSignature || '';
+                    const eventLabel = (row.optIn === true) ? 'Opt-in' : (row.optIn === false) ? 'Opt-out' : (row.event ?? '');
                     return (
                       <StyledTableRow key={String(row.revisionId ?? idx)}>
                         <StyledTableCell>{row.recordId ?? ''}</StyledTableCell>
                         <StyledTableCell>{row.purpose ?? ''}</StyledTableCell>
                         <StyledTableCell>{row.version ?? ''}</StyledTableCell>
-                        <StyledTableCell>{(row.optIn === true) ? t('common.signAction') : (row.optIn === false) ? t('common.unsignAction') : (row.event ?? '')}</StyledTableCell>
-                        <StyledTableCell>
-                          <Tooltip
-                            title={t('common.copied')}
-                            open={!!dsSig && (copied.key === String(row.revisionId || idx) + '-ds')}
-                            disableHoverListener
-                            disableFocusListener
-                            disableTouchListener
-                            placement="top"
-                          >
-                            <span style={{ cursor: dsSig ? 'pointer' : 'not-allowed' }}>
-                              <IconButton
-                                aria-label="copy-data-source-signature"
-                                size="small"
-                                onClick={() => dsSig && handleCopy(dsSig, String(row.revisionId || idx) + '-ds')}
-                                disabled={!dsSig}
-                                sx={{ color: dsSig ? '#000' : '#BDBDBD' }}
+                        <StyledTableCell>{eventLabel}</StyledTableCell>
+                        <StyledTableCell sx={{ width: '140px' }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                            {/* Signature Status Label */}
+                            <Box sx={{ fontSize: '14px', fontWeight: 'medium', color: 'rgba(0, 0, 0, 0.87)', whiteSpace: 'nowrap', marginRight: '10px' }}>
+                              {dsSig && dusSig ? t('dataAgreements.history.signatures.mutuallySigned') :
+                               dsSig ? t('dataAgreements.history.signatures.dataSourceSigned') :
+                               ''}
+                            </Box>
+                            {/* Signature Icons */}
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                              {/* Data Source Signature */}
+                              <Tooltip
+                                title={copied.key === String(row.revisionId || idx) + '-ds' ? t('common.copied') : t('dataAgreements.history.signatures.dataSourceSigned')}
+                                placement="top"
                               >
-                                <SignatureIcon size={24} />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          <Tooltip
-                            title={t('common.copied')}
-                            open={!!dusSig && (copied.key === String(row.revisionId || idx) + '-dus')}
-                            disableHoverListener
-                            disableFocusListener
-                            disableTouchListener
-                            placement="top"
-                          >
-                            <span style={{ cursor: dusSig ? 'pointer' : 'not-allowed' }}>
-                              <IconButton
-                                aria-label="copy-data-using-service-signature"
-                                size="small"
-                                onClick={() => dusSig && handleCopy(dusSig, String(row.revisionId || idx) + '-dus')}
-                                disabled={!dusSig}
-                                sx={{ color: dusSig ? '#000' : '#BDBDBD' }}
+                                <span style={{ cursor: dsSig ? 'pointer' : 'not-allowed' }}>
+                                  <IconButton
+                                    aria-label="copy-data-source-signature"
+                                    size="small"
+                                    onClick={() => dsSig && handleCopy(dsSig, String(row.revisionId || idx) + '-ds')}
+                                    disabled={!dsSig}
+                                    sx={{ color: dsSig ? '#000' : '#BDBDBD', padding: '2px' }}
+                                  >
+                                    <SignOutIcon size={16} />
+                                  </IconButton>
+                                </span>
+                              </Tooltip>
+                              {/* Data Using Service Signature */}
+                              <Tooltip
+                                title={
+                                  copied.key === String(row.revisionId || idx) + '-dus'
+                                    ? t('common.copied')
+                                    : (dusSig
+                                        ? t('dataAgreements.history.signatures.dataUsingServiceSigned')
+                                        : t('dataAgreements.history.signatures.dataUsingServiceUnsigned'))
+                                }
+                                placement="top"
                               >
-                                <SignatureIcon size={24} />
-                              </IconButton>
-                            </span>
-                          </Tooltip>
+                                <span style={{ cursor: dusSig ? 'pointer' : 'not-allowed' }}>
+                                  <IconButton
+                                    aria-label="copy-data-using-service-signature"
+                                    size="small"
+                                    onClick={() => dusSig && handleCopy(dusSig, String(row.revisionId || idx) + '-dus')}
+                                    disabled={!dusSig}
+                                    sx={{ color: dusSig ? '#000' : '#BDBDBD', padding: '2px' }}
+                                  >
+                                    <SignInIcon size={16} />
+                                  </IconButton>
+                                </span>
+                              </Tooltip>
+                            </Box>
+                          </Box>
                         </StyledTableCell>
                         <StyledTableCell>{formatLocalDate(row.updatedAt || row.createdAt)}</StyledTableCell>
                         <StyledTableCell
@@ -533,7 +543,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                   })
                 ) : (
                 <TableRow>
-                  <StyledTableCell colSpan={8} align="center">{t("common.noResultsFound")}</StyledTableCell>
+                  <StyledTableCell colSpan={7} align="center">{t("common.noResultsFound")}</StyledTableCell>
                 </TableRow>
               )}
             </TableBody>

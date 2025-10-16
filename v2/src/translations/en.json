@@ -149,7 +149,9 @@
       "dataSourceSignature": "Data Source Signature",
       "dataUsingServiceSignature": "Data Using Service Signature",
       "mutuallySigned": "Mutually Signed",
-      "dataSourceSigned": "Data Source Signed"
+      "dataSourceSigned": "Data Source Signed",
+      "dataUsingServiceSigned": "Data Using Service Signed",
+      "dataUsingServiceUnsigned": "Data Using Service Unsigned"
     }
   },
   "home": {
@@ -443,6 +445,7 @@
           "agreementEvent": "Agreement event",
           "dataSourceSignature": "Data Source Signature",
           "dataUsingServiceSignature": "Data Using Service Signature",
+          "signatureStatus": "Signature Status",
           "lastModified": "Last Modified",
           "actions": "Actions",
           "status": "Status",
@@ -452,6 +455,12 @@
           "revisionHash": "Revision Hash"
         },
         "noData": "No history entries to display"
+      },
+      "signatures": {
+        "mutuallySigned": "Mutually Signed",
+        "dataSourceSigned": "Data Source Signed",
+        "dataUsingServiceSigned": "Data Using Service Signed",
+        "dataUsingServiceUnsigned": "Data Using Service Unsigned"
       }
     }
   },
