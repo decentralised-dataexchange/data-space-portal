@@ -67,7 +67,16 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
 
       <Box
-        sx={{ width: '100%', maxWidth: 500, minHeight: 360, height: isFullScreen ? '100vh' : { xs: '60vh', sm: '480px' }, border: '1px solid #C9C9C9', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}
+        sx={{
+          width: '100%',
+          maxWidth: { xs: 500, sm: 720, md: 960 },
+          minHeight: { xs: 420, sm: 480 },
+          height: isFullScreen ? '100vh' : { xs: '70vh', sm: '75vh', md: '75vh' },
+          border: '1px solid #C9C9C9',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          background: '#fff',
+        }}
         aria-live="polite"
         aria-busy={false}
         ref={containerRef}
@@ -134,7 +143,7 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
           </>
       </Box>
 
-      <Box sx={{ width: '100%', maxWidth: 500, mt: '12px' }}>
+      <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 720, md: 960 }, mt: '12px' }}>
         <Button
           type="button"
           variant="outlined"
@@ -647,7 +656,7 @@ const Onboarding: React.FC = () => {
                 <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
               </Box>
             ) : (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+              <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 720, md: 960 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                 <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
               </Box>
             )
@@ -659,7 +668,7 @@ const Onboarding: React.FC = () => {
                   <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
                 </Box>
               ) : (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 720, md: 960 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                   <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
                 </Box>
               )
