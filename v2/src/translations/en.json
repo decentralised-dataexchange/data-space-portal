@@ -468,6 +468,9 @@
         "dataUsingServiceSigned": "Data Using Service Signed",
         "dataUsingServiceUnsigned": "Data Using Service Unsigned"
       }
+    },
+    "openApiSpecification": {
+      "title": "Open API Specification"
     }
   },
   "manageAdmin": {

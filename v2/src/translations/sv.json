@@ -389,6 +389,9 @@
       "title": "Visa dataavtal",
       "publicTitle": "Visa och signera dataavtal"
     },
+    "openApiSpecification": {
+      "title": "Open API-specifikation"
+    },
     "all": "Alla",
     "list": "Listade",
     "underReview": "Under granskning",

@@ -7,6 +7,7 @@ import ViewDataAgreementModalInner from "./ViewDDAgreementModalInner";
 import { clearSelectedDDAId } from "@/store/reducers/dataSourceReducers";
 import { useBusinessWalletSigning } from "@/custom-hooks/businessWalletSigning";
 import { useTranslations } from "next-intl";
+import { loader as monacoLoader } from "@monaco-editor/react";
 // no i18n needed here
 
 interface Props {
@@ -33,6 +34,20 @@ export default function DDAModalController({
   const selectedDDAId = useAppSelector((state) => state.dataSources.selectedDDAId);
   const { isAuthenticated } = useAppSelector(state => state.auth);
   const open = selectedDDAId !== "";
+  const [monacoReady, setMonacoReady] = React.useState(false);
+  React.useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      if (open) {
+        try { await monacoLoader.init(); } catch {}
+        if (!cancelled) setMonacoReady(true);
+      } else {
+        setMonacoReady(false);
+      }
+    };
+    run();
+    return () => { cancelled = true; };
+  }, [open]);
   const getDdaId = (dda: DataDisclosureAgreement): string | undefined => (
     dda.dataAgreementId || dda['@id'] || dda.templateId
   );
@@ -70,7 +85,7 @@ export default function DDAModalController({
 
   return (
     <ViewDataAgreementModalInner
-      open={open}
+      open={open && monacoReady}
       setOpen={(val: boolean) => {
         if (!val) handleClose();
       }}

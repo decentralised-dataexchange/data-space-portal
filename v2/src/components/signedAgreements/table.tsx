@@ -13,7 +13,8 @@ import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
 import { Tooltip, Pagination, Box, Button } from "@mui/material";
 import IntegrationInstructionsOutlinedIcon from "@mui/icons-material/IntegrationInstructionsOutlined";
 import RightSidebar from "../common/RightSidebar";
-import Editor from "@monaco-editor/react";
+import JsonViewer from "@/components/common/JsonViewer";
+import { loader as monacoLoader } from "@monaco-editor/react";
 import PaginationControls from "@/components/common/PaginationControls";
 import { getStatus } from "@/utils/dda";
 import { useTranslations } from "next-intl";
@@ -100,7 +101,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
     } catch {}
   };
 
-  const openJsonViewer = (rawRow: any) => {
+  const openJsonViewer = async (rawRow: any) => {
     const rec = rawRow?.dataDisclosureAgreementRecord || rawRow || {};
     try {
       // Prefer pretty-printing the full record object. If it is a string, parse first.
@@ -110,6 +111,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
       // As a fallback, show string form
       setJsonContent(typeof rec === 'string' ? rec : JSON.stringify(rec));
     }
+    await monacoLoader.init();
     setOpenJson(true);
   };
 
@@ -263,7 +265,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                     </Tooltip>
                     <Tooltip title={t('signedAgreements.table.tooltips.viewJson')} placement="top">
                       <IconButton aria-label="view-json" onClick={() => openJsonViewer(row)} sx={{ color: '#000' }}>
-                        <IntegrationInstructionsOutlinedIcon fontSize="small" />
+                        <IntegrationInstructionsOutlinedIcon sx={{ fontSize: 19, color: 'inherit', opacity: 0.8 }} />
                       </IconButton>
                     </Tooltip>
                   </StyledTableCell>
@@ -281,23 +283,17 @@ const SignedAgreementsTable: React.FC<Props> = ({
       </Table>
 
       {rows.length > 0 && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-          {(() => {
-            const total = tabledata?.pagination?.totalItems || 0;
-            const currentPage = Math.max(1, Math.floor((offset || 0) / Math.max(1, limit)) + 1);
-            return (
-              <PaginationControls
-                totalItems={total}
-                defaultRowsPerPage={limit}
-                rowsPerPageOptions={[5, 10, 25]}
-                page={currentPage}
-                rowsPerPage={limit}
-                onChangePage={(next) => onPageChange(null, next - 1)}
-                onChangeRowsPerPage={(next) => onRowsPerPageChange({ target: { value: String(next) } } as any)}
-              />
-            );
-          })()}
-        </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+            <PaginationControls
+              totalItems={tabledata?.pagination?.totalItems || 0}
+              defaultRowsPerPage={limit}
+              rowsPerPageOptions={[5, 10, 25]}
+              page={Math.max(1, Math.floor((offset || 0) / Math.max(1, limit)) + 1)}
+              rowsPerPage={limit}
+              onChangePage={(next) => onPageChange(null, next - 1)}
+              onChangeRowsPerPage={(next) => onRowsPerPageChange({ target: { value: String(next) } } as any)}
+            />
+          </Box>
       )}
     </TableContainer>
 
@@ -313,14 +309,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
       maxWidth={580}
     >
       <Box sx={{ mt: 2 }}>
-        <Editor
-          height="70vh"
-          defaultLanguage="json"
-          language="json"
-          theme="vs-light"
-          value={jsonContent}
-          options={{ readOnly: true, minimap: { enabled: false }, wordWrap: 'on', scrollBeyondLastLine: false }}
-        />
+        <JsonViewer value={jsonContent} height="600px" />
       </Box>
     </RightSidebar>
     </>

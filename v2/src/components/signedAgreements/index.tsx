@@ -6,6 +6,7 @@ import styles from "../ddaAgreements/ddaAgreements.module.scss";
 import { useTranslations } from "next-intl";
 import { useSignedAgreements } from "@/custom-hooks/signedAgreements";
 import SignedAgreementsTable from "./table";
+import { loader as monacoLoader } from "@monaco-editor/react";
 import ViewDDAgreementModalInner from "../DataSources/ViewDDAgreementModalInner";
 import { useGetDataSourceList } from "@/custom-hooks/dataSources";
 import { defaultLogoImg, defaultCoverImage } from "@/constants/defalultImages";
@@ -48,6 +49,7 @@ export default function SignedAgreementsPage() {
       templateId: record?.dataDisclosureAgreementTemplateId || obj?.templateId || obj?.templateID || r?.templateId || r?.templateID,
       version: obj?.version ?? obj?.templateVersion ?? r?.version ?? r?.templateVersion,
       lawfulBasis: obj?.lawfulBasis ?? r?.lawfulBasis,
+      openApiSpecification: obj?.openApiSpecification,
       dataAttributes: Array.isArray(obj?.dataAttributes) ? obj.dataAttributes : (Array.isArray(r?.dataAttributes) ? r.dataAttributes : undefined),
       personalData: Array.isArray(obj?.personalData) ? obj.personalData : (Array.isArray(r?.personalData) ? r.personalData : []),
       dataController: obj?.dataController || r?.dataController || {},
@@ -133,8 +135,9 @@ export default function SignedAgreementsPage() {
           offset={offsetValue}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleRowsPerPageChange}
-          onView={(row) => {
+          onView={async (row) => {
             setSelected(transformForModal(row));
+            await monacoLoader.init();
             setOpenView(true);
           }}
         />
