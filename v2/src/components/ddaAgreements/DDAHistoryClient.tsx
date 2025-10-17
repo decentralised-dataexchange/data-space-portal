@@ -21,6 +21,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { getStatus } from "@/utils/dda";
 import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
 import ViewDDAgreementModalInner from "@/components/DataSources/ViewDDAgreementModalInner";
+import { loader as monacoLoader } from "@monaco-editor/react";
 import { useGetDataSourceList } from "@/custom-hooks/dataSources";
 import { defaultLogoImg, defaultCoverImage } from "@/constants/defalultImages";
 
@@ -48,6 +49,7 @@ type SelectedDDAData = {
   templateId?: string;
   version?: string;
   lawfulBasis?: string;
+  openApiSpecification?: unknown;
   dataAttributes?: Array<{
     name?: string;
     attributeName?: string;
@@ -152,6 +154,21 @@ export default function DDAHistoryClient({ id }: { id: string }) {
     }
     for (const ps of parsedSnapshots) addIfObj(ps);
 
+    const pickOpenApiSpec = (): unknown => {
+      // Check direct sources first
+      for (const src of sources) {
+        const v = (src as any)["openApiSpecification"];
+        if (typeof v !== 'undefined') return v;
+      }
+      // Check parsed snapshots for openApiSpecification
+      for (const ps of parsedSnapshots) {
+        if (Object.prototype.hasOwnProperty.call(ps, 'openApiSpecification')) {
+          return (ps as any).openApiSpecification;
+        }
+      }
+      return undefined;
+    };
+
     const pickString = (keys: string[]): string | undefined => {
       for (const src of sources) {
         for (const k of keys) {
@@ -232,6 +249,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
       templateId,
       version,
       lawfulBasis,
+      openApiSpecification: pickOpenApiSpec(),
       dataAttributes,
       personalData,
       dataController: dataController as SelectedDDAData["dataController"],
@@ -278,9 +296,10 @@ export default function DDAHistoryClient({ id }: { id: string }) {
     };
   }, [dataSources]);
 
-  const handleView = (raw: unknown) => {
+  const handleView = async (raw: unknown) => {
     const sel = transformForModal(raw);
     setSelected(sel);
+    await monacoLoader.init();
     setOpenView(true);
   };
   const cleanId = React.useMemo(() => {

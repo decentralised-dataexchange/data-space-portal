@@ -422,6 +422,9 @@
       "title": "Näytä tietosopimus",
       "publicTitle": "Näytä ja allekirjoita tietosopimus"
     },
+    "openApiSpecification": {
+      "title": "Open API -määrittely"
+    },
     "all": "Kaikki",
     "list": "Listatut",
     "underReview": "Arvioitavana",

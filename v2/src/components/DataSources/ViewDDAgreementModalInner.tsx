@@ -10,6 +10,7 @@ import { DDAPolicyCard } from "./dataPolicyCard";
 import RightSidebar from "../common/RightSidebar";
 import VerifiedBadge from "../common/VerifiedBadge";
 import { useAppSelector } from "@/custom-hooks/store";
+import JsonViewer from "@/components/common/JsonViewer";
 
 interface Props {
   open: boolean;
@@ -64,6 +65,30 @@ export default function ViewDataAgreementModalInner(props: Props) {
       )}
     </Box>
   );
+
+  const openApiSpec = React.useMemo(() => {
+    // 1) direct prop on selectedData
+    const direct = (selectedData as any)?.openApiSpecification;
+    if (direct) return direct;
+    // 2) try parse selectedData.objectData as JSON and pick .openApiSpecification
+    const objData = (selectedData as any)?.objectData;
+    if (typeof objData === 'string') {
+      try {
+        const parsed = JSON.parse(objData);
+        if (parsed && parsed.openApiSpecification) return parsed.openApiSpecification;
+      } catch {}
+    }
+    // 3) try nested dataDisclosureAgreementTemplateRevision.objectData
+    const rev = (selectedData as any)?.dataDisclosureAgreementTemplateRevision;
+    const revObjData = rev?.objectData;
+    if (typeof revObjData === 'string') {
+      try {
+        const parsed2 = JSON.parse(revObjData);
+        if (parsed2 && parsed2.openApiSpecification) return parsed2.openApiSpecification;
+      } catch {}
+    }
+    return undefined;
+  }, [selectedData]);
 
   // Banner content with cover image and organization logo
   const bannerContent = (
@@ -226,15 +251,29 @@ export default function ViewDataAgreementModalInner(props: Props) {
         </Box>
 
         {/* Embed the policy card directly instead of opening it as a separate modal */}
-        <Box sx={{ marginTop: '16px', marginBottom: '16px' }}>
-          <DDAPolicyCard
-            selectedData={selectedData}
-            handleCloseViewDDAModal={setOpen}
-            dataSourceSignatureDecoded={showSignatureDecoded ? selectedData?.dataSourceSignatureDecoded : undefined}
-            dataUsingServiceSignatureDecoded={showSignatureDecoded ? selectedData?.dataUsingServiceSignatureDecoded : undefined}
-          />
-        </Box>
+
+      {/* Open API Specification viewer */}
+      {openApiSpec && (
+        <>
+          <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
+            {t('dataAgreements.openApiSpecification.title')}
+          </Typography>
+          <Box sx={{ mt: 2 }}>
+            <JsonViewer value={openApiSpec} height="600px" />
+          </Box>
+        </>
+      )}
+
+      <Box sx={{ marginTop: '16px', marginBottom: '16px' }}>
+        <DDAPolicyCard
+          selectedData={selectedData}
+          handleCloseViewDDAModal={setOpen}
+          dataSourceSignatureDecoded={showSignatureDecoded ? selectedData?.dataSourceSignatureDecoded : undefined}
+          dataUsingServiceSignatureDecoded={showSignatureDecoded ? selectedData?.dataUsingServiceSignatureDecoded : undefined}
+        />
       </Box>
-    </RightSidebar>
-  );
+    </Box>
+  </RightSidebar>
+);
+
 }
