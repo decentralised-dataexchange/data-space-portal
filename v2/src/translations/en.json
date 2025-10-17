@@ -384,7 +384,7 @@
       "confirmButton": "Publish"
     },
     "viewModal": {
-      "title": "View Data Agreement",
+      "title": "View Data Disclosure Agreement",
       "publicTitle": "View and Sign Data Agreement"
     },
     "dataAgreementPolicy": "Data Agreement Policy",
@@ -448,7 +448,7 @@
           "revision": "Revision",
           "usagePurpose": "Usage Purpose",
           "version": "Version",
-          "agreementEvent": "Agreement event",
+          "agreementEvent": "Agreement Event",
           "dataSourceSignature": "Data Source Signature",
           "dataUsingServiceSignature": "Data Using Service Signature",
           "signatureStatus": "Signature Status",
