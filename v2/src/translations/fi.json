@@ -419,7 +419,7 @@
       "confirmButton": "Julkaise"
     },
     "viewModal": {
-      "title": "Näytä tietosopimus",
+      "title": "Näytä tietojen luovutussopimus",
       "publicTitle": "Näytä ja allekirjoita tietosopimus"
     },
     "openApiSpecification": {
