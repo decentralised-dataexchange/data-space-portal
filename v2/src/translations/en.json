@@ -494,7 +494,7 @@
     "apiKeyCopyMessage": "Here is your new key. Copy it now! This is the only time we will show it you.",
     "headerText": "Developer APIs and Credentials",
     "pageDescription": "All API requests require you to authenticate using the credentials below",
-    "organizationID": "Organization ID",
+    "organisationID": "Organisation ID",
     "yourUserID": "Your User ID",
     "configuredBaseURL": "Configured Base URL",
     "apiKey": "API Key",
@@ -613,7 +613,7 @@
   },
   "businessWallet": {
     "title": "Business Wallet connections",
-    "subtitle": "Manage your organization's business wallet connections",
+    "subtitle": "Manage your organisation's business wallet connections",
     "label": "Connection Name",
     "connectedOn": "Connected on",
     "connectionId": "Connection ID",
@@ -628,7 +628,7 @@
     "recommendedCoverSize": "Recommended size is 1500x500px",
     "recommendedLogoSize": "Recommended size is 400x400px"
   },
-  "unknownOrganization": "Unknown Organization",
+  "unknownOrganisation": "Unknown Organisation",
   "viewCredentials": {
     "attributeTable": {
       "title": "Attribute Table",
