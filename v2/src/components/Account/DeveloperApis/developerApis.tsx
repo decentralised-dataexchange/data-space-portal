@@ -124,13 +124,24 @@ export default function DeveloperAPIs() {
   const orgDesc = (orgDetails as any)?.organisation?.description ?? (orgDetails as any)?.description ?? '';
   const orgVerified = Boolean((orgIdentity as any)?.data?.verified ?? (orgIdentity as any)?.data?.organisationalIdentity?.verified);
 
-  // Build rows for the common AttributeTable: only client_uri as per spec
+  // Build rows for the Software Statement: show all specified fields in order
   const ssRows = useMemo<AttributeRow[]>(() => {
-    const clientUri = claims?.client_uri;
-    const rows: AttributeRow[] = [];
-    rows.push({ label: t('developerAPIs.softwareStatementClientUriLabel'), value: clientUri || '', href: clientUri || undefined, copy: true });
+    const clientUri = (claims as any)?.client_uri as string | undefined;
+    const coverUrl = (claims as any)?.cover_url as string | undefined;
+    const industrySector = (claims as any)?.industry_sector as string | undefined;
+    const locationVal = (claims as any)?.location as string | undefined;
+    const logoUrl = (claims as any)?.logo_url as string | undefined;
+    const nameVal = (claims as any)?.name as string | undefined;
+    const rows: AttributeRow[] = [
+      { label: t('developerAPIs.softwareStatementClientUriLabel'), value: clientUri || '', href: clientUri || undefined, copy: false },
+      { label: t('developerAPIs.softwareStatementCoverUrlLabel'), value: coverUrl || '', href: coverUrl || undefined, copy: false },
+      { label: t('developerAPIs.softwareStatementIndustrySectorLabel'), value: industrySector || '', copy: false },
+      { label: t('developerAPIs.softwareStatementLocationLabel'), value: locationVal || '', copy: false },
+      { label: t('developerAPIs.softwareStatementLogoUrlLabel'), value: logoUrl || '', href: logoUrl || undefined, copy: false },
+      { label: t('developerAPIs.softwareStatementNameLabel'), value: nameVal || '', copy: false },
+    ];
     return rows;
-  }, [claims?.client_uri, t]);
+  }, [claims, t]);
 
   // Set the OpenAPI URL when organization data is loaded
   useEffect(() => {
@@ -388,7 +399,7 @@ export default function DeveloperAPIs() {
                 fontWeight="bold"
                 mb={0.5}
               >
-                {t("developerAPIs.organizationID")}
+                {t("developerAPIs.organisationID")}
               </Typography>
               <Typography color="grey" variant="body2">
                 {orgDetails?.id}
