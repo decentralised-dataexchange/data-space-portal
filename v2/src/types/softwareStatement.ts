@@ -31,7 +31,7 @@ export interface SoftwareStatementRecord {
   CredentialExchangeId?: string;
   limitedDisclosure?: boolean;
   credential?: {
-    claims?: Record<string, unknown> & { client_uri?: string; logo_url?: string; cover_url?: string };
+    claims?: Record<string, unknown> & { client_uri?: string; logo_url?: string; cover_url?: string; industry_sector?: string; location?: string; name?: string };
     vct?: string;
     [key: string]: unknown;
   };
