@@ -267,9 +267,9 @@
     "tooltipDeleteCredentials": "Poista tunnistetiedot",
     "deleteCredentialsModal": {
       "title": "Poista tunnistetiedot",
-      "description": "Olet poistamassa organisaatiosi tunnistetietoja. Tätä toimintoa ei voi perua.",
+      "description": "Olet poistamassa olemassa olevia organisaatiosi tunnistetietoja. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
       "confirmButton": "Poista",
-      "confirmText": "POISTA"
+      "confirmText": "DELETE"
     }
   },
   "verification": {
@@ -410,9 +410,9 @@
     "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",
-      "description": "Olet poistamassa olemassa olevaa tietosopimusta. Kirjoita POISTA vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
+      "description": "Olet poistamassa olemassa olevaa tietosopimusta. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
       "confirmButton": "Poista",
-      "confirmText": "POISTA"
+      "confirmText": "DELETE"
     },
     "publishModal": {
       "title": "Julkaise markkinapaikalla",
@@ -597,7 +597,7 @@
     "orgOauth2ClientDescriptionPlaceholder": "Valinnainen kuvaus",
     "orgOauth2DeleteModal": {
       "title": "Poista organisaation OAuth 2.0 -asiakas",
-      "description": "Tämä toiminto poistaa pysyvästi organisaation OAuth 2.0 -asiakkaan. Vahvista kirjoittamalla alla oleva vahvistusteksti.",
+      "description": "Olet poistamassa olemassa olevan organisaation OAuth 2.0 -asiakkaan. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
       "confirmText": "DELETE",
       "confirmButton": "Poista"
     },
@@ -630,9 +630,9 @@
     },
     "deleteSoftwareStatementModal": {
       "title": "Poista ohjelmistolauseke",
-      "description": "Olet poistamassa ohjelmistolausekettasi. Tätä toimintoa ei voi perua.",
+      "description": "Olet poistamassa olemassa olevan ohjelmistolausekkeen. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
       "confirmButton": "Poista",
-      "confirmText": "POISTA"
+      "confirmText": "DELETE"
     }
   },
   "dispConnection": {

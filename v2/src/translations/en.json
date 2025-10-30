@@ -233,7 +233,7 @@
     "tooltipDeleteCredentials": "Delete credentials",
     "deleteCredentialsModal": {
       "title": "Delete Credentials",
-      "description": "You are about to delete your organisation credentials. This action cannot be undone.",
+      "description": "You are about to delete existing organisation credentials. Please type DELETE to confirm and click DELETE. This action is not reversible.",
       "confirmButton": "Delete",
       "confirmText": "DELETE"
     }
@@ -563,7 +563,7 @@
     "orgOauth2ClientDescriptionPlaceholder": "Optional description",
     "orgOauth2DeleteModal": {
       "title": "Delete Organisation OAuth 2.0 Client",
-      "description": "This action will permanently delete the Organisation OAuth 2.0 client. To confirm, type the confirmation text below.",
+      "description": "You are about to delete an existing Organisation OAuth 2.0 client. Please type DELETE to confirm and click DELETE. This action is not reversible.",
       "confirmText": "DELETE",
       "confirmButton": "Delete"
     },
@@ -596,7 +596,7 @@
     },
     "deleteSoftwareStatementModal": {
       "title": "Delete Software Statement",
-      "description": "You are about to delete your software statement. This action cannot be undone.",
+      "description": "You are about to delete an existing software statement. Please type DELETE to confirm and click DELETE. This action is not reversible.",
       "confirmButton": "Delete",
       "confirmText": "DELETE"
     }

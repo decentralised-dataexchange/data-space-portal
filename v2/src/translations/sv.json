@@ -232,9 +232,9 @@
     "tooltipDeleteCredentials": "Radera behörigheter",
     "deleteCredentialsModal": {
       "title": "Radera behörigheter",
-      "description": "Du är på väg att radera din organisations behörigheter. Denna åtgärd kan inte ångras.",
+      "description": "Du är på väg att radera befintliga organisationsbehörigheter. Skriv DELETE för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
       "confirmButton": "Radera",
-      "confirmText": "RADERA"
+      "confirmText": "DELETE"
     }
   },
   "verification": {
@@ -377,9 +377,9 @@
     },
     "deleteModal": {
       "title": "Ta bort dataavtal",
-      "description": "Du är på väg att radera ett befintligt datautlämningsavtal. Skriv RADERA för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
+      "description": "Du är på väg att radera ett befintligt datautlämningsavtal. Skriv DELETE för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
       "confirmButton": "Ta bort",
-      "confirmText": "RADERA"
+      "confirmText": "DELETE"
     },
     "publishModal": {
       "title": "Publicera på marknadsplatsen",
@@ -564,7 +564,7 @@
     "orgOauth2ClientDescriptionPlaceholder": "Valfri beskrivning",
     "orgOauth2DeleteModal": {
       "title": "Radera organisationens OAuth 2.0-klient",
-      "description": "Denna åtgärd kommer permanent radera organisationens OAuth 2.0-klient. För att bekräfta, skriv bekräftelsetexten nedan.",
+      "description": "Du är på väg att radera en befintlig organisationens OAuth 2.0-klient. Skriv DELETE för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
       "confirmText": "DELETE",
       "confirmButton": "Radera"
     },
@@ -597,9 +597,9 @@
     },
     "deleteSoftwareStatementModal": {
       "title": "Radera programvaruintyg",
-      "description": "Du är på väg att radera ditt programvaruintyg. Denna åtgärd kan inte ångras.",
+      "description": "Du är på väg att radera ett befintligt programvaruintyg. Skriv DELETE för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
       "confirmButton": "Radera",
-      "confirmText": "RADERA"
+      "confirmText": "DELETE"
     }
   },
   "dispConnection": {
