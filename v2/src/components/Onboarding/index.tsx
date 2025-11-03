@@ -993,7 +993,18 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               error={showErrors && !sector}
               helperText={showErrors && !sector ? t('signup.required') : ''}
               sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX }}
-              SelectProps={{ displayEmpty: true }}
+              SelectProps={{
+                displayEmpty: true,
+                MenuProps: {
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 320,
+                      maxWidth: 500,
+                      width: '100%'
+                    }
+                  }
+                }
+              }}
             >
               <MenuItem value="" disabled>
                 {sectorsLoading ? t('common.loading') : 'Sector'}
@@ -1015,7 +1026,18 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               error={showErrors && !location}
               helperText={showErrors && !location ? t('signup.required') : ''}
               sx={{ ...PLACEHOLDER_SX, ...OUTLINED_INPUT_SX, ...SELECT_SX }}
-              SelectProps={{ displayEmpty: true }}
+              SelectProps={{
+                displayEmpty: true,
+                MenuProps: {
+                  PaperProps: {
+                    sx: {
+                      maxHeight: 320,
+                      maxWidth: 500,
+                      width: '100%'
+                    }
+                  }
+                }
+              }}
             >
               <MenuItem value="" disabled>
                 Country
