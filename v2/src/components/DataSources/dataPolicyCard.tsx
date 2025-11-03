@@ -3,13 +3,29 @@ import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import DataAgreementPolicyCardModal from "./dataPolicyCardModal";
-import { CaretRight as CaretRightIcon } from "@phosphor-icons/react";
+import { CaretRightIcon } from "@phosphor-icons/react";
+
+type SignatureDecodedLike = {
+  name?: string;
+  organizationName?: string;
+  orgName?: string;
+  country?: string;
+  location?: string;
+  addressCountry?: string;
+  logo_url?: string;
+  logoUrl?: string;
+  organization_logo_url?: string;
+  logo?: string;
+  image?: string;
+  timestamp?: string | number;
+  [key: string]: unknown;
+};
 
 interface Props {
-  selectedData: any;
+  selectedData: unknown;
   handleCloseViewDDAModal: (open: boolean) => void;
-  dataSourceSignatureDecoded?: any;
-  dataUsingServiceSignatureDecoded?: any;
+  dataSourceSignatureDecoded?: SignatureDecodedLike;
+  dataUsingServiceSignatureDecoded?: SignatureDecodedLike;
 }
 
 export const DDAPolicyCard = (props: Props) => {

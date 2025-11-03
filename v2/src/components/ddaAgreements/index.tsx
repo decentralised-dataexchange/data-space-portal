@@ -43,12 +43,12 @@ const DDAgreements = () => {
   const [offsetValue, setOffsetValue] = useState(0);
 
   const t = useTranslations();
-  const commonT = useTranslations("common");
 
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenViewDDA, setIsOpenViewDDA] = useState(false);
   const [selectedDDA, setSelectedDDA] = useState<DataDisclosureAgreement | null>(null);
+
 
   const { dataSourceItems } = useGetDataSourceList();
   const dataSources = dataSourceItems as unknown as ApiResponse;
@@ -198,7 +198,7 @@ const DDAgreements = () => {
     if (error) {
       return (
         <Alert severity="error" sx={{ my: 2 }}>
-          {commonT("errors.generic")}
+          {t("errors.generic")}
         </Alert>
       );
     }

@@ -633,7 +633,7 @@
     "recommendedCoverSize": "Recommended size is 1500x500px",
     "recommendedLogoSize": "Recommended size is 400x400px"
   },
-  "unknownOrganisation": "Unknown Organisation",
+  "unknownOrganization": "Unknown Organization",
   "viewCredentials": {
     "attributeTable": {
       "title": "Attribute Table",
