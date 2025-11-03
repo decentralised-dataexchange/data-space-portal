@@ -11,14 +11,30 @@ import DataControllerCard from "./dataControllerCard";
 import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
 import "./style.scss";
 
+type SignatureDecodedLike = {
+  name?: string;
+  organizationName?: string;
+  orgName?: string;
+  country?: string;
+  location?: string;
+  addressCountry?: string;
+  logo_url?: string;
+  logoUrl?: string;
+  organization_logo_url?: string;
+  logo?: string;
+  image?: string;
+  timestamp?: string | number;
+  [key: string]: unknown;
+};
+
 interface Props {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   headerText: string;
-  selectedData: any;
+  selectedData: unknown;
   handleCloseViewDDAModal: (open: boolean) => void;
-  dataSourceSignatureDecoded?: any;
-  dataUsingServiceSignatureDecoded?: any;
+  dataSourceSignatureDecoded?: SignatureDecodedLike;
+  dataUsingServiceSignatureDecoded?: SignatureDecodedLike;
 }
 
 const titleAttrRestrictionStyle = {
@@ -43,14 +59,14 @@ export default function DataAgreementPolicyCardModal(props: Props) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   
   const SSIpolicyDetailsForContainer: AttributeRow[] = [
-    { label: t('dataAgreements.policy.lawfulBasis'), value: String(selectedData?.lawfulBasis ?? "") },
-    { label: t('dataAgreements.policy.dataRetentionPeriod'), value: String(selectedData?.dataSharingRestrictions?.dataRetentionPeriod ?? "") },
-    { label: t('dataAgreements.policy.policyUrl'), value: String(selectedData?.dataSharingRestrictions?.policyUrl ?? ""), href: selectedData?.dataSharingRestrictions?.policyUrl || undefined },
-    { label: t('dataAgreements.policy.jurisdiction'), value: String(selectedData?.dataSharingRestrictions?.jurisdiction ?? "") },
-    { label: t('dataAgreements.policy.industrySector'), value: String(selectedData?.dataSharingRestrictions?.industrySector ?? "") },
-    { label: t('dataAgreements.policy.geographicRestriction'), value: String(selectedData?.dataSharingRestrictions?.geographicRestriction ?? "") },
-    { label: t('dataAgreements.policy.storageLocation'), value: String(selectedData?.dataSharingRestrictions?.storageLocation ?? "") },
-    { label: t('dataAgreements.policy.agreementPeriodYears'), value: String(selectedData?.agreementPeriod ?? "") },
+    { label: t('dataAgreements.policy.lawfulBasis'), value: String((selectedData as any)?.lawfulBasis ?? "") },
+    { label: t('dataAgreements.policy.dataRetentionPeriod'), value: String((selectedData as any)?.dataSharingRestrictions?.dataRetentionPeriod ?? "") },
+    { label: t('dataAgreements.policy.policyUrl'), value: String((selectedData as any)?.dataSharingRestrictions?.policyUrl ?? ""), href: (selectedData as any)?.dataSharingRestrictions?.policyUrl || undefined },
+    { label: t('dataAgreements.policy.jurisdiction'), value: String((selectedData as any)?.dataSharingRestrictions?.jurisdiction ?? "") },
+    { label: t('dataAgreements.policy.industrySector'), value: String((selectedData as any)?.dataSharingRestrictions?.industrySector ?? "") },
+    { label: t('dataAgreements.policy.geographicRestriction'), value: String((selectedData as any)?.dataSharingRestrictions?.geographicRestriction ?? "") },
+    { label: t('dataAgreements.policy.storageLocation'), value: String((selectedData as any)?.dataSharingRestrictions?.storageLocation ?? "") },
+    { label: t('dataAgreements.policy.agreementPeriodYears'), value: String((selectedData as any)?.agreementPeriod ?? "") },
   ];
 
   const formatLocalDateTime = (val?: string | number): string => {
@@ -78,21 +94,32 @@ export default function DataAgreementPolicyCardModal(props: Props) {
     return `${months[d.getMonth()]} ${day}${suffix(day)} ${d.getFullYear()}, ${hours12}:${minutes}${ampm}`;
   };
 
-  const getSignatureDisplay = (decoded: any) => {
-    if (!decoded) return { name: '', country: '', logoUrl: '', timestamp: undefined as string | number | undefined };
-    const name = decoded?.name || decoded?.organizationName || decoded?.orgName || '';
-    const country = decoded?.country || decoded?.location || decoded?.addressCountry || '';
-    // Prefer snake_case logo_url if present, then common alternates
-    const logoUrl = decoded?.logo_url || decoded?.logoUrl || decoded?.organization_logo_url || decoded?.logo || decoded?.image || '';
-    const timestamp = decoded?.timestamp as string | number | undefined;
-    return { name: String(name || ''), country: String(country || ''), logoUrl: String(logoUrl || ''), timestamp };
+  const getSignatureDisplay = (decoded?: SignatureDecodedLike | null) => {
+    const sd = decoded || {};
+    const name = sd.name || sd.organizationName || sd.orgName || (sd as any)?.org || (sd as any)?.issuer || (sd as any)?.iss || '';
+    const country = sd.country || sd.location || sd.addressCountry || '';
+    const logoUrl = sd.logo_url || sd.logoUrl || sd.organization_logo_url || sd.logo || sd.image || '';
+    const timestamp = sd.timestamp as string | number | undefined;
+    // Fallbacks from selectedData's dataController when decoded missing
+    const fallbackName = (selectedData as any)?.dataController?.name || '';
+    const fallbackCountry = (selectedData as any)?.dataController?.industrySector || '';
+    return {
+      name: String((name || fallbackName || '').toString()),
+      country: String((country || fallbackCountry || '').toString()),
+      logoUrl: String((logoUrl || '').toString()),
+      timestamp,
+    };
   };
 
   // Prepare signature card data outside JSX
-  const dsInfo = getSignatureDisplay(props.dataSourceSignatureDecoded);
-  const dusInfo = getSignatureDisplay(props.dataUsingServiceSignatureDecoded);
-  const dsSignedAt = selectedData?.dataSourceSignature?.timestamp ?? dsInfo.timestamp;
-  const dusSignedAt = selectedData?.dataUsingServiceSignature?.timestamp ?? dusInfo.timestamp;
+  const dsInfo = getSignatureDisplay(props.dataSourceSignatureDecoded ?? ((selectedData as any)?.dataSourceSignatureDecoded as SignatureDecodedLike | undefined));
+  const dusInfo = getSignatureDisplay(props.dataUsingServiceSignatureDecoded ?? ((selectedData as any)?.dataUsingServiceSignatureDecoded as SignatureDecodedLike | undefined));
+  const dsSignedAt = (selectedData as any)?.dataSourceSignature?.timestamp ?? dsInfo.timestamp;
+  const dusSignedAt = (selectedData as any)?.dataUsingServiceSignature?.timestamp ?? dusInfo.timestamp;
+
+  // Visibility flags: only show when decoded props are provided explicitly by the parent
+  const showDsSignature = Boolean(props.dataSourceSignatureDecoded);
+  const showDusSignature = Boolean(props.dataUsingServiceSignatureDecoded);
 
   return (
     <React.Fragment>
@@ -143,7 +170,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
             </Box>
 
             {/* Data Source Signature */}
-            {dataSourceSignatureDecoded && (
+            {showDsSignature && (
               <Box m={1.5}>
                 <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
                   {t('signedAgreements.signatures.dataSourceSignature')}
@@ -168,7 +195,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
             )}
 
             {/* Data Using Service Signature */}
-            {dataUsingServiceSignatureDecoded && (
+            {showDusSignature && (
               <Box m={1.5}>
                 <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
                   {t('signedAgreements.signatures.dataUsingServiceSignature')}

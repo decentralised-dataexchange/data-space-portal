@@ -1,3 +1,5 @@
+"use client";
+
 import { apiService } from "@/lib/apiService/apiService";
 import { useAppDispatch, useAppSelector } from "./store";
 import { useQuery } from "@tanstack/react-query";

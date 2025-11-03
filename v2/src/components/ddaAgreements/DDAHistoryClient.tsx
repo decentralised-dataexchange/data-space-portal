@@ -72,6 +72,9 @@ type SelectedDDAData = {
   // Optional decoded signatures used by embedded policy card
   dataSourceSignatureDecoded?: unknown;
   dataUsingServiceSignatureDecoded?: unknown;
+  // Timestamps for signatures if present
+  dataSourceSignature?: { timestamp?: string | number };
+  dataUsingServiceSignature?: { timestamp?: string | number };
 };
 
 export default function DDAHistoryClient({ id }: { id: string }) {
@@ -153,6 +156,31 @@ export default function DDAHistoryClient({ id }: { id: string }) {
       }
     }
     for (const ps of parsedSnapshots) addIfObj(ps);
+
+    // Helpers to find nested signature containers/decoded/timestamps
+    const findSignatureContainer = (key: 'dataSourceSignature' | 'dataUsingServiceSignature'): Record<string, unknown> | undefined => {
+      for (const src of sources) {
+        const v = (src as any)[key];
+        if (v && typeof v === 'object') return v as Record<string, unknown>;
+      }
+      for (const ps of parsedSnapshots) {
+        const v = (ps as any)[key];
+        if (v && typeof v === 'object') return v as Record<string, unknown>;
+      }
+      return undefined;
+    };
+    const pickDecoded = (container?: Record<string, unknown>): unknown => {
+      if (!container) return undefined;
+      const d = (container as any)["signatureDecoded"];
+      if (d && typeof d === 'object') return d as unknown;
+      return undefined;
+    };
+    const pickTimestamp = (container?: Record<string, unknown>): string | number | undefined => {
+      if (!container) return undefined;
+      const ts = (container as any)["timestamp"];
+      if ((typeof ts === 'string' && ts) || typeof ts === 'number') return ts as string | number;
+      return undefined;
+    };
 
     const pickOpenApiSpec = (): unknown => {
       // Check direct sources first
@@ -255,6 +283,11 @@ export default function DDAHistoryClient({ id }: { id: string }) {
       dataController: dataController as SelectedDDAData["dataController"],
       createdAt: pickString(["createdAt", "created_at"]),
       updatedAt: pickString(["updatedAt", "updated_at"]),
+      // Include signatures when present
+      dataSourceSignatureDecoded: pickDecoded(findSignatureContainer('dataSourceSignature')),
+      dataUsingServiceSignatureDecoded: pickDecoded(findSignatureContainer('dataUsingServiceSignature')),
+      dataSourceSignature: { timestamp: pickTimestamp(findSignatureContainer('dataSourceSignature')) },
+      dataUsingServiceSignature: { timestamp: pickTimestamp(findSignatureContainer('dataUsingServiceSignature')) },
     };
   };
 
@@ -757,6 +790,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
           coverImage={getDetails(selected).coverImage}
           logoImage={getDetails(selected).logoImage}
           trusted={getDetails(selected).trusted}
+          showSignatureDecoded={true}
         />
       )}
     </div>
