@@ -43,7 +43,6 @@ export default function DeleteOrganisationOAuthClientModal({ open, setOpen, onCo
       <Box className={styles["dd-modal-container"]}>
         <Box className={styles["dd-modal-header"]}>
           <Typography sx={{ fontSize: "16px", display: "flex", alignItems: "center", gap: 1 }}>
-            <CaretLeftIcon size={18} onClick={handleClose} style={{ cursor: "pointer" }}/>{" "}
             {dT("orgOauth2DeleteModal.title")}
           </Typography>
           <Button onClick={handleClose} className={styles["close-btn"]}>
