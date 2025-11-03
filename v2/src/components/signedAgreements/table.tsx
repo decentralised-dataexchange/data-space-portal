@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/system";
 import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
-import { Tooltip, Pagination, Box, Button } from "@mui/material";
+import { Tooltip, Pagination, Box, Button, Typography } from "@mui/material";
 import IntegrationInstructionsOutlinedIcon from "@mui/icons-material/IntegrationInstructionsOutlined";
 import RightSidebar from "../common/RightSidebar";
 import JsonViewer from "@/components/common/JsonViewer";
@@ -93,6 +93,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
   const [copied, setCopied] = React.useState<{ key: string | null }>(() => ({ key: null }));
   const [openJson, setOpenJson] = React.useState(false);
   const [jsonContent, setJsonContent] = React.useState<string>("");
+  const [jsonHeader, setJsonHeader] = React.useState<{ purpose: string; id: string }>({ purpose: '', id: '' });
   const handleCopy = async (text: string, key: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -111,14 +112,31 @@ const SignedAgreementsTable: React.FC<Props> = ({
       // As a fallback, show string form
       setJsonContent(typeof rec === 'string' ? rec : JSON.stringify(rec));
     }
+    try {
+      const objDataStr = rec?.dataDisclosureAgreementTemplateRevision?.objectData;
+      let obj: any = {};
+      if (typeof objDataStr === 'string') {
+        try { obj = JSON.parse(objDataStr) || {}; } catch {}
+      }
+      const purpose = obj?.purpose || '';
+      const recordId = rawRow?.dataDisclosureAgreementRecordId || '';
+      const templateId = rawRow?.dataDisclosureAgreementTemplateId
+        || obj?.templateId || obj?.templateID
+        || rec?.templateId || rec?.templateID || '';
+      setJsonHeader({ purpose, id: recordId || templateId });
+    } catch {}
     await monacoLoader.init();
     setOpenJson(true);
   };
 
   const headerContent = (
     <Box sx={{ width: '100%' }}>
-      {/* Reuse generic header styling */}
-      <span style={{ color: '#F3F3F6', fontSize: 16 }}>{t('signedAgreements.jsonViewer.title')}</span>
+      <Typography noWrap sx={{ fontSize: '16px' }}>
+        {t('signedAgreements.jsonViewer.title')}: {jsonHeader.purpose}
+      </Typography>
+      <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
+        {jsonHeader.id}
+      </Typography>
     </Box>
   );
 
@@ -173,7 +191,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
             <StyledTableCell>{t("signedAgreements.table.headers.agreementEvent")}</StyledTableCell>
             <StyledTableCell>{t("signedAgreements.table.headers.signatureStatus")}</StyledTableCell>
             <StyledTableCell>{t("signedAgreements.table.headers.lastModifiedDate")}</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
+            <StyledTableCell align="center" sx={{ width: 120 }}></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
@@ -274,7 +292,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
             })
           ) : (
             <TableRow>
-              <StyledTableCell colSpan={7} align="center">
+              <StyledTableCell colSpan={8} align="center">
                 {t("common.noResultsFound")}
               </StyledTableCell>
             </TableRow>
