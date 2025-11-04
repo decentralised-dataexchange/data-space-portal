@@ -57,7 +57,9 @@ const OrgCoverImageUpload = (props: Props) => {
       console.log('Banner upload successful:', result);
       
       // Toggle edit mode; React Query invalidates cover image and updates UI
-      handleEdit();
+      if (editMode) {
+        handleEdit();
+      }
       
       console.log('Banner image update completed successfully');
       // Don't return the result, just complete the Promise<void>
@@ -84,6 +86,7 @@ const OrgCoverImageUpload = (props: Props) => {
         containerStyle={{ width: '100%', height: '100%' }}
         // Keep banner fully opaque in edit mode; avoid washed-out look
         imageStyle={{ opacity: 1 }}
+        alwaysShowIcon
       />
     </BannerContainer>
   );

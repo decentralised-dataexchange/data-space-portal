@@ -74,6 +74,8 @@ function createInitialCrop(
   mediaWidth: number,
   mediaHeight: number,
   aspect: number,
+  minWidth: number,
+  minHeight: number,
 ): Crop {
   // Calculate dimensions that maintain the aspect ratio
   // Always use the specified aspect ratio, regardless of image dimensions
@@ -82,30 +84,30 @@ function createInitialCrop(
 
   // For square crops (avatars), ensure it's always square
   if (aspect === 1) {
-    // For square crops (avatars), use the smaller dimension to ensure it fits
-    const size = Math.min(mediaWidth, mediaHeight) * 0.8; // 80% of the smaller dimension
+    // For square crops (avatars), ensure initial crop is at least min size when possible
+    const maxSquare = Math.min(mediaWidth, mediaHeight);
+    const desired = Math.max(minWidth, minHeight, Math.floor(maxSquare * 0.8));
+    const size = Math.min(desired, maxSquare);
     width = size;
     height = size;
   } else {
-    // For non-square crops (banners), calculate based on aspect ratio
-    // For wide crops (e.g., 3:1 banners), start with height
+    // For non-square crops, ensure both minWidth and minHeight are considered with the aspect
     if (aspect > 1) {
-      height = mediaHeight * 0.7; // 70% of image height
+      const minHNeeded = Math.max(minHeight, Math.ceil(minWidth / aspect));
+      const desiredH = Math.max(minHNeeded, Math.floor(mediaHeight * 0.7));
+      height = Math.min(Math.max(desiredH, minHNeeded), mediaHeight);
       width = height * aspect;
-
-      // If width is too large, adjust both dimensions
-      if (width > mediaWidth * 0.9) {
-        width = mediaWidth * 0.9;
+      if (width > mediaWidth) {
+        width = mediaWidth;
         height = width / aspect;
       }
     } else {
-      // For tall crops, start with width
-      width = mediaWidth * 0.7; // 70% of image width
+      const minWNeeded = Math.max(minWidth, Math.ceil(minHeight * aspect));
+      const desiredW = Math.max(minWNeeded, Math.floor(mediaWidth * 0.7));
+      width = Math.min(Math.max(desiredW, minWNeeded), mediaWidth);
       height = width / aspect;
-
-      // If height is too large, adjust both dimensions
-      if (height > mediaHeight * 0.9) {
-        height = mediaHeight * 0.9;
+      if (height > mediaHeight) {
+        height = mediaHeight;
         width = height * aspect;
       }
     }
@@ -214,13 +216,19 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 }) => {
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
-  const [isCropValid, setIsCropValid] = useState(false);
+  // Live pixel crop to show dimensions during drag (independent from validation state)
+  const [livePixelCrop, setLivePixelCrop] = useState<PixelCrop | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
-  const [imgWidth, setImgWidth] = useState(0);
-  const [imgHeight, setImgHeight] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const dispatch = useAppDispatch();
+
+  const isValidCrop = useMemo(() => {
+    const c = livePixelCrop ?? completedCrop;
+    if (!c) return false;
+    return c.width >= minWidth && c.height >= minHeight;
+  }, [livePixelCrop, completedCrop, minWidth, minHeight]);
 
   // Compute modal and crop container sizing variants (inside component)
   const modalSx = useMemo(() => {
@@ -328,9 +336,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
     return () => {
       setCrop(undefined);
       setCompletedCrop(null);
-      setIsCropValid(false);
-      setImgWidth(0);
-      setImgHeight(0);
+      setLivePixelCrop(null);
       cropInitializedRef.current = false;
       console.log('Modal closed - state reset');
     };
@@ -343,33 +349,22 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       cropInitializedRef.current = false;
       setCrop(undefined);
       setCompletedCrop(null);
-      setIsCropValid(false);
     }
   }, [imageUrl, aspectRatio]);
 
-  const onImageLoaded = useCallback((img: HTMLImageElement) => {
-    imgRef.current = img;
-    setImgWidth(img.naturalWidth);
-    setImgHeight(img.naturalHeight);
+  useEffect(() => {
+    setIsUploading(false);
+  }, [open]);
 
-    if (!cropInitializedRef.current) {
-      const initial = createInitialCrop(img.naturalWidth, img.naturalHeight, aspectRatio);
-      setCrop(initial);
-      cropInitializedRef.current = true;
-    }
-    return false; // Return false to prevent auto setting crop by library
-  }, [aspectRatio]);
 
   // When the image loads, set up the initial crop
   const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = e.currentTarget;
-    setImgWidth(naturalWidth);
-    setImgHeight(naturalHeight);
 
     // Only initialize the crop if it hasn't been set yet
     if (!cropInitializedRef.current) {
       // Create initial crop using the helper function
-      const initialCrop = createInitialCrop(naturalWidth, naturalHeight, aspectRatio);
+      const initialCrop = createInitialCrop(naturalWidth, naturalHeight, aspectRatio, minWidth, minHeight);
 
       // Convert to percentage-based crop for ReactCrop
       const percentCrop: Crop = {
@@ -392,25 +387,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       };
 
       setCompletedCrop(pixelCrop);
-      setIsCropValid(pixelCrop.width >= minWidth && pixelCrop.height >= minHeight);
       cropInitializedRef.current = true;
     }
   }, [aspectRatio, minWidth, minHeight]);
-
-  // When crop completes, validate the size
-  const onCropChangeComplete = useCallback(
-    (pixelCrop: PixelCrop) => {
-      setCompletedCrop(pixelCrop);
-
-      // Check if the cropped area meets the minimum size requirements
-      const isValid =
-        pixelCrop.width >= minWidth &&
-        pixelCrop.height >= minHeight;
-
-      setIsCropValid(isValid);
-    },
-    [minWidth, minHeight]
-  );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -452,16 +431,8 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
   const handleSave = async () => {
     if (!imageUrl || !imgRef.current) return;
-
-    // If there's no completedCrop (user didn't interact), use the current crop
-    if (!completedCrop && crop && imgRef.current) {
-      const pixelCrop = toPixelCrop(crop, imgRef.current);
-      setCompletedCrop(pixelCrop);
-      setIsCropValid(pixelCrop.width >= minWidth && pixelCrop.height >= minHeight);
-    }
-
-    // Double-check validity after potentially setting completedCrop
-    if (!completedCrop || !isCropValid) {
+    const pixelCrop = completedCrop ?? (crop ? toPixelCrop(crop, imgRef.current) : null);
+    if (!pixelCrop || pixelCrop.width < minWidth || pixelCrop.height < minHeight) {
       console.log('Crop is invalid or not completed');
       dispatch(setMessage(`Crop must be at least ${minWidth}x${minHeight}px`));
       return;
@@ -472,7 +443,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       setIsUploading(true);
       console.log('Starting image crop and upload...');
       
-      const pixelCrop = completedCrop;
       const targetW = outputWidth ?? pixelCrop.width;
       const targetH = outputHeight ?? pixelCrop.height;
       const quality = outputQuality ?? 0.82;
@@ -501,6 +471,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       await onCropComplete(croppedImage);
       console.log('Upload completed successfully');
       // Do not close here; parent will close the modal after it finishes refetching
+      setIsUploading(false);
     } catch (e) {
       console.error('Error during crop or upload:', e);
       // Keep modal open but disable loading state
@@ -554,14 +525,13 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
         onDrop={handleDrop}
       >
           {imageUrl ? (
-            <Box sx={{
+            <Box ref={containerRef} sx={{
               position: 'relative',
               width: '100%',
               height: '100%',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              // Checkerboard background to indicate transparency and avoid black bleed
               backgroundColor: '#fff',
               backgroundImage:
                 'linear-gradient(45deg, #f0f0f0 25%, transparent 25%),\
@@ -569,19 +539,28 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                  linear-gradient(45deg, transparent 75%, #f0f0f0 75%),\
                  linear-gradient(-45deg, transparent 75%, #f0f0f0 75%)',
               backgroundSize: '16px 16px',
-              backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px'
+              backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
+              '& .ReactCrop__child-wrapper': {
+                cursor: 'auto',
+              }
             }}>
               <ReactCrop
                 key={imageUrl || 'no-image'}
                 crop={crop}
                 onChange={(c) => {
                   setCrop(c);
+                  // Compute a live pixel crop for display (do not change validation logic here)
+                  if (imgRef.current) {
+                    const pixel = toPixelCrop(c, imgRef.current);
+                    setLivePixelCrop(pixel);
+                  }
                 }}
                 onComplete={(c) => {
                   if (imgRef.current) {
                     const pixel = toPixelCrop(c, imgRef.current);
-                    setIsCropValid(pixel.width >= minWidth && pixel.height >= minHeight);
                     setCompletedCrop(pixel);
+                    // Sync live crop to final on-complete value
+                    setLivePixelCrop(pixel);
                   }
                 }}
                 aspect={aspectRatio}
@@ -594,13 +573,107 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                   src={imageUrl}
                   alt="Crop me"
                   onLoad={onImageLoad}
+                  draggable={false}
+                  onDragStart={(e) => e.preventDefault()}
                   style={{
                     maxWidth: '100%',
                     maxHeight: '100%',
-                    objectFit: 'contain'
+                    objectFit: 'contain',
+                    userSelect: 'none'
                   }}
                 />
               </ReactCrop>
+              {/* Dimension overlays rendered outside ReactCrop to avoid being unmounted during drag */}
+              {(() => {
+                const display = livePixelCrop || completedCrop;
+                if (!display || !imgRef.current || !containerRef.current) return null;
+                const imgEl = imgRef.current;
+                const imgRect = imgEl.getBoundingClientRect();
+                const contRect = containerRef.current.getBoundingClientRect();
+                const offsetLeft = imgRect.left - contRect.left;
+                const offsetTop = imgRect.top - contRect.top;
+                // Map natural pixels to rendered CSS pixels
+                const scaleX = imgRect.width / imgEl.naturalWidth;
+                const scaleY = imgRect.height / imgEl.naturalHeight;
+                const cropLeftPx = offsetLeft + display.x * scaleX;
+                const cropTopPx = offsetTop + display.y * scaleY;
+                const cropWidthPx = display.width * scaleX;
+                const cropHeightPx = display.height * scaleY;
+                const pad = 4;
+                const maxX = contRect.width - pad;
+                const maxY = contRect.height - pad;
+                let widthLabelLeft = cropLeftPx + cropWidthPx / 2;
+                let widthLabelTop = cropTopPx - 8;
+                let heightLabelLeft = cropLeftPx + cropWidthPx + 8;
+                let heightLabelTop = cropTopPx + cropHeightPx / 2;
+                let widthTransform = 'translate(-50%, -100%)';
+                let heightTransform = 'translate(0, -50%)';
+
+                if (widthLabelTop < pad) {
+                  widthLabelTop = cropTopPx + 8;
+                  widthTransform = 'translate(-50%, 0)';
+                }
+                if (widthLabelTop > maxY) {
+                  widthLabelTop = cropTopPx + cropHeightPx - 8;
+                  widthTransform = 'translate(-50%, -100%)';
+                }
+                if (heightLabelLeft > maxX) {
+                  heightLabelLeft = cropLeftPx + cropWidthPx - 8;
+                  heightTransform = 'translate(-100%, -50%)';
+                }
+                if (heightLabelLeft < pad) {
+                  heightLabelLeft = cropLeftPx + 8;
+                  heightTransform = 'translate(0, -50%)';
+                }
+
+                widthLabelLeft = widthLabelLeft;
+                widthLabelTop = Math.min(maxY, Math.max(pad, widthLabelTop));
+                heightLabelLeft = Math.min(maxX, Math.max(pad, heightLabelLeft));
+                heightLabelTop = Math.min(maxY, Math.max(pad, heightLabelTop));
+                return (
+                  <>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        left: `${widthLabelLeft}px`,
+                        top: `${widthLabelTop}px`,
+                        transform: widthTransform,
+                        pointerEvents: 'none',
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        color: '#fff',
+                        px: 1,
+                        py: 0.25,
+                        borderRadius: '2px',
+                        fontSize: '12px',
+                        lineHeight: 1,
+                        zIndex: 3,
+                      }}
+                    >
+                      {`${display.width}px`}
+                    </Box>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        left: `${heightLabelLeft}px`,
+                        top: `${heightLabelTop}px`,
+                        transform: heightTransform,
+                        pointerEvents: 'none',
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        color: '#fff',
+                        px: 1,
+                        py: 0.25,
+                        borderRadius: '2px',
+                        fontSize: '12px',
+                        lineHeight: 1,
+                        zIndex: 3,
+                        padding: 0.25
+                      }}
+                    >
+                      {`${display.height}px`}
+                    </Box>
+                  </>
+                );
+              })()}
             </Box>
           ) : (
             <Box sx={{
@@ -703,11 +776,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 </Button>
               </label>
             </Tooltip>
-
-            {/* Show Save button when image is selected; disabled until crop is valid */}
             {Boolean(imageUrl) && (
               <Tooltip
-                title={!isCropValid ? `Image must be at least ${minWidth}x${minHeight}px` : ''}
+                title={!isValidCrop ? `Image must be at least ${minWidth}x${minHeight}px` : ''}
                 arrow
                 placement="top"
               >
@@ -716,7 +787,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     onClick={handleSave}
                     variant="outlined"
                     color="primary"
-                    disabled={!isCropValid || isUploading}
+                    disabled={!isValidCrop || isUploading}
                     sx={{
                       ...buttonStyle,
                       minWidth: { xs: 88, sm: 104, md: 120 },

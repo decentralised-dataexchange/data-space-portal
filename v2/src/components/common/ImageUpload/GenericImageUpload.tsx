@@ -27,6 +27,8 @@ interface GenericImageUploadProps {
     right: string;
   };
   acceptedFileTypes?: string;
+  // When true, the edit (pencil) icon is shown even if editMode is false
+  alwaysShowIcon?: boolean;
 }
 
 const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
@@ -46,6 +48,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   iconPosition = { top: '24px', right: '24px' },
   modalSize,
   acceptedFileTypes = 'image/jpeg,image/jpg,image/png,image/webp',
+  alwaysShowIcon = false,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -140,7 +143,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
         }}
       />
       
-      {editMode && (
+      {(editMode || alwaysShowIcon) && (
         <>
           <label
             onClick={handleIconClick}
