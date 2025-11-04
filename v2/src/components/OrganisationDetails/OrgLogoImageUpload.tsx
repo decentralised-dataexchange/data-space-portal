@@ -32,7 +32,9 @@ const OrgLogoImageUpload = (props: Props) => {
 
       // Update the UI by invalidating the React Query cache
       // This will trigger a refetch of the logo image everywhere it's used
-      handleEdit();
+      if (editMode) {
+        handleEdit();
+      }
       queryClient.invalidateQueries({ queryKey: ['logoImage'] });
     } catch (error) {
       console.log(`Error: ${error}`);
@@ -76,12 +78,13 @@ const OrgLogoImageUpload = (props: Props) => {
             left: 6,
             width: '146px',
             height: '146px',
-            // Keep mounted at all times so Toast remains visible; disable interactions when not editing
-            pointerEvents: editMode ? 'auto' : 'none'
+            // Keep mounted at all times so Toast remains visible; enable interactions always
+            pointerEvents: 'auto'
           }}
           // Fully hide the overlay image to avoid any visual seams over the white border
           imageStyle={{ display: 'none' }}
-          iconPosition={{ top: '45px', right: '45px' }}
+          iconPosition={{ top: '35px', right: '35px' }}
+          alwaysShowIcon
         />
       </Box>
     </Box>
