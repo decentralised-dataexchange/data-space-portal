@@ -31,6 +31,8 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
   const { mutate: sign, isPending } = useSignCodeOfConduct();
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [isFullScreen, setIsFullScreen] = React.useState(false);
+  const [viewerKey, setViewerKey] = React.useState(0);
+  const wasFullScreenRef = React.useRef(false);
   // Note: App-level gating handles redirect after completion; avoid doing it here to prevent URL jumping.
 
   // Do not revoke blob URL on unmount. Keeping the object URL alive avoids breaking the PDF
@@ -41,6 +43,14 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
     document.addEventListener('fullscreenchange', onFsChange);
     return () => document.removeEventListener('fullscreenchange', onFsChange);
   }, []);
+
+  // When leaving fullscreen, remount the PDF viewer to reset internal zoom state
+  React.useEffect(() => {
+    if (wasFullScreenRef.current && !isFullScreen) {
+      setViewerKey((k) => k + 1);
+    }
+    wasFullScreenRef.current = isFullScreen;
+  }, [isFullScreen]);
 
   const toggleFullScreen = async () => {
     try {
@@ -123,6 +133,7 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
             ) : (
               <Box sx={{ flex: 1, minHeight: 0, display: 'flex' }}>
                 <object
+                  key={viewerKey}
                   data={resolvedPdf}
                   type="application/pdf"
                   width="100%"
@@ -244,17 +255,13 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
     }
   }, [organisation?.verificationRequestURLPrefix, walletUrl]);
 
-  // If a verification URL prefix exists, force-fetch org identity on load so the button can appear immediately when verified
-  React.useEffect(() => {
-    if (organisation?.verificationRequestURLPrefix) {
-      queryClient.invalidateQueries({ queryKey: ['orgIdentity', orgId] });
-    }
-  }, [organisation?.verificationRequestURLPrefix, orgId, queryClient]);
+  // Removed eager refetch on mount; initial query + focus-aware polling handles freshness without extra duplicate calls
 
   // On tab refocus, re-fetch organisation identity
   React.useEffect(() => {
+    if (isVerified) return;
     const onFocus = () => {
-      try { queryClient.invalidateQueries({ queryKey: ['orgIdentity', orgId] }); } catch {}
+      try { queryClient.invalidateQueries({ queryKey: ['orgIdentity'] }); } catch {}
     };
     const onVisibility = () => {
       if (document.visibilityState === 'visible') onFocus();
@@ -265,7 +272,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
       window.removeEventListener('focus', onFocus);
       document.removeEventListener('visibilitychange', onVisibility);
     };
-  }, [orgId, queryClient]);
+  }, [orgId, queryClient, isVerified]);
 
   const handleContinue = async () => {
     if (!organisation) return;
@@ -288,7 +295,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
           // ignore popup errors – user can retry from the app
         }
       }
-      queryClient.invalidateQueries({ queryKey: ['orgIdentity', orgId] });
+      queryClient.invalidateQueries({ queryKey: ['orgIdentity'] });
     } catch (e) {
       // swallow for now; error toasts are handled globally by hooks
     }
