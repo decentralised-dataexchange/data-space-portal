@@ -13,12 +13,12 @@ import {
 import { OrgIdentityResponse } from '@/types/orgIdentity';
 import { OrganisationResponse, OrganisationUpdatePayload } from '@/types/organisation';
 
-export const useGetOrgIdentity = (orgId: string) => {
+export const useGetOrgIdentity = (orgId: string, enabled: boolean = true) => {
   const dispatch = useAppDispatch();
   const { isAuthenticated } = useAppSelector(state => state.auth);
   
   return useQuery<OrgIdentityResponse, Error>({
-    queryKey: ['orgIdentity', orgId],
+    queryKey: ['orgIdentity'],
     queryFn: async (): Promise<OrgIdentityResponse> => {
       dispatch(setGettingStartLoading());
       try {
@@ -34,7 +34,7 @@ export const useGetOrgIdentity = (orgId: string) => {
     staleTime: 0,
     retry: 1, // Only retry once to avoid infinite loading
     refetchOnWindowFocus: false,
-    enabled: isAuthenticated,
+    enabled: isAuthenticated && enabled,
   });
 };
 
@@ -123,9 +123,7 @@ export const useOrgIdentityPolling = (orgIdentityResp: OrgIdentityResponse | und
     pollTimers.current.forEach((t) => clearTimeout(t));
     pollTimers.current = [];
 
-    const identity = orgIdentityResp?.organisationalIdentity as any;
-    const hasIdentity = identity && Object.keys(identity).length > 0;
-    const shouldPoll = !!orgIdentityResp && orgIdentityResp.verified === false && !!orgIdentityResp.state && hasIdentity;
+    const shouldPoll = !!orgIdentityResp && orgIdentityResp.verified === false && !!orgIdentityResp.state;
 
     if (!shouldPoll) {
       return () => {
@@ -134,17 +132,61 @@ export const useOrgIdentityPolling = (orgIdentityResp: OrgIdentityResponse | und
       };
     }
 
-    const t1 = window.setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['orgIdentity', organisationId] });
-    }, 60 * 1000);
-    const t2 = window.setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['orgIdentity', organisationId] });
-    }, 120 * 1000);
-    pollTimers.current = [t1, t2];
+    let cancelled = false;
 
-    return () => {
+    const clearAll = () => {
       pollTimers.current.forEach((t) => clearTimeout(t));
       pollTimers.current = [];
+    };
+
+    const scheduleDelays = (delaysMs: number[]) => {
+      delaysMs.forEach((ms) => {
+        const id = window.setTimeout(() => {
+          if (cancelled) return;
+          if (document.visibilityState !== 'visible') return; // skip hidden tabs
+          queryClient.invalidateQueries({ queryKey: ['orgIdentity'] });
+        }, ms);
+        pollTimers.current.push(id);
+      });
+    };
+
+    const startFocusBurst = () => {
+      clearAll();
+      if (document.visibilityState !== 'visible') return;
+      // Immediate check on focus/visibility gain
+      try { queryClient.invalidateQueries({ queryKey: ['orgIdentity'] }); } catch {}
+      // Fast polling burst: every 3s for 30s, then every 10s up to 2m
+      const delays: number[] = [];
+      for (let s = 3; s <= 30; s += 3) delays.push(s * 1000);
+      for (let s = 40; s <= 120; s += 10) delays.push(s * 1000);
+      scheduleDelays(delays);
+    };
+
+    // Base schedule when arriving to the page and tab is visible
+    if (document.visibilityState === 'visible') {
+      // Modest backoff schedule to avoid long gaps when returning later
+      scheduleDelays([5_000, 15_000, 30_000, 60_000, 120_000]);
+    }
+
+    const onFocus = () => { if (!cancelled) startFocusBurst(); };
+    const onVisibility = () => {
+      if (cancelled) return;
+      if (document.visibilityState === 'visible') {
+        startFocusBurst();
+      } else {
+        // When hidden, stop timers to avoid background polling
+        clearAll();
+      }
+    };
+
+    window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('focus', onFocus);
+      document.removeEventListener('visibilitychange', onVisibility);
+      clearAll();
     };
   }, [orgIdentityResp?.verified, orgIdentityResp?.state, organisationId, queryClient, orgIdentityResp?.organisationalIdentity]);
 };

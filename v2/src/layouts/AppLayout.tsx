@@ -50,7 +50,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const { data: orgRes, isLoading: orgLoading } = useGetOrganisation();
   const organisation = orgRes?.organisation;
   const orgId = organisation?.id || 'current';
-  const { data: orgIdentity, isLoading: idLoading } = useGetOrgIdentity(orgId);
+  // Avoid duplicating identity fetch on onboarding pages; the Onboarding screen fetches and handles redirects/polling.
+  const { data: orgIdentity, isLoading: idLoading } = useGetOrgIdentity(orgId, !isOnOnboarding);
   // Helper to prefix a path with current locale if present
   const withLocale = (path: string) => {
     const locale = getLocaleFromPath(pathname);
