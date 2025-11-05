@@ -79,7 +79,7 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
       <Box
         sx={{
           width: '100%',
-          maxWidth: { xs: 500, sm: 720, md: 960 },
+          maxWidth: { xs: 500, sm: 800, md: 1100 },
           minHeight: { xs: 420, sm: 480 },
           height: isFullScreen ? '100vh' : { xs: '70vh', sm: '75vh', md: '75vh' },
           border: '1px solid #C9C9C9',
@@ -154,7 +154,7 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
           </>
       </Box>
 
-      <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 720, md: 960 }, mt: '12px' }}>
+      <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mt: '12px' }}>
         <Button
           type="button"
           variant="outlined"
@@ -663,7 +663,7 @@ const Onboarding: React.FC = () => {
                 <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
               </Box>
             ) : (
-              <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 720, md: 960 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+              <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                 <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
               </Box>
             )
@@ -675,7 +675,7 @@ const Onboarding: React.FC = () => {
                   <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
                 </Box>
               ) : (
-                <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 720, md: 960 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
                   <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
                 </Box>
               )
