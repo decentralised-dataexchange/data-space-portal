@@ -604,6 +604,14 @@
       "description": "You are about to delete an existing software statement. Please type DELETE to confirm and click DELETE. This action is not reversible.",
       "confirmButton": "Delete",
       "confirmText": "DELETE"
+    },
+    "tooltips": {
+      "dataSpaceOauth2Title": "Configure the OAuth 2.0 client for connecting the Data Marketplace to your DISP. Click CONFIGURE to provide a client name and optional description, then click CREATE. Copy the generated Client ID and Client Secret using the buttons provided. These values will be used in the DISP portal under Base Configurations (Base URL: https://demo-api.nxd.foundation/service).",
+      "orgOauth2Title": "Configure the OAuth 2.0 client for connecting your DISP to the Data Marketplace. Click CONFIGURE to create a new client, providing a name and optional description, then click CREATE. Copy the generated Client ID and Client Secret. Return to the Data Marketplace and paste these values under Organisation OAuth 2.0 Client to enable bi-directional communication.",
+      "holderBaseUrl": "The unique URL identifying your organisation’s wallet instance within the DISP environment. Used by the Data Marketplace to send credential offers and receive responses securely.",
+      "credentialOfferEndpoint": "The OpenID4VCI endpoint where your organisation’s wallet receives credential offers from the Data Marketplace. Obtain this from the DISP portal under Digital Wallet (OpenID4VC) → Base Configuration.",
+      "accessPointEndpoint": "The API endpoint that exposes your organisation’s data exchange interface to the Data Marketplace. Obtain this from the DISP portal under Data Marketplace → Base Configuration.",
+      "softwareStatement": "A digitally signed credential issued by the Data Marketplace once both endpoints are configured. It proves that your business wallet is authorised and trusted for communication with the Data Marketplace. You can review and accept this statement in the DISP portal under Digital Wallet (OpenID4VC) → Wallet Unit (Holder)."
     }
   },
   "dispConnection": {

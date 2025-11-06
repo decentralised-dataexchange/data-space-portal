@@ -605,6 +605,14 @@
       "description": "Du är på väg att radera ett befintligt programvaruintyg. Skriv DELETE för att bekräfta och klicka RADERA. Denna åtgärd kan inte ångras.",
       "confirmButton": "Radera",
       "confirmText": "DELETE"
+    },
+    "tooltips": {
+      "dataSpaceOauth2Title": "Konfigurera OAuth 2.0-klienten för att ansluta Datamarknadsplatsen till din DISP. Klicka på KONFIGURERA för att ange ett klientnamn och en valfri beskrivning, klicka sedan på SKAPA. Kopiera det genererade Client ID och Client Secret med hjälp av knapparna. Dessa värden används i DISP-portalen under Bas-konfigurationer (Bas-URL: https://demo-api.nxd.foundation/service).",
+      "orgOauth2Title": "Konfigurera OAuth 2.0-klienten för att ansluta din DISP till Datamarknadsplatsen. Klicka på KONFIGURERA för att skapa en ny klient, ange namn och valfri beskrivning och klicka sedan på SKAPA. Kopiera det genererade Client ID och Client Secret. Återvänd till Datamarknadsplatsen och klistra in dessa värden under Organisationens OAuth 2.0-klient för att möjliggöra tvåvägskommunikation.",
+      "holderBaseUrl": "Den unika URL som identifierar din organisations plånboksinstans i DISP-miljön. Används av Datamarknadsplatsen för att skicka credential-erbjudanden och ta emot svar på ett säkert sätt.",
+      "credentialOfferEndpoint": "OpenID4VCI-slutpunkten där din organisations plånbok tar emot credential-erbjudanden från Datamarknadsplatsen. Hämta denna från DISP-portalen under Digital Wallet (OpenID4VC) → Bas-konfiguration.",
+      "accessPointEndpoint": "API-slutpunkten som exponerar din organisations datautbytesgränssnitt mot Datamarknadsplatsen. Hämta denna från DISP-portalen under Data Marketplace → Bas-konfiguration.",
+      "softwareStatement": "Ett digitalt signerat intyg som utfärdas av Datamarknadsplatsen när båda slutpunkterna är konfigurerade. Det bevisar att din företagsplånbok är auktoriserad och betrodd för kommunikation med Datamarknadsplatsen. Du kan granska och acceptera detta intyg i DISP-portalen under Digital Wallet (OpenID4VC) → Wallet Unit (Holder)."
     }
   },
   "dispConnection": {
