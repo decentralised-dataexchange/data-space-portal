@@ -638,6 +638,14 @@
       "description": "Olet poistamassa olemassa olevan ohjelmistolausekkeen. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
       "confirmButton": "Poista",
       "confirmText": "DELETE"
+    },
+    "tooltips": {
+      "dataSpaceOauth2Title": "Määritä OAuth 2.0 -asiakas Datamarkkinapaikan yhdistämiseksi DISPiisi. Napsauta MÄÄRITÄ, anna asiakkaan nimi ja valinnainen kuvaus ja napsauta sitten LUO. Kopioi luodut Client ID ja Client Secret painikkeilla. Näitä arvoja käytetään DISP-portaalissa kohdassa Peruskonfiguraatiot (Perus-URL: https://demo-api.nxd.foundation/service).",
+      "orgOauth2Title": "Määritä OAuth 2.0 -asiakas DISPin yhdistämiseksi Datamarkkinapaikkaan. Napsauta MÄÄRITÄ luodaksesi uuden asiakkaan, anna nimi ja valinnainen kuvaus ja napsauta sitten LUO. Kopioi luodut Client ID ja Client Secret. Palaa Datamarkkinapaikkaan ja liitä nämä arvot kohtaan Organisaation OAuth 2.0 -asiakas kaksisuuntaisen viestinnän mahdollistamiseksi.",
+      "holderBaseUrl": "DISP-ympäristössä organisaatiosi lompakon yksilöivä URL-osoite. Datamarkkinapaikka käyttää tätä osoitetta lähettääkseen credential-tarjouksia ja vastaanottaakseen vastaukset turvallisesti.",
+      "credentialOfferEndpoint": "OpenID4VCI-päätepiste, johon organisaatiosi lompakko vastaanottaa credential-tarjoukset Datamarkkinapaikalta. Hanki tämä DISP-portaalista kohdasta Digital Wallet (OpenID4VC) → Base Configuration.",
+      "accessPointEndpoint": "API-päätepiste, joka tarjoaa organisaatiosi datavaihtorajapinnan Datamarkkinapaikalle. Hanki tämä DISP-portaalista kohdasta Data Marketplace → Base Configuration.",
+      "softwareStatement": "Digitaalisesti allekirjoitettu todiste, jonka Datamarkkinapaikka myöntää, kun molemmat päätepisteet on määritetty. Se todistaa, että yrityslompakkosi on valtuutettu ja luotettu viestimään Datamarkkinapaikan kanssa. Voit tarkastella ja hyväksyä tämän todistuksen DISP-portaalissa kohdassa Digital Wallet (OpenID4VC) → Wallet Unit (Holder)."
     }
   },
   "dispConnection": {

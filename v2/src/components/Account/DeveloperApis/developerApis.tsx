@@ -18,6 +18,7 @@ import DeleteSoftwareStatementModal from "@/components/Account/DeveloperApis/Del
 // Import styles used for view/add credential link-like buttons
 import "@/components/OrganisationDetails/style.scss";
 import { useGetOrgIdentity, useGetCoverImage, useGetLogoImage } from "@/custom-hooks/gettingStarted";
+import InfoTooltipIconQuestionMark from "@/components/common/InfoTooltipIconQuestionMark";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -318,12 +319,18 @@ export default function DeveloperAPIs() {
     copyKey?: string;
     copyValue?: string;
     mask?: boolean;
-  }> = ({ label, value, href, copyKey, copyValue, mask }) => {
+    tooltipMessage?: React.ReactNode;
+  }> = ({ label, value, href, copyKey, copyValue, mask, tooltipMessage }) => {
     const hasValue = Boolean(value);
     const displayValue = mask && hasValue ? '••••••••••••••••' : (value || '');
     return (
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
-        <Typography color="black" variant="body2">{label}:</Typography>
+        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+          <Typography color="black" variant="body2">{label}:</Typography>
+          {!!tooltipMessage && (
+            <InfoTooltipIconQuestionMark message={tooltipMessage} />
+          )}
+        </Box>
         <Box display="inline-flex" alignItems="center" gap={0.75}>
           {hasValue ? (
             href ? (
@@ -474,6 +481,7 @@ export default function DeveloperAPIs() {
             href={verificationRequestURLPrefix || undefined}
             copyKey="holderBaseUrl"
             copyValue={verificationRequestURLPrefix || ''}
+            tooltipMessage={t('developerAPIs.tooltips.holderBaseUrl')}
           />
           <InfoRow
             label={t('developerAPIs.credentialOfferEndpointLabel')}
@@ -481,6 +489,7 @@ export default function DeveloperAPIs() {
             href={(orgDetails as any)?.credentialOfferEndpoint || undefined}
             copyKey="credentialOfferEndpoint"
             copyValue={(orgDetails as any)?.credentialOfferEndpoint || ''}
+            tooltipMessage={t('developerAPIs.tooltips.credentialOfferEndpoint')}
           />
           <InfoRow
             label={t('developerAPIs.accessPointEndpointLabel')}
@@ -488,10 +497,14 @@ export default function DeveloperAPIs() {
             href={(orgDetails as any)?.accessPointEndpoint || undefined}
             copyKey="accessPointEndpoint"
             copyValue={(orgDetails as any)?.accessPointEndpoint || ''}
+            tooltipMessage={t('developerAPIs.tooltips.accessPointEndpoint')}
           />
           {/* Software Statement inside Wallet Configuration */}
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
-            <Typography color="black" variant="body2">{t('developerAPIs.softwareStatementLabel')}:</Typography>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+              <Typography color="black" variant="body2">{t('developerAPIs.softwareStatementLabel')}:</Typography>
+              <InfoTooltipIconQuestionMark message={t('developerAPIs.tooltips.softwareStatement')} />
+            </Box>
             <Box display="inline-flex" alignItems="center" gap={1}>
               {(() => {
                 const org = orgDetails as any;
@@ -564,9 +577,12 @@ export default function DeveloperAPIs() {
           gap={{ xs: 1, sm: 0 }}
           sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
         >
-          <Typography color="black" variant="subtitle1" fontWeight="bold">
-            {t('developerAPIs.dataSpaceOauth2Title')}
-          </Typography>
+          <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+            <Typography color="black" variant="subtitle1" fontWeight="bold">
+              {t('developerAPIs.dataSpaceOauth2Title')}
+            </Typography>
+            <InfoTooltipIconQuestionMark message={t('developerAPIs.tooltips.dataSpaceOauth2Title')} />
+          </Box>
           <Box display="flex" alignItems="center" gap={2}>
             <Button
               variant="outlined"
@@ -623,9 +639,12 @@ export default function DeveloperAPIs() {
           gap={{ xs: 1, sm: 0 }}
           sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
         >
-          <Typography color="black" variant="subtitle1" fontWeight="bold">
-            {t('developerAPIs.orgOauth2Title')}
-          </Typography>
+          <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+            <Typography color="black" variant="subtitle1" fontWeight="bold">
+              {t('developerAPIs.orgOauth2Title')}
+            </Typography>
+            <InfoTooltipIconQuestionMark message={t('developerAPIs.tooltips.orgOauth2Title')} />
+          </Box>
           <Box display="flex" alignItems="center" gap={2}>
             {orgOAuthClient && (
               <Button
