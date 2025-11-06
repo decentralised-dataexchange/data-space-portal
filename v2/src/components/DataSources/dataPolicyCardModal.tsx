@@ -63,7 +63,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
     { label: t('dataAgreements.policy.dataRetentionPeriod'), value: String((selectedData as any)?.dataSharingRestrictions?.dataRetentionPeriod ?? "") },
     { label: t('dataAgreements.policy.policyUrl'), value: String((selectedData as any)?.dataSharingRestrictions?.policyUrl ?? ""), href: (selectedData as any)?.dataSharingRestrictions?.policyUrl || undefined },
     { label: t('dataAgreements.policy.jurisdiction'), value: String((selectedData as any)?.dataSharingRestrictions?.jurisdiction ?? "") },
-    { label: t('dataAgreements.policy.industrySector'), value: String((selectedData as any)?.dataSharingRestrictions?.industrySector ?? "") },
+    // { label: t('dataAgreements.policy.industrySector'), value: String((selectedData as any)?.dataSharingRestrictions?.industrySector ?? "") },
     { label: t('dataAgreements.policy.geographicRestriction'), value: String((selectedData as any)?.dataSharingRestrictions?.geographicRestriction ?? "") },
     { label: t('dataAgreements.policy.storageLocation'), value: String((selectedData as any)?.dataSharingRestrictions?.storageLocation ?? "") },
     { label: t('dataAgreements.policy.agreementPeriodYears'), value: String((selectedData as any)?.agreementPeriod ?? "") },
