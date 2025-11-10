@@ -195,7 +195,7 @@ const ManageAdmin = () => {
         </Typography>
         <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
           <Grid size={{lg: 7, md:6, sm:12, xs:12}} sx={{ display: 'flex' }}>
-            <Item sx={{ height: '100%', flex: 1, minHeight: { sm: 215 } }}>
+            <Item sx={{ height: '100%', flex: 1, minHeight: { sm: 215 }, borderRadius:"7px", boxShadow:"rgba(0, 0, 0, 0.1) 0px 1px 4px" }}>
               <Typography
                 color="black"
                 variant="subtitle1"
@@ -362,7 +362,7 @@ const ManageAdmin = () => {
             </Item>
           </Grid>
           <Grid size={{lg: 5, md:6, sm:12, xs:12}} sx={{ display: 'flex' }}>
-            <Item sx={{ display: "grid", alignContent: "space-between", height: '100%', flex: 1, minHeight: { sm: 215 } }}>
+            <Item sx={{ display: "grid", alignContent: "space-between", height: '100%', flex: 1, minHeight: { sm: 215 }, borderRadius:"7px", boxShadow:"rgba(0, 0, 0, 0.1) 0px 1px 4px" }}>
               <Typography color="black" variant="subtitle1" fontWeight="bold">
                 {t("manageAdmin.userCredentials")}
               </Typography>
