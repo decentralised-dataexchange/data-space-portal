@@ -581,6 +581,7 @@
     "softwareStatementViewTooltip": "View your software statement details",
     "softwareStatementPrereqMissing": "Set Credential Offer and Access Point endpoints first",
     "softwareStatementVctLabel": "VCT",
+    "acceptSoftwareStatementToast": "Accept your Software Statement in DISP portal",
     "softwareStatementClientUriLabel": "client_uri",
     "softwareStatementCoverUrlLabel": "cover_url",
     "softwareStatementIndustrySectorLabel": "industry_sector",

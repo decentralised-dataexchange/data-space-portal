@@ -28,7 +28,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const dispatch = useAppDispatch();
   const [currentLayout, setCurrentLayout] = useState<'main' | 'minimal'>('minimal');
   const [isClient, setIsClient] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   
   // Helper to get current locale from path like /en/..., /fi/..., /sv/...
   const getLocaleFromPath = (p?: string | null) => {
@@ -78,22 +78,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     return false;
   };
   
-  // Only show toast when an error message is present. Suppress success toasts.
+  // Show toast when either success or error message is present
   useEffect(() => {
-    // Proactively clear any success messages so they don't linger
-    if (successMessage) {
-      dispatch(setSuccessMessage(''));
-    }
-    if (errorMessage) {
-      setShowSuccess(true);
+    if (successMessage || errorMessage) {
+      setOpenSnackbar(true);
     } else {
-      setShowSuccess(false);
+      setOpenSnackbar(false);
     }
-  }, [successMessage, errorMessage, dispatch]);
+  }, [successMessage, errorMessage]);
   
   const handleCloseSuccess = () => {
-    setShowSuccess(false);
-    // Clear the global success message so it doesn't re-open
+    setOpenSnackbar(false);
+    // Clear any global messages so it doesn't re-open
     dispatch(setSuccessMessage(''));
     dispatch(setMessage(''));
   };
@@ -187,17 +183,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   // Render the appropriate layout based on authentication state
   return (
     <>
-      {/* Global error message only using custom SnackbarComponent */}
+      {/* Global message using custom SnackbarComponent */}
       <SnackbarComponent
-        open={showSuccess}
+        open={openSnackbar}
         setOpen={(open) => {
           if (!open) {
             handleCloseSuccess();
           } else {
-            setShowSuccess(open);
+            setOpenSnackbar(open);
           }
         }}
-        message={errorMessage}
+        message={successMessage || errorMessage}
+        type={successMessage ? 'success' : 'error'}
       />
       
       {currentLayout === 'main' ? 

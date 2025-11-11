@@ -582,6 +582,7 @@
     "softwareStatementViewTooltip": "Visa detaljer för programvaruintyget",
     "softwareStatementPrereqMissing": "Ställ in Credential Offer- och Access Point-slutpunkter först",
     "softwareStatementVctLabel": "VCT",
+    "acceptSoftwareStatementToast": "Acceptera ditt programvaruintyg i DISP-portalen",
     "softwareStatementClientUriLabel": "Klient-URI",
     "softwareStatementCoverUrlLabel": "Omslags-URL",
     "softwareStatementIndustrySectorLabel": "Bransch",
