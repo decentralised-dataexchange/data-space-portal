@@ -7,7 +7,7 @@ import "../style.scss";
 import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal, useSoftwareStatementRequestRefocus } from "@/custom-hooks/developerApis";
 import { SoftwareStatementRecord } from "@/types/softwareStatement";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
-import { setMessage, setOAuth2Client } from "@/store/reducers/authReducer";
+import { setMessage, setOAuth2Client, setSuccessMessage } from "@/store/reducers/authReducer";
 import { baseURL } from "@/constants/url";
 import RightSidebar from "@/components/common/RightSidebar";
 import CopyButton from "@/components/common/CopyButton";
@@ -535,14 +535,15 @@ export default function DeveloperAPIs() {
                     <span style={{ cursor: (!hasEndpoints || isRequestingSS) ? 'not-allowed' : 'pointer' }}>
                       <Button
                         variant="text"
-                        className={'view-credential'}
+                        className={(hasEndpoints && !isRequestingSS) ? 'add-credential' : 'view-credential'}
                         disabled={!hasEndpoints || isRequestingSS}
                         onClick={() => {
                           if (!hasEndpoints || isRequestingSS) return;
                           (async () => {
                             try {
                               await requestCredential();
-                              // No toast on success; React Query invalidates and our refocus hook handles follow-ups
+                              // Show success toast instructing user to accept the statement in DISP portal
+                              dispatch(setSuccessMessage(t('developerAPIs.acceptSoftwareStatementToast')));
                             } catch {
                               dispatch(setMessage(t('error.generic')));
                             }

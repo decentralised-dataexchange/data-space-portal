@@ -9,10 +9,11 @@ type Props = {
   setOpen: Dispatch<SetStateAction<boolean>>;
   message?: string;
   topStyle?: number;
+  type?: "success" | "info" | "error";
 };
 
 export default function SnackbarComponent(props: Props) {
-  const { open, setOpen, message, topStyle } = props;
+  const { open, setOpen, message, topStyle, type = "error" } = props;
 
   const handleClose = () => {
     setOpen(false);
@@ -33,7 +34,7 @@ export default function SnackbarComponent(props: Props) {
     >
       <Alert
         onClose={handleClose}
-        severity={"error"}
+        severity={type}
         sx={{ width: "100%" }}
       >
         {text}
