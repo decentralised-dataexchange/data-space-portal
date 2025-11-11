@@ -50,6 +50,9 @@ export default function JsonViewer({ value, height = "600px", language = "json",
       style={{
         height: typeof height === "number" ? `${height}px` : height,
         minHeight: 0,
+        backgroundColor: "#FFFFFF",
+        boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 4px",
+        borderRadius: "7px !important"
       }}
     >
       <MonacoEditor

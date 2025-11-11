@@ -35,7 +35,7 @@ export const DDAPolicyCard = (props: Props) => {
 
   return (
     <>
-      <Box sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '7px' }}>
+      <Box sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}>
         <Box
           onClick={() => setOpenDataAgreementPolicyModal(true)}
           sx={{

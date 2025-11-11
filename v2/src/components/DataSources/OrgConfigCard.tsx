@@ -64,7 +64,7 @@ const OrgConfigCard: React.FC<Props> = ({ serviceItem }) => {
 
   return (
     <>
-      <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+      <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '5px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}>
         <CardContent sx={{ padding: '24px' }}>
           <Box sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography color="black" variant="subtitle1" fontWeight="bold">

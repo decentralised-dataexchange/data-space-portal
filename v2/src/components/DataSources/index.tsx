@@ -55,7 +55,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
     if (!dataSourceItem) {
         return (
             <Box className="dataListContainer" sx={{ width: '100%', p: 3 }}>
-                <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}>
                     <CardContent sx={{ padding: '24px' }}>
                         <Typography variant="h6" sx={{ fontSize: '18px', fontWeight: 'bold', mb: 1 }}>
                             {t('common.notFound')}

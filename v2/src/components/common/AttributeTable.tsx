@@ -19,8 +19,9 @@ export type AttributeRow = {
 const cardContainerStyle: React.CSSProperties = {
   margin: "10px 0",
   border: "none",
-  borderRadius: 7,
+  borderRadius: "7px",
   backgroundColor: "#FFFFFF",
+  boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 4px",
 };
 
 export const AttributeTable: React.FC<{

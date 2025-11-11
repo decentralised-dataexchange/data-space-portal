@@ -46,6 +46,8 @@
 /* Left panel: responsive header/logo sizing */
 .dataListContainer {
   .leftSection {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+    border-radius: 7px;
     .card-header {
       position: relative;
       height: 200px; /* Match reference banner height */
@@ -248,6 +250,8 @@
 // Match older card button styling on DataSource read page
 .dataListContainer {
   .cardContainerList {
+    border-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
         .actionListingBtn {
             @include breakpoints.mobileOnly {
                 flex-direction: column;

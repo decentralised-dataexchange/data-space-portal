@@ -176,7 +176,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                   {t('signedAgreements.signatures.dataSourceSignature')}
                 </Typography>
                 <Box sx={{ mt: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, borderRadius: 1, bgcolor: '#FFFFFF', boxShadow: '0px 2px 6px rgba(0,0,0,0.08)', border: '1px solid #DFE0E1' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, bgcolor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px'}}>
                     {dsInfo.logoUrl ? (
                       <Avatar src={dsInfo.logoUrl} alt={dsInfo.name} sx={{ width: 50, height: 50 }} />
                     ) : (
@@ -201,7 +201,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                   {t('signedAgreements.signatures.dataUsingServiceSignature')}
                 </Typography>
                 <Box sx={{ mt: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, borderRadius: 1, bgcolor: '#FFFFFF', boxShadow: '0px 2px 6px rgba(0,0,0,0.08)', border: '1px solid #DFE0E1' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, bgcolor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px', border: '1px solid #DFE0E1' }}>
                     {dusInfo.logoUrl ? (
                       <Avatar src={dusInfo.logoUrl} alt={dusInfo.name} sx={{ width: 50, height: 50 }} />
                     ) : (
