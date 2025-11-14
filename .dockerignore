@@ -1,1 +1,8 @@
 node_modules
+.git
+.github
+legacy-v1
+.next
+.env*.local
+README.md
+LICENSE
