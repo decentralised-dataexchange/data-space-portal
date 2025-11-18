@@ -1,5 +1,5 @@
 <h1 align="center">
-    iGrant.io Data Marketplace Portal
+    iGrant.io Dataspace Portal
 </h1>
 
 <p align="center">
@@ -16,17 +16,17 @@
 
 ## About
 
-This repository hosts source code for the reference implementation of the iGrant.io Data Marketplace Portal.
+This repository hosts source code for the reference implementation of the iGrant.io Dataspace Portal.
 
 ## Instructions to build from source and run
 
-Follow the steps below to get the Data Marketplace portal up and running locally.
+Follow the steps below to get the dataspace portal up and running locally.
 
 1. Clone this repository to your local server using `git clone`.
-2. Execute `make build`. The compiles and assembles source code into executable files or libraries, following the instructions specified in the Makefile of the Data Marketplace portal instance.
-3. Execute `make run`.  This executes a predefined set of instructions in the  Makefile to launch or run the Data Marketplace portal instance.
+2. Execute `make build`. The compiles and assembles source code into executable files or libraries, following the instructions specified in the Makefile of the dataspace portal instance.
+3. Execute `make run`.  This executes a predefined set of instructions in the  Makefile to launch or run the dataspace portal instance.
 
-The Data Marketplace portal can now be accessed at [http://localhost:4204](http://localhost:4204) If you have security issues with your browser, you must establish a self-signed certificate.
+The dataspace portal can now be accessed at [http://localhost:4204](http://localhost:4204) If you have security issues with your browser, you must establish a self-signed certificate.
 
 ## Contributing
 

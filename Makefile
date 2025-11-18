@@ -33,6 +33,7 @@ DOCKER_IMAGE := ${GCLOUD_HOSTNAME}/${GCLOUD_PROJECTID}/$(NAME)
 DOCKER_TAG := $(GIT_BRANCH)-$(shell date +%Y%m%d%H%M%S)-$(GIT_COMMIT)
 
 .DEFAULT_GOAL := help
+
 .PHONY: help
 help:
 	@echo "------------------------------------------------------------------------"
@@ -41,49 +42,30 @@ help:
 	@grep -E '^[0-9a-zA-Z_/%\-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 
-run: ## Run frontend locally for development purposes
-	docker run \
-		$(CONTAINER_DEFAULT_RUN_FLAGS) \
-		-p 4204:80 \
-		--name "${CONTAINER_DATASPACE_FRONTEND}" \
-		$(DOCKER_IMAGE):dev
-
-run/v2: ## Run Next.js v2 frontend locally for development purposes
+run: ## Run Next.js frontend locally for development purposes
 	docker run \
 		$(CONTAINER_DEFAULT_RUN_FLAGS) \
 		-p 3000:3000 \
-		--name "${CONTAINER_DATASPACE_FRONTEND}-v2" \
-		$(DOCKER_IMAGE)-v2:dev
+		--name "${CONTAINER_DATASPACE_FRONTEND}" \
+		$(DOCKER_IMAGE):dev
 
 .PHONY: build/docker/deployable
-build/docker/deployable: ## Builds deployable docker image for preview, staging and production
-	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile .
+build/docker/deployable: ## Builds deployable Next.js docker image for preview, staging and production
+	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs .
 	echo "$(DOCKER_IMAGE):$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
 
-.PHONY: build/docker/deployable/v2
-build/docker/deployable/v2: ## Builds deployable Next.js v2 docker image for preview, staging and production
-	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE)-v2:$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs .
-	echo "$(DOCKER_IMAGE)-v2:$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
-
 .PHONY: build
-build: ## Builds the docker image
-	docker build -t $(DOCKER_IMAGE):dev -f resources/docker/Dockerfile .
-
-.PHONY: build/v2
-build/v2: ## Builds the Next.js v2 docker image
-	docker build -t $(DOCKER_IMAGE)-v2:dev -f resources/docker/Dockerfile.nextjs .
+build: ## Builds the Next.js docker image for local development
+	docker build -t $(DOCKER_IMAGE):dev -f resources/docker/Dockerfile.nextjs .
 
 .PHONY: publish
-publish: $(DEPLOY_VERSION_F ILE) ## Publish latest production Docker image to docker hub
-	docker -- push $(DEPLOY_VERSION)
+publish: $(DEPLOY_VERSION_FILE) ## Publish latest production Docker image to docker hub
+	docker push $(DEPLOY_VERSION)
 
-deploy/staging: $(DEPLOY_VERSION_FILE) ## Deploy to K8s cluster (e.g. make deploy/{preview,staging,staging})
-	kubectl set image deployment/dataspace-frontend dataspace-frontend=$(DEPLOY_VERSION) -n dataspace 
-
-deploy/staging/v2: $(DEPLOY_VERSION_FILE) ## Deploy Next.js v2 to K8s cluster
-	kubectl set image deployment/staging-dataspacefrontend staging-dataspacefrontend=$(DEPLOY_VERSION) -n dataspace
+deploy/staging: $(DEPLOY_VERSION_FILE) ## Deploy Next.js to staging K8s deployment
+	kubectl set image deployment/staging-dataspacefrontend staging-dataspacefrontend=$(DEPLOY_VERSION) -n dataspace 
 
 $(DEPLOY_VERSION_FILE):
 	@echo "Missing '$(DEPLOY_VERSION_FILE)' file. Run 'make build/docker/deployable'" >&2
 	exit 1
-
+	
