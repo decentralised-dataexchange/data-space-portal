@@ -379,6 +379,7 @@
     "unsignWithBusinessWallet": "Unsign with Business Wallet",
     "loginToSignWithBusinessWallet": "Login to sign with Business Wallet",
     "loginToUnsignWithBusinessWallet": "Login to unsign with Business Wallet",
+    "signWithBusinessWalletInitiateError": "Failed to initiate sign with business wallet request",
     "publishModal": {
       "title": "Publish to Marketplace",
       "confirmButton": "Publish"
