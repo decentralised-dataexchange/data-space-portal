@@ -394,6 +394,7 @@
     "unsignWithBusinessWallet": "Peruuta allekirjoitus yrityslompakolla",
     "loginToSignWithBusinessWallet": "Kirjaudu sisään allekirjoittaaksesi yrityslompakolla",
     "loginToUnsignWithBusinessWallet": "Kirjaudu sisään peruuttaaksesi allekirjoituksen yrityslompakolla",
+    "signWithBusinessWalletInitiateError": "Yrityslompakon allekirjoituspyynnön käynnistäminen epäonnistui",
     "dataDisclosureAgreementPolicy": "Tietojen luovutussopimuksen käytäntö",
     "policy": {
       "lawfulBasis": "Käsittelyn oikeusperuste",

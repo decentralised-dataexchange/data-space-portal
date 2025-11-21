@@ -362,6 +362,7 @@
     "unsignWithBusinessWallet": "Ångra signering med företagsplånbok",
     "loginToSignWithBusinessWallet": "Logga in för att signera med företagsplånbok",
     "loginToUnsignWithBusinessWallet": "Logga in för att ångra signering med företagsplånbok",
+    "signWithBusinessWalletInitiateError": "Det gick inte att initiera begäran om signering med företagsplånbok",
     "dataDisclosureAgreementPolicy": "Policy för datautlämningsavtal",
     "policy": {
       "lawfulBasis": "Rättslig grund för behandling",

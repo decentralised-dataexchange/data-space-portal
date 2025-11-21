@@ -8,6 +8,7 @@ import { clearSelectedDDAId } from "@/store/reducers/dataSourceReducers";
 import { useBusinessWalletSigning } from "@/custom-hooks/businessWalletSigning";
 import { useTranslations } from "next-intl";
 import { loader as monacoLoader } from "@monaco-editor/react";
+import { setMessage } from "@/store/reducers/authReducer";
 // no i18n needed here
 
 interface Props {
@@ -80,6 +81,7 @@ export default function DDAModalController({
       }
     } catch {
       // silent per spec
+      dispatch(setMessage(t('dataAgreements.signWithBusinessWalletInitiateError')));
     }
   };
 

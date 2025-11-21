@@ -43,7 +43,6 @@ export const useLogin = () => {
       // Clear any previous global error to avoid showing error after success
       dispatch(setMessage(''));
       // Set a global success message so AppLayout can show a toast after navigation
-      dispatch(setSuccessMessage('Login successful'));
       // dispatch(setLoading(false));
       
       // Single navigation after login: locale-aware replace to avoid flicker
