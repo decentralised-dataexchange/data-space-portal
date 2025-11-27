@@ -17,6 +17,9 @@ export const ENDPOINTS = {
     organisationList: () => {
         return "/service/organisation/";
     },
+    serviceSearch: () => {
+        return "/service/search";
+    },
     organisationById: (id: string) => {
         return `/service/organisation/?organisationId=${id}`;
     },

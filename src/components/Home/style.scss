@@ -243,6 +243,11 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* Fill the available main area between navbar and footer via flex-grow */
+    flex: 1 1 auto;
+    min-height: 0;
 }
 
 @include breakpoints.tabletAndDown {
