@@ -17,6 +17,7 @@ import { SoftwareStatementResponse } from "@/types/softwareStatement";
 import { DDAgreementsResponse } from "@/types/dataDisclosureAgreement";
 import { B2BConnectionsListResponse, B2BConnectionDetailResponse } from "@/types/b2bConnection";
 import { SignedAgreementsListResponse, SignedAgreementRecordResponse } from "@/types/signedAgreement";
+import type { ServiceSearchParams, ServiceSearchResponse } from "@/types/serviceSearch";
 
 // API Service implementation with real API calls
 export const apiService = {
@@ -286,6 +287,36 @@ export const apiService = {
     return api.get<import('@/types/serviceOrganisation').ServiceOrganisationResponse>(
       ENDPOINTS.organisationList()
     ).then(res => res.data);
+  },
+  serviceSearch: async (params: ServiceSearchParams): Promise<ServiceSearchResponse> => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("search", params.search);
+    if (typeof params.searchOrgName === "boolean") {
+      searchParams.set("searchOrgName", String(params.searchOrgName));
+    }
+    if (typeof params.searchDdaPurpose === "boolean") {
+      searchParams.set("searchDdaPurpose", String(params.searchDdaPurpose));
+    }
+    if (typeof params.searchDdaDescription === "boolean") {
+      searchParams.set("searchDdaDescription", String(params.searchDdaDescription));
+    }
+    if (typeof params.searchDataset === "boolean") {
+      searchParams.set("searchDataset", String(params.searchDataset));
+    }
+    if (params.sortBy) {
+      searchParams.set("sortBy", params.sortBy);
+    }
+    if (params.sortOrder) {
+      searchParams.set("sortOrder", params.sortOrder);
+    }
+    if (typeof params.offset === "number") {
+      searchParams.set("offset", String(params.offset));
+    }
+    if (typeof params.limit === "number") {
+      searchParams.set("limit", String(params.limit));
+    }
+    const url = `${ENDPOINTS.serviceSearch()}?${searchParams.toString()}`;
+    return api.get<ServiceSearchResponse>(url).then(res => res.data);
   },
   getVerificationTemplates: async (restrictTemplate: boolean = false): Promise<VerificationTemplate[]> => {
     try {

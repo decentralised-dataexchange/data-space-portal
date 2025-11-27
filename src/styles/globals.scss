@@ -205,6 +205,13 @@ a {
   max-width: 100%;
   box-sizing: border-box;
   background-color: white;
+  /* Use flex so this area fills the available homeContainer height
+     (which already accounts for navbar, footer, and padding) */
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  /* Ensure we always have a decent panel height even with no items */
+  min-height: 470px;
   
   .cardContainer {
     background-color: white;
