@@ -1,4 +1,4 @@
-import { ServiceOrganisationItem, ServicePagination } from "./serviceOrganisation";
+import { ServicePagination } from "./serviceOrganisation";
 import type { DataDisclosureAgreementRecordJSON } from "./signedAgreement";
 
 export type ServiceSearchSortBy =
@@ -43,9 +43,7 @@ export interface ServiceSearchMeta {
 }
 
 export interface ServiceSearchResponse {
-  organisations: ServiceOrganisationItem[];
-  organisationsPagination: ServicePagination;
   ddas: ServiceSearchDdaItem[];
-  ddasPagination: ServicePagination;
-  searchMeta: ServiceSearchMeta;
+  ddasPagination?: ServicePagination;
+  searchMeta?: ServiceSearchMeta;
 }

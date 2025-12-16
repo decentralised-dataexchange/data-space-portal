@@ -60,7 +60,7 @@ export const MainAppBarMenu = (props: Props) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ display: { xs: 'none', sm: 'flex' }, flexDirection: 'column', ml: 1, justifyContent: 'center', gap: 1 }}>
           <Typography noWrap sx={{ fontSize: '16px', color: 'white', lineHeight: 1, marginBottom: '2px' }}>
             {orgName}
