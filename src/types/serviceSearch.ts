@@ -23,6 +23,7 @@ export interface ServiceSearchParams {
 }
 
 export interface ServiceSearchDdaItem {
+  tags?: string[];
   id: string;
   organisationId: string;
   organisationName: string;

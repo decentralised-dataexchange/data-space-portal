@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { Box, IconButton, TextField, Tooltip } from "@mui/material";
+import { Box, IconButton, TextField, Tooltip, CircularProgress } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MagnifyingGlass, XIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   searchQuery: string;
@@ -13,16 +14,18 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations();
 
   const [localSearch, setLocalSearch] = React.useState(searchQuery);
-  const [expanded, setExpanded] = React.useState(Boolean(searchQuery));
+  const [expanded, setExpanded] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   // Keep local input value in sync with server-provided query from URL
   React.useEffect(() => {
     setLocalSearch(searchQuery);
-    setExpanded(Boolean(searchQuery));
+    setIsLoading(false);
   }, [searchQuery]);
 
   const buildNextUrl = (params: URLSearchParams) => {
@@ -41,6 +44,7 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
     // Reset pagination when search changes
     params.set("orgPage", "1");
     params.set("ddaPage", "1");
+    setIsLoading(true);
     router.push(buildNextUrl(params));
   };
 
@@ -58,49 +62,62 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
       alignItems: 'center',
       marginTop: 0,
     },
+    // Guard against MUI label data-shrink=false rule hiding placeholders
+    '& label[data-shrink="false"] + .MuiInputBase-formControl .MuiInputBase-input::placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& label[data-shrink="false"] + .MuiInputBase-formControl .MuiInputBase-input::-webkit-input-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& label[data-shrink="false"] + .MuiInputBase-formControl .MuiInputBase-input:-moz-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& label[data-shrink="false"] + .MuiInputBase-formControl .MuiInputBase-input::-moz-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& label[data-shrink="false"] + .MuiInputBase-formControl .MuiInputBase-input:-ms-input-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
     '& .MuiInputBase-input': {
       height: 40,
       lineHeight: '40px',
       paddingLeft: 2,
       fontSize: '0.875rem',
+      color: '#111111',
     },
     '& .MuiInputBase-input::placeholder': {
-      opacity: 1,
-      color: '#9c9c9c',
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& .MuiInputBase-input::-webkit-input-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& .MuiInputBase-input:-moz-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& .MuiInputBase-input::-moz-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
+    },
+    '& .MuiInputBase-input:-ms-input-placeholder': {
+      opacity: '1 !important',
+      color: '#9c9c9c !important',
     },
   } as const;
 
   const isSearchEmpty = !localSearch.trim();
 
-  // Collapse the search field when clicking outside, but only if it's empty
-  React.useEffect(() => {
-    if (!expanded) return;
-
-    const handleClickAway = (event: MouseEvent) => {
-      const node = containerRef.current;
-      if (!node) return;
-      if (!node.contains(event.target as Node) && isSearchEmpty) {
-        setExpanded(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickAway);
-    return () => {
-      document.removeEventListener('mousedown', handleClickAway);
-    };
-  }, [expanded, isSearchEmpty]);
+  // Search field is always expanded now, no collapse behavior
 
   const handleIconClick = () => {
-    if (!expanded) {
-      setExpanded(true);
-      // Focus input shortly after expanding
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 150);
-      return;
-    }
-
-    if (!isSearchEmpty) {
+    if (!isSearchEmpty && !isLoading) {
       runSearch();
     } else {
       inputRef.current?.focus();
@@ -115,17 +132,14 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
     params.delete("search");
     params.set("orgPage", "1");
     params.set("ddaPage", "1");
+    setIsLoading(true);
     router.push(buildNextUrl(params));
-    // Keep the field open and ready for a new search
-    setExpanded(true);
     requestAnimationFrame(() => {
       inputRef.current?.focus();
     });
   };
 
-  const tooltipTitle = expanded
-    ? "Click to run search"
-    : "Click to open search";
+  const tooltipTitle = isLoading ? "Searching..." : "Click to run search";
 
   return (
     <Box
@@ -136,16 +150,18 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
         display: "flex",
         alignItems: "center",
         width: "100%",
-        maxWidth: 360,
+        maxWidth: 600,
         justifyContent: { xs: 'flex-start', md: 'flex-end' },
       }}
     >
-      {/* Icon container so we can reorder across breakpoints */}
+      {/* Icon container stays on the right on all breakpoints */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          order: { xs: 0, md: 1 },
+          order: 1,
+          minWidth: 40,
+          justifyContent: 'center',
         }}
       >
         <Tooltip title={tooltipTitle}>
@@ -154,14 +170,19 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
               type="button"
               size="small"
               onClick={handleIconClick}
+              disabled={isLoading || isSearchEmpty}
             >
-              <MagnifyingGlass size={20} style={{ color: "#888", transform: "translateY(-1px)" }} />
+              {isLoading ? (
+                <CircularProgress size={20} sx={{ color: "#888" }} />
+              ) : (
+                <MagnifyingGlass size={20} style={{ color: "#888", transform: "translateY(-1px)" }} />
+              )}
             </IconButton>
           </span>
         </Tooltip>
       </Box>
 
-      {/* Animated search field: to the right of the icon on mobile, to the left on desktop */}
+      {/* Search field: always visible */}
       <Box
         sx={{
           flexShrink: 0,
@@ -172,40 +193,31 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
           border: '1px solid #D0D5DD',
           overflow: 'hidden',
           minWidth: 0,
-          transition: 'width 0.25s ease, margin 0.25s ease, opacity 0.2s ease',
-          width: expanded ? '100%' : 0,
-          ml: { xs: expanded ? 1 : 0, md: 0 },
-          mr: { xs: 0, md: expanded ? 1 : 0 },
-          opacity: expanded ? 1 : 0,
+          flex: 1,
+          ml: { xs: 1, md: 0 },
+          mr: { xs: 0, md: 1 },
           order: { xs: 1, md: 0 },
         }}
       >
         <TextField
           fullWidth
           name="search"
-          placeholder="Search organisations and DDAs"
+          placeholder={t("home.searchPlaceholder")}
           value={localSearch}
           onChange={(e) => setLocalSearch(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Escape' && isSearchEmpty) {
-              setExpanded(false);
+            if (e.key === 'Enter') {
+              runSearch();
             }
-          }}
-          onBlur={() => {
-            if (!isSearchEmpty) return;
-            // Defer to let focus move; collapse only if focus left the whole control
-            requestAnimationFrame(() => {
-              const node = containerRef.current;
-              if (!node) return;
-              if (!node.contains(document.activeElement)) {
-                setExpanded(false);
-              }
-            });
           }}
           variant="standard"
           label={false as any}
           inputRef={inputRef}
           sx={inputSx}
+          inputProps={{
+            placeholder: t("home.searchPlaceholder"),
+            'aria-label': t("home.searchPlaceholder"),
+          }}
           slotProps={{
             input: {
               disableUnderline: true,

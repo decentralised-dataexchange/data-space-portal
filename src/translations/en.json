@@ -170,7 +170,12 @@
     "readLess": "Read Less....",
     "btn-signData": "View Data Disclosure Agreements",
     "btn-viewMetadata": "View APIs",
-    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) "
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) ",
+    "searchPlaceholder": "Search Organisations and Data Disclosure Agreements",
+    "tabs": {
+      "organisations": "Organisations",
+      "dataDisclosureAgreements": "Data Disclosure Agreements"
+    }
   },
   "appBar": {
     "header": "CRANE d-HDSI Data Marketplace",

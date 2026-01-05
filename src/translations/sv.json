@@ -129,7 +129,12 @@
     "readLess": "Läs mindre....",
     "btn-signData": "Visa datautlämningsavtal",
     "btn-viewMetadata": "Visa API:er",
-    "footerTxt": " NordXData Foundation (CRANE - dHDSI )"
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI )",
+    "searchPlaceholder": "Sök Organisationer och Datautlämningsavtal",
+    "tabs": {
+      "organisations": "Organisationer",
+      "dataDisclosureAgreements": "Datautlämningsavtal"
+    }
   },
   "appBar": {
     "header": "CRANE d-HDSI Data Marketplace",
