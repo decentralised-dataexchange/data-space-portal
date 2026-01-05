@@ -49,29 +49,27 @@ run: ## Run Next.js frontend locally for development purposes
 		--name "${CONTAINER_DATASPACE_FRONTEND}" \
 		$(DOCKER_IMAGE):dev
 
-.PHONY: set-api-url/staging
-set-api-url/staging: ## Set API base URL for staging environment
-	sed -i.bak 's|export const baseURL = "https://[^"]*"|export const baseURL = "https://api.nxd.foundation"|' src/constants/url.ts
-	rm -f src/constants/url.ts.bak
-
-.PHONY: set-api-url/demo
-set-api-url/demo: ## Set API base URL for demo environment
-	sed -i.bak 's|export const baseURL = "https://[^"]*"|export const baseURL = "https://demo-api.nxd.foundation"|' src/constants/url.ts
-	rm -f src/constants/url.ts.bak
-
 .PHONY: build/docker/deployable
 build/docker/deployable: ## Builds deployable Next.js docker image for preview, staging and production
 	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs .
 	echo "$(DOCKER_IMAGE):$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
 
 .PHONY: build/docker/deployable/demo
-build/docker/deployable/demo: set-api-url/demo ## Builds deployable Docker image for demo with demo API URL
-	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs .
+build/docker/deployable/demo: ## Builds deployable Docker image for demo with demo API URL
+	cp src/constants/url.ts src/constants/url.ts.original
+	sed -i.bak 's|export const baseURL = "https://[^"]*"|export const baseURL = "https://demo-api.nxd.foundation"|' src/constants/url.ts
+	rm -f src/constants/url.ts.bak
+	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs . || (mv src/constants/url.ts.original src/constants/url.ts && exit 1)
+	mv src/constants/url.ts.original src/constants/url.ts
 	echo "$(DOCKER_IMAGE):$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
 
 .PHONY: build/docker/deployable/staging
-build/docker/deployable/staging: set-api-url/staging ## Builds deployable Docker image for staging with staging API URL
-	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs .
+build/docker/deployable/staging: ## Builds deployable Docker image for staging with staging API URL
+	cp src/constants/url.ts src/constants/url.ts.original
+	sed -i.bak 's|export const baseURL = "https://[^"]*"|export const baseURL = "https://api.nxd.foundation"|' src/constants/url.ts
+	rm -f src/constants/url.ts.bak
+	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/Dockerfile.nextjs . || (mv src/constants/url.ts.original src/constants/url.ts && exit 1)
+	mv src/constants/url.ts.original src/constants/url.ts
 	echo "$(DOCKER_IMAGE):$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
 
 .PHONY: build
