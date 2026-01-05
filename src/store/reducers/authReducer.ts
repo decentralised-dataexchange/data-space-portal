@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OAuth2Client } from '@/types/oauth2';
+import type { AppDispatch } from '../store';
 
 export interface AdminDetails {
   id: string;
   email: string;
   name: string;
-  [key: string]: any;
+  avatarImageId?: string;
+  avatarImageUrl?: string;
+  lastVisited?: string;
 }
 
 export interface AuthState {
@@ -113,7 +116,7 @@ export const {
  * This should be used instead of the plain logout action when you need to clear React Query cache
  */
 export const logoutAndClearState = () => {
-  return (dispatch: any) => {
+  return (dispatch: AppDispatch) => {
     // Dispatch the Redux logout action
     dispatch(logout());
     

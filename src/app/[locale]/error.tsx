@@ -13,7 +13,7 @@ export default function Error({error, reset}: Props) {
   const t = useTranslations('error');
 
   useEffect(() => {
-    console.log(error);
+    console.error('Application error:', error);
   }, [error]);
 
   return (

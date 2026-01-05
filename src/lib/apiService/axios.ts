@@ -73,7 +73,6 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
             const cancelToken = axios.CancelToken.source();
             config.cancelToken = cancelToken.token;
             cancelToken.cancel('No authentication token available');
-            console.log('Request canceled due to missing token:', url);
             return Promise.reject('No authentication token available');
           }
         }

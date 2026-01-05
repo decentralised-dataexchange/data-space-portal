@@ -1,28 +1,36 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { VerificationTemplate, Verification } from '@/types/verification';
+import type { OrgIdentityResponse } from '@/types/orgIdentity';
 
 interface ListConnectionState {
-  data: any;
+  data: unknown;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+}
+
+interface VerificationTemplatesData {
+  verificationTemplates: VerificationTemplate[];
 }
 
 interface VerificationTemplateState {
-  data: any;
+  data: VerificationTemplatesData | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
+interface VerificationStateData {
+  verification: Verification | null;
+  selectedTemplate: VerificationTemplate | null;
+}
+
 interface VerificationState {
-  data: {
-    verification: any;
-    selectedTemplate: any;
-  } | null;
+  data: VerificationStateData | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 interface GettingStartState {
-  data: any;
+  data: Partial<OrgIdentityResponse> | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   listConnection: ListConnectionState;
@@ -59,7 +67,7 @@ const gettingStartSlice = createSlice({
       state.status = 'loading';
       state.error = null;
     },
-    setGettingStartSuccess(state, action: PayloadAction<any>) {
+    setGettingStartSuccess(state, action: PayloadAction<Partial<OrgIdentityResponse>>) {
       state.status = 'succeeded';
       state.data = action.payload;
     },
@@ -71,7 +79,7 @@ const gettingStartSlice = createSlice({
       state.listConnection.status = 'loading';
       state.listConnection.error = null;
     },
-    setListConnectionSuccess(state, action: PayloadAction<any>) {
+    setListConnectionSuccess(state, action: PayloadAction<unknown>) {
       state.listConnection.status = 'succeeded';
       state.listConnection.data = action.payload;
     },
@@ -83,7 +91,7 @@ const gettingStartSlice = createSlice({
       state.verificationTemplate.status = 'loading';
       state.verificationTemplate.error = null;
     },
-    setVerificationTemplateSuccess(state, action: PayloadAction<any>) {
+    setVerificationTemplateSuccess(state, action: PayloadAction<VerificationTemplatesData>) {
       state.verificationTemplate.status = 'succeeded';
       state.verificationTemplate.data = action.payload;
     },
@@ -95,7 +103,7 @@ const gettingStartSlice = createSlice({
       state.verification.status = 'loading';
       state.verification.error = null;
     },
-    setVerificationSuccess(state, action: PayloadAction<any>) {
+    setVerificationSuccess(state, action: PayloadAction<Verification>) {
       state.verification.status = 'succeeded';
       if (!state.verification.data) {
         state.verification.data = { verification: null, selectedTemplate: null };
@@ -106,13 +114,13 @@ const gettingStartSlice = createSlice({
       state.verification.status = 'failed';
       state.verification.error = action.payload;
     },
-    setSelectedTemplate(state, action: PayloadAction<any>) {
+    setSelectedTemplate(state, action: PayloadAction<VerificationTemplate | null>) {
       if (!state.verification.data) {
         state.verification.data = { verification: null, selectedTemplate: null };
       }
       state.verification.data.selectedTemplate = action.payload;
     },
-    setVerification(state, action: PayloadAction<{ verification: any }>) {
+    setVerification(state, action: PayloadAction<{ verification: Verification | null }>) {
       if (!state.verification.data) {
         state.verification.data = { verification: null, selectedTemplate: null };
       }

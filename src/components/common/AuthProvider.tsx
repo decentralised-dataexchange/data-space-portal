@@ -94,7 +94,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           
           if ((decodedToken as any).exp < currentTime) {
             // Token expired
-            console.log('Token expired, logging out');
             LocalStorageService.clear();
             setIsAuthenticated(false);
             dispatch(setAuthenticated(false));
@@ -105,7 +104,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           }
           
           // Token is valid, update Redux state
-          console.log('Token is valid, setting authenticated state');
           dispatch(setAuthenticated(true));
           try { setAxiosAuthState(true); } catch {}
           

@@ -182,7 +182,6 @@ const DDAgreements = () => {
   };
 
   const handleAddNewListing = () => {
-    console.log('Add new listing clicked');
     // TODO: Implement add new listing functionality
   };
 

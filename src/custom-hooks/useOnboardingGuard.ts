@@ -36,7 +36,6 @@ export const useOnboardingGuard = () => {
     
     // If CoC is not signed, redirect to onboarding
     if (!cocSigned) {
-      console.log('Onboarding incomplete: redirecting to /onboarding');
       router.push('/onboarding');
     }
   }, [authLoading, isAuthenticated, orgLoading, organisation, router]);

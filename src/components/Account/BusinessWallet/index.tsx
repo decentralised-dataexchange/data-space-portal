@@ -97,7 +97,6 @@ const BusinessWallet = () => {
 
   const handleAddNewConnection = () => {
     // TODO: implement add new business wallet connection
-    console.log('Add new business wallet connection');
   };
 
   return (

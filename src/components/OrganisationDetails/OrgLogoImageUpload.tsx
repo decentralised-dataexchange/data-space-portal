@@ -37,7 +37,7 @@ const OrgLogoImageUpload = (props: Props) => {
       }
       queryClient.invalidateQueries({ queryKey: ['logoImage'] });
     } catch (error) {
-      console.log(`Error: ${error}`);
+      console.error('Error updating logo image:', error);
     }
   };
 

@@ -338,7 +338,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       setCompletedCrop(null);
       setLivePixelCrop(null);
       cropInitializedRef.current = false;
-      console.log('Modal closed - state reset');
     };
   }, []);
 
@@ -433,7 +432,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
     if (!imageUrl || !imgRef.current) return;
     const pixelCrop = completedCrop ?? (crop ? toPixelCrop(crop, imgRef.current) : null);
     if (!pixelCrop || pixelCrop.width < minWidth || pixelCrop.height < minHeight) {
-      console.log('Crop is invalid or not completed');
       dispatch(setMessage(`Crop must be at least ${minWidth}x${minHeight}px`));
       return;
     }
@@ -441,7 +439,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
     try {
       // Set uploading state to show loading indicator
       setIsUploading(true);
-      console.log('Starting image crop and upload...');
       
       const targetW = outputWidth ?? pixelCrop.width;
       const targetH = outputHeight ?? pixelCrop.height;
@@ -469,7 +466,6 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       
       // Wait for the upload to complete before closing the modal
       await onCropComplete(croppedImage);
-      console.log('Upload completed successfully');
       // Do not close here; parent will close the modal after it finishes refetching
       setIsUploading(false);
     } catch (e) {

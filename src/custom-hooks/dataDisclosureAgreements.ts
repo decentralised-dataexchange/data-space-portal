@@ -145,9 +145,8 @@ export const usePublishDDA = () => {
         throw ddaError;
       }
     },
-    onSuccess: (_, dataAgreementId) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: DDA_QUERY_KEYS.all });
-      console.log(`Successfully published DDA ${dataAgreementId} to marketplace`);
     },
     onError: (error, dataAgreementId) => {
       console.error(`Failed to publish DDA ${dataAgreementId}:`, error);
@@ -263,9 +262,8 @@ export const useUpdateDDAStatus = () => {
       }
       console.error(`Failed to update DDA ${variables.id} status to ${variables.status}:`, err);
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: DDA_QUERY_KEYS.all });
-      console.log(`Successfully updated DDA ${variables.id} status to ${variables.status}`);
     },
   });
 };

@@ -3,15 +3,14 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/system";
 import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon, ClockCounterClockwiseIcon } from "@phosphor-icons/react";
 import VersionDropdown from "../VersionDropDown";
-import { Tooltip, Pagination, Box } from "@mui/material";
+import { Tooltip, Box } from "@mui/material";
 import PaginationControls from "@/components/common/PaginationControls";
 import { apiService } from "@/lib/apiService/apiService";
 import { useRouter } from "next/navigation";
@@ -19,6 +18,8 @@ import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import { getStatus } from "@/utils/dda";
+import { formatLocalDate } from "@/utils/dateFormat";
+import { StyledTableCell, StyledTableRow } from "@/components/common/Table/StyledTable";
 
 interface DDATableProps {
   setIsOpenViewDDA: (isOpen: boolean) => void;
@@ -43,90 +44,6 @@ interface DDATableProps {
   onPageChange: (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => void;
   onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
-
-// Use TableContainer directly with sx (removes parser complaints around styled wrapper)
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    fontSize: "0.875rem",
-    fontWeight: "bold",
-    color: "rgba(0, 0, 0, 0.87)",
-    padding: "6px 16px",
-    border: "1px solid #D7D6D6",
-    backgroundColor: "#e5e4e4",
-    whiteSpace: 'nowrap',
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: "0.875rem",
-    fontWeight: "lighter",
-    color: "rgba(0, 0, 0, 0.87)",
-    padding: "6px 16px",
-    border: "1px solid #D7D6D6",
-    whiteSpace: 'nowrap',
-  },
-}));
-
-const StyledTableRow = styled(TableRow)({
-  border: "1px solid #D7D6D6",
-});
-
-// Inline numeric pagination to be rendered within TablePagination actions area
-const NumericPaginationActions: React.FC<any> = ({ count, page, rowsPerPage, onPageChange }) => {
-  const totalPages = Math.ceil((count || 0) / (rowsPerPage || 1)) || 0;
-  if (totalPages <= 1) return null;
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Pagination
-        count={totalPages}
-        page={(page ?? 0) + 1}
-        onChange={(_, value) => onPageChange?.(null, value - 1)}
-        size="small"
-        siblingCount={0}
-        boundaryCount={1}
-        sx={{
-          '& .MuiPagination-ul': {
-            alignItems: 'center',
-          },
-          '& .MuiPaginationItem-root': {
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minWidth: 28,
-            height: 28,
-            lineHeight: '28px',
-            fontSize: '12px',
-            margin: '0 2px'
-          },
-          '& .MuiPaginationItem-root.MuiPaginationItem-previousNext': {
-            minWidth: 28,
-            height: 28,
-            lineHeight: '28px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          },
-          '& .MuiPaginationItem-icon': {
-            fontSize: 18,
-            margin: 0,
-            display: 'block',
-          },
-          '& .MuiSvgIcon-root': {
-            fontSize: 18,
-            verticalAlign: 'middle',
-            display: 'block',
-          },
-          // micro-adjust chevrons to align perfectly with numeric items
-          '& .MuiPaginationItem-previousNext .MuiPaginationItem-icon': {
-            transform: 'translateY(-1px)',
-          },
-          '& .MuiPaginationItem-previousNext .MuiSvgIcon-root': {
-            transform: 'translateY(-1px)',
-          },
-        }}
-      />
-    </Box>
-  );
-};
 
 const DDATable: React.FC<DDATableProps> = ({
   setIsOpenViewDDA,
@@ -211,13 +128,12 @@ const DDATable: React.FC<DDATableProps> = ({
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{getStatus(t, row.status)}</StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black", textTransform: "capitalize" }}>{row.lawfulBasis}</StyledTableCell>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>
-                  {(() => {
-                    const selected = getSelectedRevisionData(row) as any;
-                    const ts: any = selected?.updatedAt || selected?.createdAt || (row as any)?.updatedAt || (row as any)?.createdAt;
-                    if (!ts) return '';
-                    const d = new Date(ts);
-                    return isNaN(d.getTime()) ? '' : d.toLocaleString();
-                  })()}
+                  {formatLocalDate(
+                    getSelectedRevisionData(row)?.updatedAt ||
+                    getSelectedRevisionData(row)?.createdAt ||
+                    row?.updatedAt ||
+                    row?.createdAt
+                  )}
                 </StyledTableCell>
                 <StyledTableCell
                   style={{

@@ -34,38 +34,22 @@ const OrgCoverImageUpload = (props: Props) => {
 
   const handleImageUpdate = async (file: File, imageBase64: string): Promise<void> => {
     try {
-      console.log('Starting banner image upload...');
-      console.log('File details:', {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified
-      });
-      
       const formData = new FormData();
       formData.append('orgimage', file);
-      
-      console.log('Form data prepared successfully');
-      console.log('Using endpoint:', '/config/organisation/coverimage/');
-      
-      // Upload first
-      const result = await updateCoverImage(formData);
+
+      await updateCoverImage(formData);
       // Optimistically set the new cover image so UI updates immediately
       queryClient.setQueryData(['coverImage'], imageBase64 || '');
       // Invalidate in background to ensure fresh image is fetched
       queryClient.invalidateQueries({ queryKey: ['coverImage'] });
-      console.log('Banner upload successful:', result);
-      
+
       // Toggle edit mode; React Query invalidates cover image and updates UI
       if (editMode) {
         handleEdit();
       }
-      
-      console.log('Banner image update completed successfully');
-      // Don't return the result, just complete the Promise<void>
     } catch (error) {
       console.error('Error updating cover image:', error);
-      throw error; // Re-throw to allow modal to handle the error
+      throw error;
     }
   };
 

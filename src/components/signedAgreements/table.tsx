@@ -3,14 +3,13 @@
 import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
-import { styled } from "@mui/system";
 import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
-import { Tooltip, Pagination, Box, Button, Typography } from "@mui/material";
+import { Tooltip, Box, Button, Typography } from "@mui/material";
 import IntegrationInstructionsOutlinedIcon from "@mui/icons-material/IntegrationInstructionsOutlined";
 import RightSidebar from "../common/RightSidebar";
 import JsonViewer from "@/components/common/JsonViewer";
@@ -19,6 +18,10 @@ import PaginationControls from "@/components/common/PaginationControls";
 import { getStatus } from "@/utils/dda";
 import { useTranslations } from "next-intl";
 import { SignedAgreementsListResponse } from "@/types/signedAgreement";
+import { formatLocalDate } from "@/utils/dateFormat";
+import { useClipboard } from "@/custom-hooks/useClipboard";
+import { StyledTableCell, StyledTableRow } from "@/components/common/Table/StyledTable";
+import { TIMEOUTS } from "@/constants/dimensions";
 
 interface Props {
   tabledata: SignedAgreementsListResponse | { dataDisclosureAgreementRecord: any[]; pagination: any };
@@ -28,56 +31,6 @@ interface Props {
   onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onView: (row: any) => void;
 }
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    fontSize: "0.875rem",
-    fontWeight: "bold",
-    color: "rgba(0, 0, 0, 0.87)",
-    padding: "6px 16px",
-    border: "1px solid #D7D6D6",
-    backgroundColor: "#e5e4e4",
-    whiteSpace: 'nowrap',
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: "0.875rem",
-    fontWeight: "lighter",
-    color: "rgba(0, 0, 0, 0.87)",
-    padding: "6px 16px",
-    border: "1px solid #D7D6D6",
-    whiteSpace: 'nowrap',
-  },
-}));
-
-const StyledTableRow = styled(TableRow)({
-  border: "1px solid #D7D6D6",
-});
-
-const NumericPaginationActions: React.FC<any> = ({ count, page, rowsPerPage, onPageChange }) => {
-  const totalPages = Math.ceil((count || 0) / (rowsPerPage || 1)) || 0;
-  if (totalPages <= 1) return null;
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Pagination
-        count={totalPages}
-        page={(page ?? 0) + 1}
-        onChange={(_, value) => onPageChange?.(null, value - 1)}
-        size="small"
-        siblingCount={0}
-        boundaryCount={1}
-        sx={{
-          '& .MuiPagination-ul': { alignItems: 'center' },
-          '& .MuiPaginationItem-root': { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 28, height: 28, lineHeight: '28px', fontSize: '12px', margin: '0 2px' },
-          '& .MuiPaginationItem-root.MuiPaginationItem-previousNext': { minWidth: 28, height: 28, lineHeight: '28px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' },
-          '& .MuiPaginationItem-icon': { fontSize: 18, margin: 0, display: 'block' },
-          '& .MuiSvgIcon-root': { fontSize: 18, verticalAlign: 'middle', display: 'block' },
-          '& .MuiPaginationItem-previousNext .MuiPaginationItem-icon': { transform: 'translateY(-1px)' },
-          '& .MuiPaginationItem-previousNext .MuiSvgIcon-root': { transform: 'translateY(-1px)' },
-        }}
-      />
-    </Box>
-  );
-};
 
 const SignedAgreementsTable: React.FC<Props> = ({
   tabledata,
@@ -90,17 +43,10 @@ const SignedAgreementsTable: React.FC<Props> = ({
   const t = useTranslations();
 
   const rows = (tabledata?.dataDisclosureAgreementRecord || []) as any[];
-  const [copied, setCopied] = React.useState<{ key: string | null }>(() => ({ key: null }));
+  const { copiedKey, copy } = useClipboard({ timeout: TIMEOUTS.COPY_FEEDBACK });
   const [openJson, setOpenJson] = React.useState(false);
   const [jsonContent, setJsonContent] = React.useState<string>("");
   const [jsonHeader, setJsonHeader] = React.useState<{ purpose: string; id: string }>({ purpose: '', id: '' });
-  const handleCopy = async (text: string, key: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied({ key });
-      window.setTimeout(() => setCopied({ key: null }), 1200);
-    } catch {}
-  };
 
   const openJsonViewer = async (rawRow: any) => {
     const rec = rawRow?.dataDisclosureAgreementRecord || rawRow || {};
@@ -146,22 +92,16 @@ const SignedAgreementsTable: React.FC<Props> = ({
         {t('common.close')}
       </Button>
       <Tooltip
-        title={copied.key === 'json' ? t('common.copied') : t('common.copy')}
+        title={copiedKey === 'json' ? t('common.copied') : t('common.copy')}
         placement="top"
-        open={copied.key === 'json' || undefined}
-        disableHoverListener={copied.key === 'json'}
-        disableFocusListener={copied.key === 'json'}
-        disableTouchListener={copied.key === 'json'}
+        open={copiedKey === 'json' || undefined}
+        disableHoverListener={copiedKey === 'json'}
+        disableFocusListener={copiedKey === 'json'}
+        disableTouchListener={copiedKey === 'json'}
       >
         <span>
           <Button
-            onClick={async () => {
-              try {
-                await navigator.clipboard.writeText(jsonContent || '');
-                setCopied({ key: 'json' });
-                window.setTimeout(() => setCopied({ key: null }), 1200);
-              } catch {}
-            }}
+            onClick={() => copy(jsonContent || '', 'json')}
             className="delete-btn"
             variant="outlined"
           >
@@ -171,12 +111,6 @@ const SignedAgreementsTable: React.FC<Props> = ({
       </Tooltip>
     </Box>
   );
-
-  const formatLocalDate = (val?: string) => {
-    if (!val) return "";
-    const d = new Date(val);
-    return isNaN(d.getTime()) ? "" : d.toLocaleString();
-  };
 
   return (
     <>
@@ -233,14 +167,14 @@ const SignedAgreementsTable: React.FC<Props> = ({
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         {/* Data Source Signature */}
                         <Tooltip
-                          title={copied.key === String(row?.id || rec?.id) + '-ds' ? t('common.copied') : t('signedAgreements.signatures.dataSourceSigned')}
+                          title={copiedKey === String(row?.id || rec?.id) + '-ds' ? t('common.copied') : t('signedAgreements.signatures.dataSourceSigned')}
                           placement="top"
                         >
                           <span style={{ cursor: dsSig ? 'pointer' : 'not-allowed' }}>
                             <IconButton
                               aria-label="copy-data-source-signature"
                               size="small"
-                              onClick={() => dsSig && handleCopy(dsSig, String(row?.id || rec?.id) + '-ds')}
+                              onClick={() => dsSig && copy(dsSig, String(row?.id || rec?.id) + '-ds')}
                               disabled={!dsSig}
                               sx={{ color: dsSig ? '#000' : '#BDBDBD', padding: '2px' }}
                             >
@@ -251,7 +185,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                         {/* Data Using Service Signature */}
                         <Tooltip
                           title={
-                            copied.key === String(row?.id || rec?.id) + '-dus'
+                            copiedKey === String(row?.id || rec?.id) + '-dus'
                               ? t('common.copied')
                               : (dusSig
                                   ? t('signedAgreements.signatures.dataUsingServiceSigned')
@@ -263,7 +197,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                             <IconButton
                               aria-label="copy-data-using-service-signature"
                               size="small"
-                              onClick={() => dusSig && handleCopy(dusSig, String(row?.id || rec?.id) + '-dus')}
+                              onClick={() => dusSig && copy(dusSig, String(row?.id || rec?.id) + '-dus')}
                               disabled={!dusSig}
                               sx={{ color: dusSig ? '#000' : '#BDBDBD', padding: '2px' }}
                             >

@@ -22,7 +22,7 @@ const ChooseComponent = ({ callRightSideDrawer }: ChooseProps) => {
         (state) => state?.gettingStart?.verificationTemplate?.data
     );
 
-    const { verificationTemplates } = verificationTemplateObj || [];
+    const { verificationTemplates } = verificationTemplateObj || { verificationTemplates: [] };
 
     return (
         <>

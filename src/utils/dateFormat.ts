@@ -47,3 +47,9 @@ export function formatDateValue(value?: number | string | Date): string {
   const d = normalizeDate(value);
   return d ? formatDateWithOrdinal(d) : '';
 }
+
+// Format date using locale string (for table displays)
+export function formatLocalDate(value?: number | string | Date): string {
+  const d = normalizeDate(value);
+  return d ? d.toLocaleString() : '';
+}
