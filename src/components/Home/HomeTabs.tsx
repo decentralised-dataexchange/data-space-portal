@@ -3,6 +3,7 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type ActiveTab = "organisations" | "ddas";
 
@@ -14,6 +15,7 @@ const HomeTabs: React.FC<Props> = ({ activeTab }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations();
 
   const buildNextUrl = (params: URLSearchParams) => {
     const qs = params.toString();
@@ -38,7 +40,7 @@ const HomeTabs: React.FC<Props> = ({ activeTab }) => {
   };
 
   const tabSx = (tab: ActiveTab) => ({
-    textTransform: "none" as const,
+    textTransform: "none !important" as const,
     borderRadius: 0,
     borderBottom: tab === activeTab ? "2px solid #000000" : "2px solid transparent",
     color: tab === activeTab ? "#000000" : "#666666",
@@ -54,14 +56,14 @@ const HomeTabs: React.FC<Props> = ({ activeTab }) => {
   });
 
   return (
-    <Box sx={{ display: "flex", gap: 2, borderBottom: "1px solid #E0E0E0" }}>
+    <Box sx={{ display: "flex", gap: 2 }}>
       <Button
         variant="text"
         size="small"
         sx={tabSx("organisations")}
         onClick={() => switchTab("organisations")}
       >
-        Organisations
+        {t("home.tabs.organisations")}
       </Button>
       <Button
         variant="text"
@@ -69,7 +71,7 @@ const HomeTabs: React.FC<Props> = ({ activeTab }) => {
         sx={tabSx("ddas")}
         onClick={() => switchTab("ddas")}
       >
-        DDAs
+        {t("home.tabs.dataDisclosureAgreements")}
       </Button>
     </Box>
   );

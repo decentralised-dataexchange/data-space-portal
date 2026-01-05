@@ -132,7 +132,12 @@
     "readLess": "Lue vähemmän....",
     "btn-signData" : "Näytä tietojen luovutussopimukset",
     "btn-viewMetadata": "Näytä API:t",
-    "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) "
+    "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) ",
+    "searchPlaceholder": "Hae Organisaatioita ja Tietojen Luovutussopimuksia",
+    "tabs": {
+      "organisations": "Organisaatiot",
+      "dataDisclosureAgreements": "Tietojen Luovutussopimukset"
+    }
   },
   "appBar": {
     "header": "CRANE d-HDSI Data Marketplace",

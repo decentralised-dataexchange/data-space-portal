@@ -8,6 +8,8 @@ import {gridSpacing} from '@/constants/grid';
 import HomeSearchControls from '@/components/Home/HomeSearchControls';
 import HomeTabs from '@/components/Home/HomeTabs';
 import TagChips from '@/components/common/TagChips';
+import DDASearchCard from '@/components/Home/DDASearchCard';
+import HomeDDAModalController from '@/components/Home/HomeDDAModalController';
 
 type Props = {
   params: Promise<{ locale: Locale }>;
@@ -110,7 +112,9 @@ export default async function HomePage({ params, searchParams }: Props) {
         searchDdaPurpose,
         searchDdaDescription,
         searchDataset,
+        searchTags: true,
       });
+
       const orgs = searchResult?.organisations ?? [];
       // Map organisations into the card's expected shape
       (dataSourceItems as any).splice(0, dataSourceItems.length, ...orgs.map((item: any) => ({
@@ -217,40 +221,15 @@ export default async function HomePage({ params, searchParams }: Props) {
         )}
 
         {showDdaList && (
-          <Box sx={{ marginTop: 4 }}>
+          <Box>
             <Grid container spacing={2}>
               <Grid size={{ xs: 12 }}>
                 <Grid container spacing={2}>
-                  {ddas.map((dda) => {
-                    const record: any = dda.dataDisclosureAgreementRecord || {};
-                    const purpose = record?.purpose || '';
-                    const version = record?.version || '';
-                    const tags = record?.tags || [];
-                    const orgName = dda.organisationName || record?.dataController?.name || '';
-                    return (
-                      <Grid size={{ xs: 12 }} key={dda.id}>
-                        <Box sx={{ border: '1px solid #D7D6D6', borderRadius: 1, p: 2 }}>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                            {purpose || orgName || 'Data Disclosure Agreement'}
-                          </Typography>
-                          {orgName && (
-                            <Typography variant="body2" color="text.secondary">
-                              {orgName}
-                            </Typography>
-                          )}
-                          <Typography variant="body2" sx={{ mt: 0.5 }}>
-                            {version && `Version: ${version} `}
-                            {dda.status && `Status: ${dda.status}`}
-                          </Typography>
-                          {tags.length > 0 && (
-                            <Box sx={{ mt: 1 }}>
-                              <TagChips tags={tags} maxDisplay={3} />
-                            </Box>
-                          )}
-                        </Box>
-                      </Grid>
-                    );
-                  })}
+                  {ddas.map((dda) => (
+                    <Grid size={{ xs: 12 }} key={dda.id}>
+                      <DDASearchCard dda={dda} />
+                    </Grid>
+                  ))}
                 </Grid>
               </Grid>
             </Grid>
@@ -286,6 +265,11 @@ export default async function HomePage({ params, searchParams }: Props) {
             limitParamKey={"limit"}
           />
         </Box>
+      )}
+
+      {/* DDA Modal Controller for search results */}
+      {searchQuery && ddas.length > 0 && (
+        <HomeDDAModalController ddas={ddas} />
       )}
     </Box>
   );
