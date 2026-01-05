@@ -77,6 +77,9 @@ export const ENDPOINTS = {
     updateDDAStatus: (id: any) => {
         return `/config/data-disclosure-agreement/${id}/status/`
     },
+    updateDDATags: (id: string) => {
+        return `/config/data-disclosure-agreement/${id}/tags/`
+    },
     deleteDDA: (id: any) => {
         return `/config/data-disclosure-agreement/${id}/`
     },

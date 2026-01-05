@@ -1,14 +1,15 @@
 .dd-modal {
   z-index: 1400 !important; // Higher than navbar's 1300
-  
+
   .MuiPaper-root {
     z-index: 1400 !important;
-    width: 585px;
-    max-width: 100vw;
+    width: 580px;
+    max-width: 580px;
     overflow: hidden;
 
     @media (max-width: 900px) {
       width: 100vw;
+      max-width: 100vw;
     }
   }
 }

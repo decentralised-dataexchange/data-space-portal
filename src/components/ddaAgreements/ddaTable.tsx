@@ -8,7 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
-import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon, ClockCounterClockwiseIcon } from "@phosphor-icons/react";
+import { EyeIcon, UploadSimpleIcon, TrashSimpleIcon, ClockCounterClockwiseIcon, TagIcon } from "@phosphor-icons/react";
 import VersionDropdown from "../VersionDropDown";
 import { Tooltip, Box } from "@mui/material";
 import PaginationControls from "@/components/common/PaginationControls";
@@ -20,6 +20,7 @@ import { DataDisclosureAgreement } from "@/types/dataDisclosureAgreement";
 import { getStatus } from "@/utils/dda";
 import { formatLocalDate } from "@/utils/dateFormat";
 import { StyledTableCell, StyledTableRow } from "@/components/common/Table/StyledTable";
+import TagChips from "@/components/common/TagChips";
 
 interface DDATableProps {
   setIsOpenViewDDA: (isOpen: boolean) => void;
@@ -39,6 +40,7 @@ interface DDATableProps {
   };
   setIsOpenDelete: (isOpen: boolean) => void;
   setIsOpenPublish: (isOpen: boolean) => void;
+  setIsOpenEditTags?: (isOpen: boolean) => void;
   limit: number;
   offset: number;
   onPageChange: (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => void;
@@ -51,6 +53,7 @@ const DDATable: React.FC<DDATableProps> = ({
   tabledata,
   setIsOpenDelete,
   setIsOpenPublish,
+  setIsOpenEditTags,
   limit,
   offset,
   onPageChange,
@@ -117,7 +120,16 @@ const DDATable: React.FC<DDATableProps> = ({
             tabledata.dataDisclosureAgreements.map((row, index) => (
               <StyledTableRow key={row.templateId} style={{ color: "red" }}>
                 <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.templateId || ''}</StyledTableCell>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.purpose}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>
+                  <Box>
+                    {row.purpose}
+                    {row.tags && row.tags.length > 0 && (
+                      <Box sx={{ mt: 0.5 }}>
+                        <TagChips tags={row.tags} maxDisplay={3} />
+                      </Box>
+                    )}
+                  </Box>
+                </StyledTableCell>
                 <StyledTableCell>
                   <VersionDropdown
                     record={row}
@@ -203,10 +215,30 @@ const DDATable: React.FC<DDATableProps> = ({
                       <EyeIcon
                         style={{ color: row.status === "unlisted" ? "red" : "black" }}
                         size={17}
-                        
+
                       />
                     </IconButton>
                   </Tooltip>
+
+                  {setIsOpenEditTags && (
+                    <Tooltip
+                      title={"Edit Tags"}
+                      placement="top"
+                    >
+                      <IconButton
+                        aria-label="edit-tags"
+                        onClick={() => {
+                          setSelectedDDA(row);
+                          setIsOpenEditTags(true);
+                        }}
+                      >
+                        <TagIcon
+                          style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                          size={17}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  )}
 
                   {false && (
                     <Tooltip

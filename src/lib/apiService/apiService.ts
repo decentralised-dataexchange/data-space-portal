@@ -218,6 +218,10 @@ export const apiService = {
     return api.put<void>(ENDPOINTS.updateDDAStatus(ddaId), payload)
       .then(res => res.data as unknown as void);
   },
+  updateDDATags: async (ddaId: string, tags: string[]): Promise<{ tags: string[] }> => {
+    return api.put<{ tags: string[] }>(ENDPOINTS.updateDDATags(ddaId), { tags })
+      .then(res => res.data);
+  },
   deleteDDA: async (ddaId: string): Promise<void> => {
     return api.delete<void>(ENDPOINTS.deleteDDA(ddaId))
       .then(res => res.data as unknown as void);
@@ -302,6 +306,9 @@ export const apiService = {
     }
     if (typeof params.searchDataset === "boolean") {
       searchParams.set("searchDataset", String(params.searchDataset));
+    }
+    if (typeof params.searchTags === "boolean") {
+      searchParams.set("searchTags", String(params.searchTags));
     }
     if (params.sortBy) {
       searchParams.set("sortBy", params.sortBy);

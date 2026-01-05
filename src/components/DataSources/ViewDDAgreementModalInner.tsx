@@ -2,7 +2,7 @@
 import "./style.scss";
 import React from "react";
 
-import { Typography, Box, Avatar, Button, Tooltip, Link as MuiLink, CircularProgress } from "@mui/material";
+import { Typography, Box, Avatar, Button, Tooltip, CircularProgress } from "@mui/material";
 
 import { useTranslations } from "next-intl";
 import { AttributeTable, AttributeRow } from "@/components/common/AttributeTable";
@@ -11,6 +11,7 @@ import RightSidebar from "../common/RightSidebar";
 import VerifiedBadge from "../common/VerifiedBadge";
 import { useAppSelector } from "@/custom-hooks/store";
 import JsonViewer from "@/components/common/JsonViewer";
+import TagChips from "@/components/common/TagChips";
 
 interface Props {
   open: boolean;
@@ -36,6 +37,9 @@ export default function ViewDataAgreementModalInner(props: Props) {
   const t = useTranslations();
   const isVerified = Boolean(props.trusted);
   const { isAuthenticated } = useAppSelector(state => state.auth);
+
+  const tags = selectedData?.tags || [];
+
   const isUnsign = signStatus === 'unsign';
   const buttonLabel = isUnsign ? t('dataAgreements.unsignWithBusinessWallet') : t('dataAgreements.signWithBusinessWallet');
   const tooltipText = isAuthenticated
@@ -209,6 +213,18 @@ export default function ViewDataAgreementModalInner(props: Props) {
         >
           {usagePurposeDescription}
         </Typography>
+
+        {/* Tags section */}
+        {tags.length > 0 && (
+          <>
+            <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
+              Tags
+            </Typography>
+            <Box sx={{ mt: 1 }}>
+              <TagChips tags={tags} />
+            </Box>
+          </>
+        )}
 
         <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
           {t('common.dataset')}

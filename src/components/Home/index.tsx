@@ -7,6 +7,7 @@ import DataSourceCard from '@/components/Home/DataSource';
 import {gridSpacing} from '@/constants/grid';
 import HomeSearchControls from '@/components/Home/HomeSearchControls';
 import HomeTabs from '@/components/Home/HomeTabs';
+import TagChips from '@/components/common/TagChips';
 
 type Props = {
   params: Promise<{ locale: Locale }>;
@@ -224,6 +225,7 @@ export default async function HomePage({ params, searchParams }: Props) {
                     const record: any = dda.dataDisclosureAgreementRecord || {};
                     const purpose = record?.purpose || '';
                     const version = record?.version || '';
+                    const tags = record?.tags || [];
                     const orgName = dda.organisationName || record?.dataController?.name || '';
                     return (
                       <Grid size={{ xs: 12 }} key={dda.id}>
@@ -240,6 +242,11 @@ export default async function HomePage({ params, searchParams }: Props) {
                             {version && `Version: ${version} `}
                             {dda.status && `Status: ${dda.status}`}
                           </Typography>
+                          {tags.length > 0 && (
+                            <Box sx={{ mt: 1 }}>
+                              <TagChips tags={tags} maxDisplay={3} />
+                            </Box>
+                          )}
                         </Box>
                       </Grid>
                     );

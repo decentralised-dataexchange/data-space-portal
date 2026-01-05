@@ -149,6 +149,9 @@ export interface DataDisclosureAgreement {
   dataAgreementRevisionHash?: string;
   dataAttributes?: DataAttribute[];
 
+  // Tags for categorization and search
+  tags?: string[];
+
   // Existing/common fields
   purpose: string;
   version: string;

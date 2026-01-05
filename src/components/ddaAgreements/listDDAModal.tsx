@@ -1,15 +1,14 @@
 "use client"
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { Drawer, Typography, Button, Box, CircularProgress } from "@mui/material";
+import { useState } from "react";
+import { Typography, Button, Box, CircularProgress } from "@mui/material";
 import { CustomSelect } from "@/components/common";
-import { XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useUpdateDDAStatus } from "@/custom-hooks/dataDisclosureAgreements";
-import styles from "./listDDAModal.module.scss";
 import { getStatus } from "@/utils/dda";
 import { useAppDispatch } from "@/custom-hooks/store";
 import { setMessage } from "@/store/reducers/authReducer";
+import RightSidebar from "@/components/common/RightSidebar";
 
 interface DDAItem {
   id: string;
@@ -71,7 +70,7 @@ export default function ListDDAModal({
 
   const handleSubmit = () => {
     if (!status || !selectedData?.id) return;
-    
+
     updateStatus(
       { id: selectedData.id, status },
       {
@@ -100,96 +99,79 @@ export default function ListDDAModal({
     }
   };
 
+  const headerContent = (
+    <Box sx={{ width: "100%" }}>
+      <Typography noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
+        {headerText}: {selectedData?.purpose || 'N/A'}
+      </Typography>
+      <Typography sx={{ fontSize: '12px', color: '#F3F3F6', opacity: 0.8, mt: 0.5 }}>
+        {selectedData?.templateId || 'N/A'}
+      </Typography>
+    </Box>
+  );
 
-
+  const footerContent = (
+    <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+      <Button
+        variant="outlined"
+        onClick={handleClose}
+        disabled={isPending}
+        className="delete-btn"
+      >
+        {t("common.cancel")}
+      </Button>
+      <Button
+        variant="outlined"
+        onClick={handleSubmit}
+        disabled={!status || isPending}
+        className="delete-btn"
+      >
+        {isPending ? (
+          <CircularProgress size={20} color="inherit" />
+        ) : (
+          confirmButtonText
+        )}
+      </Button>
+    </Box>
+  );
 
   return (
-    <React.Fragment>
-      <Drawer 
-        anchor="right" 
-        open={open}
-        className={styles['dd-modal']}
-      >
-        <Box className={styles['dd-modal-container']}>
-          <Box className={styles['dd-modal-header']}>
-            <Box className={styles['header-content']}>
-              <Typography variant="h6" className={styles['header-text']}>
-                {headerText}: {selectedData?.purpose || 'N/A'}
-              </Typography>
-              <Typography className={styles['template-id']}>
-                {selectedData?.templateId || 'N/A'}
-              </Typography>
-            </Box>
-            <XIcon
-              size={24}
-              onClick={handleClose}
-              className={styles['close-btn']}
+    <RightSidebar
+      open={open}
+      onClose={handleClose}
+      headerContent={headerContent}
+      footerContent={footerContent}
+      width={580}
+      maxWidth={580}
+      className="drawer-dda"
+    >
+      <Box sx={{ pt: 1 }}>
+        <Typography sx={{ fontSize: '1rem', mb: 1 }}>
+          Status Action:<span style={{ color: '#e00707fc', marginLeft: '4px' }}>*</span>
+        </Typography>
+        {selectedData ? (
+          <Box sx={{ mt: 1 }}>
+            <CustomSelect
+              value={getOptionValue()}
+              onChange={handleChange}
+              options={[
+                { value: getOptionValue(), label: getDefaultAction() }
+              ]}
+              size="small"
+              fullWidth
+              MenuProps={{
+                disablePortal: false,
+                style: { zIndex: 1500 },
+                MenuListProps: {
+                  style: { zIndex: 1500 }
+                }
+              }}
             />
           </Box>
-          
-          <Box className={styles['modal-content']}>
-            <Box className={styles['status-section']}>
-              <Typography className={styles['status-label']}>
-                Status Action:
-                <span className={styles['required']}>*</span>
-              </Typography>
-              {selectedData ? (
-                <Box className={styles['select-container']}>
-                  <CustomSelect
-                    value={getOptionValue()}
-                    onChange={handleChange}
-                    options={[
-                      { value: getOptionValue(), label: getDefaultAction() }
-                    ]}
-                    sx={{ marginTop: "5px" }}
-                    size="small"
-                    fullWidth
-                    MenuProps={{
-                      disablePortal: false,
-                      style: { zIndex: 1500 },
-                      MenuListProps: {
-                        style: { zIndex: 1500 }
-                      }
-                    }}
-                  />
-                </Box>
-              ) : (
-                <Typography color="error">{t("common.noDataSelected")}</Typography>
-              )}
-            </Box>
-          </Box>
-          
-          <Box className={styles['modal-footer']}>
-            <Button
-              variant="outlined"
-              onClick={handleClose}
-              className={styles['cancel-btn']}
-              disabled={isPending}
-              sx={{
-                borderRadius: "0px"
-              }}
-            >
-              {t("common.cancel")}
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleSubmit}
-              disabled={!status || isPending}
-              className={styles['confirm-btn']}
-              sx={{
-                borderRadius: "0px"
-              }}
-            >
-              {isPending ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                confirmButtonText
-              )}
-            </Button>
-          </Box>
-        </Box>
-      </Drawer>
-    </React.Fragment>
+        ) : (
+          <Typography color="error">{t("common.noDataSelected")}</Typography>
+        )}
+      </Box>
+    </RightSidebar>
   );
 }

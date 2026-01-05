@@ -12,6 +12,7 @@ import './style.scss';
 // import OrgConfigCard from '@/components/DataSources/OrgConfigCard';
 import DDAActions from './DDAActions';
 import DDAModalController from './DDAModalController';
+import TagChips from '@/components/common/TagChips';
 
 type Props = {
     params: Promise<{ id?: string; slug?: string }>;
@@ -358,6 +359,11 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     <Typography sx={{ fontSize: "14px", paddingBottom: "20px", color: '#666666' }}>
                                                         {dataDisclosureAgreement.purposeDescription}
                                                     </Typography>
+                                                    {dataDisclosureAgreement.tags && dataDisclosureAgreement.tags.length > 0 && (
+                                                        <Box sx={{ mb: 2 }}>
+                                                            <TagChips tags={dataDisclosureAgreement.tags} maxDisplay={5} />
+                                                        </Box>
+                                                    )}
                                                     {/* Version now displayed inline with action buttons inside DDAActions */}
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}

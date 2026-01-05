@@ -28,6 +28,9 @@ export interface DataDisclosureAgreementRecordJSON {
   dataAgreementRevisionHash?: string;
   dataAttributes?: DDARecordDataAttribute[];
 
+  // Tags for categorization and search
+  tags?: string[];
+
   purpose?: string;
   version?: string;
   language?: string;

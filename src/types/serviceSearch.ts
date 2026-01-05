@@ -15,6 +15,7 @@ export interface ServiceSearchParams {
   searchDdaPurpose?: boolean;
   searchDdaDescription?: boolean;
   searchDataset?: boolean;
+  searchTags?: boolean;
   sortBy?: ServiceSearchSortBy;
   sortOrder?: ServiceSearchSortOrder;
   offset?: number;
@@ -38,6 +39,7 @@ export interface ServiceSearchMeta {
   searchDdaPurpose: boolean;
   searchDdaDescription: boolean;
   searchDataset: boolean;
+  searchTags: boolean;
   sortBy: ServiceSearchSortBy;
   sortOrder: ServiceSearchSortOrder;
 }

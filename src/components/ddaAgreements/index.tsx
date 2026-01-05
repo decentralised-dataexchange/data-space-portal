@@ -18,6 +18,7 @@ import DDAtable from "./ddaTable";
 import ViewDDAgreementModalInner from "../DataSources/ViewDDAgreementModalInner";
 import GeneralModal from "./generalModal";
 import ListDDAModal from "./listDDAModal";
+import TagEditModal from "./TagEditModal";
 import { useDDAgreements } from "@/custom-hooks/dataDisclosureAgreements";
 import { useQueryClient } from "@tanstack/react-query";
 import { apiService } from "@/lib/apiService/apiService";
@@ -47,6 +48,7 @@ const DDAgreements = () => {
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenViewDDA, setIsOpenViewDDA] = useState(false);
+  const [isOpenEditTags, setIsOpenEditTags] = useState(false);
   const [selectedDDA, setSelectedDDA] = useState<DataDisclosureAgreement | null>(null);
 
 
@@ -212,6 +214,7 @@ const DDAgreements = () => {
             tabledata={data || { dataDisclosureAgreements: [], pagination: { total: 0, limit, offset: offsetValue, hasNext: false, hasPrevious: false, totalItems: 0, currentPage: 0, totalPages: 0 } }}
             setIsOpenDelete={setIsOpenDelete}
             setIsOpenPublish={setIsOpenPublish}
+            setIsOpenEditTags={setIsOpenEditTags}
             limit={limit}
             offset={offsetValue}
             onPageChange={handlePageChange}
@@ -340,6 +343,12 @@ const DDAgreements = () => {
           onSuccess={refetch}
         />
       )}
+      <TagEditModal
+        open={isOpenEditTags}
+        onClose={() => setIsOpenEditTags(false)}
+        dda={selectedDDA}
+        onTagsUpdated={refetch}
+      />
     </div>
   );
 };
