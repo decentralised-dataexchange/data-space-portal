@@ -192,7 +192,7 @@ export default function DDASearchCard({ dda }: DDASearchCardProps) {
                   />
                 )}
                 <Box component="span" sx={{ visibility: isPrefetchingStatus ? 'hidden' : 'visible' }}>
-                  {t("home.btn-signData")}
+                  {t("home.btn-signDataSingular")}
                 </Box>
               </Button>
             </Box>
