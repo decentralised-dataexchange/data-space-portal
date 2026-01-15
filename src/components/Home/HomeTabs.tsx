@@ -9,9 +9,11 @@ type ActiveTab = "organisations" | "ddas";
 
 interface Props {
   activeTab: ActiveTab;
+  organisationsCount?: number;
+  ddasCount?: number;
 }
 
-const HomeTabs: React.FC<Props> = ({ activeTab }) => {
+const HomeTabs: React.FC<Props> = ({ activeTab, organisationsCount, ddasCount }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -64,6 +66,11 @@ const HomeTabs: React.FC<Props> = ({ activeTab }) => {
         onClick={() => switchTab("organisations")}
       >
         {t("home.tabs.organisations")}
+        {organisationsCount !== undefined && (
+          <Box component="span" sx={{ ml: 0.5, color: "#666666" }}>
+            ({organisationsCount})
+          </Box>
+        )}
       </Button>
       <Button
         variant="text"
@@ -72,6 +79,11 @@ const HomeTabs: React.FC<Props> = ({ activeTab }) => {
         onClick={() => switchTab("ddas")}
       >
         {t("home.tabs.dataDisclosureAgreements")}
+        {ddasCount !== undefined && (
+          <Box component="span" sx={{ ml: 0.5, color: "#666666" }}>
+            ({ddasCount})
+          </Box>
+        )}
       </Button>
     </Box>
   );

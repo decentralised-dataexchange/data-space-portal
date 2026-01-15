@@ -137,8 +137,8 @@ export default async function HomePage({ params, searchParams }: Props) {
         dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
       })));
       ddas = searchResult?.ddas ?? [];
-      organisationsTotalItems = searchResult?.organisationsPagination?.totalItems ?? dataSourceItems.length;
-      ddasTotalItems = searchResult?.ddasPagination?.totalItems ?? ddas.length;
+      organisationsTotalItems = searchResult?.organisationsPagination?.totalItems;
+      ddasTotalItems = searchResult?.ddasPagination?.totalItems;
     } catch (err) {
       serviceSearchFailed = true;
       console.warn('[HomePage] Failed to perform service search on Home page:', err);
@@ -194,7 +194,7 @@ export default async function HomePage({ params, searchParams }: Props) {
 
       {searchQuery && (
         <Box sx={{ mt: 1 }}>
-          <HomeTabs activeTab={activeTab} />
+          <HomeTabs activeTab={activeTab} organisationsCount={organisationsTotalItems} ddasCount={ddasTotalItems} />
         </Box>
       )}
 
