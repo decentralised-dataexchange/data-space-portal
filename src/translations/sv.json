@@ -128,6 +128,7 @@
     "readMore": "Läs mer....",
     "readLess": "Läs mindre....",
     "btn-signData": "Visa datautlämningsavtal",
+    "btn-signDataSingular": "Visa datautlämningsavtal",
     "btn-viewMetadata": "Visa API:er",
     "footerTxt": " NordXData Foundation (CRANE - dHDSI )",
     "searchPlaceholder": "Sök Organisationer och Datautlämningsavtal",
