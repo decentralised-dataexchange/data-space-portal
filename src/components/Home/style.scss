@@ -98,6 +98,7 @@
             a,
             span {
                 @include common.button-like;
+                text-transform: uppercase;
 
                 &.disabled {
                     @include common.button-like-disabled;

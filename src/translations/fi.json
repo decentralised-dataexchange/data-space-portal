@@ -131,6 +131,7 @@
     "readMore": "Lue lisää....",
     "readLess": "Lue vähemmän....",
     "btn-signData" : "Näytä tietojen luovutussopimukset",
+    "btn-signDataSingular": "Näytä tietojen luovutussopimus",
     "btn-viewMetadata": "Näytä API:t",
     "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) ",
     "searchPlaceholder": "Hae Organisaatioita ja Tietojen Luovutussopimuksia",

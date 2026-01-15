@@ -166,7 +166,7 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
             />
           )}
           <Box component="span" sx={{ visibility: isPrefetchingStatus ? 'hidden' : 'visible' }}>
-            {t("home.btn-signData")}
+            {t("home.btn-signDataSingular")}
           </Box>
         </Button>
         </Box>
