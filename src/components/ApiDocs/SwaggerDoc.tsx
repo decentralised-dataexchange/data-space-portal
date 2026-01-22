@@ -588,8 +588,10 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
           // Prefer pre-fetched normalized spec to avoid resolver errors; fall back to URL
           ...(preSpec ? { spec: preSpec } : { url: loadUrl }),
           domNode: containerRef.current,
-          docExpansion: 'none',
-          defaultModelsExpandDepth: -1,
+          docExpansion: 'list',
+          defaultModelsExpandDepth: 2,
+          defaultModelExpandDepth: 2,
+          showCommonExtensions: true,
           displayRequestDuration: true,
           showExtensions: true,
           tryItOutEnabled: true,
