@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import './style.scss';
 import ViewCredentialsController from '@/components/DataSources/ViewCredentialsController';
 import type { SoftwareStatementRecord } from '@/types/softwareStatement';

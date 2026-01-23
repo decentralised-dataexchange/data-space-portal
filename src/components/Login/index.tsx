@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { ArrowCircleRightIcon, UserIcon, LockOpenIcon } from "@phosphor-icons/react";
 import Logo from '@/assets/img/logo.jpg';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useLogin } from '@/custom-hooks/auth';
 import Image from 'next/image';
@@ -30,7 +30,7 @@ const Login = () => {
   const { email, password } = formValue;
   const { login } = useLogin();
 
-  const onboardingHref = locale ? `/${locale}/onboarding` : '/onboarding';
+
 
   // Determine if form is valid for enabling submit
   const isFormValid = !!email && !!password;
@@ -81,7 +81,7 @@ const Login = () => {
       <Box className={styles.loginContainer}>
         <Box className={styles.dFlexCenter}>
           <Link href="/">
-            <Image className={styles.logoImg} src={Logo} alt="Logo" width={180} height={180} priority />
+            <Image className={styles.logoImg} src={Logo} alt={t('login.logoAlt')} width={180} height={180} priority />
           </Link>
         </Box>
         <Box
@@ -181,7 +181,7 @@ const Login = () => {
           <Typography variant="body2" style={{ color: "#A1A1A1" }}>
             {t('login.noAccount')}
             {' '}
-            <Link className="appLink" href={onboardingHref}>{t('login.createNow')}</Link>
+            <Link className="appLink" href="/onboarding">{t('login.createNow')}</Link>
           </Typography>
         </Box>
       </Box>

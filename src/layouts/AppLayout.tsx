@@ -10,7 +10,7 @@ import SnackbarComponent from '@/components/notification';
 import { setSuccessMessage, setMessage } from '@/store/reducers/authReducer';
 import { publicRoutes } from '@/constants/routes';
 import { useGetOrganisation, useGetOrgIdentity } from '@/custom-hooks/gettingStarted';
-import { isPublicRoute } from '@/lib/apiService/utils';
+import { isPublicRoute, getLocaleFromPathname, getPathnameWithoutLocale } from '@/lib/apiService/utils';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { jwtDecode } from 'jwt-decode';
 
@@ -30,20 +30,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [isClient, setIsClient] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   
-  // Helper to get current locale from path like /en/..., /fi/..., /sv/...
-  const getLocaleFromPath = (p?: string | null) => {
-    if (!p) return null;
-    const match = p.match(/^\/(en|fi|sv)(?:\/|$)/);
-    return match ? match[1] : null;
-  };
-  const getPathWithoutLocale = (p?: string | null) => {
-    if (!p) return '/';
-    const locale = getLocaleFromPath(p);
-    if (!locale) return p || '/';
-    const stripped = p.slice(locale.length + 1) || '/';
-    return stripped;
-  };
-  const pathWithoutLocale = getPathWithoutLocale(pathname);
+  const pathWithoutLocale = getPathnameWithoutLocale(pathname);
   const isOnOnboarding = pathWithoutLocale.startsWith('/onboarding');
 
   // Fetch organisation and org identity to gate onboarding after login
@@ -54,7 +41,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const { data: orgIdentity, isLoading: idLoading } = useGetOrgIdentity(orgId, !isOnOnboarding);
   // Helper to prefix a path with current locale if present
   const withLocale = (path: string) => {
-    const locale = getLocaleFromPath(pathname);
+    const locale = getLocaleFromPathname(pathname);
     return locale ? `/${locale}${path}` : path;
   };
   const isSamePath = (target: string) => {
@@ -62,20 +49,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     return pathname === dest;
   };
   const isPublicPath = (p?: string | null) => {
-    const path = getPathWithoutLocale(p);
-    for (const route of publicRoutes) {
-      if (route === '/') {
-        if (path === '/') return true;
-        continue;
-      }
-      if (route.includes('[')) {
-        const base = route.split('/[')[0];
-        if (path === base || path.startsWith(base + '/')) return true;
-        continue;
-      }
-      if (path === route || path.startsWith(route + '/')) return true;
-    }
-    return false;
+    if (!p) return false;
+    return isPublicRoute(p);
   };
   
   // Show toast when either success or error message is present

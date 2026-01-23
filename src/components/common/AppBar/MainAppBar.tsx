@@ -52,7 +52,7 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                     <Link href="/">
                         <Image 
                             src={Logo} 
-                            alt="Logo" 
+                            alt={t('appBar.logoAlt')} 
                             className='logoImg' 
                             width={58}
                             height={58}

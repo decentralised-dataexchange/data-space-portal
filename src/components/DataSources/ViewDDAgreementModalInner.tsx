@@ -217,12 +217,10 @@ export default function ViewDataAgreementModalInner(props: Props) {
         {/* Tags section */}
         {tags.length > 0 && (
           <>
-            <Typography mt={2} variant="subtitle1" sx={{ fontSize: '16px' }}>
-              Tags
+            <Typography sx={{ fontSize: '1rem', mb: 1 }}>
+              {t("tagEditor.title")}
             </Typography>
-            <Box sx={{ mt: 1 }}>
-              <TagChips tags={tags} />
-            </Box>
+            <TagChips tags={tags} />
           </>
         )}
 

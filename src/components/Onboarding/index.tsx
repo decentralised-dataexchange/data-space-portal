@@ -1,7 +1,7 @@
   "use client";
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Box, Button, TextField, Typography, MenuItem, CircularProgress, Avatar } from '@mui/material';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import FullscreenExit from '@mui/icons-material/FullscreenExit';
@@ -139,14 +139,14 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
                   width="100%"
                   height={'100%'}
                   role="document"
-                  title="Code of Conduct PDF"
-                  aria-label="Code of Conduct PDF"
+                  title={t('onboarding.codeOfConduct.pdfTitle')}
+                  aria-label={t('onboarding.codeOfConduct.pdfTitle')}
                   tabIndex={0}
                   style={{ display: 'block', width: '100%', height: '100%', flex: 1 }}
                 >
                   <Box sx={{ padding: 2 }}>
                     <Typography variant="body2">{t('common.unableToDisplayPdf')}</Typography>
-                    <Typography variant="body2"><a href={resolvedPdf} target="_blank" rel="noreferrer" aria-label="Open Code of Conduct PDF in a new tab">{t('common.openInNewTab')}</a></Typography>
+                    <Typography variant="body2"><a href={resolvedPdf} target="_blank" rel="noreferrer" aria-label={t('onboarding.codeOfConduct.openInNewTabAria')}>{t('common.openInNewTab')}</a></Typography>
                   </Box>
                 </object>
               </Box>
@@ -333,7 +333,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
             onClick={() => setDrawerOpen(true)}
             sx={{ width: '100%', textAlign: 'left', borderColor: '#DFDFDF', color: 'black', borderRadius: '7px', textTransform: 'none' }}
           >
-            LEGAL PERSON IDENTIFICATION DATA
+            {t('onboarding.legalPersonIdData')}
           </Button>
         </Box>
       )}
@@ -362,7 +362,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
         maxWidth={580}
         keepMounted
         height="100%"
-        headerContent={<Box sx={{ width: '100%' }}><Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>LEGAL PERSON IDENTIFICATION DATA</Typography></Box>}
+        headerContent={<Box sx={{ width: '100%' }}><Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>{t('onboarding.legalPersonIdData')}</Typography></Box>}
         bannerContent={(
           <>
             <Box
@@ -814,7 +814,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Your Admin Name"
+              placeholder={t('onboarding.placeholders.adminName')}
               fullWidth
               error={Boolean(isInvalid.userName)}
               helperText={isInvalid.userName ? t('signup.required') : ''}
@@ -830,7 +830,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Email"
+              placeholder={t('onboarding.placeholders.email')}
               fullWidth
               error={Boolean(isInvalid.email)}
               helperText={
@@ -852,7 +852,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Password"
+              placeholder={t('onboarding.placeholders.password')}
               fullWidth
               error={Boolean(isInvalid.password)}
               helperText={
@@ -874,7 +874,7 @@ const AdminCredentialsStep: React.FC<AdminCredentialsStepProps> = React.memo(({
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Confirm Password"
+              placeholder={t('onboarding.placeholders.confirmPassword')}
               fullWidth
               error={Boolean(isInvalid.confirmPassword)}
               helperText={
@@ -944,7 +944,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Organisation Name"
+              placeholder={t('onboarding.placeholders.organisationName')}
               fullWidth
               inputProps={{ maxLength: MAX_SHORT }}
               error={showErrors && !organisationName}
@@ -961,7 +961,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Organisation Description"
+              placeholder={t('onboarding.placeholders.organisationDescription')}
               fullWidth
               inputProps={{ maxLength: MAX_DESC }}
               helperText={showErrors && !organisationDescription ? t('signup.required') : undefined}
@@ -980,7 +980,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               onChange={onChange}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Policy URL"
+              placeholder={t('onboarding.placeholders.policyUrl')}
               fullWidth
               inputProps={{ maxLength: MAX_SHORT }}
               error={showErrors && !policyUrl}
@@ -995,7 +995,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               onChange={(e) => onChange({ target: { name: 'sector', value: e.target.value } } as any)}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Sector"
+              placeholder={t('onboarding.placeholders.sector')}
               fullWidth
               error={showErrors && !sector}
               helperText={showErrors && !sector ? t('signup.required') : ''}
@@ -1014,7 +1014,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               }}
             >
               <MenuItem value="" disabled>
-                {sectorsLoading ? t('common.loading') : 'Sector'}
+                {sectorsLoading ? t('common.loading') : t('onboarding.placeholders.sector')}
               </MenuItem>
               {sectors.map((s) => (
                 <MenuItem key={s.id} value={s.sectorName}>{s.sectorName}</MenuItem>
@@ -1028,7 +1028,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               onChange={(e) => onChange({ target: { name: 'location', value: e.target.value } } as any)}
               onKeyDown={handleKeyDown}
               variant="outlined"
-              placeholder="Country"
+              placeholder={t('onboarding.placeholders.location')}
               fullWidth
               error={showErrors && !location}
               helperText={showErrors && !location ? t('signup.required') : ''}
@@ -1047,7 +1047,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               }}
             >
               <MenuItem value="" disabled>
-                Country
+                {t('onboarding.placeholders.location')}
               </MenuItem>
               {countries.map((c) => (
                 <MenuItem key={c.value} value={c.label}>{c.label}</MenuItem>

@@ -217,7 +217,7 @@ const OrganisationDetailsContainer = (props: Props) => {
             <Box sx={{ position: 'relative' }}>
               <Box
                 component="img"
-                alt="Banner"
+                alt={t('gettingStarted.bannerAlt')}
                 src={props.coverImageBase64 || defaultCoverImage}
                 sx={{ height: 194, width: '100%', objectFit: 'cover' }}
               />

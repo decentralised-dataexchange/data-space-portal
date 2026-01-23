@@ -100,7 +100,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
         }}
         variant="outlined"
       >
-        {"Close"}
+        {t("common.close")}
       </Button>
       {currentIndex === 0 && (
         <Button
@@ -142,7 +142,7 @@ const AddCredentialComponent = ({ callRightSideDrawer, isVerify }: AddCredential
       <Box sx={{ position: "relative" }}>
         <Box
           component="img"
-          alt="Banner"
+          alt={t('gettingStarted.bannerAlt')}
           src={coverImageUrl || defaultCoverImage}
           sx={{ height: 194, width: '100%', objectFit: 'cover' }}
         />

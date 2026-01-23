@@ -1,15 +1,4 @@
 {
-  "route": {
-    "login": "login",
-    "start": "start",
-    "dd-agreements": "dd-agreements",
-    "account": "account",
-    "manageAdmin": "account/manage-admin",
-    "developerApis": "account/developer-apis",
-    "dispConnections": "account/disp-connections",
-    "apiDoc": "/data-source/open-api",
-    "signed-agreements": "signed-agreements"
-  },
   "b2bConnections": {
     "title": "B2B Connections",
     "subtitle": "View your organisation’s B2B connections.",
@@ -21,6 +10,7 @@
         "mySoftwareStatement": "My Software Statement",
         "theirSoftwareStatement": "Their Software Statement",
         "lastModified": "Last Modified",
+        "lastModifiedDate": "Last Modified Date",
         "actions": "Actions",
         "myClientId": "My Client ID",
         "nonce": "Nonce",
@@ -28,7 +18,12 @@
         "connectionId": "Connection ID",
         "b2bConnectionId": "B2B Connection ID"
       },
-      "noData": "No connections to display"
+      "noData": "No connections to display",
+      "ariaLabel": "b2b-connections-table",
+      "actions": {
+        "viewMySoftwareStatement": "view-my-ss",
+        "viewTheirSoftwareStatement": "view-their-ss"
+      }
     }
   },
   "login": {
@@ -40,7 +35,8 @@
     "title": "Login",
     "noAccount": "Don't have an account?",
     "signup": "Signup",
-    "createNow": "Create yours now."
+    "createNow": "Create yours now.",
+    "logoAlt": "Logo"
   },
   "signup": {
     "header": "CRANE dHDSI - Organisation dashboard - Signup",
@@ -68,6 +64,12 @@
   "onboarding": {
     "title": "Create Your Data Marketplace Account",
     "subtitle": "Let's start with your login credentials",
+    "logoAlt": "Logo",
+    "legalPersonIdData": "LEGAL PERSON IDENTIFICATION DATA",
+    "codeOfConduct": {
+      "pdfTitle": "Code of Conduct PDF",
+      "openInNewTabAria": "Open Code of Conduct PDF in a new tab"
+    },
     "controls": {
       "enterFullscreen": "Full screen",
       "exitFullscreen": "Exit full screen"
@@ -98,7 +100,12 @@
       "adminName": "Your Admin Name",
       "email": "Email",
       "password": "Password",
-      "confirmPassword": "Confirm Password"
+      "confirmPassword": "Confirm Password",
+      "organisationName": "Organisation Name",
+      "organisationDescription": "Organisation Description",
+      "policyUrl": "Policy URL",
+      "sector": "Sector",
+      "location": "Country"
     },
     "validation": {
       "invalidEmail": "Enter a valid email address"
@@ -176,6 +183,11 @@
     "tabs": {
       "organisations": "Organisations",
       "dataDisclosureAgreements": "Data Disclosure Agreements"
+    },
+    "search": {
+      "tooltipData": "Searching...",
+      "tooltipRun": "Click to run search",
+      "tooltipClear": "Clear search"
     }
   },
   "appBar": {
@@ -183,7 +195,8 @@
     "subHeader": "Sweden - Region Västerbotten",
     "lastVisit": "Last visit",
     "settings": "Settings",
-    "signout": "Signout"
+    "signout": "Signout",
+    "logoAlt": "Logo"
   },
   "sideBar": {
     "gettingStarted": "Getting Started",
@@ -242,7 +255,18 @@
       "description": "You are about to delete existing organisation credentials. Please type DELETE to confirm and click DELETE. This action is not reversible.",
       "confirmButton": "Delete",
       "confirmText": "DELETE"
-    }
+    },
+    "bannerAlt": "Banner"
+  },
+  "tagEditor": {
+    "title": "Tags",
+    "editTagsTitle": "Edit Tags: {purpose}",
+    "placeholder": "Add a tag...",
+    "maxTags": "Maximum {maxTags} tags allowed"
+  },
+  "apiDocs": {
+    "servers": "Servers",
+    "schemas": "Schemas"
   },
   "common": {
     "orgDashboardTitle": "Login to CRANE dHDSI Data Marketplace",
@@ -264,6 +288,7 @@
     "error": "An error occurred",
     "success": "Success",
     "certificateOfRegistration": "Certificate of registration",
+    "notAvailable": "N/A",
     "language": "Language",
     "poweredby": "Powered by",
     "home": "Home",
@@ -306,10 +331,22 @@
     "rowsPerPage": "Rows per page:",
     "of": "of",
     "signAction": "Signed",
-    "unsignAction": "Unsigned"
+    "unsignAction": "Unsigned",
+    "imageAlt": "Image",
+    "itemsPerPage": "Items per page"
+  },
+  "languages": {
+    "en": "English",
+    "sv": "Swedish",
+    "fi": "Finnish",
+    "es": "Spanish",
+    "no": "Norwegian"
   },
   "errors": {
-    "generic": "Something went wrong."
+    "generic": "Something went wrong.",
+    "imageUpdate": "Error updating image. Please try again.",
+    "imageRead": "Error reading image data",
+    "imageProcess": "Error processing cropped image"
   },
   "verification": {
     "connect": {
@@ -432,18 +469,24 @@
     "legalID": "Data Controller Legal ID",
     "table": {
       "headers": {
+        "templateId": "DDA Template ID",
         "id": "ID",
         "usagePurpose": "Usage Purpose",
         "version": "Version",
         "status": "Status",
         "lawfulBasis": "Lawful Basis of Processing",
-        "lastModified": "Last Modified"
+        "lastModified": "Last Modified",
+        "lastModifiedDate": "Last Modified Date"
       },
       "tooltips": {
         "listToMarketplace": "List to Data Marketplace",
-        "viewHistory": "View Data Disclosure Agreement History"
+        "viewHistory": "View Data Disclosure Agreement History",
+        "editTags": "Edit tags"
       },
       "noData": "No data to display"
+    },
+    "errors": {
+      "statusUpdateFailed": "Failed to update status"
     },
     "history": {
       "title": "Data Disclosure Agreement History",
@@ -451,6 +494,7 @@
       "agreementLabel": "Agreement",
       "table": {
         "headers": {
+          "ddaRecordId": "DDA Record ID",
           "id": "ID",
           "revision": "Revision",
           "usagePurpose": "Usage Purpose",
@@ -460,6 +504,7 @@
           "dataUsingServiceSignature": "Data Using Service Signature",
           "signatureStatus": "Signature Status",
           "lastModified": "Last Modified",
+          "lastModifiedDate": "Last Modified Date",
           "actions": "Actions",
           "status": "Status",
           "isLatest": "Is Latest",
@@ -468,6 +513,10 @@
           "revisionHash": "Revision Hash"
         },
         "noData": "No history entries to display"
+      },
+      "events": {
+        "optIn": "Opt-in",
+        "optOut": "Opt-out"
       },
       "signatures": {
         "mutuallySigned": "Mutually Signed",
@@ -647,7 +696,19 @@
   "noBannerImageAvailable": "No banner image available",
   "imageUpload": {
     "recommendedCoverSize": "Recommended size is 1500x500px",
-    "recommendedLogoSize": "Recommended size is 400x400px"
+    "recommendedLogoSize": "Recommended size is 400x400px",
+    "cropModal": {
+      "onlyImagesSupported": "Only {label} images are supported",
+      "cropMinSize": "Crop must be at least {minWidth}x{minHeight}px",
+      "imageMinSize": "Image must be at least {minWidth}x{minHeight}px",
+      "altCropImage": "Crop me",
+      "selectImage": "Select an image",
+      "dragDropInstructions": "Use Browse below, or drag & drop here ({types}).",
+      "cancel": "CANCEL",
+      "browse": "BROWSE",
+      "save": "SAVE",
+      "saving": "SAVING..."
+    }
   },
   "unknownOrganization": "Unknown Organization",
   "viewCredentials": {

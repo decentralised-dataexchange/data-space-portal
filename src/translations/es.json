@@ -1,0 +1,722 @@
+{
+  "b2bConnections": {
+    "title": "Conexiones B2B",
+    "subtitle": "Vea las conexiones B2B de su organización.",
+    "table": {
+      "headers": {
+        "id": "B2B-tilkoblings-ID",
+        "theirClientId": "Su ID de cliente",
+        "theirClientSecret": "Su secreto de cliente",
+        "mySoftwareStatement": "Mi declaración de software",
+        "theirSoftwareStatement": "Su declaración de software",
+        "lastModified": "Modificado",
+        "lastModifiedDate": "Fecha de modificación",
+        "actions": "Acciones",
+        "myClientId": "Mi ID de cliente",
+        "nonce": "Nonce",
+        "timestamp": "Marca de tiempo",
+        "connectionId": "ID de conexión",
+        "b2bConnectionId": "ID conexión B2B"
+      },
+      "noData": "No hay conexiones para mostrar",
+      "ariaLabel": "tabla-conexiones-b2b",
+      "actions": {
+        "viewMySoftwareStatement": "ver-mi-ds",
+        "viewTheirSoftwareStatement": "ver-su-ds"
+      }
+    }
+  },
+  "login": {
+    "header": "CRANE dHDSI - Panel de Org. - Acceso",
+    "userId": "ID de usuario",
+    "password": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "errorMessage": "Credenciales inválidas. Verifique su usuario y contraseña e inténtelo de nuevo.",
+    "title": "Acceder",
+    "noAccount": "¿No tiene una cuenta?",
+    "signup": "Registrarse",
+    "createNow": "Cree la suya ahora.",
+    "logoAlt": "Logo"
+  },
+  "signup": {
+    "header": "CRANE dHDSI - Panel de Org. - Registro",
+    "name": "Nombre",
+    "userName": "Su nombre",
+    "organisationName": "Nombre de organización",
+    "email": "Correo",
+    "userId": "ID de usuario",
+    "confirmPassword": "Confirmar contraseña",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "haveAccount": "¿Ya tiene una cuenta?",
+    "login": "Inicia sesión",
+    "title": "Registro",
+    "sector": "Sector",
+    "location": "Ubicación",
+    "policyUrl": "URL de política",
+    "description": "Descripción de la organización",
+    "owsBaseUrl": "URL base de OWS",
+    "verificationRequestURLPrefix": "Dirección wallet empresa",
+    "optional": "Opcional",
+    "required": "Requerido",
+    "requiredFieldsMissing": "Complete los campos requeridos",
+    "passwordLength": "La contraseña debe tener 8-20 caracteres"
+  },
+  "onboarding": {
+    "title": "Cree su cuenta de Marketplace",
+    "subtitle": "Empecemos con sus credenciales de acceso",
+    "logoAlt": "Logo",
+    "legalPersonIdData": "DATOS IDENT. PERSONA JURÍDICA",
+    "codeOfConduct": {
+      "pdfTitle": "PDF Código de Conducta",
+      "openInNewTabAria": "Abrir PDF Código de Conducta en nueva pestaña"
+    },
+    "controls": {
+      "enterFullscreen": "Pantalla completa",
+      "exitFullscreen": "Salir pantalla completa"
+    },
+    "step1": {
+      "title": "Paso 01: Ingrese sus datos de acceso"
+    },
+    "step2": {
+      "title": "Paso 02: Detalles de organización",
+      "placeholder": "Continúe al siguiente paso para proporcionar la información de su organización."
+    },
+    "step3": {
+      "successMessage": "Su cuenta de Marketplace se ha creado. Presione continuar para verificar o <loginLink>{loginText}</loginLink>."
+    },
+    "stepSubtitles": {
+      "step1": "Paso 01: Ingrese sus datos de acceso",
+      "step2": "Paso 02: Ingrese detalles de organización",
+      "step3": "Paso 03: Verifique su organización con su Wallet",
+      "step4": "Paso 04: Firme el Código de Conducta"
+    },
+    "fields": {
+      "adminName": "Nombre Admin",
+      "email": "Correo",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar"
+    },
+    "placeholders": {
+      "adminName": "Su nombre de Admin",
+      "email": "Correo",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "organisationName": "Nombre de organización",
+      "organisationDescription": "Descripción de organización",
+      "policyUrl": "URL de política",
+      "sector": "Sector",
+      "location": "País"
+    },
+    "validation": {
+      "invalidEmail": "Ingrese un correo válido"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "start": "Comenzando",
+    "login": "Acceso",
+    "account": "Cuenta",
+    "manage-admin": "Gestionar Admin",
+    "developer-apis": "APIs de Desarrollador",
+    "disp-connections": "Conexiones DISP",
+    "business-wallet": "Conexiones Wallet Empresa",
+    "data-source": "Fuente de datos",
+    "dd-agreements": "Listado Marketplace",
+    "dd-agreements-history": "Historial de Acuerdos (DDA)",
+    "signed-agreements": "Acuerdos firmados",
+    "open-api": "Documentación OpenAPI",
+    "businessWallet": "Wallet de Empresa"
+  },
+  "signedAgreements": {
+    "title": "Acuerdos firmados",
+    "subtitle": "Vea y gestione los registros de Acuerdos de Divulgación de Datos firmados.",
+    "table": {
+      "headers": {
+        "dataSource": "Fuente de datos",
+        "ddaRecordId": "ID registro DDA",
+        "id": "ID",
+        "usagePurpose": "Propósito de uso",
+        "version": "Versión",
+        "agreementEvent": "Evento del acuerdo",
+        "signatureStatus": "Estado de firma",
+        "dataSourceSignature": "Firma fuente de datos",
+        "dataUsingServiceSignature": "Firma servicio usuario",
+        "lastModified": "Modificado",
+        "lastModifiedDate": "Fecha modificación"
+      },
+      "noData": "No hay acuerdos firmados para mostrar",
+      "tooltips": {
+        "viewJson": "Ver registro de acuerdo firmado"
+      }
+    },
+    "tooltipView": "Ver acuerdo firmado",
+    "viewModal": {
+      "title": "Ver acuerdo firmado"
+    },
+    "jsonViewer": {
+      "title": "Ver registro de acuerdo firmado"
+    },
+    "signatures": {
+      "dataSource": "Fuente de datos",
+      "dataUsingService": "Servicio de uso de datos",
+      "dataSourceSignature": "Firma fuente de datos",
+      "dataUsingServiceSignature": "Firma servicio usuario",
+      "mutuallySigned": "Firmado mutuamente",
+      "dataSourceSigned": "Firmado por fuente",
+      "dataUsingServiceSigned": "Firmado por servicio usuario",
+      "dataUsingServiceUnsigned": "No firmado por servicio usuario"
+    }
+  },
+  "home": {
+    "header": "INICIO",
+    "title": "Fuentes de datos",
+    "check-box-all": "Todo",
+    "check-box-org": "Organizaciones",
+    "check-box-devices": "Dispositivos",
+    "readMore": "Leer más....",
+    "readLess": "Leer menos....",
+    "btn-signData": "Ver Acuerdos de Divulgación",
+    "btn-signDataSingular": "Ver Acuerdo de Divulgación",
+    "btn-viewMetadata": "Ver APIs",
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) ",
+    "searchPlaceholder": "Buscar organizaciones y acuerdos",
+    "tabs": {
+      "organisations": "Organizaciones",
+      "dataDisclosureAgreements": "Acuerdos de Divulgación de Datos"
+    },
+    "search": {
+      "tooltipData": "Buscando...",
+      "tooltipRun": "Clic para buscar",
+      "tooltipClear": "Limpiar búsqueda"
+    }
+  },
+  "appBar": {
+    "header": "Marketplace de Datos CRANE d-HDSI",
+    "subHeader": "Suecia - Región Västerbotten",
+    "lastVisit": "Última visita",
+    "settings": "Ajustes",
+    "signout": "Salir",
+    "logoAlt": "Logo"
+  },
+  "sideBar": {
+    "gettingStarted": "Comenzando",
+    "dataAgreements": {
+      "title": "Listado Marketplace",
+      "addButton": "Añadir nuevo DDA",
+      "saveButton": "Guardar cambios"
+    },
+    "signedAgreements": {
+      "title": "Acuerdos firmados"
+    },
+    "b2bConnections": {
+      "title": "Conexiones B2B"
+    },
+    "account": "Cuenta",
+    "manageAdmin": "Gestionar Admin",
+    "developerApis": "APIs Desarrollador",
+    "businessWallet": "Wallet de Empresa"
+  },
+  "gettingStarted": {
+    "public": "Público",
+    "sector": "Sector",
+    "overView": "Resumen",
+    "organisationName": "Nombre organización",
+    "addCredential": "Añadir credencial",
+    "viewCredential": "Ver credencial",
+    "edit": "Editar",
+    "policyUrl": "URL de política",
+    "location": "Ubicación",
+    "descriptionPlaceholder": "Descripción de la organización (límite 500 caracteres)",
+    "prepareDA": "Gestionar listado",
+    "manageDDA": "Gestionar acuerdos de divulgación",
+    "manageAccount": "Gestionar cuenta",
+    "manageAdminUser": "Gestionar usuario admin",
+    "developerDocumentation": "Documentación desarrollador",
+    "connectWalletTitle": "Añadir credencial - ",
+    "connect": "Conectar",
+    "choose": "Elegir",
+    "confirm": "Confirmar",
+    "connectDescription": "Su negocio no está verificado. Conecte su wallet de empresa y haga clic en siguiente.",
+    "country": "País",
+    "trustedIssuers": "Emisores de confianza",
+    "walletTitle": "Conecte su wallet de empresa",
+    "cloudWallet": "Wallet en la nube",
+    "mobileWallet": "Wallet móvil",
+    "walletDescription": "Pegue la URL conectada",
+    "chooseDescription": "Negocio no verificado. Añada credencial desde la wallet conectada para verificar.",
+    "chooseWalletTitle": "WALLET CONECTADA: ",
+    "chooseWalletTwo": "North Health Innovation AB",
+    "chooseWalletThree": "Emitido por:",
+    "confirmWalletDescription": "Su negocio no está verificado. Elija confirmar para verificar su negocio.",
+    "industry": "Industria",
+    "tooltipDeleteCredentials": "Borrar credenciales",
+    "deleteCredentialsModal": {
+      "title": "Borrar credenciales",
+      "description": "Está a punto de borrar credenciales existentes. Escriba DELETE para confirmar y haga clic en BORRAR. Esta acción es irreversible.",
+      "confirmButton": "Borrar",
+      "confirmText": "DELETE"
+    },
+    "bannerAlt": "Banner"
+  },
+  "tagEditor": {
+    "title": "Etiquetas",
+    "editTagsTitle": "Editar etiquetas: {purpose}",
+    "placeholder": "Añadir etiqueta...",
+    "maxTags": "Máximo {maxTags} etiquetas"
+  },
+  "apiDocs": {
+    "servers": "Servidores",
+    "schemas": "Esquemas"
+  },
+  "common": {
+    "orgDashboardTitle": "Acceso a Marketplace de Datos CRANE dHDSI",
+    "trustedServiceProvider": "Proveedor de Servicios Confiable",
+    "untrustedServiceProvider": "Proveedor No Confiable",
+    "continue": "Continuar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "save": "Guardar",
+    "add": "Añadir",
+    "delete": "Borrar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "retry": "Reintentar",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Éxito",
+    "certificateOfRegistration": "Certificado de registro",
+    "notAvailable": "N/A",
+    "language": "Idioma",
+    "poweredby": "Impulsado por",
+    "home": "Inicio",
+    "overView": "Resumen",
+    "usagePurpose": "Propósito de uso",
+    "dataset": "Conjunto de datos",
+    "policyUrl": "URL de política",
+    "all": "Todo",
+    "noResultsFound": "Sin resultados",
+    "noData": "Sin conexiones",
+    "description": "Descripción",
+    "true": "Verdadero",
+    "false": "Falso",
+    "yes": "Sí",
+    "no": "No",
+    "viewAll": "Ver todo",
+    "timestamp": "Marca de tiempo",
+    "modifiedAt": "Modificado en",
+    "status": "Estado",
+    "name": "Nombre",
+    "manageAdmin": "gestionar-admin",
+    "developerApis": "apis-desarrollador",
+    "disp-connections": "conexiones-disp",
+    "businessWallet": "wallet-empresa",
+    "generic": "Algo salió mal.",
+    "errorOccurred": "Ocurrió un error.",
+    "tryAgainLater": "Inténtelo más tarde.",
+    "pleaseWait": "Espere...",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "typeToConfirm": "Escriba \"{text}\" para confirmar",
+    "comingSoon": "Próximamente",
+    "noDataSelected": "Sin datos seleccionados",
+    "optInAction": "Opt-in",
+    "optOutAction": "Opt-out",
+    "signAndContinue": "Firmar y Continuar",
+    "unableToDisplayPdf": "No se puede mostrar el Código de Conducta.",
+    "openInNewTab": "Abrir en nueva pestaña",
+    "invalidUrl": "Ingrese una URL válida",
+    "rowsPerPage": "Filas por página:",
+    "of": "de",
+    "signAction": "Firmado",
+    "unsignAction": "Sin firmar",
+    "imageAlt": "Imagen",
+    "itemsPerPage": "Ítems por página"
+  },
+  "languages": {
+    "en": "Inglés",
+    "sv": "Sueco",
+    "fi": "Finés",
+    "es": "Español",
+    "no": "Noruego"
+  },
+  "errors": {
+    "generic": "Algo salió mal.",
+    "imageUpdate": "Error actualizando imagen. Inténtelo de nuevo.",
+    "imageRead": "Error leyendo datos de imagen",
+    "imageProcess": "Error procesando imagen recortada"
+  },
+  "verification": {
+    "connect": {
+      "title": "Conecte su Wallet",
+      "description": "Seleccione un método para continuar",
+      "selectWallet": "Seleccione una wallet para conectar",
+      "walletTitle": "Conexión de Wallet",
+      "cloudWallet": "Wallet en la nube",
+      "mobileWallet": "Wallet móvil",
+      "walletDescription": "Proporcione una justificación para conectar su wallet:",
+      "justificationPlaceholder": "Ingrese justificación aquí...",
+      "connectWallet": "Conectar Wallet"
+    },
+    "choose": {
+      "title": "Elija método de verificación",
+      "description": "Seleccione cómo verificar sus credenciales",
+      "walletTitle": "Wallet",
+      "selectTemplate": "Seleccione plantilla de verificación",
+      "walletInfo": "Info de Wallet conectada",
+      "issuedBy": "Emitido por:",
+      "issuer": "Emisor"
+    },
+    "confirm": {
+      "title": "Confirmar verificación",
+      "description": "Revise y confirme sus detalles de verificación",
+      "verifying": "Verificando credenciales...",
+      "success": "¡Verificación exitosa!",
+      "error": "Falló la verificación. Inténtelo de nuevo.",
+      "templateError": "Plantilla no encontrada",
+      "errorDescription": "Hubo un problema procesando su verificación. Revise lo siguiente:",
+      "checkConnection": "Revise su conexión a internet",
+      "tryAgain": "Inténtelo en unos momentos",
+      "contactSupport": "Contacte soporte si persiste",
+      "retry": "Reintentar",
+      "back": "Atrás",
+      "issued": "Emitido",
+      "expiry": "Expira",
+      "status": "Estado",
+      "verificationId": "ID de verificación"
+    },
+    "status": {
+      "pending": "Verificación en progreso...",
+      "success": "¡Verificación exitosa!",
+      "error": "Verificación fallida"
+    }
+  },
+  "dataAgreements": {
+    "title": "Listado Marketplace",
+    "subtitle": "Gestione el listado del mercado usando Acuerdos de Divulgación de Datos (DDAs).",
+    "addButton": "Añadir nuevo DDA",
+    "saveButton": "Guardar cambios",
+    "noListingsAvailable": "No hay listados. Haga clic en + para añadir",
+    "dataDisclosureAgreementPolicy": "Política de Acuerdo de Divulgación",
+    "policy": {
+      "lawfulBasis": "Base legal de procesamiento",
+      "dataRetentionPeriod": "Retención de datos (años)",
+      "policyUrl": "URL de política",
+      "jurisdiction": "Jurisdicción",
+      "industrySector": "Sector industrial",
+      "geographicRestriction": "Restricción geográfica",
+      "storageLocation": "Ubicación de almacenamiento",
+      "agreementPeriodYears": "Periodo del acuerdo (años)",
+      "dataControllerTitle": "Controlador de Datos",
+      "dataSharingRestrictionsTitle": "Restricciones de uso compartido"
+    },
+    "deleteModal": {
+      "title": "Borrar acuerdo de datos",
+      "description": "Está a punto de borrar un acuerdo existente. Escriba DELETE para confirmar y haga clic en BORRAR. Esta acción es irreversible.",
+      "confirmButton": "Borrar",
+      "confirmText": "DELETE"
+    },
+    "signWithBusinessWallet": "Firmar con Wallet de Empresa",
+    "unsignWithBusinessWallet": "Retirar firma con Wallet",
+    "loginToSignWithBusinessWallet": "Inicie sesión para firmar con Wallet",
+    "loginToUnsignWithBusinessWallet": "Inicie sesión para retirar firma",
+    "signWithBusinessWalletInitiateError": "Fallo al iniciar solicitud de firma con wallet",
+    "publishModal": {
+      "title": "Publicar en Marketplace",
+      "confirmButton": "Publicar"
+    },
+    "viewModal": {
+      "title": "Ver Acuerdo de Divulgación",
+      "publicTitle": "Ver y firmar acuerdo de datos"
+    },
+    "dataAgreementPolicy": "Política de Acuerdo de Datos",
+    "all": "Todo",
+    "list": "Listado",
+    "underReview": "En revisión",
+    "selectStatusAction": "Seleccionar acción de estado...",
+    "statusActionLabel": "Acción de estado",
+    "statuses": {
+      "unlisted": "No listado",
+      "inReview": "En revisión",
+      "approved": "Aprobado",
+      "rejected": "Rechazado",
+      "listed": "Listado"
+    },
+    "actions": {
+      "unlist": "Quitar lista",
+      "requestReview": "Pedir revisión",
+      "list": "Listar"
+    },
+    "tooltipPublished": "Acuerdo de Divulgación publicado",
+    "tooltipView": "Ver Acuerdo de Divulgación",
+    "tooltipEdit": "Editar Acuerdo de Divulgación",
+    "tooltipDelete": "Borrar Acuerdo de Divulgación",
+    "tooltipAddNew": "Añadir nuevo Acuerdo",
+    "tooltipDownload": "Descargar Acuerdo",
+    "pageDescription": "Gestione listados usando Acuerdos de Divulgación de Datos (DDAs).",
+    "usagePurpose": "Propósito de uso",
+    "version": "Versión",
+    "dataExchange": "Intercambio de datos",
+    "lawfulBasisOfProcessing": "Base Legal de Procesamiento",
+    "usagePurposePlaceholder": "Ej. Marketing y campaña (mínimo 3 caracteres)",
+    "none": "Ninguno",
+    "dataSource": "Fuente de datos",
+    "dataUsingService": "Servicio de uso de datos",
+    "descritptionInputPlaceholder": "Breve descripción sobre el uso de datos (3-500 caracteres)",
+    "connectedData": "Acuerdo de Divulgación conectado",
+    "legalID": "ID Legal del Controlador",
+    "table": {
+      "headers": {
+        "templateId": "ID plantilla DDA",
+        "id": "ID",
+        "usagePurpose": "Propósito de uso",
+        "version": "Versión",
+        "status": "Estado",
+        "lawfulBasis": "Base legal de procesamiento",
+        "lastModified": "Modificado",
+        "lastModifiedDate": "Fecha modificación"
+      },
+      "tooltips": {
+        "listToMarketplace": "Listar en Marketplace",
+        "viewHistory": "Ver historial del Acuerdo",
+        "editTags": "Editar etiquetas"
+      },
+      "noData": "Sin datos para mostrar"
+    },
+    "errors": {
+      "statusUpdateFailed": "Error al actualizar estado"
+    },
+    "history": {
+      "title": "Historial Acuerdo Divulgación Datos",
+      "subtitle": "Ver historial para el Acuerdo de Divulgación",
+      "agreementLabel": "Acuerdo",
+      "table": {
+        "headers": {
+          "ddaRecordId": "ID registro DDA",
+          "id": "ID",
+          "revision": "Revisión",
+          "usagePurpose": "Propósito de uso",
+          "version": "Versión",
+          "agreementEvent": "Evento del acuerdo",
+          "dataSourceSignature": "Firma fuente de datos",
+          "dataUsingServiceSignature": "Firma servicio usuario",
+          "signatureStatus": "Estado de firma",
+          "lastModified": "Modificado",
+          "lastModifiedDate": "Fecha modificación",
+          "actions": "Acciones",
+          "status": "Estado",
+          "isLatest": "Es último",
+          "timestamp": "Marca de tiempo",
+          "revisionId": "ID revisión",
+          "revisionHash": "Hash revisión"
+        },
+        "noData": "No hay historial para mostrar"
+      },
+      "events": {
+        "optIn": "Opt-in",
+        "optOut": "Opt-out"
+      },
+      "signatures": {
+        "mutuallySigned": "Firmado mutuamente",
+        "dataSourceSigned": "Origen de Datos firmado",
+        "dataUsingServiceSigned": "Firmado por servicio usuario",
+        "dataUsingServiceUnsigned": "No firmado por servicio usuario"
+      }
+    },
+    "openApiSpecification": {
+      "title": "Especificación Open API"
+    }
+  },
+  "manageAdmin": {
+    "adminUser": "Usuario Admin",
+    "pageDescription": "Gestione configuraciones de usuario admin.",
+    "userSettings": "Ajustes de usuario",
+    "email": "Correo",
+    "userCredentials": "Credenciales",
+    "currentPassword": "Contraseña actual",
+    "enterCurrentPassword": "Ingrese contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "enterNewPassword": "Ingrese nueva contraseña",
+    "confirmNewPassword": "Confirme nueva contraseña",
+    "changePassword": "Cambiar contraseña",
+    "samePassword": "La nueva contraseña y confirmación deben ser iguales",
+    "passwordChanged": "Contraseña cambiada",
+    "error": "Algo salió mal, intente de nuevo con contraseña válida"
+  },
+  "developerAPIs": {
+    "copy": "COPIAR",
+    "apiKeyCopyMessage": "Aquí está su nueva clave. ¡Cópiela ahora! No la mostraremos de nuevo.",
+    "headerText": "APIs de Desarrollador y Credenciales",
+    "pageDescription": "Todas las peticiones API requieren autenticación con los datos abajo",
+    "organisationID": "ID de Organización",
+    "yourUserID": "Su ID de Usuario",
+    "configuredBaseURL": "URL Base Configurada",
+    "apiKey": "Clave API",
+    "noTokenAvailable": "No hay token disponible",
+    "createConnection": "Crear Conexión",
+    "scope": "Alcance",
+    "scopes": "Alcances",
+    "expiry": "Expira",
+    "deleteAPIKey": "Borrar Clave API",
+    "keyNamePlaceholder": "Escriba el nombre de la clave API...",
+    "expiryDate": "Expira en día(s)",
+    "expiryDatePlaceholder": "Escriba la expiración en días...",
+    "allScopes": "Todos los alcances",
+    "selectedScopes": "Alcances seleccionados",
+    "deleteDescription1": "Está a punto de borrar una clave API. Escriba ",
+    "deleteDescription2": " para confirmar y haga clic en BORRAR. Esta acción es irreversible.",
+    "tooltipDelete": "Borrar conexión",
+    "apiKeyCopied": "Clave API copiada al portapapeles",
+    "openApiUpdated": "URL de especificación OpenAPI actualizada",
+    "openApiUpdateFailed": "Fallo al actualizar URL de OpenAPI",
+    "configureOpenApi": "Configurar especificación OpenAPI",
+    "openApiUrlLabel": "URL de especificación OpenAPI",
+    "holderBaseUrlLabel": "Dirección wallet empresa",
+    "openApiUrlPlaceholder": "Ingrese URL OpenAPI",
+    "credentialOfferEndpointLabel": "Endpoint oferta credencial",
+    "credentialOfferEndpointPlaceholder": "Ingrese URL endpoint oferta",
+    "accessPointEndpointLabel": "Endpoint Access Point",
+    "accessPointEndpointPlaceholder": "Ingrese URL endpoint Access Point",
+    "uploadButton": "Subir",
+    "oauth2ClientTitle": "Cliente OAuth 2.0",
+    "oauth2Title": "Cliente OAuth 2.0",
+    "dataSpaceOauth2Title": "Cliente OAuth 2.0 de Marketplace",
+    "oauth2ClientNameLabel": "Nombre",
+    "oauth2ClientNamePlaceholder": "Nombre para cliente OAuth 2.0",
+    "oauth2ClientDescriptionLabel": "Descripción",
+    "oauth2ClientDescriptionPlaceholder": "Descripción corta (opcional)",
+    "createOAuth2Client": "Crear",
+    "clientNameLabel": "Nombre Cliente",
+    "clientDescriptionLabel": "Descripción Cliente",
+    "clientIdLabel": "ID de Cliente",
+    "clientSecretLabel": "Secreto Cliente",
+    "organisationWalletTitle": "Wallet de Organización",
+    "owsBaseUrlLabel": "Dirección wallet empresa",
+    "owsBaseUrlPlaceholder": "Ingrese dirección wallet empresa",
+    "saveButton": "Guardar",
+    "owsBaseUrlUpdateFailed": "Fallo al actualizar URL base de Wallet",
+    "walletConfigurationTitle": "Configuración Wallet Organización",
+    "configuredLabel": "Configurado",
+    "configureButton": "Configurar",
+    "oauth2ClientConfigTitle": "Configuración Cliente OAuth 2.0 Marketplace",
+    "orgOauth2Title": "Cliente OAuth 2.0 de Organización",
+    "orgOauth2ClientConfigTitle": "Configuración Cliente OAuth 2.0 de Organización",
+    "orgOauth2ClientNameLabel": "Nombre",
+    "orgOauth2ClientNamePlaceholder": "Nombre para cliente OAuth 2.0 Organización",
+    "orgOauth2ClientIdLabel": "ID de Cliente",
+    "orgOauth2ClientIdPlaceholder": "Ingrese ID de Cliente",
+    "orgOauth2ClientSecretLabel": "Secreto Cliente",
+    "orgOauth2ClientSecretPlaceholder": "Ingrese Secreto Cliente",
+    "createOrganisationOAuth2Client": "Crear",
+    "orgClientNameRequired": "Nombre de cliente requerido",
+    "orgClientIdRequired": "ID de cliente requerido",
+    "orgClientSecretRequired": "Secreto de cliente requerido",
+    "requestCredential": "Pedir Credencial",
+    "orgOauth2DeleteConfirm": "¿Seguro que desea borrar el cliente OAuth2 de Organización?",
+    "orgOauth2ClientDescriptionLabel": "Descripción",
+    "orgOauth2ClientDescriptionPlaceholder": "Descripción opcional",
+    "orgOauth2DeleteModal": {
+      "title": "Borrar Cliente OAuth 2.0 Organización",
+      "description": "Está a punto de borrar un cliente OAuth 2.0 existente. Escriba DELETE para confirmar y haga clic en BORRAR. Esta acción es irreversible.",
+      "confirmText": "DELETE",
+      "confirmButton": "Borrar"
+    },
+    "deploymentStatusLabel": "Estado despliegue:",
+    "notConfiguredLabel": "No configurado",
+    "owsBaseUrlRequired": "Dirección wallet empresa requerida",
+    "credentialOfferEndpointRequired": "Endpoint oferta credencial requerido",
+    "accessPointEndpointRequired": "Endpoint Access Point requerido",
+    "clientNameRequired": "Nombre de cliente requerido",
+    "softwareStatementTitle": "Declaración de Software",
+    "softwareStatementLabel": "Declaración de Software",
+    "softwareStatementRequest": "Solicitar",
+    "softwareStatementView": "Ver",
+    "softwareStatementRequestTooltip": "Solicitar nueva declaración de software",
+    "softwareStatementViewTooltip": "Ver detalles de su declaración de software",
+    "softwareStatementPrereqMissing": "Configure endpoints de Credencial y Access Point primero",
+    "softwareStatementVctLabel": "VCT",
+    "acceptSoftwareStatementToast": "Acepte su declaración de software en portal DISP",
+    "softwareStatementClientUriLabel": "uri_cliente",
+    "softwareStatementCoverUrlLabel": "url_portada",
+    "softwareStatementIndustrySectorLabel": "sector_industrial",
+    "softwareStatementLocationLabel": "ubicación",
+    "softwareStatementLogoUrlLabel": "url_logo",
+    "softwareStatementNameLabel": "nombre",
+    "softwareStatementClientIdLabel": "ID de Cliente",
+    "softwareStatementRedirectUriLabel": "URI Redirección",
+    "softwareStatementExchangeIdLabel": "ID Intercambio",
+    "softwareStatementDidLabel": "DID",
+    "softwareStatementCreatedAtLabel": "Creado en",
+    "softwareStatementUpdatedAtLabel": "Actualizado en",
+    "softwareStatementStatus": {
+      "": "No solicitado",
+      "offer_sent": "Oferta enviada",
+      "offer_received": "Oferta recibida",
+      "credential_accepted": "Credencial aceptada"
+    },
+    "deleteSoftwareStatementModal": {
+      "title": "Borrar declaración de software",
+      "description": "Está a punto de borrar una declaración de software existente. Escriba DELETE para confirmar y haga clic en BORRAR. Esta acción es irreversible.",
+      "confirmButton": "Borrar",
+      "confirmText": "DELETE"
+    },
+    "tooltips": {
+      "dataSpaceOauth2Title": "Configure el cliente OAuth 2.0 para conectar el Marketplace a su DISP. Clic CONFIGURAR, ingrese nombre y descripción, clic CREAR. Copie ID de Cliente y Secreto. Úselos en el portal DISP bajo Configuración Base (URL Base: https://demo-api.nxd.foundation/service).",
+      "orgOauth2Title": "Configure el cliente OAuth 2.0 para conectar su DISP al Marketplace. Clic CONFIGURAR para crear cliente, ingrese nombre y descripción, clic CREAR. Copie ID de Cliente y Secreto. Vuelva al Marketplace y péguelos bajo Cliente OAuth 2.0 de Organización.",
+      "holderBaseUrl": "La URL única que identifica la wallet de su organización en el entorno DISP. Usada por el Marketplace para enviar ofertas de credenciales y recibir respuestas de forma segura.",
+      "credentialOfferEndpoint": "El endpoint OpenID4VCI donde su wallet recibe ofertas del Marketplace. Obténgalo en el portal DISP bajo Digital Wallet (OpenID4VC) → Configuración Base.",
+      "accessPointEndpoint": "El endpoint API que expone la interfaz de intercambio de datos de su organización. Obténgalo en el portal DISP bajo Data Marketplace → Configuración Base.",
+      "softwareStatement": "Credencial firmada digitalmente emitida por el Marketplace cuando ambos endpoints están configurados. Prueba que su wallet de negocio está autorizada y es confiable. Puede aceptarla en el portal DISP bajo Digital Wallet (OpenID4VC) → Wallet Unit (Holder)."
+    }
+  },
+  "dispConnection": {
+    "copy": "COPIAR",
+    "delete": "BORRAR",
+    "apiKeyCopyMessage": "Aquí está su nueva clave. ¡Cópiela ahora! No la mostraremos de nuevo.",
+    "headerText": "Conexiones de Servicios de Intermediación (DISP)",
+    "titleText": " Gestiona conexiones hacia sus organizaciones"
+  },
+  "error": {
+    "generic": "Algo salió mal."
+  },
+  "businessWallet": {
+    "title": "Conexiones Wallet Empresa",
+    "subtitle": "Gestione conexiones de wallet de empresa de su organización",
+    "label": "Nombre conexión",
+    "connectedOn": "Conectado el",
+    "connectionId": "ID de conexión",
+    "addButton": "Añadir conexión",
+    "searchPlaceholder": "Buscar por holders",
+    "noConnections": "No se hallaron conexiones de wallet",
+    "tooltipAddNewConnection": "Añadir nueva conexión de Wallet Empresa"
+  },
+  "addDataDisclosureAgreement": "Añadir acuerdo de divulgación",
+  "noBannerImageAvailable": "No hay imagen de banner",
+  "imageUpload": {
+    "recommendedCoverSize": "Tamaño recomendado 1500x500px",
+    "recommendedLogoSize": "Tamaño recomendado 400x400px",
+    "cropModal": {
+      "onlyImagesSupported": "Solo imágenes {label} soportadas",
+      "cropMinSize": "El recorte debe ser al menos {minWidth}x{minHeight}px",
+      "imageMinSize": "La imagen debe ser al menos {minWidth}x{minHeight}px",
+      "altCropImage": "Recórtame",
+      "selectImage": "Seleccionar imagen",
+      "dragDropInstructions": "Use Examinar abajo, o arrastre aquí ({types}).",
+      "cancel": "CANCELAR",
+      "browse": "EXAMINAR",
+      "save": "GUARDAR",
+      "saving": "GUARDANDO..."
+    }
+  },
+  "unknownOrganization": "Organización desconocida",
+  "viewCredentials": {
+    "attributeTable": {
+      "title": "Tabla de atributos",
+      "description": "Ver credenciales para tabla de atributos"
+    },
+    "legalNameLabel": "Nombre legal",
+    "identifierLabel": "Identificador"
+  }
+}

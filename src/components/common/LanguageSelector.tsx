@@ -7,6 +7,7 @@ import Popper from "@mui/material/Popper";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { locales } from "@/constants/il8n";
 
 const LanguageSelector: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -18,18 +19,35 @@ const LanguageSelector: React.FC = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleChange = (locale: string) => {
-    // Get current path and remove the locale part
-    const pathnameParts = window.location.pathname.split("/");
-    // Remove first empty string (from leading slash) and current locale
-    pathnameParts.splice(0, 2);
-    // Construct new path with new locale
-    const newPath = `/${locale}${pathnameParts.length > 0 ? '/' + pathnameParts.join('/') : ''}`;
+  const handleChange = (newLocale: string) => {
+    const pathname = window.location.pathname;
+    const pathnameParts = pathname.split("/");
+    
+    // Check if the current path starts with a known locale
+    const firstSegment = pathnameParts[1]; // First segment after leading slash
+    const hasLocalePrefix = locales.includes(firstSegment);
+    
+    let pathWithoutLocale: string;
+    if (hasLocalePrefix) {
+      // Remove leading empty string and locale prefix
+      pathWithoutLocale = '/' + pathnameParts.slice(2).join('/');
+    } else {
+      // No locale prefix, keep the path as-is (just remove leading empty string)
+      pathWithoutLocale = pathname;
+    }
+    
+    // Ensure pathWithoutLocale starts with /
+    if (!pathWithoutLocale.startsWith('/')) {
+      pathWithoutLocale = '/' + pathWithoutLocale;
+    }
+    
+    // Construct new path with the new locale
+    const newPath = `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
     
     // Navigate to the new locale path
     router.push(newPath);
     // Optionally store language preference
-    localStorage.setItem("preferredLanguage", locale);
+    localStorage.setItem("preferredLanguage", newLocale);
     setOpen(false);
   };
 
@@ -70,9 +88,26 @@ const LanguageSelector: React.FC = () => {
                 horizontal: "center",
               }}
             >
-              <MenuItem style={{ fontSize: "12px" }} onClick={() => handleChange("en")}>English</MenuItem>
-              <MenuItem style={{ fontSize: "12px" }} onClick={() => handleChange("sv")}>Swedish</MenuItem>
-              <MenuItem style={{ fontSize: "12px" }} onClick={() => handleChange("fi")}>Finnish</MenuItem>
+              {locales.map((l) => {
+                let label = l;
+                switch (l) {
+                  case "en": label = "English"; break;
+                  case "sv": label = "Swedish"; break;
+                  case "fi": label = "Finnish"; break;
+                  case "es": label = "Spanish"; break;
+                  case "no": label = "Norwegian"; break;
+                  default: label = l;
+                }
+                return (
+                  <MenuItem 
+                    key={l}
+                    style={{ fontSize: "12px" }} 
+                    onClick={() => handleChange(l)}
+                  >
+                    {label}
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </ClickAwayListener>
         )}

@@ -260,7 +260,7 @@ export default async function HomePage({ params, searchParams }: Props) {
             totalItems={activeTotalItems} 
             defaultRowsPerPage={DEFAULT_LIMIT} 
             rowsPerPageOptions={[5, 12, 24, 48]}
-            rowsPerPageLabel={"Items per page"}
+            rowsPerPageLabel={t('common.itemsPerPage')}
             pageParamKey={searchQuery ? (activeTab === 'ddas' ? 'ddaPage' : 'orgPage') : 'orgPage'}
             limitParamKey={"limit"}
           />

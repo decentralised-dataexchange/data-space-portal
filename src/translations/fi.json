@@ -1,75 +1,75 @@
 {
-  "route": {
-    "login": "login",
-    "start": "start",
-    "dd-agreements": "dd-agreements",
-    "account": "account",
-    "manageAdmin" : "account/manage-admin",
-    "developerApis": "account/developer-apis",
-    "dispConnections": "account/disp-connections",
-    "apiDoc": "/data-source/open-api",
-    "signed-agreements": "signed-agreements"
-  },
-  
   "b2bConnections": {
     "title": "B2B-yhteydet",
-    "subtitle": "Näytä organisaatiosi B2B-yhteydet.",
+    "subtitle": "Tarkastele organisaatiosi B2B-yhteyksiä.",
     "table": {
       "headers": {
-        "id": "B2B-yhteyden ID",
-        "theirClientId": "Heidän Client ID",
-        "theirClientSecret": "Heidän Client Secret",
-        "mySoftwareStatement": "Oma software statement",
-        "theirSoftwareStatement": "Heidän software statement",
-        "lastModified": "Viimeksi muokattu",
+        "id": "B2B-yhteystunnus",
+        "theirClientId": "Heidän Asiakastunnus",
+        "theirClientSecret": "Heidän Asiakassalaisuus",
+        "mySoftwareStatement": "Oma ohjelmistolausunto",
+        "theirSoftwareStatement": "Heidän ohjelmistolausunto",
+        "lastModified": "Muokattu viimeksi",
+        "lastModifiedDate": "Muokkauspäivämäärä",
         "actions": "Toiminnot",
-        "myClientId": "Oma Client ID",
+        "myClientId": "Oma Asiakastunnus",
         "nonce": "Nonce",
         "timestamp": "Aikaleima",
-        "connectionId": "Yhteyden ID",
-        "b2bConnectionId": "B2B-yhteyden ID"
+        "connectionId": "Yhteystunnus",
+        "b2bConnectionId": "B2B-yhteystunnus"
       },
-      "noData": "Ei yhteyksiä näytettäväksi"
+      "noData": "Ei yhteyksiä näytettäväksi",
+      "ariaLabel": "b2b-yhteystaulukko",
+      "actions": {
+        "viewMySoftwareStatement": "katso-oma-ol",
+        "viewTheirSoftwareStatement": "katso-heidän-ol"
+      }
     }
   },
-  
   "login": {
-    "header": "CRANE dHDSI - Organisaation hallintapaneeli - Kirjaudu",
+    "header": "CRANE dHDSI - Org. hallintapaneeli - Kirjaudu",
     "userId": "Käyttäjätunnus",
     "password": "Salasana",
     "rememberMe": "Muista minut",
-    "errorMessage": "Virheelliset kirjautumistiedot. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen.",
+    "errorMessage": "Virheelliset tunnukset. Tarkista käyttäjätunnus ja salasana ja yritä uudelleen.",
     "title": "Kirjaudu",
     "noAccount": "Eikö sinulla ole tiliä?",
-    "signup": "Luo tili",
-    "createNow": "Luo omasi nyt."
+    "signup": "Rekisteröidy",
+    "createNow": "Luo omasi nyt.",
+    "logoAlt": "Logo"
   },
   "signup": {
-    "header": "CRANE dHDSI - Organisaation hallintapaneeli - Luo tili",
+    "header": "CRANE dHDSI - Org. hallintapaneeli - Rekisteröidy",
     "name": "Nimi",
     "userName": "Nimesi",
     "organisationName": "Organisaation nimi",
     "email": "Sähköposti",
-    "confirmPassword": "Vahvista salasana",
     "userId": "Käyttäjätunnus",
+    "confirmPassword": "Vahvista salasana",
     "passwordMismatch": "Salasanat eivät täsmää",
     "haveAccount": "Onko sinulla jo tili?",
     "login": "Kirjaudu sisään",
-    "title": "Luo tili",
+    "title": "Rekisteröidy",
     "sector": "Sektori",
     "location": "Sijainti",
-    "policyUrl": "Käytäntö URL",
+    "policyUrl": "Käytäntö-URL",
     "description": "Organisaation kuvaus",
-    "owsBaseUrl": "OWS-perus-URL",
+    "owsBaseUrl": "OWS-perusosoite",
     "verificationRequestURLPrefix": "Yrityslompakon osoite",
     "optional": "Valinnainen",
     "required": "Pakollinen",
     "requiredFieldsMissing": "Täytä kaikki pakolliset kentät",
-    "passwordLength": "Salasanan tulee olla 8–20 merkkiä"
+    "passwordLength": "Salasanan pituus 8–20 merkkiä"
   },
   "onboarding": {
-    "title": "Luo datamarkkinapaikan tili",
-    "subtitle": "Aloitetaan kirjautumistiedoillasi",
+    "title": "Luo tietotoritilisi",
+    "subtitle": "Aloitetaan kirjautumistiedoistasi",
+    "logoAlt": "Logo",
+    "legalPersonIdData": "OIKEUSHENKILÖN TUNNISTETIEDOT",
+    "codeOfConduct": {
+      "pdfTitle": "Käytännesäännöt PDF",
+      "openInNewTabAria": "Avaa Käytännesäännöt PDF uudessa välilehdessä"
+    },
     "controls": {
       "enterFullscreen": "Koko näyttö",
       "exitFullscreen": "Poistu koko näytöstä"
@@ -78,17 +78,17 @@
       "title": "Vaihe 01: Syötä haluamasi kirjautumistiedot"
     },
     "step2": {
-      "title": "Vaihe 02: Lisätietoja organisaatiostasi",
-      "placeholder": "Siirry seuraavaan vaiheeseen antaaksesi organisaatiosi tiedot."
+      "title": "Vaihe 02: Organisaation lisätiedot",
+      "placeholder": "Jatka seuraavaan vaiheeseen antaaksesi organisaatiosi tiedot."
     },
     "step3": {
-      "successMessage": "Datamarkkinapaikan tilisi on luotu onnistuneesti. Jatka varmistaaksesi tai <loginLink>{loginText}</loginLink>."
+      "successMessage": "Tietotoritilisi on luotu onnistuneesti. Paina jatka vahvistaaksesi tai <loginLink>{loginText}</loginLink>."
     },
     "stepSubtitles": {
       "step1": "Vaihe 01: Syötä haluamasi kirjautumistiedot",
       "step2": "Vaihe 02: Syötä organisaatiosi tiedot",
-      "step3": "Vaihe 03: Varmenna organisaatiosi Business Walletilla",
-      "step4": "Vaihe 04: Allekirjoita toimintaohjeet"
+      "step3": "Vaihe 03: Vahvista organisaatio yrityslompakolla",
+      "step4": "Vaihe 04: Allekirjoita käytännesäännöt"
     },
     "fields": {
       "adminName": "Ylläpitäjän nimi",
@@ -100,57 +100,108 @@
       "adminName": "Ylläpitäjän nimi",
       "email": "Sähköposti",
       "password": "Salasana",
-      "confirmPassword": "Vahvista salasana"
+      "confirmPassword": "Vahvista salasana",
+      "organisationName": "Organisaation nimi",
+      "organisationDescription": "Organisaation kuvaus",
+      "policyUrl": "Käytäntö-URL",
+      "sector": "Sektori",
+      "location": "Maa"
     },
     "validation": {
       "invalidEmail": "Anna kelvollinen sähköpostiosoite"
     }
   },
-  "breadcrumbs" : {
+  "breadcrumbs": {
     "home": "Koti",
-    "start": "Aloittaminen",
-    "login": "Kirjaudu sisään",
+    "start": "Aloitus",
+    "login": "Kirjaudu",
     "account": "Tili",
     "manage-admin": "Hallitse ylläpitäjää",
     "developer-apis": "Kehittäjä-API:t",
     "disp-connections": "DISP-yhteydet",
-    "business-wallet": "Yrityslompakoiden yhteydet",
+    "business-wallet": "Yrityslompakkoyhteydet",
     "data-source": "Tietolähde",
-    "dd-agreements": "Markkinapaikkalistaus",
-    "dd-agreements-history": "Tietojen luovutussopimuksen historia",
+    "dd-agreements": "Markkinapaikan listaus",
+    "dd-agreements-history": "Tietojen luovutussopimushistoria",
     "signed-agreements": "Allekirjoitetut sopimukset",
     "open-api": "OpenAPI-dokumentaatio",
     "businessWallet": "Yrityslompakko"
   },
+  "signedAgreements": {
+    "title": "Allekirjoitetut sopimukset",
+    "subtitle": "Tarkastele ja hallitse organisaatiosi allekirjoitettuja tietojen luovutussopimuksia.",
+    "table": {
+      "headers": {
+        "dataSource": "Tietolähde",
+        "ddaRecordId": "DDA-tietueen tunnus",
+        "id": "Tunnus",
+        "usagePurpose": "Käyttötarkoitus",
+        "version": "Versio",
+        "agreementEvent": "Sopimustapahtuma",
+        "signatureStatus": "Allekirjoituksen tila",
+        "dataSourceSignature": "Tietolähteen allekirjoitus",
+        "dataUsingServiceSignature": "Datan käyttäjän allekirjoitus",
+        "lastModified": "Muokattu viimeksi",
+        "lastModifiedDate": "Muokkauspäivämäärä"
+      },
+      "noData": "Ei allekirjoitettuja sopimuksia näytettäväksi",
+      "tooltips": {
+        "viewJson": "Katso allekirjoitettu sopimustietue"
+      }
+    },
+    "tooltipView": "Katso allekirjoitettu sopimus",
+    "viewModal": {
+      "title": "Katso allekirjoitettu sopimus"
+    },
+    "jsonViewer": {
+      "title": "Katso allekirjoitettu sopimustietue"
+    },
+    "signatures": {
+      "dataSource": "Tietolähde",
+      "dataUsingService": "Dataa käyttävä palvelu",
+      "dataSourceSignature": "Tietolähteen allekirjoitus",
+      "dataUsingServiceSignature": "Datan käyttäjän allekirjoitus",
+      "mutuallySigned": "Molemminpuolisesti allekirjoitettu",
+      "dataSourceSigned": "Tietolähteen allekirjoittama",
+      "dataUsingServiceSigned": "Datan käyttäjän allekirjoittama",
+      "dataUsingServiceUnsigned": "Datan käyttäjän allekirjoittamaton"
+    }
+  },
   "home": {
     "header": "KOTI",
-    "title" : "Tietolähteet",
+    "title": "Tietolähteet",
     "check-box-all": "Kaikki",
     "check-box-org": "Organisaatiot",
     "check-box-devices": "Laitteet",
     "readMore": "Lue lisää....",
     "readLess": "Lue vähemmän....",
-    "btn-signData" : "Näytä tietojen luovutussopimukset",
-    "btn-signDataSingular": "Näytä tietojen luovutussopimus",
-    "btn-viewMetadata": "Näytä API:t",
-    "footerTxt": "© NordXData Foundation (CRANE - dHDSI ) ",
-    "searchPlaceholder": "Hae Organisaatioita ja Tietojen Luovutussopimuksia",
+    "btn-signData": "Katso tietojen luovutussopimukset",
+    "btn-signDataSingular": "Katso tietojen luovutussopimus",
+    "btn-viewMetadata": "Katso API:t",
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) ",
+    "searchPlaceholder": "Hae organisaatioita ja sopimuksia",
     "tabs": {
       "organisations": "Organisaatiot",
-      "dataDisclosureAgreements": "Tietojen Luovutussopimukset"
+      "dataDisclosureAgreements": "Tietojen luovutussopimukset"
+    },
+    "search": {
+      "tooltipData": "Haetaan...",
+      "tooltipRun": "Napsauta hakeaksesi",
+      "tooltipClear": "Tyhjennä haku"
     }
   },
   "appBar": {
-    "header": "CRANE d-HDSI Data Marketplace",
-    "subHeader": "Suomi - Pohjanmaa",
-    "lastVisit": "Viimeisin käynti",
+    "header": "CRANE d-HDSI Tietotori",
+    "subHeader": "Ruotsi - Region Västerbotten",
+    "lastVisit": "Viimeinen käynti",
     "settings": "Asetukset",
-    "signout": "Kirjaudu ulos"
+    "signout": "Kirjaudu ulos",
+    "logoAlt": "Logo"
   },
   "sideBar": {
-    "gettingStarted": "Aloittaminen",
+    "gettingStarted": "Aloitus",
     "dataAgreements": {
-      "title": "Markkinapaikkailmoitukset",
+      "title": "Markkinapaikan listaus",
       "addButton": "Lisää uusi DDA",
       "saveButton": "Tallenna muutokset"
     },
@@ -163,190 +214,88 @@
     "account": "Tili",
     "manageAdmin": "Hallitse ylläpitäjää",
     "developerApis": "Kehittäjä-API:t",
-    "businessWallet": "Business Wallet"
-
-  },
-  "signedAgreements": {
-    "title": "Allekirjoitetut sopimukset",
-    "subtitle": "Näytä ja hallitse organisaatiosi allekirjoitettuja tietojen luovutussopimuksia.",
-    "table": {
-      "headers": {
-        "dataSource": "Tietolähde",
-        "ddaRecordId": "DDA-tietueen tunniste",
-        "id": "Tunniste",
-        "usagePurpose": "Käyttötarkoitus",
-        "version": "Versio",
-        "agreementEvent": "Sopimustapahtuma",
-        "signatureStatus": "Signatuuritila",
-        "dataSourceSignature": "Tietolähteen allekirjoitus",
-        "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
-        "lastModified": "Viimeksi muokattu",
-        "lastModifiedDate": "Viimeksi muokattu päivämäärä"
-      },
-      "noData": "Ei allekirjoitettuja sopimuksia",
-      "tooltips": {
-        "viewJson": "View Signed Agreement Record"
-      }
-    },
-    "tooltipView": "Näytä allekirjoitettu sopimus",
-    "viewModal": {
-      "title": "Näytä allekirjoitettu sopimus"
-    },
-    "jsonViewer": {
-      "title": "View Signed Agreement Record"
-    },
-    "signatures": {
-      "dataSource": "Tietolähde",
-      "dataUsingService": "Tietoja käyttävä palvelu",
-      "dataSourceSignature": "Tietolähteen allekirjoitus",
-      "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
-      "mutuallySigned": "Molemmin puolin allekirjoitettu",
-      "dataSourceSigned": "Tietolähde allekirjoitettu",
-      "dataUsingServiceSigned": "Tietoja käyttävä palvelu allekirjoitettu",
-      "dataUsingServiceUnsigned": "Tietoja käyttävä palvelu allekirjoittamaton"
-    }
+    "businessWallet": "Yrityslompakko"
   },
   "gettingStarted": {
     "public": "Julkinen",
     "sector": "Sektori",
     "overView": "Yleiskatsaus",
     "organisationName": "Organisaation nimi",
-    "addCredential": "Lisää tunnistetiedot",
-    "viewCredential": "Näytä tunnistetiedot",
+    "addCredential": "Lisää valtuustieto",
+    "viewCredential": "Katso valtuustieto",
     "edit": "Muokkaa",
-    "policyUrl": "Käytäntö URL",
-    "verification": {
-      "confirm": {
-        "title": "Vahvista varmennus",
-        "description": "Tarkista ja vahvista varmennustietosi",
-        "verifying": "Vahvistetaan tietojasi...",
-        "success": "Varmennus onnistui!",
-        "error": "Varmennus epäonnistui. Yritä uudelleen.",
-        "templateError": "Varmennuspohjaa ei löytynyt",
-        "errorDescription": "Kohtasimme ongelman varmennustietojesi käsittelyssä. Tarkista seuraavat asiat:",
-        "checkConnection": "Tarkista internetyhteytesi",
-        "tryAgain": "Yritä uudelleen hetken kuluttua",
-        "contactSupport": "Ota yhteyttä tukeen, jos ongelma jatkuu",
-        "retry": "Yritä uudelleen",
-        "back": "Takaisin",
-        "issued": "Myönnetty",
-        "expiry": "Voimassa",
-        "status": "Tila",
-        "verificationId": "Varmennuksen tunniste"
-      },
-      "connect": {
-        "title": "Yhdistä lompakkosi",
-        "description": "Valitse vahvistustapa jatkaaksesi",
-        "selectWallet": "Valitse yhdistettävä lompakko",
-        "walletTitle": "Lompakon yhdistäminen",
-        "cloudWallet": "Pilvilompakko",
-        "mobileWallet": "Mobiililompakko",
-        "walletDescription": "Anna lyhyt perustelu lompakkosi yhdistämiselle:",
-        "justificationPlaceholder": "Kirjoita perustelusi tähän...",
-        "connectWallet": "Yhdistä lompakko"
-      }
-    },
+    "policyUrl": "Käytäntö-URL",
     "location": "Sijainti",
-    "descriptionPlaceholder": "Organisaation kuvaus, enintään 500 merkkiä",
-    "prepareDA": "Valmistele tietojen luovutussopimukset",
-    "manageDDA": "Hallitse tietojen luovutussopimuksia",
+    "descriptionPlaceholder": "Organisaation kuvaus (enintään 500 merkkiä)",
+    "prepareDA": "Hallitse listausta",
+    "manageDDA": "Hallitse luovutussopimuksia",
     "manageAccount": "Hallitse tiliä",
-    "manageAdminUser": "Hallitse ylläpitäjäkäyttäjää",
+    "manageAdminUser": "Hallitse ylläpitäjää",
     "developerDocumentation": "Kehittäjädokumentaatio",
-    "connectWalletTitle": "LISÄÄ TUNNISTETIEDOT",
-    "connect": "YHDISTÄ",
-    "choose": "VALITSE",
-    "confirm": "VAHVISTA",
-    "connectDescription" : "Yrityksesi on tällä hetkellä vahvistamaton. Vahvista yrityksesi lisäämällä tunnistetiedot hyväksyttyjen myöntäjien luettelosta. Valitse myöntäjät ja jatka.",
+    "connectWalletTitle": "Lisää valtuustieto - ",
+    "connect": "Yhdistä",
+    "choose": "Valitse",
+    "confirm": "Vahvista",
+    "connectDescription": "Yrityksesi on vahvistamaton. Yhdistä yrityslompakkoosi ja napsauta seuraava.",
     "country": "Maa",
     "trustedIssuers": "Luotetut myöntäjät",
-    "walletTitle": "Valitse lompakkosi lähde ja jaa",
+    "walletTitle": "Yhdistä yrityslompakkoosi",
     "cloudWallet": "Pilvilompakko",
     "mobileWallet": "Mobiililompakko",
-    "walletDescription": "Liitä yhteyskutsu ja jaa yritystunnistetietosi",
-    "chooseDescription": "Yrityksesi on tällä hetkellä vahvistamaton. Lisää tunnistetiedot yhdistetystä lompakosta vahvistaaksesi yrityksesi.",
-    "chooseWalletTitle": "YHDISTETTY LOMPAKKO: BYGG AB, SUOMI",
+    "walletDescription": "Liitä yhdistetty URL",
+    "chooseDescription": "Yrityksesi on vahvistamaton. Lisää valtuustieto yhdistetystä lompakosta vahvistaaksesi.",
+    "chooseWalletTitle": "YHDISTETTY LOMPAKKO: ",
     "chooseWalletTwo": "North Health Innovation AB",
-    "chooseWalletThree": "Myöntäjä: Kaupparekisteri, Suomi",
-    "confirmWalletDescription": "Yrityksesi on tällä hetkellä vahvistamaton. Valitse vahvista vahvistaaksesi yrityksesi.",
+    "chooseWalletThree": "Myöntäjä:",
+    "confirmWalletDescription": "Yrityksesi on vahvistamaton. Valitse vahvista vahvistaaksesi yrityksesi.",
     "industry": "Toimiala",
-    "tooltipDeleteCredentials": "Poista tunnistetiedot",
+    "tooltipDeleteCredentials": "Poista valtuustiedot",
     "deleteCredentialsModal": {
-      "title": "Poista tunnistetiedot",
-      "description": "Olet poistamassa olemassa olevia organisaatiosi tunnistetietoja. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
+      "title": "Poista valtuustiedot",
+      "description": "Olet poistamassa olemassa olevia organisaation valtuustietoja. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi peruuttaa.",
       "confirmButton": "Poista",
       "confirmText": "DELETE"
-    }
+    },
+    "bannerAlt": "Banneri"
   },
-  "verification": {
-    "connect": {
-      "title": "Yhdistä lompakkosi",
-      "description": "Valitse vahvistustapa jatkaaksesi",
-      "selectWallet": "Valitse yhdistettävä lompakko",
-      "walletTitle": "Lompakon yhdistäminen",
-      "cloudWallet": "Pilvilompakko",
-      "mobileWallet": "Mobiililompakko",
-      "walletDescription": "Anna lyhyt perustelu lompakkosi yhdistämiselle:",
-      "justificationPlaceholder": "Kirjoita perustelusi tähän...",
-      "connectWallet": "Yhdistä lompakko"
-    },
-    "choose": {
-      "title": "Valitse varmennustapa",
-      "description": "Valitse, miten haluat vahvistaa tunnistetietosi",
-      "walletTitle": "Lompakko",
-      "selectTemplate": "Valitse varmennusmalli",
-      "walletInfo": "Yhdistetyn lompakon tiedot",
-      "issuedBy": "Myöntäjä:",
-      "issuer": "Myöntäjä"
-    },
-    "confirm": {
-      "title": "Vahvista varmennus",
-      "description": "Tarkista ja vahvista varmennustietosi",
-      "verifying": "Vahvistetaan tietojasi...",
-      "success": "Varmennus onnistui!",
-      "error": "Varmennus epäonnistui. Yritä uudelleen.",
-      "templateError": "Varmennuspohjaa ei löytynyt",
-      "errorDescription": "Kohtasimme ongelman varmennustietojesi käsittelyssä. Tarkista seuraavat asiat:",
-      "checkConnection": "Tarkista internetyhteytesi",
-      "tryAgain": "Yritä uudelleen hetken kuluttua",
-      "contactSupport": "Ota yhteyttä tukeen, jos ongelma jatkuu",
-      "retry": "Yritä uudelleen",
-      "back": "Takaisin",
-      "issued": "Myönnetty",
-      "expiry": "Voimassa",
-      "status": "Tila",
-      "verificationId": "Varmennuksen tunniste"
-    },
-    "status": {
-      "pending": "Varmennus käynnissä...",
-      "success": "Varmennus onnistui!",
-      "error": "Varmennus epäonnistui"
-    }
+  "tagEditor": {
+    "title": "Tunnisteet",
+    "editTagsTitle": "Muokkaa tunnisteita: {purpose}",
+    "placeholder": "Lisää tunniste...",
+    "maxTags": "Enintään {maxTags} tunnistetta"
+  },
+  "apiDocs": {
+    "servers": "Palvelimet",
+    "schemas": "Skeemat"
   },
   "common": {
-    "orgDashboardTitle": "Kirjaudu CRANE dHDSI datamarkkinapaikalle",
+    "orgDashboardTitle": "Kirjaudu sisään CRANE dHDSI Data Marketplaceen",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
-    "untrustedServiceProvider": "Luottamaton palveluntarjoaja",
+    "untrustedServiceProvider": "Ei-luotettu palveluntarjoaja",
     "continue": "Jatka",
-    "certificateOfRegistration": "REKISTERÖINTITODISTUS",
+    "back": "Takaisin",
+    "next": "Seuraava",
+    "cancel": "Peruuta",
+    "submit": "Lähetä",
+    "save": "Tallenna",
+    "add": "Lisää",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "close": "Sulje",
+    "confirm": "Vahvista",
+    "retry": "Yritä uudelleen",
+    "loading": "Ladataan...",
+    "error": "Tapahtui virhe",
+    "success": "Onnistui",
+    "certificateOfRegistration": "Rekisteröintitodistus",
+    "notAvailable": "Ei saatavilla",
     "language": "Kieli",
     "poweredby": "Palvelun tarjoaa",
     "home": "Koti",
-    "edit": "Muokkaa",
     "overView": "Yleiskatsaus",
     "usagePurpose": "Käyttötarkoitus",
     "dataset": "Tietojoukko",
-    "policyUrl": "Käytäntö URL",
-    "cancel": "Peruuta",
-    "submit": "Lähetä",
-    "back": "Takaisin",
-    "retry": "Yritä uudelleen",
-    "loading": "Ladataan...",
-    "success": "Onnistui",
-    "confirm": "Vahvista",
-    "next": "Seuraava",
-    "save": "Tallenna",
-    "add": "Lisää",
+    "policyUrl": "Käytäntö-URL",
     "all": "Kaikki",
     "noResultsFound": "Ei tuloksia",
     "noData": "Ei yhteyksiä näytettäväksi",
@@ -355,19 +304,16 @@
     "false": "Epätosi",
     "yes": "Kyllä",
     "no": "Ei",
-    "delete": "POISTA",
-    "close": "SULJE",
-    "viewAll": "Näytä kaikki",
+    "viewAll": "Katso kaikki",
     "timestamp": "Aikaleima",
     "modifiedAt": "Muokattu",
     "status": "Tila",
     "name": "Nimi",
-    "businessWallet": "business-wallet",
-    "businessWalletLabel": "Yrityslompakon nimi",
-    "connectedOn": "Yhdistetty",
-    "connectionId": "Yhteystunnus",
-    "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus",
-    "generic": "Jokin meni pieleen.",
+    "manageAdmin": "hallitse-admin",
+    "developerApis": "kehittäjä-apit",
+    "disp-connections": "disp-yhteydet",
+    "businessWallet": "yrityslompakko",
+    "generic": "Jotain meni pieleen.",
     "errorOccurred": "Tapahtui virhe.",
     "tryAgainLater": "Yritä myöhemmin uudelleen.",
     "pleaseWait": "Odota hetki...",
@@ -375,263 +321,332 @@
     "copied": "Kopioitu",
     "typeToConfirm": "Kirjoita \"{text}\" vahvistaaksesi",
     "comingSoon": "Tulossa pian",
-    "noDataSelected": "Ei tietoja valittu",
-    "optInAction": "Hyväksy",
+    "noDataSelected": "Ei tietoja valittuna",
+    "optInAction": "Osallistu",
     "optOutAction": "Kieltäydy",
     "signAndContinue": "Allekirjoita ja jatka",
-    "unableToDisplayPdf": "Toimintaohjeiden asiakirjaa ei voi näyttää.",
-    "openInNewTab": "Avaa uuteen välilehteen",
-    "invalidUrl": "Anna kelvollinen URL-osoite",
-    "rowsPerPage": "Rivejä sivulla:",
-    "of": "kaikkiaan",
+    "unableToDisplayPdf": "Käytännesääntöjen PDF-asiakirjaa ei voida näyttää.",
+    "openInNewTab": "Avaa uudessa välilehdessä",
+    "invalidUrl": "Anna kelvollinen URL",
+    "rowsPerPage": "Riviä sivulla:",
+    "of": "/",
     "signAction": "Allekirjoitettu",
-    "unsignAction": "Allekirjoittamaton"
+    "unsignAction": "Allekirjoittamaton",
+    "imageAlt": "Kuva",
+    "itemsPerPage": "Kohdetta sivulla"
+  },
+  "languages": {
+    "en": "Englanti",
+    "sv": "Ruotsi",
+    "fi": "Suomi",
+    "es": "Espanja",
+    "no": "Norja"
   },
   "errors": {
-    "generic": "Jokin meni pieleen."
+    "generic": "Jotain meni pieleen.",
+    "imageUpdate": "Virhe kuvan päivityksessä. Yritä uudelleen.",
+    "imageRead": "Virhe kuvan lukemisessa",
+    "imageProcess": "Virhe rajatun kuvan käsittelyssä"
+  },
+  "verification": {
+    "connect": {
+      "title": "Yhdistä lompakkosi",
+      "description": "Valitse vahvistustapa jatkaaksesi",
+      "selectWallet": "Valitse yhdistettävä lompakko",
+      "walletTitle": "Lompakkoyhteys",
+      "cloudWallet": "Pilvilompakko",
+      "mobileWallet": "Mobiililompakko",
+      "walletDescription": "Anna lyhyt perustelu lompakon yhdistämiselle:",
+      "justificationPlaceholder": "Kirjoita perustelu tähän...",
+      "connectWallet": "Yhdistä lompakko"
+    },
+    "choose": {
+      "title": "Valitse vahvistustapa",
+      "description": "Valitse, miten haluat vahvistaa tietosi",
+      "walletTitle": "Lompakko",
+      "selectTemplate": "Valitse vahvistusmalli",
+      "walletInfo": "Yhdistetyn lompakon tiedot",
+      "issuedBy": "Myöntäjä:",
+      "issuer": "Myöntäjä"
+    },
+    "confirm": {
+      "title": "Vahvista vahvistus",
+      "description": "Tarkista ja vahvista vahvistustietosi",
+      "verifying": "Vahvistetaan tietojasi...",
+      "success": "Vahvistus onnistui!",
+      "error": "Vahvistus epäonnistui. Yritä uudelleen.",
+      "templateError": "Vahvistusmallia ei löytynyt",
+      "errorDescription": "Kohtasimme ongelman vahvistuksen käsittelyssä. Tarkista seuraavat:",
+      "checkConnection": "Tarkista internetyhteytesi",
+      "tryAgain": "Yritä hetken kuluttua uudelleen",
+      "contactSupport": "Ota yhteys tukeen, jos ongelma jatkuu",
+      "retry": "Yritä uudelleen",
+      "back": "Takaisin",
+      "issued": "Myönnetty",
+      "expiry": "Vanhenee",
+      "status": "Tila",
+      "verificationId": "Vahvistustunnus"
+    },
+    "status": {
+      "pending": "Vahvistus käynnissä...",
+      "success": "Vahvistus onnistui!",
+      "error": "Vahvistus epäonnistui"
+    }
   },
   "dataAgreements": {
-    "title": "Markkinapaikkailmoitukset",
-    "subtitle": "Hallitse markkinapaikkailmoituksia käyttämällä organisaatiosi tietojen luovutussopimuksia (DDA).",
+    "title": "Markkinapaikan listaus",
+    "subtitle": "Hallitse organisaatiosi markkinapaikan listausta tietojen luovutussopimuksilla (DDA).",
     "addButton": "Lisää uusi DDA",
     "saveButton": "Tallenna muutokset",
-    "noListingsAvailable": "Ei listauksia saatavilla. Lisää uusi listaus painamalla +",
-    "signWithBusinessWallet": "Allekirjoita yrityslompakolla",
-    "unsignWithBusinessWallet": "Peruuta allekirjoitus yrityslompakolla",
-    "loginToSignWithBusinessWallet": "Kirjaudu sisään allekirjoittaaksesi yrityslompakolla",
-    "loginToUnsignWithBusinessWallet": "Kirjaudu sisään peruuttaaksesi allekirjoituksen yrityslompakolla",
-    "signWithBusinessWalletInitiateError": "Yrityslompakon allekirjoituspyynnön käynnistäminen epäonnistui",
-    "dataDisclosureAgreementPolicy": "Tietojen luovutussopimuksen käytäntö",
+    "noListingsAvailable": "Ei listauksia saatavilla. Napsauta + lisätäksesi",
+    "dataDisclosureAgreementPolicy": "Tietojen luovutussopimuskäytäntö",
     "policy": {
       "lawfulBasis": "Käsittelyn oikeusperuste",
-      "dataRetentionPeriod": "Tietojen säilytysaika",
-      "policyUrl": "Käytäntö URL",
-      "jurisdiction": "Toimivalta",
+      "dataRetentionPeriod": "Datan säilytysaika (vuosia)",
+      "policyUrl": "Käytäntö-URL",
+      "jurisdiction": "Lainkäyttöalue",
       "industrySector": "Toimiala",
       "geographicRestriction": "Maantieteellinen rajoitus",
       "storageLocation": "Säilytyspaikka",
-      "agreementPeriodYears": "Sopimuskausi (vuotta)",
+      "agreementPeriodYears": "Sopimuskausi (vuosia)",
       "dataControllerTitle": "Rekisterinpitäjä",
       "dataSharingRestrictionsTitle": "Tietojen jakamisen rajoitukset"
     },
-    "dataAgreementPolicy": "Dataavtal Policy",
     "deleteModal": {
       "title": "Poista tietosopimus",
-      "description": "Olet poistamassa olemassa olevaa tietosopimusta. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
+      "description": "Olet poistamassa olemassa olevan tietojen luovutussopimuksen. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi peruuttaa.",
       "confirmButton": "Poista",
       "confirmText": "DELETE"
     },
+    "signWithBusinessWallet": "Allekirjoita yrityslompakolla",
+    "unsignWithBusinessWallet": "Poista allekirjoitus lompakolla",
+    "loginToSignWithBusinessWallet": "Kirjaudu allekirjoittaaksesi yrityslompakolla",
+    "loginToUnsignWithBusinessWallet": "Kirjaudu poistaaksesi allekirjoituksen",
+    "signWithBusinessWalletInitiateError": "Allekirjoituspyynnön aloittaminen yrityslompakolla epäonnistui",
     "publishModal": {
-      "title": "Julkaise markkinapaikalla",
+      "title": "Julkaise markkinapaikalle",
       "confirmButton": "Julkaise"
     },
     "viewModal": {
-      "title": "Näytä tietojen luovutussopimus",
-      "publicTitle": "Näytä ja allekirjoita tietosopimus"
+      "title": "Katso tietojen luovutussopimus",
+      "publicTitle": "Katso ja allekirjoita sopimus"
     },
-    "openApiSpecification": {
-      "title": "Open API -määrittely"
-    },
+    "dataAgreementPolicy": "Tietosopimuskäytäntö",
     "all": "Kaikki",
-    "list": "Listatut",
-    "underReview": "Arvioitavana",
-    "selectStatusAction": "Valitse toimenpide ...",
-    "statusActionLabel": "Toimenpide",
+    "list": "Listattu",
+    "underReview": "Tarkistettavana",
+    "selectStatusAction": "Valitse tilatoiminto...",
+    "statusActionLabel": "Tilatoiminto",
     "statuses": {
       "unlisted": "Listaamaton",
-      "inReview": "Arvioitavana",
+      "inReview": "Tarkistuksessa",
       "approved": "Hyväksytty",
       "rejected": "Hylätty",
       "listed": "Listattu"
     },
     "actions": {
-      "unlist": "Poista listauksesta",
-      "requestReview": "Pyydä arviointia",
+      "unlist": "Poista listaus",
+      "requestReview": "Pyydä tarkistusta",
       "list": "Listaa"
     },
     "tooltipPublished": "Tietojen luovutussopimus on julkaistu",
-    "tooltipView": "Näytä tietojen luovutussopimus",
+    "tooltipView": "Katso tietojen luovutussopimus",
     "tooltipEdit": "Muokkaa tietojen luovutussopimusta",
     "tooltipDelete": "Poista tietojen luovutussopimus",
     "tooltipAddNew": "Lisää uusi tietojen luovutussopimus",
     "tooltipDownload": "Lataa tietojen luovutussopimus",
+    "pageDescription": "Hallitse organisaatiosi listausta tietojen luovutussopimuksilla (DDA).",
+    "usagePurpose": "Käyttötarkoitus",
+    "version": "Versio",
+    "dataExchange": "Tiedonvaihto",
+    "lawfulBasisOfProcessing": "Käsittelyn oikeusperuste",
+    "usagePurposePlaceholder": "Esim. Markkinointi ja kampanja (väh. 3 merkkiä)",
+    "none": "Ei mitään",
+    "dataSource": "Tietolähde",
+    "dataUsingService": "Dataa käyttävä palvelu",
+    "descritptionInputPlaceholder": "Lyhyt kuvaus tietojen käytöstä (3–500 merkkiä)",
+    "connectedData": "Yhdistetty tietojen luovutussopimus",
+    "legalID": "Rekisterinpitäjän juridinen tunnus",
+    "table": {
+      "headers": {
+        "templateId": "DDA-mallin tunnus",
+        "id": "Tunnus",
+        "usagePurpose": "Käyttötarkoitus",
+        "version": "Versio",
+        "status": "Tila",
+        "lawfulBasis": "Käsittelyn oikeusperuste",
+        "lastModified": "Muokattu viimeksi",
+        "lastModifiedDate": "Muokkauspäivämäärä"
+      },
+      "tooltips": {
+        "listToMarketplace": "Listaa tietotorille",
+        "viewHistory": "Katso tietojen luovutussopimushistoria",
+        "editTags": "Muokkaa tunnisteita"
+      },
+      "noData": "Ei tietoja näytettäväksi"
+    },
+    "errors": {
+      "statusUpdateFailed": "Tilan päivitys epäonnistui"
+    },
     "history": {
-      "title": "Tietojen luovutussopimuksen historia",
-      "subtitle": "Tarkastele tietojen luovutussopimuksen historiaa",
+      "title": "Tietojen luovutussopimushistoria",
+      "subtitle": "Katso tietojen luovutussopimuksen historia",
       "agreementLabel": "Sopimus",
       "table": {
         "headers": {
-          "id": "Tunniste",
+          "ddaRecordId": "DDA-tietueen tunnus",
+          "id": "Tunnus",
           "revision": "Revisio",
           "usagePurpose": "Käyttötarkoitus",
           "version": "Versio",
           "agreementEvent": "Sopimustapahtuma",
           "dataSourceSignature": "Tietolähteen allekirjoitus",
-          "dataUsingServiceSignature": "Tietoja käyttävän palvelun allekirjoitus",
-          "signatureStatus": "Allekirjoitusstatus",
-          "lastModified": "Viimeksi muokattu",
+          "dataUsingServiceSignature": "Datan käyttäjän allekirjoitus",
+          "signatureStatus": "Allekirjoituksen tila",
+          "lastModified": "Muokattu viimeksi",
+          "lastModifiedDate": "Muokkauspäivämäärä",
           "actions": "Toiminnot",
           "status": "Tila",
           "isLatest": "On uusin",
           "timestamp": "Aikaleima",
-          "revisionId": "Revision ID",
-          "revisionHash": "Revision tiiviste"
+          "revisionId": "Revisiotunnus",
+          "revisionHash": "Revisiohash"
         },
-        "noData": "Ei historiatietoja näytettävänä"
+        "noData": "Ei historiamerkintöjä näytettäväksi"
+      },
+      "events": {
+        "optIn": "Osallistuminen",
+        "optOut": "Kieltäytyminen"
       },
       "signatures": {
-        "mutuallySigned": "Molemmin puolin allekirjoitettu",
-        "dataSourceSigned": "Tietolähde allekirjoitettu",
-        "dataUsingServiceSigned": "Tietoja käyttävä palvelu allekirjoitettu",
-        "dataUsingServiceUnsigned": "Tietoja käyttävä palvelu allekirjoittamaton"
+        "mutuallySigned": "Molemminpuolisesti allekirjoitettu",
+        "dataSourceSigned": "Tietolähteen allekirjoittama",
+        "dataUsingServiceSigned": "Datan käyttäjän allekirjoittama",
+        "dataUsingServiceUnsigned": "Datan käyttäjän allekirjoittamaton"
       }
     },
-    "pageDescription": "Hallitse organisaatiosi tietojen luovutussopimuksia (DDA).",
-    "usagePurpose": "Käyttötarkoitus",
-    "version": "Versio",
-    "dataExchange": "Tietojen vaihto",
-    "lawfulBasisOfProcessing": "Käsittelyn oikeusperuste",
-    "usagePurposePlaceholder": "Esim. Markkinointi ja kampanja (vähintään 3 merkkiä)",
-    "none": "Ei mitään",
-    "dataSource": "Tietolähde",
-    "dataUsingService": "Tietoja käyttävä palvelu",
-    "descritptionInputPlaceholder": "Lyhyt kuvaus tietojen käytöstä (3-500 merkkiä)",
-    "connectedData": "Yhdistetty tietojen luovutussopimus",
-    "legalID": "Tietosuojavastaavan rekisteröintitunnus",
-    "table": {
-      "headers": {
-        "id": "Tunniste",
-        "usagePurpose": "Käyttötarkoitus",
-        "version": "Versio",
-        "status": "Tila",
-        "lawfulBasis": "Tietojen käsittelyn oikeusperuste",
-        "lastModified": "Viimeksi muokattu"
-      },
-      "tooltips": {
-        "listToMarketplace": "Listaa datamarkkinapaikalle",
-        "viewHistory": "Näytä tietojen luovutussopimuksen historia"
-      },
-      "noData": "Ei näytettäviä tietoja"
+    "openApiSpecification": {
+      "title": "Open API -määrittely"
     }
   },
   "manageAdmin": {
-    "adminUser": "Ylläpitäjäkäyttäjä",
-    "pageDescription": "Hallitse ylläpitäjäkäyttäjän asetuksia.",
+    "adminUser": "Ylläpitäjä",
+    "pageDescription": "Hallitse ylläpitäjän asetuksia.",
     "userSettings": "Käyttäjäasetukset",
     "email": "Sähköposti",
-    "userCredentials": "Käyttäjätiedot",
+    "userCredentials": "Käyttäjätunnukset",
     "currentPassword": "Nykyinen salasana",
-    "enterCurrentPassword": "Syötä nykyinen salasana",
+    "enterCurrentPassword": "Anna nykyinen salasana",
     "newPassword": "Uusi salasana",
-    "enterNewPassword": "Syötä uusi salasana",
+    "enterNewPassword": "Anna uusi salasana",
     "confirmNewPassword": "Vahvista uusi salasana",
     "changePassword": "Vaihda salasana",
-    "samePassword": "Uuden salasanan ja vahvistetun salasanan tulee olla samat",
+    "samePassword": "Uuden salasanan ja vahvistuksen on oltava samat",
     "passwordChanged": "Salasana vaihdettu",
-    "error": "Jokin meni pieleen, yritä uudelleen kelvollisella salasanalla"
+    "error": "Jotain meni pieleen, yritä uudelleen kelvollisella salasanalla"
   },
   "developerAPIs": {
     "copy": "KOPIOI",
-    "apiKeyCopyMessage": "Tässä on uusi avaimesi. Kopioi se nyt! Tämä on ainoa kerta, kun näytämme sen sinulle.",
-    "headerText": "Kehittäjä-API:t ja tiedot",
-    "pageDescription": "Kaikki API-pyynnöt vaativat todennuksen alla olevilla tiedoilla",
+    "apiKeyCopyMessage": "Tässä on uusi avaimesi. Kopioi se nyt! Emme näytä sitä enää toiste.",
+    "headerText": "Kehittäjä-API:t ja tunnukset",
+    "pageDescription": "Kaikki API-pyynnöt vaativat todennuksen alla olevilla tunnuksilla",
     "organisationID": "Organisaation tunnus",
     "yourUserID": "Käyttäjätunnuksesi",
     "configuredBaseURL": "Määritetty perus-URL",
     "apiKey": "API-avain",
-    "noTokenAvailable": "Ei tunnusta saatavilla",
+    "noTokenAvailable": "Ei tokenia saatavilla",
     "createConnection": "Luo yhteys",
     "scope": "Laajuus",
     "scopes": "Laajuudet",
-    "expiry": "Voimassaolo",
+    "expiry": "Vanheneminen",
     "deleteAPIKey": "Poista API-avain",
-    "keyNamePlaceholder": "Syötä API-avaimen nimi...",
-    "expiryDate": "Voimassaolo päivinä",
-    "expiryDatePlaceholder": "Syötä voimassaoloaika päivinä...",
+    "keyNamePlaceholder": "Kirjoita API-avaimen nimi...",
+    "expiryDate": "Vanhenee (päivissä)",
+    "expiryDatePlaceholder": "Kirjoita vanhenemisaika päivinä...",
     "allScopes": "Kaikki laajuudet",
     "selectedScopes": "Valitut laajuudet",
     "deleteDescription1": "Olet poistamassa olemassa olevaa API-avainta. Kirjoita ",
-    "deleteDescription2": " vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
+    "deleteDescription2": " vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi peruuttaa.",
     "tooltipDelete": "Poista yhteys",
     "apiKeyCopied": "API-avain kopioitu leikepöydälle",
-    "openApiUpdated": "OpenAPI-määrittelyn URL-osoite päivitetty onnistuneesti",
-    "openApiUpdateFailed": "OpenAPI-määrittelyn URL-osoitteen päivitys epäonnistui",
-    "configureOpenApi": "Määritä OpenAPI-määrittely",
-    "openApiUrlLabel": "OpenAPI-määrittelyn URL-osoite",
+    "openApiUpdated": "OpenAPI-määrittelyn URL päivitetty onnistuneesti",
+    "openApiUpdateFailed": "OpenAPI-määrittelyn URL:n päivitys epäonnistui",
+    "configureOpenApi": "Määritä OpenAPI-spesifikaatio",
+    "openApiUrlLabel": "OpenAPI-määrittelyn URL",
     "holderBaseUrlLabel": "Yrityslompakon osoite",
-    "openApiUrlPlaceholder": "Syötä OpenAPI-URL",
-    "credentialOfferEndpointLabel": "Credential Offer -päätepiste",
-    "credentialOfferEndpointPlaceholder": "Syötä Credential Offer -päätepisteen URL",
+    "openApiUrlPlaceholder": "Anna OpenAPI URL",
+    "credentialOfferEndpointLabel": "Valtuustarjouksen päätepiste",
+    "credentialOfferEndpointPlaceholder": "Anna valtuustarjouksen päätepisteen URL",
     "accessPointEndpointLabel": "Access Point -päätepiste",
-    "accessPointEndpointPlaceholder": "Syötä Access Point -päätepisteen URL",
+    "accessPointEndpointPlaceholder": "Anna Access Point -päätepisteen URL",
     "uploadButton": "Lataa",
-    "oauth2ClientTitle": "OAuth 2.0 asiakas",
+    "oauth2ClientTitle": "OAuth 2.0 -asiakas",
     "oauth2Title": "OAuth 2.0 -asiakas",
-    "dataSpaceOauth2Title": "Data Marketplace OAuth 2.0 -asiakas",
+    "dataSpaceOauth2Title": "Tietotorin OAuth 2.0 -asiakas",
     "oauth2ClientNameLabel": "Nimi",
-    "oauth2ClientNamePlaceholder": "OAuth 2.0 asiakkaan nimi",
+    "oauth2ClientNamePlaceholder": "Nimi OAuth 2.0 -asiakkaalle",
     "oauth2ClientDescriptionLabel": "Kuvaus",
-    "oauth2ClientDescriptionPlaceholder": "Lyhyt kuvaus OAuth 2.0 asiakkaalle (valinnainen)",
+    "oauth2ClientDescriptionPlaceholder": "Lyhyt kuvaus (valinnainen)",
     "createOAuth2Client": "Luo",
     "clientNameLabel": "Asiakkaan nimi",
     "clientDescriptionLabel": "Asiakkaan kuvaus",
-    "clientIdLabel": "Client ID",
-    "clientSecretLabel": "Client Secret",
+    "clientIdLabel": "Asiakastunnus",
+    "clientSecretLabel": "Asiakassalaisuus",
     "organisationWalletTitle": "Organisaation lompakko",
     "owsBaseUrlLabel": "Yrityslompakon osoite",
-    "owsBaseUrlPlaceholder": "Syötä yrityslompakon osoite",
+    "owsBaseUrlPlaceholder": "Anna yrityslompakon osoite",
     "saveButton": "Tallenna",
-    "owsBaseUrlUpdateFailed": "Yrityslompakon osoitteen päivitys epäonnistui",
-    "walletConfigurationTitle": "Organisaation lompakon konfigurointi",
+    "owsBaseUrlUpdateFailed": "Organisaation lompakon perus-URL:n päivitys epäonnistui",
+    "walletConfigurationTitle": "Organisaation lompakon määritys",
     "configuredLabel": "Määritetty",
     "configureButton": "Määritä",
-    "oauth2ClientConfigTitle": "Data Marketplace OAuth 2.0 asiakkaan konfigurointi",
-    "orgOauth2Title": "Organisaation OAuth 2.0 asiakas",
-    "orgOauth2ClientConfigTitle": "Organisaation OAuth 2.0 asiakkaan konfigurointi",
+    "oauth2ClientConfigTitle": "Tietotorin OAuth 2.0 -asiakkaan määritys",
+    "orgOauth2Title": "Organisaation OAuth 2.0 -asiakas",
+    "orgOauth2ClientConfigTitle": "Organisaation OAuth 2.0 -asiakkaan määritys",
     "orgOauth2ClientNameLabel": "Nimi",
-    "orgOauth2ClientNamePlaceholder": "Nimi organisaation OAuth 2.0 asiakkaalle",
-    "orgOauth2ClientIdLabel": "Client ID",
-    "orgOauth2ClientIdPlaceholder": "Syötä Client ID",
-    "orgOauth2ClientSecretLabel": "Client Secret",
-    "orgOauth2ClientSecretPlaceholder": "Syötä Client Secret",
+    "orgOauth2ClientNamePlaceholder": "Nimi organisaation OAuth 2.0 -asiakkaalle",
+    "orgOauth2ClientIdLabel": "Asiakastunnus",
+    "orgOauth2ClientIdPlaceholder": "Anna asiakastunnus",
+    "orgOauth2ClientSecretLabel": "Asiakassalaisuus",
+    "orgOauth2ClientSecretPlaceholder": "Anna asiakassalaisuus",
     "createOrganisationOAuth2Client": "Luo",
-    "orgClientNameRequired": "Asiakkaan nimi on pakollinen",
-    "orgClientIdRequired": "Client ID on pakollinen",
-    "orgClientSecretRequired": "Client Secret on pakollinen",
-    "requestCredential": "Pyydä tunnistetietoa",
+    "orgClientNameRequired": "Asiakkaan nimi vaaditaan",
+    "orgClientIdRequired": "Asiakastunnus vaaditaan",
+    "orgClientSecretRequired": "Asiakassalaisuus vaaditaan",
+    "requestCredential": "Pyydä valtuustieto",
     "orgOauth2DeleteConfirm": "Haluatko varmasti poistaa organisaation OAuth2-asiakkaan?",
     "orgOauth2ClientDescriptionLabel": "Kuvaus",
     "orgOauth2ClientDescriptionPlaceholder": "Valinnainen kuvaus",
     "orgOauth2DeleteModal": {
       "title": "Poista organisaation OAuth 2.0 -asiakas",
-      "description": "Olet poistamassa olemassa olevan organisaation OAuth 2.0 -asiakkaan. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
+      "description": "Olet poistamassa olemassa olevaa organisaation OAuth 2.0 -asiakasta. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi peruuttaa.",
       "confirmText": "DELETE",
       "confirmButton": "Poista"
     },
-    "deploymentStatusLabel": "Käyttöönottotila:",
-    "notConfiguredLabel": "Ei konfiguroitu",
-    "owsBaseUrlRequired": "Yrityslompakon osoite on pakollinen",
-    "credentialOfferEndpointRequired": "Credential Offer -päätepiste on pakollinen",
-    "accessPointEndpointRequired": "Access Point -päätepiste on pakollinen",
-    "clientNameRequired": "Asiakkaan nimi on pakollinen",
-    "softwareStatementTitle": "Ohjelmistolauseke",
-    "softwareStatementLabel": "Ohjelmistolauseke",
+    "deploymentStatusLabel": "Käyttöönoton tila:",
+    "notConfiguredLabel": "Ei määritetty",
+    "owsBaseUrlRequired": "Yrityslompakon osoite vaaditaan",
+    "credentialOfferEndpointRequired": "Valtuustarjouksen päätepiste vaaditaan",
+    "accessPointEndpointRequired": "Access Point -päätepiste vaaditaan",
+    "clientNameRequired": "Asiakkaan nimi vaaditaan",
+    "softwareStatementTitle": "Ohjelmistolausunto",
+    "softwareStatementLabel": "Ohjelmistolausunto",
     "softwareStatementRequest": "Pyydä",
     "softwareStatementView": "Näytä",
-    "softwareStatementRequestTooltip": "Pyydä uusi ohjelmistotodistus",
-    "softwareStatementViewTooltip": "Näytä ohjelmistotodistuksen tiedot",
-    "softwareStatementPrereqMissing": "Aseta ensin Credential Offer- ja Access Point -päätepisteet",
+    "softwareStatementRequestTooltip": "Pyydä uusi ohjelmistolausunto",
+    "softwareStatementViewTooltip": "Katso ohjelmistolausuntosi tiedot",
+    "softwareStatementPrereqMissing": "Määritä ensin valtuustarjouksen ja Access Pointin päätepisteet",
     "softwareStatementVctLabel": "VCT",
-    "acceptSoftwareStatementToast": "Hyväksy ohjelmistolauseke DISP-portaalissa",
+    "acceptSoftwareStatementToast": "Hyväksy ohjelmistolausuntosi DISP-portaalissa",
     "softwareStatementClientUriLabel": "client_uri",
     "softwareStatementCoverUrlLabel": "cover_url",
     "softwareStatementIndustrySectorLabel": "industry_sector",
     "softwareStatementLocationLabel": "location",
     "softwareStatementLogoUrlLabel": "logo_url",
     "softwareStatementNameLabel": "name",
-    "softwareStatementClientIdLabel": "Asiakas-ID",
-    "softwareStatementRedirectUriLabel": "Uudelleenohjauksen URI",
-    "softwareStatementExchangeIdLabel": "Vaihdo ID",
+    "softwareStatementClientIdLabel": "Asiakastunnus",
+    "softwareStatementRedirectUriLabel": "Uudelleenohjaus-URI",
+    "softwareStatementExchangeIdLabel": "Vaihtotunnus",
     "softwareStatementDidLabel": "DID",
     "softwareStatementCreatedAtLabel": "Luotu",
     "softwareStatementUpdatedAtLabel": "Päivitetty",
@@ -639,53 +654,69 @@
       "": "Ei pyydetty",
       "offer_sent": "Tarjous lähetetty",
       "offer_received": "Tarjous vastaanotettu",
-      "credential_accepted": "Tunniste hyväksytty"
+      "credential_accepted": "Valtuustieto hyväksytty"
     },
     "deleteSoftwareStatementModal": {
-      "title": "Poista ohjelmistolauseke",
-      "description": "Olet poistamassa olemassa olevan ohjelmistolausekkeen. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi kumota.",
+      "title": "Poista ohjelmistolausunto",
+      "description": "Olet poistamassa olemassa olevaa ohjelmistolausuntoa. Kirjoita DELETE vahvistaaksesi ja napsauta POISTA. Tätä toimintoa ei voi peruuttaa.",
       "confirmButton": "Poista",
       "confirmText": "DELETE"
     },
     "tooltips": {
-      "dataSpaceOauth2Title": "Määritä OAuth 2.0 -asiakas Datamarkkinapaikan yhdistämiseksi DISPiisi. Napsauta MÄÄRITÄ, anna asiakkaan nimi ja valinnainen kuvaus ja napsauta sitten LUO. Kopioi luodut Client ID ja Client Secret painikkeilla. Näitä arvoja käytetään DISP-portaalissa kohdassa Peruskonfiguraatiot (Perus-URL: https://demo-api.nxd.foundation/service).",
-      "orgOauth2Title": "Määritä OAuth 2.0 -asiakas DISPin yhdistämiseksi Datamarkkinapaikkaan. Napsauta MÄÄRITÄ luodaksesi uuden asiakkaan, anna nimi ja valinnainen kuvaus ja napsauta sitten LUO. Kopioi luodut Client ID ja Client Secret. Palaa Datamarkkinapaikkaan ja liitä nämä arvot kohtaan Organisaation OAuth 2.0 -asiakas kaksisuuntaisen viestinnän mahdollistamiseksi.",
-      "holderBaseUrl": "DISP-ympäristössä organisaatiosi lompakon yksilöivä URL-osoite. Datamarkkinapaikka käyttää tätä osoitetta lähettääkseen credential-tarjouksia ja vastaanottaakseen vastaukset turvallisesti.",
-      "credentialOfferEndpoint": "OpenID4VCI-päätepiste, johon organisaatiosi lompakko vastaanottaa credential-tarjoukset Datamarkkinapaikalta. Hanki tämä DISP-portaalista kohdasta Digital Wallet (OpenID4VC) → Base Configuration.",
-      "accessPointEndpoint": "API-päätepiste, joka tarjoaa organisaatiosi datavaihtorajapinnan Datamarkkinapaikalle. Hanki tämä DISP-portaalista kohdasta Data Marketplace → Base Configuration.",
-      "softwareStatement": "Digitaalisesti allekirjoitettu todiste, jonka Datamarkkinapaikka myöntää, kun molemmat päätepisteet on määritetty. Se todistaa, että yrityslompakkosi on valtuutettu ja luotettu viestimään Datamarkkinapaikan kanssa. Voit tarkastella ja hyväksyä tämän todistuksen DISP-portaalissa kohdassa Digital Wallet (OpenID4VC) → Wallet Unit (Holder)."
+      "dataSpaceOauth2Title": "Määritä OAuth 2.0 -asiakas yhdistämään Tietotori DISP-palveluusi. Napsauta MÄÄRITÄ, anna nimi ja kuvaus, napsauta LUO. Kopioi Asiakastunnus ja Asiakassalaisuus. Näitä käytetään DISP-portaalissa kohdassa Perusasetukset (Perus-URL: https://demo-api.nxd.foundation/service).",
+      "orgOauth2Title": "Määritä OAuth 2.0 -asiakas yhdistämään DISP Tietotoriin. Napsauta MÄÄRITÄ luodaksesi uuden asiakkaan, anna nimi ja kuvaus, napsauta LUO. Kopioi Asiakastunnus ja Asiakassalaisuus. Palaa Tietotorille ja liitä arvot kohtaan Organisaation OAuth 2.0 -asiakas.",
+      "holderBaseUrl": "Yksilöllinen URL, joka tunnistaa organisaatiosi lompakon DISP-ympäristössä. Tietotori käyttää tätä lähettääkseen valtuustarjouksia ja vastaanottaakseen vastauksia turvallisesti.",
+      "credentialOfferEndpoint": "OpenID4VCI-päätepiste, johon organisaatiosi lompakko vastaanottaa valtuustarjouksia Tietotorilta. Hae tämä DISP-portaalista kohdasta Digitaalinen lompakko (OpenID4VC) → Perusasetukset.",
+      "accessPointEndpoint": "API-päätepiste, joka avaa organisaatiosi tiedonvaihtorajapinnan Tietotorille. Hae tämä DISP-portaalista kohdasta Tietotori → Perusasetukset.",
+      "softwareStatement": "Digitaalisesti allekirjoitettu valtuustieto, jonka Tietotori myöntää, kun molemmat päätepisteet on määritetty. Se todistaa, että yrityslompakkosi on valtuutettu ja luotettu. Voit tarkistaa ja hyväksyä tämän DISP-portaalissa kohdasta Digitaalinen lompakko (OpenID4VC) → Lompakkoyksikkö (Holder)."
     }
   },
   "dispConnection": {
     "copy": "KOPIOI",
     "delete": "POISTA",
-    "apiKeyCopyMessage": "Tässä on uusi avaimesi. Kopioi se nyt! Tämä on ainoa kerta, kun näytämme sen sinulle.",
-    "headerText": "Tiedonvälityspalveluntarjoajan yhteydet",
+    "apiKeyCopyMessage": "Tässä on uusi avaimesi. Kopioi se nyt! Emme näytä sitä enää toiste.",
+    "headerText": "Tietojenvälityspalvelun (DISP) yhteydet",
     "titleText": " Hallinnoi yhteyksiä organisaatioihisi"
   },
+  "error": {
+    "generic": "Jotain meni pieleen."
+  },
   "businessWallet": {
-    "title": "Yrityslompakoiden yhteydet",
-    "subtitle": "Hallitse organisaatiosi yrityslompakoiden yhteyksiä",
+    "title": "Yrityslompakkoyhteydet",
+    "subtitle": "Hallitse organisaatiosi yrityslompakkoyhteyksiä",
     "label": "Yhteyden nimi",
     "connectedOn": "Yhdistetty",
     "connectionId": "Yhteystunnus",
     "addButton": "Lisää uusi yhteys",
-    "searchPlaceholder": "Hae haltijoiden mukaan",
-    "noConnections": "Yhteyksiä ei löytynyt",
-    "tooltipAddNewConnection": "Lisää uusi yrityslompakon yhteys"
+    "searchPlaceholder": "Hae haltijoita",
+    "noConnections": "Ei lompakkoyhteyksiä",
+    "tooltipAddNewConnection": "Lisää uusi yrityslompakkoyhteys"
   },
-  "error": {
-    "generic": "Jokin meni pieleen."
-  },
-  "addDataDisclosureAgreement": "Lisää tietojen luovutus -sopimus",
-  "noBannerImageAvailable": "Bannerikuvaa ei saatavilla",
+  "addDataDisclosureAgreement": "Lisää tietojen luovutussopimus",
+  "noBannerImageAvailable": "Ei bannerikuvaa saatavilla",
   "imageUpload": {
-    "recommendedCoverSize": "Suositeltu koko on 1500x500 px",
-    "recommendedLogoSize": "Suositeltu koko on 400x400 px"
+    "recommendedCoverSize": "Suosituskoko 1500x500px",
+    "recommendedLogoSize": "Suosituskoko 400x400px",
+    "cropModal": {
+      "onlyImagesSupported": "Vain {label}-kuvat tuetaan",
+      "cropMinSize": "Rajauksen oltava vähintään {minWidth}x{minHeight}px",
+      "imageMinSize": "Kuvan oltava vähintään {minWidth}x{minHeight}px",
+      "altCropImage": "Rajaa minua",
+      "selectImage": "Valitse kuva",
+      "dragDropInstructions": "Käytä Selaa-painiketta tai vedä & pudota tähän ({types}).",
+      "cancel": "PERUUTA",
+      "browse": "SELAA",
+      "save": "TALLENNA",
+      "saving": "TALLENNETAAN..."
+    }
   },
   "unknownOrganization": "Tuntematon organisaatio",
   "viewCredentials": {
-    "legalNameLabel": "Oikeudellinen nimi",
+    "attributeTable": {
+      "title": "Attribuuttitaulukko",
+      "description": "Näytä valtuustiedot attribuuttitaulukossa"
+    },
+    "legalNameLabel": "Virallinen nimi",
     "identifierLabel": "Tunniste"
   }
 }

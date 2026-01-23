@@ -40,7 +40,7 @@ export default function B2BTable({
 
   return (
     <TableContainer className="dd-container" sx={{ backgroundColor: 'transparent', borderRadius: 0, overflowY: 'hidden', overflowX: 'auto' }}>
-      <Table size="small" aria-label="b2b-connections-table">
+      <Table size="small" aria-label={t("b2bConnections.table.ariaLabel")}>
         <TableHead>
           <TableRow>
             <StyledTableCell>{t("b2bConnections.table.headers.id")}</StyledTableCell>
@@ -48,7 +48,7 @@ export default function B2BTable({
             <StyledTableCell>{t("b2bConnections.table.headers.theirClientSecret")}</StyledTableCell>
             <StyledTableCell>{t("b2bConnections.table.headers.mySoftwareStatement")}</StyledTableCell>
             <StyledTableCell>{t("b2bConnections.table.headers.theirSoftwareStatement")}</StyledTableCell>
-            <StyledTableCell>Last Modified Date</StyledTableCell>
+            <StyledTableCell>{t("b2bConnections.table.headers.lastModifiedDate")}</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
@@ -64,7 +64,7 @@ export default function B2BTable({
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, whiteSpace: 'nowrap' }}>
                       <Tooltip title={t('developerAPIs.softwareStatementViewTooltip')} arrow>
                         <span>
-                          <IconButton aria-label="view-my-ss" onClick={() => onOpenMySoftwareStatement?.(item)} sx={{ color: '#000' }}>
+                          <IconButton aria-label={t("b2bConnections.table.actions.viewMySoftwareStatement")} onClick={() => onOpenMySoftwareStatement?.(item)} sx={{ color: '#000' }}>
                             <VisibilityIcon fontSize="small" />
                           </IconButton>
                         </span>
@@ -75,7 +75,7 @@ export default function B2BTable({
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, whiteSpace: 'nowrap' }}>
                       <Tooltip title={t('developerAPIs.softwareStatementViewTooltip')} arrow>
                         <span>
-                          <IconButton aria-label="view-their-ss" onClick={() => onOpenTheirSoftwareStatement?.(item)} sx={{ color: '#000' }}>
+                          <IconButton aria-label={t("b2bConnections.table.actions.viewTheirSoftwareStatement")} onClick={() => onOpenTheirSoftwareStatement?.(item)} sx={{ color: '#000' }}>
                             <VisibilityIcon fontSize="small" />
                           </IconButton>
                         </span>

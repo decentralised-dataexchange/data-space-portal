@@ -1,10 +1,17 @@
 import { publicRoutes } from "@/constants/routes";
+import { locales } from "@/constants/il8n";
+
+export function getLocaleFromPathname(pathname: string): string | null {
+    if (!pathname) return null;
+    const match = pathname.match(new RegExp(`^/(${locales.join('|')})(?:/|$)`));
+    return match ? match[1] : null;
+}
 
 export function getPathnameWithoutLocale(pathname: string): string {
-    // If pathname starts with a supported locale (/en, /fi, /sv), strip it; otherwise return as-is
-    const match = pathname.match(/^\/(en|fi|sv)(?:\/|$)/);
-    if (match) {
-        const withoutLocale = pathname.slice(match[0].length);
+    // If pathname starts with a supported locale, strip it; otherwise return as-is
+    const locale = getLocaleFromPathname(pathname);
+    if (locale) {
+        const withoutLocale = pathname.slice(locale.length + 1);
         return withoutLocale ? (withoutLocale.startsWith('/') ? withoutLocale : '/' + withoutLocale) : '/';
     }
     return pathname || '/';

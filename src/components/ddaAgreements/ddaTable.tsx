@@ -222,7 +222,7 @@ const DDATable: React.FC<DDATableProps> = ({
 
                   {setIsOpenEditTags && (
                     <Tooltip
-                      title={"Edit Tags"}
+                      title={t("dataAgreements.table.tooltips.editTags")}
                       placement="top"
                     >
                       <IconButton
@@ -239,9 +239,7 @@ const DDATable: React.FC<DDATableProps> = ({
                       </IconButton>
                     </Tooltip>
                   )}
-
-                  {false && (
-                    <Tooltip
+                    {/* <Tooltip
                       title={t("dataAgreements.tooltipDelete")}
                       placement="top"
                     >
@@ -256,8 +254,8 @@ const DDATable: React.FC<DDATableProps> = ({
                           size={17}
                         />
                       </IconButton>
-                    </Tooltip>
-                  )}
+                    </Tooltip> */}
+                  
                 </StyledTableCell>
               </StyledTableRow>
             ))
