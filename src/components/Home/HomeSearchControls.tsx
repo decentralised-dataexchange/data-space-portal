@@ -139,7 +139,7 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
     });
   };
 
-  const tooltipTitle = isLoading ? "Searching..." : "Click to run search";
+  const tooltipTitle = isLoading ? t('home.search.tooltipData') : t('home.search.tooltipRun');
 
   return (
     <Box
@@ -222,7 +222,7 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
             input: {
               disableUnderline: true,
               endAdornment: !isSearchEmpty && (
-                <Tooltip title="Clear search">
+                <Tooltip title={t('home.search.tooltipClear')}>
                   <span>
                     <IconButton
                       size="small"

@@ -12,7 +12,7 @@ import {
     useTheme
 } from '@mui/material';
 import { CaretRight, CaretDown } from '@phosphor-icons/react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { sidebarMenuItems, SidebarMenuItem, SubMenuItem } from '@/constants/sidebar';

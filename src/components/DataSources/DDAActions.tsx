@@ -177,7 +177,7 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
         if (!rel) return null;
         return (
           <Typography variant="caption" sx={{ color: '#888888', fontSize: '12px' }}>
-            {`Last Modified: ${rel}`}
+            {`${t('dataAgreements.table.headers.lastModified')}: ${rel}`}
           </Typography>
         );
       })()}

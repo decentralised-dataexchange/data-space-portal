@@ -1,0 +1,722 @@
+{
+  "b2bConnections": {
+    "title": "B2B-tilkoblinger",
+    "subtitle": "Se din organisasjons B2B-tilkoblinger.",
+    "table": {
+      "headers": {
+        "id": "B2B-tilkoblings-ID",
+        "theirClientId": "Deres Klient-ID",
+        "theirClientSecret": "Deres Klienthemmelighet",
+        "mySoftwareStatement": "Min programvareerklæring",
+        "theirSoftwareStatement": "Deres programvareerklæring",
+        "lastModified": "Sist endret",
+        "lastModifiedDate": "Endringsdato",
+        "actions": "Handlinger",
+        "myClientId": "Min Klient-ID",
+        "nonce": "Nonce",
+        "timestamp": "Tidsstempel",
+        "connectionId": "Tilkoblings-ID",
+        "b2bConnectionId": "B2B-tilkoblings-ID"
+      },
+      "noData": "Ingen tilkoblinger å vise",
+      "ariaLabel": "b2b-tilkoblingstabell",
+      "actions": {
+        "viewMySoftwareStatement": "vis-min-pe",
+        "viewTheirSoftwareStatement": "vis-deres-pe"
+      }
+    }
+  },
+  "login": {
+    "header": "CRANE dHDSI - Org. dashbord - Logg inn",
+    "userId": "Bruker-ID",
+    "password": "Passord",
+    "rememberMe": "Husk meg",
+    "errorMessage": "Ugyldig innlogging. Sjekk brukernavn og passord og prøv igjen.",
+    "title": "Logg inn",
+    "noAccount": "Har du ikke konto?",
+    "signup": "Registrer deg",
+    "createNow": "Opprett din nå.",
+    "logoAlt": "Logo"
+  },
+  "signup": {
+    "header": "CRANE dHDSI - Org. dashbord - Registrering",
+    "name": "Navn",
+    "userName": "Ditt navn",
+    "organisationName": "Organisasjonsnavn",
+    "email": "E-post",
+    "userId": "Bruker-ID",
+    "confirmPassword": "Bekreft passord",
+    "passwordMismatch": "Passordene samsvarer ikke",
+    "haveAccount": "Har du allerede en konto?",
+    "login": "Logg inn",
+    "title": "Registrering",
+    "sector": "Sektor",
+    "location": "Sted",
+    "policyUrl": "Retningslinje-URL",
+    "description": "Organisasjonsbeskrivelse",
+    "owsBaseUrl": "OWS Base-URL",
+    "verificationRequestURLPrefix": "Bedriftslommebok-adresse",
+    "optional": "Valgfritt",
+    "required": "Påkrevd",
+    "requiredFieldsMissing": "Vennligst fyll ut alle påkrevde felt",
+    "passwordLength": "Passordet må ha 8 til 20 tegn"
+  },
+  "onboarding": {
+    "title": "Opprett din datatorg-konto",
+    "subtitle": "La oss starte med innloggingsdetaljene dine",
+    "logoAlt": "Logo",
+    "legalPersonIdData": "ID-DATA FOR JURIDISK PERSON",
+    "codeOfConduct": {
+      "pdfTitle": "Adferdskodeks PDF",
+      "openInNewTabAria": "Åpne Adferdskodeks PDF i ny fane"
+    },
+    "controls": {
+      "enterFullscreen": "Fullskjerm",
+      "exitFullscreen": "Avslutt fullskjerm"
+    },
+    "step1": {
+      "title": "Trinn 01: Angi ønsket innlogging"
+    },
+    "step2": {
+      "title": "Trinn 02: Ytterligere organisasjonsdetaljer",
+      "placeholder": "Fortsett til neste trinn for å oppgi din organisasjonsinformasjon."
+    },
+    "step3": {
+      "successMessage": "Din datatorg-konto er opprettet. Trykk fortsett for å verifisere eller <loginLink>{loginText}</loginLink>."
+    },
+    "stepSubtitles": {
+      "step1": "Trinn 01: Angi ønsket innlogging",
+      "step2": "Trinn 02: Angi organisasjonsdetaljer",
+      "step3": "Trinn 03: Verifiser organisasjonen med din bedriftslommebok",
+      "step4": "Trinn 04: Signer Adferdskodeksen"
+    },
+    "fields": {
+      "adminName": "Admin-navn",
+      "email": "E-post",
+      "password": "Passord",
+      "confirmPassword": "Bekreft passord"
+    },
+    "placeholders": {
+      "adminName": "Ditt Admin-navn",
+      "email": "E-post",
+      "password": "Passord",
+      "confirmPassword": "Bekreft passord",
+      "organisationName": "Organisasjonsnavn",
+      "organisationDescription": "Organisasjonsbeskrivelse",
+      "policyUrl": "Retningslinje-URL",
+      "sector": "Sektor",
+      "location": "Land"
+    },
+    "validation": {
+      "invalidEmail": "Angi en gyldig e-postadresse"
+    }
+  },
+  "breadcrumbs": {
+    "home": "Hjem",
+    "start": "Kom i gang",
+    "login": "Logg inn",
+    "account": "Konto",
+    "manage-admin": "Administrer Admin",
+    "developer-apis": "Utvikler-API-er",
+    "disp-connections": "DISP-tilkoblinger",
+    "business-wallet": "Bedriftslommebok-tilkoblinger",
+    "data-source": "Datakilde",
+    "dd-agreements": "Markedsplass-oppføring",
+    "dd-agreements-history": "Historikk Datautleveringsavtaler",
+    "signed-agreements": "Signerte avtaler",
+    "open-api": "OpenAPI-dokumentasjon",
+    "businessWallet": "Bedriftslommebok"
+  },
+  "signedAgreements": {
+    "title": "Signerte avtaler",
+    "subtitle": "Se og administrer din organisasjons signerte datautleveringsavtaler.",
+    "table": {
+      "headers": {
+        "dataSource": "Datakilde",
+        "ddaRecordId": "DDA Post-ID",
+        "id": "ID",
+        "usagePurpose": "Bruksformål",
+        "version": "Versjon",
+        "agreementEvent": "Avtalehendelse",
+        "signatureStatus": "Signaturstatus",
+        "dataSourceSignature": "Signatur Datakilde",
+        "dataUsingServiceSignature": "Signatur Databruker",
+        "lastModified": "Sist endret",
+        "lastModifiedDate": "Endringsdato"
+      },
+      "noData": "Ingen signerte avtaler å vise",
+      "tooltips": {
+        "viewJson": "Vis post for signert avtale"
+      }
+    },
+    "tooltipView": "Vis signert avtale",
+    "viewModal": {
+      "title": "Vis signert avtale"
+    },
+    "jsonViewer": {
+      "title": "Vis post for signert avtale"
+    },
+    "signatures": {
+      "dataSource": "Datakilde",
+      "dataUsingService": "Databrukstjeneste",
+      "dataSourceSignature": "Signatur Datakilde",
+      "dataUsingServiceSignature": "Signatur Databruker",
+      "mutuallySigned": "Gjensidig signert",
+      "dataSourceSigned": "Signert av Datakilde",
+      "dataUsingServiceSigned": "Signert av Databruker",
+      "dataUsingServiceUnsigned": "Usignert av Databruker"
+    }
+  },
+  "home": {
+    "header": "HJEM",
+    "title": "Datakilder",
+    "check-box-all": "Alle",
+    "check-box-org": "Organisasjoner",
+    "check-box-devices": "Enheter",
+    "readMore": "Les mer....",
+    "readLess": "Les mindre....",
+    "btn-signData": "Vis datautleveringsavtaler",
+    "btn-signDataSingular": "Vis datautleveringsavtale",
+    "btn-viewMetadata": "Vis API-er",
+    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) ",
+    "searchPlaceholder": "Søk organisasjoner og datautleveringsavtaler",
+    "tabs": {
+      "organisations": "Organisasjoner",
+      "dataDisclosureAgreements": "Datautleveringsavtaler"
+    },
+    "search": {
+      "tooltipData": "Søker...",
+      "tooltipRun": "Klikk for å søke",
+      "tooltipClear": "Tøm søk"
+    }
+  },
+  "appBar": {
+    "header": "CRANE d-HDSI Datatorg",
+    "subHeader": "Sverige - Region Västerbotten",
+    "lastVisit": "Siste besøk",
+    "settings": "Innstillinger",
+    "signout": "Logg ut",
+    "logoAlt": "Logo"
+  },
+  "sideBar": {
+    "gettingStarted": "Kom i gang",
+    "dataAgreements": {
+      "title": "Markedsplass-oppføring",
+      "addButton": "Legg til ny DDA",
+      "saveButton": "Lagre endringer"
+    },
+    "signedAgreements": {
+      "title": "Signerte avtaler"
+    },
+    "b2bConnections": {
+      "title": "B2B-tilkoblinger"
+    },
+    "account": "Konto",
+    "manageAdmin": "Administrer Admin",
+    "developerApis": "Utvikler-API-er",
+    "businessWallet": "Bedriftslommebok"
+  },
+  "gettingStarted": {
+    "public": "Offentlig",
+    "sector": "Sektor",
+    "overView": "Oversikt",
+    "organisationName": "Organisasjonsnavn",
+    "addCredential": "Legg til legitimasjon",
+    "viewCredential": "Vis legitimasjon",
+    "edit": "Rediger",
+    "policyUrl": "Retningslinje-URL",
+    "location": "Sted",
+    "descriptionPlaceholder": "Beskrivelse av organisasjonen (maks 500 tegn)",
+    "prepareDA": "Administrer oppføring",
+    "manageDDA": "Administrer datautleveringsavtaler",
+    "manageAccount": "Administrer konto",
+    "manageAdminUser": "Administrer admin-bruker",
+    "developerDocumentation": "Utviklerdokumentasjon",
+    "connectWalletTitle": "Legg til legitimasjon - ",
+    "connect": "Koble til",
+    "choose": "Velg",
+    "confirm": "Bekreft",
+    "connectDescription": "Din bedrift er uverifisert. Koble til din bedriftslommebok og klikk neste.",
+    "country": "Land",
+    "trustedIssuers": "Klarerte utstedere",
+    "walletTitle": "Koble til din bedriftslommebok",
+    "cloudWallet": "Skylommebok",
+    "mobileWallet": "Mobillommebok",
+    "walletDescription": "Lim inn den tilkoblede URL-en",
+    "chooseDescription": "Din bedrift er uverifisert. Legg til legitimasjon fra tilkoblet lommebok for å verifisere.",
+    "chooseWalletTitle": "TILKOBLET LOMMEBOK: ",
+    "chooseWalletTwo": "North Health Innovation AB",
+    "chooseWalletThree": "Utstedt av:",
+    "confirmWalletDescription": "Din bedrift er uverifisert. Velg bekreft for å verifisere bedriften.",
+    "industry": "Bransje",
+    "tooltipDeleteCredentials": "Slett legitimasjon",
+    "deleteCredentialsModal": {
+      "title": "Slett legitimasjon",
+      "description": "Du er i ferd med å slette eksisterende organisasjonslegitimasjon. Skriv DELETE for å bekrefte og klikk SLETT. Dette kan ikke angres.",
+      "confirmButton": "Slett",
+      "confirmText": "DELETE"
+    },
+    "bannerAlt": "Banner"
+  },
+  "tagEditor": {
+    "title": "Etiketter",
+    "editTagsTitle": "Rediger etiketter: {purpose}",
+    "placeholder": "Legg til en etikett...",
+    "maxTags": "Maksimalt {maxTags} etiketter tillatt"
+  },
+  "apiDocs": {
+    "servers": "Tjenere",
+    "schemas": "Skjemaer"
+  },
+  "common": {
+    "orgDashboardTitle": "Logg inn på CRANE dHDSI Datatorg",
+    "trustedServiceProvider": "Klarert tjenesteleverandør",
+    "untrustedServiceProvider": "Uklarert tjenesteleverandør",
+    "continue": "Fortsett",
+    "back": "Tilbake",
+    "next": "Neste",
+    "cancel": "Avbryt",
+    "submit": "Send",
+    "save": "Lagre",
+    "add": "Legg til",
+    "delete": "Slett",
+    "edit": "Rediger",
+    "close": "Lukk",
+    "confirm": "Bekreft",
+    "retry": "Prøv igjen",
+    "loading": "Laster...",
+    "error": "Det oppsto en feil",
+    "success": "Suksess",
+    "certificateOfRegistration": "Registreringsbevis",
+    "notAvailable": "I/T",
+    "language": "Norsk Språk",
+    "poweredby": "Drevet av",
+    "home": "Hjem",
+    "overView": "Oversikt",
+    "usagePurpose": "Bruksformål",
+    "dataset": "Datasett",
+    "policyUrl": "Retningslinje-URL",
+    "all": "Alle",
+    "noResultsFound": "Ingen resultater funnet",
+    "noData": "Ingen tilkoblinger å vise",
+    "description": "Beskrivelse",
+    "true": "Sann",
+    "false": "Usann",
+    "yes": "Ja",
+    "no": "Nei",
+    "viewAll": "Vis alle",
+    "timestamp": "Tidsstempel",
+    "modifiedAt": "Endret",
+    "status": "Status",
+    "name": "Navn",
+    "manageAdmin": "administrer-admin",
+    "developerApis": "utvikler-apier",
+    "disp-connections": "disp-tilkoblinger",
+    "businessWallet": "bedriftslommebok",
+    "generic": "Noe gikk galt.",
+    "errorOccurred": "Det oppsto en feil.",
+    "tryAgainLater": "Vennligst prøv igjen senere.",
+    "pleaseWait": "Vennligst vent...",
+    "copy": "Kopier",
+    "copied": "Kopiert",
+    "typeToConfirm": "Skriv \"{text}\" for å bekrefte",
+    "comingSoon": "Kommer snart",
+    "noDataSelected": "Ingen data valgt",
+    "optInAction": "Meld på",
+    "optOutAction": "Meld av",
+    "signAndContinue": "Signer og fortsett",
+    "unableToDisplayPdf": "Kan ikke vise Adferdskodeks-dokumentet.",
+    "openInNewTab": "Åpne i ny fane",
+    "invalidUrl": "Angi en gyldig URL",
+    "rowsPerPage": "Rader per side:",
+    "of": "av",
+    "signAction": "Signert",
+    "unsignAction": "Usignert",
+    "imageAlt": "Bilde",
+    "itemsPerPage": "Elementer per side"
+  },
+  "languages": {
+    "en": "Engelsk",
+    "sv": "Svensk",
+    "fi": "Finsk",
+    "es": "Spansk",
+    "no": "Norsk"
+  },
+  "errors": {
+    "generic": "Noe gikk galt.",
+    "imageUpdate": "Feil ved oppdatering av bilde. Prøv igjen.",
+    "imageRead": "Feil ved lesing av bildedata",
+    "imageProcess": "Feil ved behandling av beskåret bilde"
+  },
+  "verification": {
+    "connect": {
+      "title": "Koble til din lommebok",
+      "description": "Velg en verifiseringsmetode for å fortsette",
+      "selectWallet": "Velg en lommebok å koble til",
+      "walletTitle": "Lommeboktilkobling",
+      "cloudWallet": "Skylommebok",
+      "mobileWallet": "Mobillommebok",
+      "walletDescription": "Gi en kort begrunnelse for å koble til lommeboken:",
+      "justificationPlaceholder": "Skriv din begrunnelse her...",
+      "connectWallet": "Koble til lommebok"
+    },
+    "choose": {
+      "title": "Velg verifiseringsmetode",
+      "description": "Velg hvordan du vil verifisere dine opplysninger",
+      "walletTitle": "Lommebok",
+      "selectTemplate": "Velg en verifiseringsmal",
+      "walletInfo": "Informasjon om tilkoblet lommebok",
+      "issuedBy": "Utstedt av:",
+      "issuer": "Utsteder"
+    },
+    "confirm": {
+      "title": "Bekreft verifisering",
+      "description": "Se over og bekreft dine verifiseringsdetaljer",
+      "verifying": "Verifiserer dine opplysninger...",
+      "success": "Verifisering vellykket!",
+      "error": "Verifisering mislyktes. Vennligst prøv igjen.",
+      "templateError": "Verifiseringsmal ikke funnet",
+      "errorDescription": "Vi støtte på et problem under behandlingen av din verifisering. Sjekk følgende:",
+      "checkConnection": "Sjekk internettforbindelsen din",
+      "tryAgain": "Prøv igjen om en liten stund",
+      "contactSupport": "Kontakt support hvis problemet vedvarer",
+      "retry": "Prøv igjen",
+      "back": "Tilbake",
+      "issued": "Utstedt",
+      "expiry": "Utløper",
+      "status": "Status",
+      "verificationId": "Verifiserings-ID"
+    },
+    "status": {
+      "pending": "Verifisering pågår...",
+      "success": "Verifisering vellykket!",
+      "error": "Verifisering mislyktes"
+    }
+  },
+  "dataAgreements": {
+    "title": "Markedsplass-oppføring",
+    "subtitle": "Administrer markedsplass-oppføring ved hjelp av datautleveringsavtaler (DDA) for din organisasjon.",
+    "addButton": "Legg til ny DDA",
+    "saveButton": "Lagre endringer",
+    "noListingsAvailable": "Ingen oppføringer tilgjengelig. Klikk + for å legge til",
+    "dataDisclosureAgreementPolicy": "Retningslinjer for datautleveringsavtale",
+    "policy": {
+      "lawfulBasis": "Rettslig grunnlag for behandling",
+      "dataRetentionPeriod": "Datalagringsperiode i år",
+      "policyUrl": "Retningslinje-URL",
+      "jurisdiction": "Jurisdiksjon",
+      "industrySector": "Industrisektor",
+      "geographicRestriction": "Geografisk begrensning",
+      "storageLocation": "Lagringssted",
+      "agreementPeriodYears": "Avtaleperiode i år",
+      "dataControllerTitle": "Behandlingsansvarlig",
+      "dataSharingRestrictionsTitle": "Begrensninger for datadeling"
+    },
+    "deleteModal": {
+      "title": "Slett dataavtale",
+      "description": "Du er i ferd med å slette en eksisterende datautleveringsavtale. Skriv DELETE for å bekrefte og klikk SLETT. Dette kan ikke angres.",
+      "confirmButton": "Slett",
+      "confirmText": "DELETE"
+    },
+    "signWithBusinessWallet": "Signer med Bedriftslommebok",
+    "unsignWithBusinessWallet": "Fjern signatur med Bedriftslommebok",
+    "loginToSignWithBusinessWallet": "Logg inn for å signere med Bedriftslommebok",
+    "loginToUnsignWithBusinessWallet": "Logg inn for å fjerne signatur",
+    "signWithBusinessWalletInitiateError": "Kunne ikke starte forespørsel om signering med bedriftslommebok",
+    "publishModal": {
+      "title": "Publiser på markedsplass",
+      "confirmButton": "Publiser"
+    },
+    "viewModal": {
+      "title": "Vis datautleveringsavtale",
+      "publicTitle": "Vis og signer dataavtale"
+    },
+    "dataAgreementPolicy": "Retningslinjer for dataavtale",
+    "all": "Alle",
+    "list": "Oppført",
+    "underReview": "Til gjennomgang",
+    "selectStatusAction": "Velg statushandling...",
+    "statusActionLabel": "Statushandling",
+    "statuses": {
+      "unlisted": "Ikke oppført",
+      "inReview": "Til vurdering",
+      "approved": "Godkjent",
+      "rejected": "Avvist",
+      "listed": "Oppført"
+    },
+    "actions": {
+      "unlist": "Fjern oppføring",
+      "requestReview": "Be om gjennomgang",
+      "list": "List opp"
+    },
+    "tooltipPublished": "Datautleveringsavtale er publisert",
+    "tooltipView": "Vis datautleveringsavtale",
+    "tooltipEdit": "Rediger datautleveringsavtale",
+    "tooltipDelete": "Slett datautleveringsavtale",
+    "tooltipAddNew": "Legg til ny datautleveringsavtale",
+    "tooltipDownload": "Last ned datautleveringsavtale",
+    "pageDescription": "Administrer oppføring ved hjelp av datautleveringsavtaler (DDA) for din organisasjon.",
+    "usagePurpose": "Bruksformål",
+    "version": "Versjon",
+    "dataExchange": "Datautveksling",
+    "lawfulBasisOfProcessing": "Rettslig Grunnlag For Behandling",
+    "usagePurposePlaceholder": "F.eks. Markedsføring og kampanje (minst 3 tegn)",
+    "none": "Ingen",
+    "dataSource": "Datakilde",
+    "dataUsingService": "Databrukstjeneste",
+    "descritptionInputPlaceholder": "Kort beskrivelse av databruk (3-500 tegn)",
+    "connectedData": "Tilkoblet datautleveringsavtale",
+    "legalID": "Juridisk ID for behandlingsansvarlig",
+    "table": {
+      "headers": {
+        "templateId": "DDA Mal-ID",
+        "id": "ID",
+        "usagePurpose": "Bruksformål",
+        "version": "Versjon",
+        "status": "Status",
+        "lawfulBasis": "Rettslig grunnlag for behandling",
+        "lastModified": "Sist endret",
+        "lastModifiedDate": "Endringsdato"
+      },
+      "tooltips": {
+        "listToMarketplace": "List opp på datatorget",
+        "viewHistory": "Vis historikk for datautleveringsavtale",
+        "editTags": "Rediger tagger"
+      },
+      "noData": "Ingen data å vise"
+    },
+    "errors": {
+      "statusUpdateFailed": "Kunne ikke oppdatere status"
+    },
+    "history": {
+      "title": "Historikk Datautleveringsavtale",
+      "subtitle": "Vis historikk for datautleveringsavtalen",
+      "agreementLabel": "Avtale",
+      "table": {
+        "headers": {
+          "ddaRecordId": "DDA Post-ID",
+          "id": "ID",
+          "revision": "Revisjon",
+          "usagePurpose": "Bruksformål",
+          "version": "Versjon",
+          "agreementEvent": "Avtalehendelse",
+          "dataSourceSignature": "Signatur Datakilde",
+          "dataUsingServiceSignature": "Signatur Databruker",
+          "signatureStatus": "Signaturstatus",
+          "lastModified": "Sist endret",
+          "lastModifiedDate": "Endringsdato",
+          "actions": "Handlinger",
+          "status": "Status",
+          "isLatest": "Er nyeste",
+          "timestamp": "Tidsstempel",
+          "revisionId": "Revisjons-ID",
+          "revisionHash": "Revisjonshash"
+        },
+        "noData": "Ingen historikkposter å vise"
+      },
+      "events": {
+        "optIn": "Samtykke (opt-in)",
+        "optOut": "Trekk samtykke (opt-out)"
+      },
+      "signatures": {
+        "mutuallySigned": "Gjensidig signert",
+        "dataSourceSigned": "Signert av Datakilde",
+        "dataUsingServiceSigned": "Signert av Databruker",
+        "dataUsingServiceUnsigned": "Usignert av Databruker"
+      }
+    },
+    "openApiSpecification": {
+      "title": "Open API Spesifikasjon"
+    }
+  },
+  "manageAdmin": {
+    "adminUser": "Admin-bruker",
+    "pageDescription": "Administrer konfigurasjoner for admin-bruker.",
+    "userSettings": "Brukerinnstillinger",
+    "email": "E-post",
+    "userCredentials": "Brukeropplysninger",
+    "currentPassword": "Nåværende passord",
+    "enterCurrentPassword": "Angi nåværende passord",
+    "newPassword": "Nytt passord",
+    "enterNewPassword": "Angi nytt passord",
+    "confirmNewPassword": "Bekreft nytt passord",
+    "changePassword": "Endre passord",
+    "samePassword": "Nytt passord og bekreftelse må være like",
+    "passwordChanged": "Passord endret",
+    "error": "Noe gikk galt, prøv igjen med et gyldig passord"
+  },
+  "developerAPIs": {
+    "copy": "KOPIER",
+    "apiKeyCopyMessage": "Her er din nye nøkkel. Kopier den nå! Vi viser den bare denne ene gangen.",
+    "headerText": "Utvikler-API-er og opplysninger",
+    "pageDescription": "Alle API-forespørsler krever autentisering med opplysningene nedenfor",
+    "organisationID": "Organisasjons-ID",
+    "yourUserID": "Din Bruker-ID",
+    "configuredBaseURL": "Konfigurert Base-URL",
+    "apiKey": "API-nøkkel",
+    "noTokenAvailable": "Ingen token tilgjengelig",
+    "createConnection": "Opprett tilkobling",
+    "scope": "Omfang",
+    "scopes": "Omfang",
+    "expiry": "Utløp",
+    "deleteAPIKey": "Slett API-nøkkel",
+    "keyNamePlaceholder": "Skriv navnet på API-nøkkelen...",
+    "expiryDate": "Gyldighet i dag(er)",
+    "expiryDatePlaceholder": "Skriv gyldigheten i dager...",
+    "allScopes": "Alle omfang",
+    "selectedScopes": "Valgte omfang",
+    "deleteDescription1": "Du er i ferd med å slette en eksisterende API-nøkkel. Skriv ",
+    "deleteDescription2": " for å bekrefte og klikk SLETT. Dette kan ikke angres.",
+    "tooltipDelete": "Slett tilkobling",
+    "apiKeyCopied": "API-nøkkel kopiert til utklippstavlen",
+    "openApiUpdated": "Oppdaterte URL for OpenAPI-spesifikasjon",
+    "openApiUpdateFailed": "Oppdatering av OpenAPI-URL mislyktes",
+    "configureOpenApi": "Konfigurer OpenAPI-spesifikasjon",
+    "openApiUrlLabel": "URL for OpenAPI-spesifikasjon",
+    "holderBaseUrlLabel": "Bedriftslommebok-adresse",
+    "openApiUrlPlaceholder": "Angi OpenAPI URL",
+    "credentialOfferEndpointLabel": "Endepunkt for legitimasjonstilbud",
+    "credentialOfferEndpointPlaceholder": "Angi URL for legitimasjonstilbud",
+    "accessPointEndpointLabel": "Endepunkt for Access Point",
+    "accessPointEndpointPlaceholder": "Angi URL for Access Point",
+    "uploadButton": "Last opp",
+    "oauth2ClientTitle": "OAuth 2.0-klient",
+    "oauth2Title": "OAuth 2.0-klient",
+    "dataSpaceOauth2Title": "Datatorgets OAuth 2.0-klient",
+    "oauth2ClientNameLabel": "Navn",
+    "oauth2ClientNamePlaceholder": "Navn på OAuth 2.0-klient",
+    "oauth2ClientDescriptionLabel": "Beskrivelse",
+    "oauth2ClientDescriptionPlaceholder": "Kort beskrivelse (valgfritt)",
+    "createOAuth2Client": "Opprett",
+    "clientNameLabel": "Klientnavn",
+    "clientDescriptionLabel": "Klientbeskrivelse",
+    "clientIdLabel": "Klient-ID",
+    "clientSecretLabel": "Klienthemmelighet",
+    "organisationWalletTitle": "Organisasjonslommebok",
+    "owsBaseUrlLabel": "Bedriftslommebok-adresse",
+    "owsBaseUrlPlaceholder": "Angi bedriftslommebok-adresse",
+    "saveButton": "Lagre",
+    "owsBaseUrlUpdateFailed": "Oppdatering av Base-URL for org.lommebok mislyktes",
+    "walletConfigurationTitle": "Konfigurasjon av org.lommebok",
+    "configuredLabel": "Konfigurert",
+    "configureButton": "Konfigurer",
+    "oauth2ClientConfigTitle": "Konfigurasjon av Datatorgets OAuth 2.0-klient",
+    "orgOauth2Title": "Organisasjonens OAuth 2.0-klient",
+    "orgOauth2ClientConfigTitle": "Konfigurasjon av Organisasjonens OAuth 2.0-klient",
+    "orgOauth2ClientNameLabel": "Navn",
+    "orgOauth2ClientNamePlaceholder": "Navn på Organisasjonens OAuth 2.0-klient",
+    "orgOauth2ClientIdLabel": "Klient-ID",
+    "orgOauth2ClientIdPlaceholder": "Angi Klient-ID",
+    "orgOauth2ClientSecretLabel": "Klienthemmelighet",
+    "orgOauth2ClientSecretPlaceholder": "Angi Klienthemmelighet",
+    "createOrganisationOAuth2Client": "Opprett",
+    "orgClientNameRequired": "Klientnavn er påkrevd",
+    "orgClientIdRequired": "Klient-ID er påkrevd",
+    "orgClientSecretRequired": "Klienthemmelighet er påkrevd",
+    "requestCredential": "Be om legitimasjon",
+    "orgOauth2DeleteConfirm": "Er du sikker på at du vil slette Organisasjonens OAuth2-klient?",
+    "orgOauth2ClientDescriptionLabel": "Beskrivelse",
+    "orgOauth2ClientDescriptionPlaceholder": "Valgfri beskrivelse",
+    "orgOauth2DeleteModal": {
+      "title": "Slett Organisasjonens OAuth 2.0-klient",
+      "description": "Du er i ferd med å slette en eksisterende OAuth 2.0-klient. Skriv DELETE for å bekrefte og klikk SLETT. Dette kan ikke angres.",
+      "confirmText": "DELETE",
+      "confirmButton": "Slett"
+    },
+    "deploymentStatusLabel": "Driftsstatus:",
+    "notConfiguredLabel": "Ikke konfigurert",
+    "owsBaseUrlRequired": "Bedriftslommebok-adresse er påkrevd",
+    "credentialOfferEndpointRequired": "Endepunkt for legitimasjonstilbud er påkrevd",
+    "accessPointEndpointRequired": "Endepunkt for Access Point er påkrevd",
+    "clientNameRequired": "Klientnavn er påkrevd",
+    "softwareStatementTitle": "Programvareerklæring",
+    "softwareStatementLabel": "Programvareerklæring",
+    "softwareStatementRequest": "Be om",
+    "softwareStatementView": "Vis",
+    "softwareStatementRequestTooltip": "Be om en ny programvareerklæring",
+    "softwareStatementViewTooltip": "Vis detaljer for din programvareerklæring",
+    "softwareStatementPrereqMissing": "Angi endepunkter for Legitimasjon og Access Point først",
+    "softwareStatementVctLabel": "VCT",
+    "acceptSoftwareStatementToast": "Godta din programvareerklæring i DISP-portalen",
+    "softwareStatementClientUriLabel": "client_uri",
+    "softwareStatementCoverUrlLabel": "cover_url",
+    "softwareStatementIndustrySectorLabel": "industry_sector",
+    "softwareStatementLocationLabel": "location",
+    "softwareStatementLogoUrlLabel": "logo_url",
+    "softwareStatementNameLabel": "name",
+    "softwareStatementClientIdLabel": "Klient-ID",
+    "softwareStatementRedirectUriLabel": "Omdirigerings-URI",
+    "softwareStatementExchangeIdLabel": "Utvekslings-ID",
+    "softwareStatementDidLabel": "DID",
+    "softwareStatementCreatedAtLabel": "Opprettet",
+    "softwareStatementUpdatedAtLabel": "Oppdatert",
+    "softwareStatementStatus": {
+      "": "Ikke forespurt",
+      "offer_sent": "Tilbud sendt",
+      "offer_received": "Tilbud mottatt",
+      "credential_accepted": "Legitimasjon godtatt"
+    },
+    "deleteSoftwareStatementModal": {
+      "title": "Slett programvareerklæring",
+      "description": "Du er i ferd med å slette en eksisterende programvareerklæring. Skriv DELETE for å bekrefte og klikk SLETT. Dette kan ikke angres.",
+      "confirmButton": "Slett",
+      "confirmText": "DELETE"
+    },
+    "tooltips": {
+      "dataSpaceOauth2Title": "Konfigurer OAuth 2.0-klienten for å koble Datatorget til din DISP. Klikk KONFIGURER, angi navn og beskrivelse, klikk OPPRETT. Kopier Klient-ID og Klienthemmelighet. Disse brukes i DISP-portalen under Basekonfigurasjon (Base-URL: https://demo-api.nxd.foundation/service).",
+      "orgOauth2Title": "Konfigurer OAuth 2.0-klienten for å koble din DISP til Datatorget. Klikk KONFIGURER for å opprette ny klient, angi navn og beskrivelse, klikk OPPRETT. Kopier Klient-ID og Klienthemmelighet. Gå tilbake til Datatorget og lim inn verdiene under Organisasjonens OAuth 2.0-klient.",
+      "holderBaseUrl": "Den unike URL-en som identifiserer din organisasjons lommebokinstans i DISP-miljøet. Brukes av Datatorget for å sende legitimasjonstilbud og motta svar sikkert.",
+      "credentialOfferEndpoint": "OpenID4VCI-endepunktet der din organisasjons lommebok mottar legitimasjonstilbud fra Datatorget. Hent denne fra DISP-portalen under Digital Lommebok (OpenID4VC) → Basekonfigurasjon.",
+      "accessPointEndpoint": "API-endepunktet som eksponerer din organisasjons datautvekslingsgrensesnitt mot Datatorget. Hent denne fra DISP-portalen under Datatorg → Basekonfigurasjon.",
+      "softwareStatement": "En digitalt signert legitimasjon utstedt av Datatorget når begge endepunkter er konfigurert. Det beviser at din bedriftslommebok er autorisert og klarert. Du kan gjennomgå og godta denne i DISP-portalen under Digital Lommebok (OpenID4VC) → Lommebokenhet (Holder)."
+    }
+  },
+  "dispConnection": {
+    "copy": "KOPIER",
+    "delete": "SLETT",
+    "apiKeyCopyMessage": "Her er din nye nøkkel. Kopier den nå! Vi viser den bara denne ene gangen.",
+    "headerText": "Tilkoblinger til dataformidlingstjenester (DISP)",
+    "titleText": " Administrerer tilkoblinger mot dine organisasjoner"
+  },
+  "error": {
+    "generic": "Noe gikk galt."
+  },
+  "businessWallet": {
+    "title": "Bedriftslommebok-tilkoblinger",
+    "subtitle": "Administrer din organisasjons tilkoblinger for bedriftslommebok",
+    "label": "Tilkoblingsnavn",
+    "connectedOn": "Tilkoblet den",
+    "connectionId": "Tilkoblings-ID",
+    "addButton": "Legg til ny tilkobling",
+    "searchPlaceholder": "Søk etter eiere",
+    "noConnections": "Ingen lommeboktilkoblinger funnet",
+    "tooltipAddNewConnection": "Legg til ny tilkobling for bedriftslommebok"
+  },
+  "addDataDisclosureAgreement": "Legg til datautleveringsavtale",
+  "noBannerImageAvailable": "Inget bannerbilde tilgjengelig",
+  "imageUpload": {
+    "recommendedCoverSize": "Anbefalt størrelse er 1500x500px",
+    "recommendedLogoSize": "Anbefalt størrelse er 400x400px",
+    "cropModal": {
+      "onlyImagesSupported": "Kun {label}-bilder støttes",
+      "cropMinSize": "Beskjæring må være minst {minWidth}x{minHeight}px",
+      "imageMinSize": "Bildet må være minst {minWidth}x{minHeight}px",
+      "altCropImage": "Beskjær meg",
+      "selectImage": "Velg et bilde",
+      "dragDropInstructions": "Bruk Bla gjennom nedenfor, eller dra og slipp her ({types}).",
+      "cancel": "AVBRYT",
+      "browse": "BLA GJENNOM",
+      "save": "LAGRE",
+      "saving": "LAGRER..."
+    }
+  },
+  "unknownOrganization": "Ukjent organisasjon",
+  "viewCredentials": {
+    "attributeTable": {
+      "title": "Attributtabell",
+      "description": "Vis legitimasjon for attributtabell"
+    },
+    "legalNameLabel": "Juridisk navn",
+    "identifierLabel": "Identifikator"
+  }
+}

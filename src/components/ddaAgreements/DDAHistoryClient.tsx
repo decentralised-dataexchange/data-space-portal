@@ -674,7 +674,11 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                 currentItems.map(({ raw, row }, idx) => {
                     const dsSig = row.dataSourceSignature || '';
                     const dusSig = row.dataUsingServiceSignature || '';
-                    const eventLabel = (row.optIn === true) ? 'Opt-in' : (row.optIn === false) ? 'Opt-out' : (row.event ?? '');
+                    const eventLabel = (row.optIn === true)
+                      ? t('dataAgreements.history.events.optIn')
+                      : (row.optIn === false)
+                        ? t('dataAgreements.history.events.optOut')
+                        : (row.event ?? '');
                     return (
                       <StyledTableRow key={String(row.revisionId ?? idx)}>
                         <StyledTableCell>{row.recordId ?? ''}</StyledTableCell>

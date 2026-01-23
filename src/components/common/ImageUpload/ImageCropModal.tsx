@@ -4,6 +4,7 @@ import ReactCrop, { type Crop, PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { useAppDispatch } from '@/custom-hooks/store';
 import { setMessage } from '@/store/reducers/authReducer';
+import { useTranslations } from 'next-intl';
 
 // Styles
 
@@ -223,6 +224,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const dispatch = useAppDispatch();
+  const t = useTranslations();
 
   const isValidCrop = useMemo(() => {
     const c = livePixelCrop ?? completedCrop;
@@ -422,7 +424,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
       return Array.from(new Set(labels)).join('/');
     })();
     if (!types.includes(file.type)) {
-      dispatch(setMessage(`Only ${label} images are supported`));
+      dispatch(setMessage(t('imageUpload.cropModal.onlyImagesSupported', { label })));
       return;
     }
     onFileSelect(file);
@@ -432,7 +434,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
     if (!imageUrl || !imgRef.current) return;
     const pixelCrop = completedCrop ?? (crop ? toPixelCrop(crop, imgRef.current) : null);
     if (!pixelCrop || pixelCrop.width < minWidth || pixelCrop.height < minHeight) {
-      dispatch(setMessage(`Crop must be at least ${minWidth}x${minHeight}px`));
+      dispatch(setMessage(t('imageUpload.cropModal.cropMinSize', { minWidth, minHeight })));
       return;
     }
 
@@ -489,7 +491,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
         return Array.from(new Set(labels)).join('/');
       })();
       if (!types.includes(file.type)) {
-        dispatch(setMessage(`Only ${label} images are supported`));
+        dispatch(setMessage(t('imageUpload.cropModal.onlyImagesSupported', { label })));
         return;
       }
       onFileSelect(file);
@@ -567,7 +569,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 <img
                   ref={imgRef}
                   src={imageUrl}
-                  alt="Crop me"
+                  alt={t('imageUpload.cropModal.altCropImage')}
                   onLoad={onImageLoad}
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
@@ -683,19 +685,21 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               px: 2,
             }}>
               <Typography variant="h6" sx={{ mb: 1 }}>
-                Select an image
+                {t('imageUpload.cropModal.selectImage')}
               </Typography>
               <Typography variant="body2" sx={{ mt: 1, opacity: 0.9, maxWidth: '100%' }}>
-                {`Use Browse below, or drag & drop here (${(() => {
-                  const types = (acceptedFileTypes || 'image/jpeg,image/jpg,image/png')
-                    .split(',')
-                    .map((t) => t.trim())
-                    .filter(Boolean);
-                  const labels = types.map((t) =>
-                    t.includes('png') ? 'PNG' : (t.includes('jpeg') || t.includes('jpg')) ? 'JPEG' : (t.split('/').pop()?.toUpperCase() || t.toUpperCase())
-                  );
-                  return Array.from(new Set(labels)).join('/');
-                })()}).`}
+                {t('imageUpload.cropModal.dragDropInstructions', {
+                  types: (() => {
+                    const types = (acceptedFileTypes || 'image/jpeg,image/jpg,image/png')
+                      .split(',')
+                      .map((t) => t.trim())
+                      .filter(Boolean);
+                    const labels = types.map((t) =>
+                      t.includes('png') ? 'PNG' : (t.includes('jpeg') || t.includes('jpg')) ? 'JPEG' : (t.split('/').pop()?.toUpperCase() || t.toUpperCase())
+                    );
+                    return Array.from(new Set(labels)).join('/');
+                  })()
+                })}
               </Typography>
             </Box>
           )}
@@ -725,7 +729,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
               }}
               size="small"
             >
-              CANCEL
+              {t('imageUpload.cropModal.cancel')}
             </Button>
           </Box>
 
@@ -768,13 +772,13 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                   }}
                   size="small"
                 >
-                  BROWSE
+                  {t('imageUpload.cropModal.browse')}
                 </Button>
               </label>
             </Tooltip>
             {Boolean(imageUrl) && (
               <Tooltip
-                title={!isValidCrop ? `Image must be at least ${minWidth}x${minHeight}px` : ''}
+                title={!isValidCrop ? t('imageUpload.cropModal.imageMinSize', { minWidth, minHeight }) : ''}
                 arrow
                 placement="top"
               >
@@ -804,9 +808,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     {isUploading ? (
                       <>
                         <CircularProgress size={20} color="inherit" sx={{ mr: 1 }} />
-                        SAVING...
+                        {t('imageUpload.cropModal.saving')}
                       </>
-                    ) : 'SAVE'}
+                    ) : t('imageUpload.cropModal.save')}
                   </Button>
                 </span>
               </Tooltip>

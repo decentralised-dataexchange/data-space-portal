@@ -26,11 +26,12 @@ const customStyles: React.CSSProperties = {
 };
 
 const Breadcrumb: React.FC<BreadCrumbProps> = ({
-  primaryRoute = "Home",
+  primaryRoute,
   sxStyles = customStyles,
   classNames = "breadCrumb",
 }) => {
   const t = useTranslations();
+  const effectivePrimaryRoute = primaryRoute || t('breadcrumbs.home');
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const viewApiFor = searchParams?.get('viewApiFor');
@@ -101,7 +102,7 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
     >
       <Typography variant="caption" color="text.primary">
         <Link href="/" id="dashboard" className="link linkfont">
-          {primaryRoute}
+          {effectivePrimaryRoute}
         </Link>
       </Typography>
       

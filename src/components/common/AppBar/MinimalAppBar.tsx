@@ -8,7 +8,7 @@ import './styles.scss';
 import { usePathname } from 'next/navigation';
 
 export default function CustomMinimalAppBar() {
-  const t = useTranslations('appBar');
+  const t = useTranslations();
   const pathname = usePathname();
   const pathnameWithoutLocale = pathname.split('/').at(-1);
   
@@ -24,7 +24,7 @@ export default function CustomMinimalAppBar() {
     >
       <Toolbar>
          <Link href="/">
-           <Image className='logoImg' src={Logo} alt={`${t("header")} logo`} width={58} />
+           <Image className='logoImg' src={Logo} alt={`${t("appBar.header")} logo`} width={58} />
          </Link>
         <Link className="navHeaderTextLink" href="/">
           <Typography
@@ -34,7 +34,7 @@ export default function CustomMinimalAppBar() {
                 lineHeight: 1
               }}
             >
-              {t('header')}
+              {t('appBar.header')}
             </Typography>
             <Typography
             className="subHeaderText"
@@ -42,13 +42,13 @@ export default function CustomMinimalAppBar() {
                 fontSize:{ sm: '0.6rem', md: '1.1rem' },
               }}
             >
-              {t('subHeader')}
+              {t('appBar.subHeader')}
             </Typography>
         </Link>
         {
           pathnameWithoutLocale === 'login' ? null : (
             <Button variant="contained" component={Link} href="/login" className="loginBtn">
-            Login
+            {t('login.title')}
           </Button>
           )
         }

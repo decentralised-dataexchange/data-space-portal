@@ -4,6 +4,7 @@ import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ImageCropModal from './ImageCropModal';
 import { useAppDispatch } from '@/custom-hooks/store';
 import { setMessage } from '@/store/reducers/authReducer';
+import { useTranslations } from 'next-intl';
 
 interface GenericImageUploadProps {
   editMode: boolean;
@@ -50,6 +51,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   acceptedFileTypes = 'image/jpeg,image/jpg,image/png,image/webp',
   alwaysShowIcon = false,
 }) => {
+  const t = useTranslations();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -112,19 +114,19 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
             resolve();
           } catch (error) {
             console.error('Error updating image:', error);
-            dispatch(setMessage('Error updating image. Please try again.'));
+            dispatch(setMessage(t('errors.imageUpdate')));
             reject(error);
           }
         };
         
         reader.onerror = () => {
-          dispatch(setMessage('Error reading image data'));
+          dispatch(setMessage(t('errors.imageRead')));
           reject(new Error('Error reading image data'));
         };
       });
     } catch (error) {
       console.error('Error processing cropped image:', error);
-      dispatch(setMessage('Error processing cropped image')); 
+      dispatch(setMessage(t('errors.imageProcess'))); 
       throw error;
     }
   };
@@ -133,7 +135,7 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
     <Box style={{ position: 'relative', ...containerStyle }}>
       <img
         src={imageUrl || defaultImage}
-        alt="Image"
+        alt={t('common.imageAlt')}
         style={{
           width: '100%',
           height: '100%',

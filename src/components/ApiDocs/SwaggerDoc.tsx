@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
+import { useTranslations } from "next-intl";
 import 'swagger-ui-dist/swagger-ui.css';
 import './SwaggerDoc.scss';
 
@@ -24,6 +25,7 @@ export type SwaggerDocProps = {
 };
 
 export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocProps) {
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const tweaks = {
     hideInfoSubsections: true,
@@ -35,6 +37,23 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
   };
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const applyLocalization = useCallback(() => {
+    const root = containerRef.current;
+    if (!root) return;
+
+    const serversTitle = root.querySelector('.servers-title');
+    if (serversTitle) {
+      serversTitle.textContent = t('apiDocs.servers');
+      serversTitle.setAttribute('title', t('apiDocs.servers'));
+    }
+
+    const modelsHeader = root.querySelector('.models h4');
+    if (modelsHeader) {
+      modelsHeader.textContent = t('apiDocs.schemas');
+      modelsHeader.setAttribute('title', t('apiDocs.schemas'));
+    }
+  }, [t]);
 
   // CSS is bundled via import above; no dynamic injection needed
 
@@ -609,6 +628,7 @@ export default function SwaggerDoc({ openApiUrl, spec, uiTweaks }: SwaggerDocPro
                 sys?.specActions?.updateJsonSpec?.(fixed);
               }
             } catch {}
+            applyLocalization();
           },
         });
         // Keep reference if needed for future cleanup

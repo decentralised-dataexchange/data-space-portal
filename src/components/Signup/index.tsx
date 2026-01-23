@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, Divider, TextField, IconButton, Typography } from "@mui/material";
 import { ArrowCircleRightIcon, UserIcon, LockOpenIcon, MapPin, Briefcase, LinkSimple, EnvelopeSimple, Globe, TextAlignLeft } from "@phosphor-icons/react";
 import Logo from '@/assets/img/logo.jpg';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import './style.scss';
