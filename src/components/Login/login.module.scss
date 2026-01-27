@@ -1,0 +1,71 @@
+.loginWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+    width: 100%;
+    min-height: calc(100dvh - 40px); // keep footer visible
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 100%;
+    max-width: 440px; // keep content readable on large screens
+}
+
+.dFlexCenter {
+    display: flex;
+    justify-content: center;
+}
+
+.logoImg {
+    width: 118px;
+    border-radius: 50%;
+    height: auto;
+}
+
+.loginAuthInputsContainer {
+    border-radius: 0.45rem;
+    border: 1px solid #cecece;
+    box-sizing: border-box;
+    width: 356px;
+    padding: 0.25rem;
+    .textFieldWrapper {
+        @media (max-width: 768px) {
+            width: 313px;
+        }
+        
+        .textField {
+            :global(.MuiInputBase-root) {
+                height: 42px;
+                align-items: center;
+                padding: 6px 11px 6px 11px;
+                margin-top: 0;  
+            }
+            
+            :global(.MuiInputBase-input) {
+                padding: 0;
+                font-size: 0.875rem;
+            }
+        }
+    }
+}
+    
+
+
+/* Scope MUI input font size only within this component */
+.loginWrapper :global(.MuiInputBase-input) {
+    font-size: 0.875rem;
+}
+
+.loginWrapper {
+    @media (max-width: 768px) {
+        :global(.titleTxt) {
+            font-size: 1rem !important;
+        }
+    }
+}
