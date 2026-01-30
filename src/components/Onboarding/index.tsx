@@ -188,8 +188,9 @@ const PLACEHOLDER_SX = {
 const OUTLINED_INPUT_SX = {
   '& .MuiOutlinedInput-root': {
     borderRadius: '7px',
+    height: '42px',
     '& .MuiInputBase-input': {
-      paddingBlock: "18px"
+      padding: '6px 11px',
     }
   },
 } as const;
@@ -199,7 +200,7 @@ const SELECT_SX = {
   '& .MuiOutlinedInput-root': {
     ...OUTLINED_INPUT_SX['& .MuiOutlinedInput-root'],
     '& .MuiInputBase-input': {
-      paddingBlock: "16.5px"
+      padding: '6px 11px',
     }
   }
 } as const;
@@ -751,8 +752,8 @@ const Onboarding: React.FC = () => {
 
         {displayStep <= 2 && (
           <Typography variant="body2" sx={{ color: '#A1A1A1', marginTop: '1.5rem', textAlign: 'center' }}>
-            {t('signup.haveAccount')}{' '}
             <Link className="appLink" href="/login">
+            {t('signup.haveAccount')}{' '}
               {t('signup.login')}
             </Link>
           </Typography>
@@ -968,8 +969,10 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               error={showErrors && !organisationDescription}
               sx={{
                 ...PLACEHOLDER_SX,
-                ...OUTLINED_INPUT_SX,
-                '& .MuiInputBase-root': { alignItems: 'center' },
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '7px',
+                  alignItems: 'center',
+                },
               }}
             />
 

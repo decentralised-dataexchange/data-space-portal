@@ -204,7 +204,7 @@ const Login = () => {
             justifyContent: "center",
           }}
         >
-          <Link className="appLink" href="/onboarding">
+          <Link className={`appLink ${styles.registerLink}`} href="/onboarding">
             {t("login.noAccount")} {t("login.createNow")}
           </Link>
         </Box>
