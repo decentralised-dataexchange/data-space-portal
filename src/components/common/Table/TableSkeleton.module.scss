@@ -1,0 +1,91 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeletonTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  border-spacing: 0;
+}
+
+.skeletonRow {
+  border: 1px solid #d7d6d6;
+}
+
+.skeletonCell {
+  padding: 6px 16px;
+  border: 1px solid #d7d6d6;
+  background-color: #fff;
+  vertical-align: middle;
+}
+
+.skeletonHeaderCell {
+  padding: 6px 16px;
+  border: 1px solid #d7d6d6;
+  background-color: #e5e4e4;
+  vertical-align: middle;
+}
+
+.skeletonBar {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #e8e8e8 0%,
+    #f5f5f5 20%,
+    #e8e8e8 40%,
+    #e8e8e8 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonHeaderBar {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #d4d4d4 0%,
+    #e8e8e8 20%,
+    #d4d4d4 40%,
+    #d4d4d4 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Stagger animation for each row */
+.skeletonRow:nth-child(1) .skeletonBar { animation-delay: 0s; }
+.skeletonRow:nth-child(2) .skeletonBar { animation-delay: 0.1s; }
+.skeletonRow:nth-child(3) .skeletonBar { animation-delay: 0.2s; }
+.skeletonRow:nth-child(4) .skeletonBar { animation-delay: 0.3s; }
+.skeletonRow:nth-child(5) .skeletonBar { animation-delay: 0.4s; }
+.skeletonRow:nth-child(6) .skeletonBar { animation-delay: 0.5s; }
+.skeletonRow:nth-child(7) .skeletonBar { animation-delay: 0.6s; }
+.skeletonRow:nth-child(8) .skeletonBar { animation-delay: 0.7s; }
+.skeletonRow:nth-child(9) .skeletonBar { animation-delay: 0.8s; }
+.skeletonRow:nth-child(10) .skeletonBar { animation-delay: 0.9s; }
+
+/* Small action button skeleton */
+.skeletonAction {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    #e8e8e8 0%,
+    #f5f5f5 20%,
+    #e8e8e8 40%,
+    #e8e8e8 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  display: inline-block;
+  margin: 0 4px;
+}

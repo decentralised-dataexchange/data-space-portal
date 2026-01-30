@@ -20,6 +20,7 @@ import GeneralModal from "./generalModal";
 import ListDDAModal from "./listDDAModal";
 import TagEditModal from "./TagEditModal";
 import { useDDAgreements } from "@/custom-hooks/dataDisclosureAgreements";
+import TableSkeleton from "@/components/common/Table/TableSkeleton";
 import { useQueryClient } from "@tanstack/react-query";
 import { apiService } from "@/lib/apiService/apiService";
 import { defaultLogoImg } from "@/constants/defalultImages";
@@ -190,9 +191,18 @@ const DDAgreements = () => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <Box display="flex" justifyContent="center" my={4}>
-          <CircularProgress />
-        </Box>
+        <TableSkeleton
+          rows={5}
+          columns={[
+            { width: "90%" },
+            { width: "85%" },
+            { width: "50px" },
+            { width: "60%" },
+            { width: "70%" },
+            { width: "80%" },
+            { isAction: true, actionCount: 4 },
+          ]}
+        />
       );
     }
 

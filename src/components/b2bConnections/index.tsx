@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Alert, Box, CircularProgress } from "@mui/material";
 import styles from "../ddaAgreements/ddaAgreements.module.scss";
 import B2BTable from "./b2bTable";
+import TableSkeleton from "@/components/common/Table/TableSkeleton";
 import { useB2BConnections } from "@/custom-hooks/b2bConnections";
 // no delete action per latest requirements
 import SoftwareStatementModal from "@/components/Account/DeveloperApis/SoftwareStatementModal";
@@ -117,9 +118,17 @@ export default function B2BConnections() {
       </div>
 
       {isLoading && (
-        <Box display="flex" justifyContent="center" my={4}>
-          <CircularProgress size={24} />
-        </Box>
+        <TableSkeleton
+          rows={5}
+          columns={[
+            { width: "90%" },
+            { width: "85%" },
+            { width: "70%" },
+            { isAction: true, actionCount: 1 },
+            { isAction: true, actionCount: 1 },
+            { width: "80%" },
+          ]}
+        />
       )}
       {error && (
         <Alert severity="error" sx={{ my: 2 }}>
