@@ -289,7 +289,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
         showBanner
         showFooter
         footerContent={(
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 1.5, width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1.5, width: '100%' }}>
             <Button className="delete-btn" variant="outlined" onClick={handleClose} sx={{ minWidth: 120, textTransform: 'none' }}>
               {t('common.close')}
             </Button>
