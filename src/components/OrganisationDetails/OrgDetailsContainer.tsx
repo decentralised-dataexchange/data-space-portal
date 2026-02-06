@@ -5,13 +5,11 @@ import { Box, Grid, Typography, TextField, Button, Avatar, IconButton, Tooltip }
 import { styled } from "@mui/material/styles";
 import type { SxProps, Theme } from "@mui/material/styles";
 import OrgLogoImageUpload from "@/components/OrganisationDetails/OrgLogoImageUpload";
-import ViewCredentials from "@/components/ViewCredentials";
-import RightSidebar from "@/components/common/RightSidebar";
+import ViewCredentialsController from "@/components/DataSources/ViewCredentialsController";
 import './style.scss';
 import { useTranslations } from "next-intl";
 import VerifiedBadge from "../common/VerifiedBadge";
 import DeleteCredentialsModal from "./DeleteCredentialsModal";
-import { Eye as EyeIcon, EyeSlash as EyeSlashIcon } from "@phosphor-icons/react";
 import { Organisation } from "@/types/organisation";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
@@ -69,8 +67,6 @@ type Props = {
 
 const OrganisationDetailsContainer = (props: Props) => {
   const t = useTranslations();
-  const [openViewCredentialsModal, setOpenViewCredentialsModal] = useState(false)
-  const [showValues, setShowValues] = useState(false);
   const [openDeleteCredentials, setOpenDeleteCredentials] = useState(false);
   const {
     editMode,
@@ -109,9 +105,6 @@ const OrganisationDetailsContainer = (props: Props) => {
   // so that the modal has data ready instantly when opened
   const { data: softwareStatementRes } = useGetSoftwareStatement({ enabled: isVerify });
 
-  const callRightSideDrawer = () => {
-    setOpenViewCredentialsModal(!openViewCredentialsModal)
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -180,11 +173,45 @@ const OrganisationDetailsContainer = (props: Props) => {
   const canTriggerBadgeAction = isVerify || (!!props.isEnableAddCredential && !props.addCredentialsLoading);
   const handleBadgeAction = () => {
     if (props.addCredentialsLoading) return;
-    if (isVerify) {
-      callRightSideDrawer();
-    } else if (props.isEnableAddCredential) {
+    // For verified users, ViewCredentialsController handles the click.
+    // For unverified users looking to add credential:
+    if (props.isEnableAddCredential) {
       props.onAddCredentialsClick?.();
     }
+  };
+
+  const deleteButton = (
+    hasIdentity && (
+      <Tooltip title={t('gettingStarted.tooltipDeleteCredentials')} placement="top">
+        <Button
+          onClick={() => setOpenDeleteCredentials(true)}
+          className="delete-btn"
+          variant="outlined"
+          sx={{
+            minWidth: 120,
+            textTransform: 'none',
+            borderColor: '#DFDFDF',
+            color: 'black',
+            borderRadius: '0 !important',
+            '&:hover': { backgroundColor: 'black', color: 'white', borderColor: 'black' },
+          }}
+        >
+          {t('common.delete')}
+        </Button>
+      </Tooltip>
+    )
+  );
+
+  const organisationForController = {
+    id: props.originalOrganisation?.id,
+    name: props.originalOrganisation?.name,
+    description: props.originalOrganisation?.description,
+    location: props.originalOrganisation?.location,
+    policyUrl: props.originalOrganisation?.policyUrl,
+    sector: props.originalOrganisation?.sector,
+    logoUrl: props.logoImageBase64 || defaultLogoImg,
+    coverImageUrl: props.coverImageBase64 || defaultCoverImage,
+    softwareStatement: (softwareStatementRes as any)?.softwareStatement,
   };
 
   return (
@@ -196,122 +223,10 @@ const OrganisationDetailsContainer = (props: Props) => {
       }}
       className="gettingStarted"
     >
-      <RightSidebar
-        open={openViewCredentialsModal}
-        onClose={callRightSideDrawer}
-        width={580}
-        maxWidth={580}
-        keepMounted
-        height="100%"
-        headerContent={
-          <Box sx={{ width: "100%" }}>
-            <Typography className="dd-modal-header-text" noWrap sx={{ fontSize: '16px', color: '#F3F3F6' }}>
-              {isVerify ? 
-                t('gettingStarted.viewCredential') : 
-                `${t('gettingStarted.connectWalletTitle')} ${t('gettingStarted.choose')}`}
-            </Typography>
-          </Box>
-        }
-        bannerContent={
-          <>
-            <Box sx={{ position: 'relative' }}>
-              <Box
-                component="img"
-                alt={t('gettingStarted.bannerAlt')}
-                src={props.coverImageBase64 || defaultCoverImage}
-                sx={{ height: 194, width: '100%', objectFit: 'cover' }}
-              />
-              <IconButton
-                onClick={() => setShowValues(!showValues)}
-                sx={{
-                  position: 'absolute',
-                  right: 10,
-                  top: 10,
-                  backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                  zIndex: 10,
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                  }
-                }}
-              >
-                {showValues ? <EyeSlashIcon size={20} color="white" /> : <EyeIcon size={20} color="white" />}
-              </IconButton>
-              <Box sx={{ position: "relative", height: '65px', left: -25 }}>
-                  <Avatar
-                    src={props.logoImageBase64 || defaultLogoImg}
-                    sx={{
-                      position: 'absolute',
-                      left: 50,
-                      top: -65,
-                      width: 110,
-                      height: 110,
-                      border: '6px solid white',
-                      backgroundColor: 'white'
-                    }}
-                  />
-              </Box>
-            </Box>
-          </>
-        }
-        showBanner={true}
-        showFooter={true}
-        footerContent={
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1.5, width: '100%' }}>
-           
-            <Button
-              onClick={callRightSideDrawer}
-              className="delete-btn"
-              sx={{
-                marginRight: "10px",
-                minWidth: 120,
-                textTransform: 'none',
-                borderColor: '#DFDFDF',
-                color: 'black',
-                borderRadius: '0 !important',
-                '&:hover': {
-                  backgroundColor: 'black',
-                  color: 'white',
-                  borderColor: 'black',
-                },
-              }}
-              variant="outlined"
-            >
-              {t('common.close')}
-            </Button>
-            {hasIdentity && (
-              <Tooltip title={t('gettingStarted.tooltipDeleteCredentials')} placement="top">
-                <Button
-                  onClick={() => setOpenDeleteCredentials(true)}
-                  className="delete-btn"
-                  variant="outlined"
-                  sx={{
-                    minWidth: 120,
-                    textTransform: 'none',
-                    borderColor: '#DFDFDF',
-                    color: 'black',
-                    borderRadius: '0 !important',
-                    '&:hover': { backgroundColor: 'black', color: 'white', borderColor: 'black' },
-                  }}
-                >
-                  {t('common.delete')}
-                </Button>
-              </Tooltip>
-            )}
-          </Box>
-        }
-      >
-        <ViewCredentials 
-          orgIdentity={props.orgIdentity}
-          organisation={props.originalOrganisation}
-          showValues={showValues}
-        />
-        {/* Software Statement section (if available) */}
-        <SoftwareStatementSection ss={softwareStatementRes?.softwareStatement as any} showValues={showValues} />
-      </RightSidebar>
       <DeleteCredentialsModal
         open={openDeleteCredentials}
         setOpen={setOpenDeleteCredentials}
-        onSuccess={() => setOpenViewCredentialsModal(false)}
+        onSuccess={() => {}}
       />
       <Grid
         sx={{
@@ -373,41 +288,50 @@ const OrganisationDetailsContainer = (props: Props) => {
                       },
                     }}
                   />
-                  <Tooltip title={badgeLabel} placement="top">
-                    <Box
-                      component="button"
-                      type="button"
-                      onClick={handleBadgeAction}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          handleBadgeAction();
-                        }
-                      }}
-                      aria-label={badgeLabel}
-                      disabled={!canTriggerBadgeAction}
-                      sx={{
-                        ml: 0.5,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        background: 'transparent',
-                        border: 'none',
-                        padding: 0,
-                        cursor: canTriggerBadgeAction ? 'pointer' : 'not-allowed',
-                        opacity: canTriggerBadgeAction ? 1 : 0.5,
-                        '&:focus-visible': {
-                          outline: '2px solid #03182b',
-                          outlineOffset: 2,
-                        },
-                        '&:disabled': {
-                          cursor: 'not-allowed',
-                        },
-                      }}
-                    >
-                      <VerifiedBadge trusted={isVerify} />
-                    </Box>
-                  </Tooltip>
+                  {isVerify ? (
+                    <ViewCredentialsController
+                      organisation={organisationForController as any}
+                      organisationIdentity={props.orgIdentity}
+                      trustedOverride={true}
+                      extraFooterContent={deleteButton}
+                    />
+                  ) : (
+                    <Tooltip title={badgeLabel} placement="top">
+                      <Box
+                        component="button"
+                        type="button"
+                        onClick={handleBadgeAction}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            handleBadgeAction();
+                          }
+                        }}
+                        aria-label={badgeLabel}
+                        disabled={!canTriggerBadgeAction}
+                        sx={{
+                          ml: 0.5,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: 'transparent',
+                          border: 'none',
+                          padding: 0,
+                          cursor: canTriggerBadgeAction ? 'pointer' : 'not-allowed',
+                          opacity: canTriggerBadgeAction ? 1 : 0.5,
+                          '&:focus-visible': {
+                            outline: '2px solid #03182b',
+                            outlineOffset: 2,
+                          },
+                          '&:disabled': {
+                            cursor: 'not-allowed',
+                          },
+                        }}
+                      >
+                        <VerifiedBadge trusted={isVerify} />
+                      </Box>
+                    </Tooltip>
+                  )}
                 </Box>
                 {editMode ? (
                   <Box sx={{ height: '15px' }} />
@@ -479,40 +403,49 @@ const OrganisationDetailsContainer = (props: Props) => {
                 <Box sx={{ display: "flex", alignItems: 'flex-end', height: '24px' }} mt={"-7px"} >
                   <Typography variant="h6" fontWeight="bold" sx={{ fontSize: '20px', lineHeight: '1.2', display: 'flex', alignItems: 'center', gap: 1 }}>
                     {organisationDetails?.name}
-                    <Tooltip title={badgeLabel} placement="top">
-                      <Box
-                        component="button"
-                        type="button"
-                        onClick={handleBadgeAction}
-                        onKeyDown={(event) => {
-                          if (event.key === 'Enter' || event.key === ' ') {
-                            event.preventDefault();
-                            handleBadgeAction();
-                          }
-                        }}
-                        aria-label={badgeLabel}
-                        disabled={!canTriggerBadgeAction}
-                        sx={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          background: 'transparent',
-                          border: 'none',
-                          padding: 0,
-                          cursor: canTriggerBadgeAction ? 'pointer' : 'not-allowed',
-                          opacity: canTriggerBadgeAction ? 1 : 0.5,
-                          '&:focus-visible': {
-                            outline: '2px solid #03182b',
-                            outlineOffset: 2,
-                          },
-                          '&:disabled': {
-                            cursor: 'not-allowed',
-                          },
-                        }}
-                      >
-                        <VerifiedBadge trusted={isVerify} />
-                      </Box>
-                    </Tooltip>
+                    {isVerify ? (
+                      <ViewCredentialsController
+                        organisation={organisationForController as any}
+                        organisationIdentity={props.orgIdentity}
+                        trustedOverride={true}
+                        extraFooterContent={deleteButton}
+                      />
+                    ) : (
+                      <Tooltip title={badgeLabel} placement="top">
+                        <Box
+                          component="button"
+                          type="button"
+                          onClick={handleBadgeAction}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              handleBadgeAction();
+                            }
+                          }}
+                          aria-label={badgeLabel}
+                          disabled={!canTriggerBadgeAction}
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'transparent',
+                            border: 'none',
+                            padding: 0,
+                            cursor: canTriggerBadgeAction ? 'pointer' : 'not-allowed',
+                            opacity: canTriggerBadgeAction ? 1 : 0.5,
+                            '&:focus-visible': {
+                              outline: '2px solid #03182b',
+                              outlineOffset: 2,
+                            },
+                            '&:disabled': {
+                              cursor: 'not-allowed',
+                            },
+                          }}
+                        >
+                          <VerifiedBadge trusted={isVerify} />
+                        </Box>
+                      </Tooltip>
+                    )}
                   </Typography>
                 </Box>
                 <Box sx={{ height: '24px' }} />

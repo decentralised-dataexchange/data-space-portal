@@ -11,9 +11,10 @@ export type SoftwareStatementLike = Record<string, any> | undefined;
 interface Props {
   ss?: SoftwareStatementLike;
   showValues?: boolean;
+  isDetailView?: boolean;
 }
 
-const SoftwareStatementSection: React.FC<Props> = ({ ss, showValues = true }) => {
+const SoftwareStatementSection: React.FC<Props> = ({ ss, showValues = true, isDetailView = false }) => {
   const t = useTranslations();
 
   const hasSS = !!ss && Object.keys(ss || {}).length > 0;
@@ -48,8 +49,8 @@ const SoftwareStatementSection: React.FC<Props> = ({ ss, showValues = true }) =>
   if (!hasSS || rows.length === 0) return null;
 
   return (
-    <Box sx={{ mt: 3 }}>
-      <Typography color="grey" mt={2} variant="subtitle1">
+    <Box sx={{ mt: isDetailView ? 0 : 3 }}>
+      <Typography color="grey" mt={isDetailView ? 0 : 2} variant="subtitle1">
         {title}
       </Typography>
       <Box sx={{ mt: 1 }}>
