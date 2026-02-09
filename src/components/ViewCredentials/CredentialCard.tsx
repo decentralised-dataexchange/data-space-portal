@@ -18,7 +18,7 @@ const CredentialCard: React.FC<Props> = ({ title, orgName, issuedBy, logoUrl, on
       onClick={onClick}
       sx={{
         border: '1px solid #E0E0E0',
-        borderRadius: '24px',
+        borderRadius: '7px',
         padding: '24px',
         display: 'flex',
         alignItems: 'center',
