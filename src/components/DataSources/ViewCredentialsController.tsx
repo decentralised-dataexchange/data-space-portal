@@ -177,21 +177,21 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
     if (viewMode === 'vp_token') {
         return {
             title: lpidIssuerName,
-            cover: baseCover,
+            cover: defaultCoverImage,
             logo: lpidIssuerLogo,
         }
     }
     if (viewMode === 'software_statement') {
         return {
             title: (ss as any)?.credential?.claims?.name || t('developerAPIs.softwareStatementTitle'),
-            cover: baseCover,
+            cover: defaultCoverImage,
             logo: ssIssuerLogo,
         }
     }
     // Default (List View)
     return {
         title: t('gettingStarted.viewCredential'),
-        cover: defaultCoverImage ,
+        cover: baseCover ,
         logo: organisation?.logoUrl || defaultLogoImg,
     }
   }, [viewMode, vpTokenMetadata, organisation, ss, t, orgCoverImage, lpidIssuerName, lpidIssuerLogo, ssIssuerLogo]);
