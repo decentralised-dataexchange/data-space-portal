@@ -33,14 +33,14 @@ const CredentialCard: React.FC<Props> = ({ title, orgName, issuedBy, logoUrl, on
       }}
     >
       <Box display="flex" flexDirection="column" gap={0.5}>
-        <Typography variant="body1" sx={{ fontSize: '20px', fontWeight: 400, lineHeight: 1.4, textTransform: "uppercase" }}>
+        <Typography variant="body1" sx={{ fontSize: '14px', fontWeight: 400, lineHeight: 1.4, textTransform: "uppercase" }}>
           {title}
         </Typography>
-        <Typography variant="h6" sx={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.4 }}>
+        <Typography variant="h6" sx={{ fontSize: '14px', fontWeight: 700, lineHeight: 1.4 }}>
           {orgName}
         </Typography>
         {issuedBy !== undefined && (
-            <Typography variant="body2" sx={{ fontSize: '16px', marginTop: '4px', fontStyle: 'italic' }}>
+            <Typography variant="body2" sx={{ fontSize: '12px', marginTop: '4px', fontStyle: 'italic' }}>
                 <span style={{ fontStyle: 'normal' }}>Issued by:</span> {issuedBy}
             </Typography>
         )}
