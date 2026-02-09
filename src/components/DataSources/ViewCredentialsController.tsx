@@ -8,6 +8,10 @@ import VerifiedBadge from "@/components/common/VerifiedBadge";
 import ViewCredentials from "@/components/ViewCredentials";
 import { Eye as EyeIcon, EyeSlash as EyeSlashIcon, CaretLeft } from "@phosphor-icons/react";
 import { defaultCoverImage, defaultLogoImg } from "@/constants/defalultImages";
+import specificOrgCoverImage from "@/assets/img/specific-org-cover-image.jpeg";
+import brcLogo from "@/assets/img/brc-logo.jpeg";
+import bolagsverketLogo from "@/assets/img/bologsverket-logo.jpeg";
+import craneLogo from "@/assets/img/crane-logo.jpeg";
 import type { ServiceOrganisationItemOrg } from "@/types/serviceOrganisation";
 import type { OrgIdentityResponse } from "@/types/orgIdentity";
 import { apiService } from "@/lib/apiService/apiService";
@@ -25,9 +29,18 @@ interface Props {
 
 type ViewMode = 'list' | 'vp_token' | 'software_statement';
 
+const SPECIAL_ORGS = ['ECG247', 'Tellu AS'] as const;
+const ISSUER_DESCRIPTION = 'For queries about how we are managing your data please contact the Data Protection Officer.';
+
 const ViewCredentialsController: React.FC<Props> = ({ organisation, organisationIdentity, trustedOverride, extraFooterContent }) => {
   const t = useTranslations();
   const theme = useTheme();
+
+  const isSpecialOrg = SPECIAL_ORGS.some((name) => organisation?.name === name);
+  const lpidIssuerName = isSpecialOrg ? 'Brønnøysundregistrene' : 'Bolagsverket';
+  const lpidIssuerLogo = isSpecialOrg ? (brcLogo as any)?.src ?? brcLogo : (bolagsverketLogo as any)?.src ?? bolagsverketLogo;
+  const ssIssuerLogo = (craneLogo as any)?.src ?? craneLogo;
+  const orgCoverImage = isSpecialOrg ? (specificOrgCoverImage as any)?.src ?? specificOrgCoverImage : undefined;
   const [open, setOpen] = React.useState(false);
   const [showValues, setShowValues] = React.useState(false);
   const [viewMode, setViewMode] = React.useState<ViewMode>('list'); // 'list' | 'vp_token' | 'software_statement'
@@ -160,29 +173,28 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
 
   // Derived content for Detail View (Banner, Header, Logo) based on viewMode
   const detailConfig = React.useMemo(() => {
+    const baseCover = orgCoverImage || organisation?.coverImageUrl || defaultCoverImage;
     if (viewMode === 'vp_token') {
         return {
-            title: vpTokenMetadata?.client_name || organisation?.name || t('gettingStarted.viewCredential'),
-            cover: vpTokenMetadata?.cover_uri || organisation?.coverImageUrl || defaultCoverImage,
-            logo: vpTokenMetadata?.logo_uri || organisation?.logoUrl || defaultLogoImg,
+            title: lpidIssuerName,
+            cover: baseCover,
+            logo: lpidIssuerLogo,
         }
     }
     if (viewMode === 'software_statement') {
-        const claims = (ss as any)?.credential?.claims;
         return {
-             // Use SS specific name or fallback
-            title: claims?.name || t('developerAPIs.softwareStatementTitle'),
-            cover: claims?.cover_url || organisation?.coverImageUrl || defaultCoverImage,
-            logo: claims?.logo_url || organisation?.logoUrl || defaultLogoImg,
+            title: (ss as any)?.credential?.claims?.name || t('developerAPIs.softwareStatementTitle'),
+            cover: baseCover,
+            logo: ssIssuerLogo,
         }
     }
     // Default (List View)
     return {
         title: t('gettingStarted.viewCredential'),
-        cover: organisation?.coverImageUrl || defaultCoverImage,
+        cover: defaultCoverImage ,
         logo: organisation?.logoUrl || defaultLogoImg,
     }
-  }, [viewMode, vpTokenMetadata, organisation, ss, t]);
+  }, [viewMode, vpTokenMetadata, organisation, ss, t, orgCoverImage, lpidIssuerName, lpidIssuerLogo, ssIssuerLogo]);
 
 
   const headerContent = viewMode === 'list' ? (
@@ -317,8 +329,8 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
               <CredentialCard  
                 title={getVctTitle()}
                 orgName={organisation?.name || ''} 
-                issuedBy={vpTokenMetadata?.client_name}
-                logoUrl={vpTokenMetadata?.logo_uri}
+                issuedBy={lpidIssuerName}
+                logoUrl={lpidIssuerLogo}
                 onClick={() => setViewMode('vp_token')}
               />
 
@@ -327,8 +339,8 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
                   <CredentialCard 
                     title={t('developerAPIs.softwareStatementTitle')}
                     orgName={organisation?.name || ''}
-                    issuedBy={organisation?.name} // Falling back to org name as issuer for SS
-                    logoUrl={(ss as any)?.credential?.claims?.logo_url}
+                    issuedBy={'CRANE d-HDSI Dataspace'}
+                    logoUrl={ssIssuerLogo}
                     onClick={() => setViewMode('software_statement')}
                   />
               )}
@@ -339,13 +351,13 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
             <Box display="flex" flexDirection="column" gap={3}>
                  <Box>
                     <Typography variant="h6" sx={{ fontSize: '16px', color: theme.palette.text.primary, display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {vpTokenMetadata?.client_name || organisation?.name}
+                        {lpidIssuerName}
                     </Typography>
                     <Typography variant="subtitle1" sx={{ mt: 2 }}>
                         {t('common.overView')}
                     </Typography>
                     <Typography variant="subtitle2" sx={{ mt: 0.5, color: 'black', wordWrap: 'break-word' }}>
-                        {vpTokenMetadata?.description || organisation?.description}
+                        {ISSUER_DESCRIPTION}
                     </Typography>
                  </Box>
                  <ViewCredentials
@@ -370,13 +382,13 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
              <Box display="flex" flexDirection="column" gap={3}>
                 <Box>
                     <Typography variant="h6" sx={{ fontSize: '16px', color: theme.palette.text.primary, display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {(ss as any)?.credential?.claims?.name || organisation?.name}
+                        {'CRANE d-HDSI Dataspace'}
                     </Typography>
                     <Typography variant="subtitle1" sx={{ mt: 2, color: theme.palette.text.secondary }}>
                         {t('common.overView')}
                     </Typography>
                     <Typography variant="subtitle2" sx={{ mt: 0.5, color: 'black', wordWrap: 'break-word' }}>
-                        {(ss as any)?.credential?.claims?.description || organisation?.description}
+                        {ISSUER_DESCRIPTION}
                     </Typography>
                 </Box>
                 <SoftwareStatementSection ss={ss} showValues={showValues} isDetailView />
