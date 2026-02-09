@@ -45,7 +45,7 @@ const CredentialCard: React.FC<Props> = ({ title, orgName, issuedBy, logoUrl, on
             </Typography>
         )}
       </Box>
-      <Box display="flex" alignItems="flex-end" marginBottom="-40px">
+      <Box>
         {/* Placeholder for the blue/yellow circles icon from the image, using Avatar for logo if provided */}
         {logoUrl ? (
           <Avatar src={logoUrl} sx={{ width: 48, height: 48 }} variant="circular" />
