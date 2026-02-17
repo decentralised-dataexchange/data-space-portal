@@ -1,6 +1,6 @@
 /* Global styles */
 /* Ensure RightSidebar styles are available on initial load */
-@import '../components/common/RightSidebar/style.scss';
+@use '../components/common/RightSidebar/style.scss' as *;
 :root {
   --primary-color: #1976d2;
   --secondary-color: #dc004e;

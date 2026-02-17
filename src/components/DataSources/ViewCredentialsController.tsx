@@ -157,7 +157,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
       }
     };
     fetchSSIfMissing();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [open]);
 
   // Helper to calculate VCT Title for the card (replicating logic from ViewCredentials)
