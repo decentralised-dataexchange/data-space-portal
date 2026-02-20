@@ -11,5 +11,8 @@ RUN npm run build --production
 FROM nginx:1.15.8-alpine
 COPY --from=build-deps /usr/src/app/dist /usr/share/nginx/html
 COPY resources/config/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+RUN chown -R nginx:nginx /usr/share/nginx/html /var/cache/nginx /var/log/nginx && \
+    touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid
+EXPOSE 8080
+USER nginx
 CMD ["nginx", "-g", "daemon off;"]
