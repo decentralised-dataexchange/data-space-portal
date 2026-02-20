@@ -5,6 +5,7 @@ import { AccessToken, User } from '@/types/auth';
 
 // Cookie expiration in days
 const TOKEN_EXPIRATION = 7;
+const isSecure = process.env.NODE_ENV === 'production';
 
 export const CookieService = {
   // Set token in both cookie and localStorage for compatibility
@@ -13,28 +14,32 @@ export const CookieService = {
     Cookies.set('access_token', token.access_token, { 
       expires: TOKEN_EXPIRATION,
       path: '/',
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: isSecure
     });
     
     // Store refresh token as a string
     Cookies.set('refresh_token', token.refresh_token, { 
       expires: TOKEN_EXPIRATION,
       path: '/',
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: isSecure
     });
     
     // Store token expiration info
     Cookies.set('token_expires_in', String(token.expires_in), { 
       expires: TOKEN_EXPIRATION,
       path: '/',
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: isSecure
     });
     
     // Also set a lightweight client auth flag used by middleware routing
     Cookies.set('client_auth', '1', {
       expires: TOKEN_EXPIRATION,
       path: '/',
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: isSecure
     });
     
     // Also store in localStorage for client-side access (keeping for compatibility)
