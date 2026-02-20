@@ -19,6 +19,7 @@ import DeleteSoftwareStatementModal from "@/components/Account/DeveloperApis/Del
 import "@/components/OrganisationDetails/style.scss";
 import { useGetOrgIdentity, useGetCoverImage, useGetLogoImage } from "@/custom-hooks/gettingStarted";
 import InfoTooltipIconQuestionMark from "@/components/common/InfoTooltipIconQuestionMark";
+import { sanitizeHref } from "@/utils/urlSanitizer";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "0px 15px 0px 15px",
@@ -323,6 +324,7 @@ export default function DeveloperAPIs() {
   }> = ({ label, value, href, copyKey, copyValue, mask, tooltipMessage }) => {
     const hasValue = Boolean(value);
     const displayValue = mask && hasValue ? '••••••••••••••••' : (value || '');
+    const safeHref = sanitizeHref(href);
     return (
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
@@ -333,8 +335,8 @@ export default function DeveloperAPIs() {
         </Box>
         <Box display="inline-flex" alignItems="center" gap={0.75}>
           {hasValue ? (
-            href ? (
-              <a href={href} target="_blank" rel="noreferrer" style={{ color: '#0000FF', wordBreak: 'break-all', fontSize: "14px" }}>{displayValue}</a>
+            safeHref ? (
+              <a href={safeHref} target="_blank" rel="noreferrer" style={{ color: '#0000FF', wordBreak: 'break-all', fontSize: "14px" }}>{displayValue}</a>
             ) : (
               <Typography color="black" variant="body2" sx={{ wordBreak: 'break-all' }}>{displayValue}</Typography>
             )
