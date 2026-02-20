@@ -25,13 +25,14 @@ export const clearAllBrowserStorage = async () => {
     // Clear all cookies accessible to JS (HttpOnly cookies cannot be cleared from JS)
     try {
       const cookies = document.cookie.split(';');
+      const secureFlag = window.location.protocol === 'https:' ? ';Secure' : '';
       for (const cookie of cookies) {
         const eqPos = cookie.indexOf('=');
         const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         // Remove cookie for root path
-        document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/${secureFlag}`;
         // Attempt removal without path (fallback)
-        document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+        document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT${secureFlag}`;
       }
     } catch (e) {
       // ignore
