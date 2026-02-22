@@ -2,6 +2,7 @@ import { api } from "./api";
 import { ENDPOINTS } from "./apiEndpoints";
 import { axiosInstanceWithArrayBufferResType } from "./axios";
 import { imageBlobToBase64 } from "@/utils/imageUtils";
+import { baseURL } from "@/constants/url";
 import { OrganisationListResponse, OrganisationResponse, OrganisationUpdatePayload } from "@/types/organisation";
 import { OAuth2ClientsListResponse, OAuth2ClientCreateResponse } from "@/types/oauth2";
 import { OrganisationOAuth2ExternalClientsListResponse, OrganisationOAuth2ExternalClientResponse } from "@/types/organisationOAuth2External";
@@ -130,8 +131,7 @@ export const apiService = {
   },
   // Public sectors (external service)
   getSectorsPublic: async (): Promise<import('@/types/onboarding').SectorsResponse> => {
-    // Use absolute URL to bypass baseURL
-    const url = 'https://api.nxd.foundation/onboard/sectors';
+    const url = `${baseURL}/onboard/sectors`;
     return api.get<import('@/types/onboarding').SectorsResponse>(url)
       .then(res => res.data);
   },
