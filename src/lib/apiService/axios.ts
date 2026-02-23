@@ -1,10 +1,28 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
 import { baseURL } from "../../constants/url";
-import { AxiosRequestConfig } from "axios";
+import { LocalStorageService } from "../../utils/localStorageService";
 
 // Create a global authentication state tracker
 // This will be used to prevent API calls after logout
 let isAuthenticated = true;
+
+// Token refresh state shared across all instances
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}> = [];
+
+const processQueue = (error: unknown, token: string | null = null) => {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (token) {
+      resolve(token);
+    } else {
+      reject(error);
+    }
+  });
+  failedQueue = [];
+};
 
 // Initialize auth state based on presence of token on the client (helps after Fast Refresh/HMR)
 if (typeof window !== 'undefined') {
@@ -85,6 +103,77 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
     // If no token and it's a protected endpoint, the earlier block already canceled the request.
     return config;
   });
+
+  // Response interceptor for automatic token refresh on 401
+  instance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+      if (
+        error.response?.status !== 401 ||
+        !originalRequest ||
+        originalRequest._retry
+      ) {
+        return Promise.reject(error);
+      }
+
+      // Skip refresh for auth endpoints
+      const url = originalRequest.url || '';
+      if (
+        url.includes('/token/refresh') ||
+        url.includes('/onboard/login') ||
+        url.includes('/onboard/register')
+      ) {
+        return Promise.reject(error);
+      }
+
+      // If a refresh is already in progress, queue this request
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return instance(originalRequest);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (!refreshToken) {
+        isRefreshing = false;
+        processQueue(error, null);
+        LocalStorageService.clear();
+        setAxiosAuthState(false);
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+
+      try {
+        const { data } = await axios.post(`${baseURL}/onboard/token/refresh/`, {
+          refresh_token: refreshToken,
+        });
+
+        LocalStorageService.updateToken(data);
+        const newAccessToken: string = data.access_token;
+
+        processQueue(null, newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return instance(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        LocalStorageService.clear();
+        setAxiosAuthState(false);
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+  );
 
   return instance;
 };
