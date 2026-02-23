@@ -42,7 +42,7 @@ export const sidebarMenuItems: SidebarMenuItem[] = [
     link: '/account',
     subMenu: [
       {
-        name: 'Manage Admin',
+        name: 'Manage User',
         translationKey: 'manageAdmin',
         link: 'manage-admin',
       },

@@ -19,6 +19,7 @@ import { useLogin } from "@/custom-hooks/auth";
 import Image from "next/image";
 import styles from "./login.module.scss";
 import ArrowCircleRightIcon from "@/assets/icon/arrow-circle-right.svg";
+import MfaVerify from "./MfaVerify";
 
 interface FormValue {
   email: string;
@@ -33,7 +34,12 @@ const Login = () => {
     password: "",
   });
   const { email, password } = formValue;
-  const { login } = useLogin();
+  const { login, data: loginData } = useLogin();
+
+  // MFA state: when login returns mfa_required, store the session token
+  const mfaRequired =
+    loginData && "mfa_required" in loginData && loginData.mfa_required === true;
+  const sessionToken = mfaRequired ? loginData.session_token : null;
 
   // Determine if form is valid for enabling submit
   const isFormValid = !!email && !!password;
@@ -64,6 +70,11 @@ const Login = () => {
     });
   };
 
+  const handleMfaBack = () => {
+    // Force a page reload to reset the mutation state and go back to credentials
+    window.location.reload();
+  };
+
   return (
     <Box className={styles.loginWrapper}>
       {/* No local Snackbar; using global Snackbar in AppLayout */}
@@ -87,127 +98,138 @@ const Login = () => {
             gap: "1rem",
           }}
         >
-          <h1 className="titleTxt">{t("common.orgDashboardTitle")}</h1>
+          <h1 className="titleTxt">
+            {mfaRequired
+              ? t("mfa.title")
+              : t("common.orgDashboardTitle")}
+          </h1>
         </Box>
-        <form onSubmit={handleSubmit}>
-          <Box className={styles.loginAuthInputsContainer}>
-            <Box className={styles.textFieldWrapper}>
-              <TextField
-                autoFocus
-                name="email"
-                type="email"
-                className={styles.textField}
-                value={email}
-                onChange={handleChange}
-                variant="standard"
-                label={false}
-                placeholder={t("login.userId")}
-                fullWidth
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <UserIcon
-                        size={16}
-                        style={{
-                          color: "#777",
-                          marginRight: "0.5rem",
-                          transform: "translateY(-2px)",
-                        }}
-                      />
-                    ),
-                    disableUnderline: true,
-                    onKeyPress: handleKeyPress,
-                  },
-                }}
+
+        {mfaRequired && sessionToken ? (
+          <MfaVerify sessionToken={sessionToken} onBack={handleMfaBack} />
+        ) : (
+          <>
+            <form onSubmit={handleSubmit}>
+              <Box className={styles.loginAuthInputsContainer}>
+                <Box className={styles.textFieldWrapper}>
+                  <TextField
+                    autoFocus
+                    name="email"
+                    type="email"
+                    className={styles.textField}
+                    value={email}
+                    onChange={handleChange}
+                    variant="standard"
+                    label={false}
+                    placeholder={t("login.userId")}
+                    fullWidth
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <UserIcon
+                            size={16}
+                            style={{
+                              color: "#777",
+                              marginRight: "0.5rem",
+                              transform: "translateY(-2px)",
+                            }}
+                          />
+                        ),
+                        disableUnderline: true,
+                        onKeyPress: handleKeyPress,
+                      },
+                    }}
+                  />
+                </Box>
+                <Divider />
+                <Box className={styles.textFieldWrapper}>
+                  <TextField
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={handleChange}
+                    variant="standard"
+                    label={false}
+                    placeholder={t("login.password")}
+                    fullWidth
+                    className={styles.textField}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <LockOpenIcon
+                            size={16}
+                            style={{ color: "#777", marginRight: "0.5rem" }}
+                          />
+                        ),
+                        disableUnderline: true,
+                        onKeyPress: handleKeyPress,
+                        endAdornment: (
+                          <IconButton
+                            type="submit"
+                            disabled={!isFormValid}
+                            sx={{
+                              "&.Mui-disabled": {
+                                pointerEvents: "all",
+                                cursor: "not-allowed",
+                              },
+                            }}
+                          >
+                            <Image
+                              src={ArrowCircleRightIcon}
+                              alt="arrow"
+                              width={18}
+                              height={18}
+                              style={{ opacity: 0.6 }}
+                            />
+                          </IconButton>
+                        ),
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+            </form>
+            <Box
+              sx={{
+                width: "100%",
+                marginTop: "1.75em",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    defaultChecked
+                    sx={{
+                      color: "#A1A1A1",
+                      "&.Mui-checked": {
+                        color: "#1890FF",
+                      },
+                    }}
+                  />
+                }
+                label={
+                  <Typography variant="body2">{t("login.rememberMe")}</Typography>
+                }
+                style={{ color: "#A1A1A1" }}
               />
             </Box>
-            <Divider />
-            <Box className={styles.textFieldWrapper}>
-              <TextField
-                name="password"
-                type="password"
-                value={password}
-                onChange={handleChange}
-                variant="standard"
-                label={false}
-                placeholder={t("login.password")}
-                fullWidth
-                className={styles.textField}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <LockOpenIcon
-                        size={16}
-                        style={{ color: "#777", marginRight: "0.5rem" }}
-                      />
-                    ),
-                    disableUnderline: true,
-                    onKeyPress: handleKeyPress,
-                    endAdornment: (
-                      <IconButton
-                        type="submit"
-                        disabled={!isFormValid}
-                        sx={{
-                          "&.Mui-disabled": {
-                            pointerEvents: "all",
-                            cursor: "not-allowed",
-                          },
-                        }}
-                      >
-                        <Image
-                          src={ArrowCircleRightIcon}
-                          alt="arrow"
-                          width={18}
-                          height={18}
-                          style={{ opacity: 0.6 }}
-                        />
-                      </IconButton>
-                    ),
-                  },
-                }}
-              />
+            <Divider sx={{ width: "310px", my: 0.5 }} />
+            <Box
+              sx={{
+                width: "100%",
+                marginTop: ".5em",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Link className={`appLink ${styles.registerLink}`} href="/onboarding">
+                {t("login.noAccount")} {t("login.createNow")}
+              </Link>
             </Box>
-          </Box>
-        </form>
-        <Box
-          sx={{
-            width: "100%",
-            marginTop: "1.75em",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <FormControlLabel
-            control={
-              <Checkbox
-                defaultChecked
-                sx={{
-                  color: "#A1A1A1",
-                  "&.Mui-checked": {
-                    color: "#1890FF",
-                  },
-                }}
-              />
-            }
-            label={
-              <Typography variant="body2">{t("login.rememberMe")}</Typography>
-            }
-            style={{ color: "#A1A1A1" }}
-          />
-        </Box>
-        <Divider sx={{ width: "310px", my: 0.5 }} />
-        <Box
-          sx={{
-            width: "100%",
-            marginTop: ".5em",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Link className={`appLink ${styles.registerLink}`} href="/onboarding">
-            {t("login.noAccount")} {t("login.createNow")}
-          </Link>
-        </Box>
+          </>
+        )}
       </Box>
     </Box>
   );

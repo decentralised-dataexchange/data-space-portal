@@ -68,6 +68,7 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
       // Backend auth endpoints
       url.includes('/onboard/login') ||
       url.includes('/onboard/register') ||
+      url.includes('/onboard/mfa/') ||
       url.includes('/token/refresh')
     );
     const isPublicEndpoint = url.startsWith('/service/');
@@ -123,7 +124,8 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
       if (
         url.includes('/token/refresh') ||
         url.includes('/onboard/login') ||
-        url.includes('/onboard/register')
+        url.includes('/onboard/register') ||
+        url.includes('/onboard/mfa/')
       ) {
         return Promise.reject(error);
       }

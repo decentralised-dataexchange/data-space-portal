@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Grid, Typography, Box, Button, TextField } from "@mui/material";
+import { Grid, Typography, Box, Button, TextField, Switch, CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import ManageAdminProfilePicUpload from "./manageProfileAdmin";
 import { useTranslations } from "next-intl";
 import { useAppSelector, useAppDispatch } from "@/custom-hooks/store";
 import { setAdminDetails } from "@/store/reducers/authReducer";
-import { useGetAdminDetails, useUpdateAdminDetails, useResetPassword } from "@/custom-hooks/manageAdmin";
+import { useGetAdminDetails, useUpdateAdminDetails, useResetPassword, useToggleMfa } from "@/custom-hooks/manageAdmin";
 import { LocalStorageService } from "@/utils/localStorageService";
 import '../style.scss'
 import { setMessage } from "@/store/reducers/authReducer";
@@ -67,6 +67,7 @@ const ManageAdmin = () => {
   const { data: adminQueryData } = useGetAdminDetails();
   const updateAdminMutation = useUpdateAdminDetails();
   const resetPasswordMutation = useResetPassword();
+  const toggleMfaMutation = useToggleMfa();
   const dispatch = useAppDispatch();
   
   // Use admin data from either Redux or React Query
@@ -180,6 +181,26 @@ const ManageAdmin = () => {
         }
       });
     }
+  };
+
+  const handleMfaToggle = () => {
+    const newValue = !currentAdminData?.is_mfa_enabled;
+    toggleMfaMutation.mutate(
+      { is_mfa_enabled: newValue },
+      {
+        onSuccess: (data) => {
+          if (currentAdminData) {
+            const updated = { ...currentAdminData, is_mfa_enabled: data.is_mfa_enabled };
+            dispatch(setAdminDetails(updated));
+            LocalStorageService.updateUser(updated);
+          }
+        },
+        onError: (error) => {
+          const errorMessage = error instanceof Error ? error.message : t("manageAdmin.error");
+          dispatch(setMessage(errorMessage));
+        }
+      }
+    );
   };
 
   return (
@@ -455,6 +476,41 @@ const ManageAdmin = () => {
                 >
                   {t("manageAdmin.changePassword")}
                 </Typography>
+              </Box>
+            </Item>
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid size={{lg: 12, md: 12, sm: 12, xs: 12}} sx={{ display: 'flex' }}>
+            <Item sx={{ flex: 1, borderRadius: "7px", boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 4px" }}>
+              <Typography color="black" variant="subtitle1" fontWeight="bold" mb={1}>
+                {t("manageAdmin.mfaSection")}
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#666", mb: 2 }}>
+                {t("manageAdmin.mfaDescription")}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography variant="body2">
+                  {currentAdminData?.is_mfa_enabled
+                    ? t("manageAdmin.mfaEnabled")
+                    : t("manageAdmin.mfaDisabled")}
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {toggleMfaMutation.isPending && (
+                    <CircularProgress size={16} sx={{ mr: 1 }} />
+                  )}
+                  <Switch
+                    checked={!!currentAdminData?.is_mfa_enabled}
+                    onChange={handleMfaToggle}
+                    disabled={toggleMfaMutation.isPending}
+                  />
+                </Box>
               </Box>
             </Item>
           </Grid>

@@ -1,4 +1,12 @@
 {
+  "mfa": {
+    "title": "Bekreft din identitet",
+    "description": "En bekreftelseskode er sendt til e-postadressen din. Skriv inn den 6-sifrede koden nedenfor.",
+    "codePlaceholder": "000000",
+    "verify": "Bekreft",
+    "resend": "Send kode på nytt",
+    "backToLogin": "Tilbake til innlogging"
+  },
   "b2bConnections": {
     "title": "B2B-tilkoblinger",
     "subtitle": "Se din organisasjons B2B-tilkoblinger.",
@@ -116,7 +124,7 @@
     "start": "Kom i gang",
     "login": "Logg inn",
     "account": "Konto",
-    "manage-admin": "Administrer Admin",
+    "manage-admin": "Administrer bruker",
     "developer-apis": "Utvikler-API-er",
     "disp-connections": "DISP-tilkoblinger",
     "business-wallet": "Bedriftslommebok-tilkoblinger",
@@ -212,7 +220,7 @@
       "title": "B2B-tilkoblinger"
     },
     "account": "Konto",
-    "manageAdmin": "Administrer Admin",
+    "manageAdmin": "Administrer bruker",
     "developerApis": "Utvikler-API-er",
     "businessWallet": "Bedriftslommebok"
   },
@@ -230,7 +238,7 @@
     "prepareDA": "Administrer oppføring",
     "manageDDA": "Administrer datautleveringsavtaler",
     "manageAccount": "Administrer konto",
-    "manageAdminUser": "Administrer admin-bruker",
+    "manageAdminUser": "Administrer bruker",
     "developerDocumentation": "Utviklerdokumentasjon",
     "connectWalletTitle": "Legg til legitimasjon - ",
     "connect": "Koble til",
@@ -530,8 +538,12 @@
     }
   },
   "manageAdmin": {
-    "adminUser": "Admin-bruker",
-    "pageDescription": "Administrer konfigurasjoner for admin-bruker.",
+    "adminUser": "Bruker",
+    "pageDescription": "Administrer brukerkonfigurasjoner.",
+    "mfaSection": "Flerfaktorautentisering",
+    "mfaDescription": "Legg til et ekstra sikkerhetslag på kontoen din. Når det er aktivert, må du oppgi en bekreftelseskode sendt til e-posten din hver gang du logger inn.",
+    "mfaEnabled": "MFA er aktivert",
+    "mfaDisabled": "MFA er deaktivert",
     "userSettings": "Brukerinnstillinger",
     "email": "E-post",
     "userCredentials": "Brukeropplysninger",

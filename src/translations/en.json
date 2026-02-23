@@ -1,4 +1,12 @@
 {
+  "mfa": {
+    "title": "Verify Your Identity",
+    "description": "A verification code has been sent to your email address. Please enter the 6-digit code below.",
+    "codePlaceholder": "000000",
+    "verify": "Verify",
+    "resend": "Resend code",
+    "backToLogin": "Back to login"
+  },
   "b2bConnections": {
     "title": "B2B Connections",
     "subtitle": "View your organisation’s B2B connections.",
@@ -116,7 +124,7 @@
     "start": "Getting Started",
     "login": "Login",
     "account": "Account",
-    "manage-admin": "Manage Admin",
+    "manage-admin": "Manage User",
     "developer-apis": "Developer APIs",
     "disp-connections": "DISP Connections",
     "business-wallet": "Business Wallet Connections",
@@ -212,7 +220,7 @@
       "title": "B2B Connections"
     },
     "account": "Account",
-    "manageAdmin": "Manage Admin",
+    "manageAdmin": "Manage User",
     "developerApis": "Developer APIs",
     "businessWallet": "Business Wallet"
   },
@@ -230,7 +238,7 @@
     "prepareDA": "Manage Listing",
     "manageDDA": "Manage Data Disclosure Agreements",
     "manageAccount": "Manage Account",
-    "manageAdminUser": "Manage Admin User",
+    "manageAdminUser": "Manage User",
     "developerDocumentation": "Developer Documentation",
     "connectWalletTitle": "Add Credential - ",
     "connect": "Connect",
@@ -530,8 +538,12 @@
     }
   },
   "manageAdmin": {
-    "adminUser": "Admin User",
-    "pageDescription": "Manage admin user configurations.",
+    "adminUser": "User",
+    "pageDescription": "Manage user configurations.",
+    "mfaSection": "Multi-Factor Authentication",
+    "mfaDescription": "Add an extra layer of security to your account. When enabled, you will be required to enter a verification code sent to your email each time you log in.",
+    "mfaEnabled": "MFA is enabled",
+    "mfaDisabled": "MFA is disabled",
     "userSettings": "User Settings",
     "email": "Email",
     "userCredentials": "User Credentials",

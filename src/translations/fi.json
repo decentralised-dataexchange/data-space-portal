@@ -1,4 +1,12 @@
 {
+  "mfa": {
+    "title": "Vahvista henkilöllisyytesi",
+    "description": "Vahvistuskoodi on lähetetty sähköpostiisi. Syötä 6-numeroinen koodi alle.",
+    "codePlaceholder": "000000",
+    "verify": "Vahvista",
+    "resend": "Lähetä koodi uudelleen",
+    "backToLogin": "Takaisin kirjautumiseen"
+  },
   "b2bConnections": {
     "title": "B2B-yhteydet",
     "subtitle": "Tarkastele organisaatiosi B2B-yhteyksiä.",
@@ -116,7 +124,7 @@
     "start": "Aloitus",
     "login": "Kirjaudu",
     "account": "Tili",
-    "manage-admin": "Hallitse ylläpitäjää",
+    "manage-admin": "Hallitse käyttäjää",
     "developer-apis": "Kehittäjä-API:t",
     "disp-connections": "DISP-yhteydet",
     "business-wallet": "Yrityslompakkoyhteydet",
@@ -212,7 +220,7 @@
       "title": "B2B-yhteydet"
     },
     "account": "Tili",
-    "manageAdmin": "Hallitse ylläpitäjää",
+    "manageAdmin": "Hallitse käyttäjää",
     "developerApis": "Kehittäjä-API:t",
     "businessWallet": "Yrityslompakko"
   },
@@ -230,7 +238,7 @@
     "prepareDA": "Hallitse listausta",
     "manageDDA": "Hallitse luovutussopimuksia",
     "manageAccount": "Hallitse tiliä",
-    "manageAdminUser": "Hallitse ylläpitäjää",
+    "manageAdminUser": "Hallitse käyttäjää",
     "developerDocumentation": "Kehittäjädokumentaatio",
     "connectWalletTitle": "Lisää valtuustieto - ",
     "connect": "Yhdistä",
@@ -530,8 +538,12 @@
     }
   },
   "manageAdmin": {
-    "adminUser": "Ylläpitäjä",
-    "pageDescription": "Hallitse ylläpitäjän asetuksia.",
+    "adminUser": "Käyttäjä",
+    "pageDescription": "Hallitse käyttäjäasetuksia.",
+    "mfaSection": "Monivaiheinen todennus",
+    "mfaDescription": "Lisää ylimääräinen suojakerros tilillesi. Kun tämä on käytössä, sinun on syötettävä sähköpostitse lähetetty vahvistuskoodi joka kirjautumisen yhteydessä.",
+    "mfaEnabled": "MFA on käytössä",
+    "mfaDisabled": "MFA ei ole käytössä",
     "userSettings": "Käyttäjäasetukset",
     "email": "Sähköposti",
     "userCredentials": "Käyttäjätunnukset",

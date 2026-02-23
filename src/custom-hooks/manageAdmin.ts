@@ -67,10 +67,24 @@ export const useUpdateAdminAvatar = () => {
  */
 export const useResetPassword = () => {
   return useMutation({
-    mutationFn: (payload: { 
+    mutationFn: (payload: {
       old_password: string;
       new_password1: string;
       new_password2: string;
     }) => apiService.passwordReset(payload),
+  });
+};
+
+/**
+ * Hook to toggle MFA for the current user
+ */
+export const useToggleMfa = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload: { is_mfa_enabled: boolean }) => apiService.mfaToggle(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ADMIN_QUERY_KEYS.ADMIN_DETAILS] });
+    },
   });
 };

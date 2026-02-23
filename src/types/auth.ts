@@ -55,6 +55,29 @@ export interface SignupPayload {
     confirmPassword: string
 }
 
+// --- MFA types ---
+export interface MfaRequiredResponse {
+  mfa_required: true;
+  session_token: string;
+  detail: string;
+}
+
+export interface LoginTokenResponse {
+  access: string;
+  refresh: string;
+}
+
+export type LoginResponse = MfaRequiredResponse | LoginTokenResponse;
+
+export interface MfaVerifyRequest {
+  session_token: string;
+  code: string;
+}
+
+export interface MfaResendRequest {
+  session_token: string;
+}
+
 // --- Signup response types ---
 export interface SignupUser {
   id: number;

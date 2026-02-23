@@ -12,7 +12,7 @@ import {
   OrganizationVerificationResponse,
   PresentationRecord
 } from "@/types/verification";
-import { SignupPayload } from "@/types/auth";
+import { SignupPayload, LoginResponse, LoginTokenResponse, MfaVerifyRequest, MfaResendRequest } from "@/types/auth";
 import { OrgIdentityResponse } from "@/types/orgIdentity";
 import { SoftwareStatementResponse } from "@/types/softwareStatement";
 import { DDAgreementsResponse } from "@/types/dataDisclosureAgreement";
@@ -22,10 +22,28 @@ import type { ServiceSearchParams, ServiceSearchResponse } from "@/types/service
 
 // API Service implementation with real API calls
 export const apiService = {
-  login: async (email: string, password: string): Promise<{ access: string; refresh: string }> => {
-    return api.post<{ access: string; refresh: string }>(
+  login: async (email: string, password: string): Promise<LoginResponse> => {
+    return api.post<LoginResponse>(
       ENDPOINTS.login(),
       { email, password }
+    ).then(res => res.data);
+  },
+  mfaToggle: async (payload: { is_mfa_enabled: boolean }): Promise<{ is_mfa_enabled: boolean }> => {
+    return api.post<{ is_mfa_enabled: boolean }>(
+      ENDPOINTS.mfaToggle(),
+      payload
+    ).then(res => res.data);
+  },
+  mfaVerify: async (payload: MfaVerifyRequest): Promise<LoginTokenResponse> => {
+    return api.post<LoginTokenResponse>(
+      ENDPOINTS.mfaVerify(),
+      payload
+    ).then(res => res.data);
+  },
+  mfaResend: async (payload: MfaResendRequest): Promise<{ detail: string }> => {
+    return api.post<{ detail: string }>(
+      ENDPOINTS.mfaResend(),
+      payload
     ).then(res => res.data);
   },
   // Onboarding: Code of Conduct PDF (returns a Blob URL string)

@@ -1,4 +1,12 @@
 {
+  "mfa": {
+    "title": "Verifique su identidad",
+    "description": "Se ha enviado un código de verificación a su dirección de correo electrónico. Ingrese el código de 6 dígitos a continuación.",
+    "codePlaceholder": "000000",
+    "verify": "Verificar",
+    "resend": "Reenviar código",
+    "backToLogin": "Volver al inicio de sesión"
+  },
   "b2bConnections": {
     "title": "Conexiones B2B",
     "subtitle": "Vea las conexiones B2B de su organización.",
@@ -116,7 +124,7 @@
     "start": "Comenzando",
     "login": "Acceso",
     "account": "Cuenta",
-    "manage-admin": "Gestionar Admin",
+    "manage-admin": "Gestionar usuario",
     "developer-apis": "APIs de Desarrollador",
     "disp-connections": "Conexiones DISP",
     "business-wallet": "Conexiones Wallet Empresa",
@@ -212,7 +220,7 @@
       "title": "Conexiones B2B"
     },
     "account": "Cuenta",
-    "manageAdmin": "Gestionar Admin",
+    "manageAdmin": "Gestionar usuario",
     "developerApis": "APIs Desarrollador",
     "businessWallet": "Wallet de Empresa"
   },
@@ -230,7 +238,7 @@
     "prepareDA": "Gestionar listado",
     "manageDDA": "Gestionar acuerdos de divulgación",
     "manageAccount": "Gestionar cuenta",
-    "manageAdminUser": "Gestionar usuario admin",
+    "manageAdminUser": "Gestionar usuario",
     "developerDocumentation": "Documentación desarrollador",
     "connectWalletTitle": "Añadir credencial - ",
     "connect": "Conectar",
@@ -530,8 +538,12 @@
     }
   },
   "manageAdmin": {
-    "adminUser": "Usuario Admin",
-    "pageDescription": "Gestione configuraciones de usuario admin.",
+    "adminUser": "Usuario",
+    "pageDescription": "Gestione configuraciones de usuario.",
+    "mfaSection": "Autenticación multifactor",
+    "mfaDescription": "Agregue una capa adicional de seguridad a su cuenta. Cuando esté habilitado, deberá ingresar un código de verificación enviado a su correo electrónico cada vez que inicie sesión.",
+    "mfaEnabled": "MFA está habilitado",
+    "mfaDisabled": "MFA está deshabilitado",
     "userSettings": "Ajustes de usuario",
     "email": "Correo",
     "userCredentials": "Credenciales",

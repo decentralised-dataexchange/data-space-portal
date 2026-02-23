@@ -9,6 +9,7 @@ export interface AdminDetails {
   avatarImageId?: string;
   avatarImageUrl?: string;
   lastVisited?: string;
+  is_mfa_enabled?: boolean;
 }
 
 export interface AuthState {

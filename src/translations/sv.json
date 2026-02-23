@@ -1,4 +1,12 @@
 {
+  "mfa": {
+    "title": "Verifiera din identitet",
+    "description": "En verifieringskod har skickats till din e-postadress. Ange den 6-siffriga koden nedan.",
+    "codePlaceholder": "000000",
+    "verify": "Verifiera",
+    "resend": "Skicka kod igen",
+    "backToLogin": "Tillbaka till inloggning"
+  },
   "b2bConnections": {
     "title": "B2B-anslutningar",
     "subtitle": "Se din organisations B2B-anslutningar.",
@@ -116,7 +124,7 @@
     "start": "Kom igång",
     "login": "Logga in",
     "account": "Konto",
-    "manage-admin": "Hantera Admin",
+    "manage-admin": "Hantera användare",
     "developer-apis": "Utvecklar-API:er",
     "disp-connections": "DISP-anslutningar",
     "business-wallet": "Anslutningar Företagsplånbok",
@@ -212,7 +220,7 @@
       "title": "B2B-anslutningar"
     },
     "account": "Konto",
-    "manageAdmin": "Hantera Admin",
+    "manageAdmin": "Hantera användare",
     "developerApis": "Utvecklar-API:er",
     "businessWallet": "Företagsplånbok"
   },
@@ -230,7 +238,7 @@
     "prepareDA": "Hantera listning",
     "manageDDA": "Hantera datautlämningsavtal",
     "manageAccount": "Hantera konto",
-    "manageAdminUser": "Hantera adminanvändare",
+    "manageAdminUser": "Hantera användare",
     "developerDocumentation": "Utvecklardokumentation",
     "connectWalletTitle": "Lägg till intyg - ",
     "connect": "Anslut",
@@ -530,8 +538,12 @@
     }
   },
   "manageAdmin": {
-    "adminUser": "Adminanvändare",
-    "pageDescription": "Hantera konfigurationer för adminanvändare.",
+    "adminUser": "Användare",
+    "pageDescription": "Hantera användarkonfigurationer.",
+    "mfaSection": "Multifaktorautentisering",
+    "mfaDescription": "Lägg till ett extra säkerhetslager på ditt konto. När det är aktiverat måste du ange en verifieringskod som skickas till din e-post varje gång du loggar in.",
+    "mfaEnabled": "MFA är aktiverad",
+    "mfaDisabled": "MFA är inaktiverad",
     "userSettings": "Användarinställningar",
     "email": "E-post",
     "userCredentials": "Användaruppgifter",

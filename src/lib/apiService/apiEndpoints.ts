@@ -6,6 +6,15 @@ export const ENDPOINTS = {
     signup: () => {
         return "/onboard/register/";
     },
+    mfaToggle: () => {
+        return "/onboard/mfa/toggle/";
+    },
+    mfaVerify: () => {
+        return "/onboard/mfa/verify/";
+    },
+    mfaResend: () => {
+        return "/onboard/mfa/resend/";
+    },
     logout: () => { return "/onboard/logout/" },
     refreshToken: () => {
         return "/onboard/token/refresh";
