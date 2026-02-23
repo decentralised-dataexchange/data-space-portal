@@ -3,6 +3,8 @@
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
+import { baseURL } from '@/constants/url';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { useAppDispatch, useAppSelector } from '@/custom-hooks/store';
 import { setAuthenticated, setAdminDetails, logout as logoutAction, setLoading as setAuthLoading } from '@/store/reducers/authReducer';
@@ -155,6 +157,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = () => {
+    // Grab tokens before clearing — needed for the server-side logout call
+    const accessToken = LocalStorageService.getAccessToken();
+    const refreshToken = LocalStorageService.getRefreshToken();
+
+    // Best-effort server-side logout (fire-and-forget).
+    // We don't await this — local cleanup and redirect happen immediately
+    // regardless of the API response (401, 400, network error, etc.)
+    if (accessToken && refreshToken) {
+      axios.post(`${baseURL}/onboard/logout/`, { refresh: refreshToken }, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }).catch(() => {
+        // Intentionally ignored — user is logged out locally regardless
+      });
+    }
+
     // Block axios requests immediately
     try { setAxiosAuthState(false); } catch {}
 

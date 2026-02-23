@@ -6,7 +6,7 @@ export const ENDPOINTS = {
     signup: () => {
         return "/onboard/register/";
     },
-    logout: () => { return "/onboard/logout" },
+    logout: () => { return "/onboard/logout/" },
     refreshToken: () => {
         return "/onboard/token/refresh";
     },
