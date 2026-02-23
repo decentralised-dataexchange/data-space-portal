@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import React, { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import "../style.scss";
-import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateOAuth2Client, useGetSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal, useSoftwareStatementRequestRefocus } from "@/custom-hooks/developerApis";
+import { useGetAdminDetails, useGetOrganizationDetails, useGetOAuth2Clients, useCreateOAuth2Client, useUpdateOrganisation, useUpdateWalletConfig, useUpdateOAuth2Client, useGetSoftwareStatement, useDeleteSoftwareStatement, useGetOrganisationOAuth2ClientsExternal, useCreateOrganisationOAuth2ClientExternal, useUpdateOrganisationOAuth2ClientExternal, useDeleteOrganisationOAuth2ClientExternal, useSoftwareStatementRequestRefocus } from "@/custom-hooks/developerApis";
 import { SoftwareStatementRecord } from "@/types/softwareStatement";
 import { useAppDispatch, useAppSelector } from "@/custom-hooks/store";
 import { setMessage, setOAuth2Client, setSuccessMessage } from "@/store/reducers/authReducer";
@@ -12,7 +12,7 @@ import { baseURL } from "@/constants/url";
 import RightSidebar from "@/components/common/RightSidebar";
 import CopyButton from "@/components/common/CopyButton";
 import { AttributeRow } from "@/components/common/AttributeTable";
-import DeleteOrganisationOAuthClientModal from "@/components/Account/DeveloperApis/DeleteOrganisationOAuthClientModal";
+import PasswordConfirmDialog from "@/components/common/PasswordConfirmDialog";
 import SoftwareStatementModal from "@/components/Account/DeveloperApis/SoftwareStatementModal";
 import DeleteSoftwareStatementModal from "@/components/Account/DeveloperApis/DeleteSoftwareStatementModal";
 // Import styles used for view/add credential link-like buttons
@@ -70,12 +70,16 @@ export default function DeveloperAPIs() {
   const [orgClientId, setOrgClientId] = useState("");
   const [orgClientSecret, setOrgClientSecret] = useState("");
   const [orgClientDescription, setOrgClientDescription] = useState("");
-  const [openDeleteOrgOAuthModal, setOpenDeleteOrgOAuthModal] = useState(false);
   // Edit form states inside sidebars
   const [editOpenApiUrl, setEditOpenApiUrl] = useState("");
   const [editHolderBaseUrl, setEditHolderBaseUrl] = useState("");
   const [editCredentialOfferEndpoint, setEditCredentialOfferEndpoint] = useState("");
   const [editAccessPointEndpoint, setEditAccessPointEndpoint] = useState("");
+  // Password confirmation dialog state
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'walletConfig' | 'orgOAuth2Create' | 'orgOAuth2Update' | 'orgOAuth2Delete' | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
   const { data: oauth2List, isLoading: oauth2Loading } = useGetOAuth2Clients();
   const { mutate: createOAuth2Client, isPending: isCreating } = useCreateOAuth2Client();
   const { mutate: updateOAuth2Client, isPending: isUpdating } = useUpdateOAuth2Client();
@@ -96,6 +100,8 @@ export default function DeveloperAPIs() {
 
   // Organisation update mutation
   const { mutate: updateOrganisation, isPending: isSavingOws } = useUpdateOrganisation();
+  // Wallet config mutation (password-protected)
+  const { mutate: updateWalletConfig, isPending: isSavingWalletConfig } = useUpdateWalletConfig();
   // Software Statement hooks
   const { data: softwareStatementRes, isLoading: ssLoading, isError: ssError } = useGetSoftwareStatement();
   const { requestCredential, isRequesting: isRequestingSS } = useSoftwareStatementRequestRefocus({ orgId: orgDetails?.id });
@@ -274,42 +280,152 @@ export default function DeveloperAPIs() {
   };
 
 
-  // Save both OpenAPI URL and Holder Base URL via organisation update
+  // Save wallet config: validate fields then open password dialog
   const handleSaveWalletConfig = () => {
     if (!orgDetails?.id) return;
-    // Required validation for Holder Base URL (has asterisk)
     if (!editHolderBaseUrl.trim()) {
       dispatch(setMessage(t('developerAPIs.owsBaseUrlRequired')));
       return;
     }
-    // Required validation for Credential Offer Endpoint
     if (!editCredentialOfferEndpoint.trim()) {
       dispatch(setMessage(t('developerAPIs.credentialOfferEndpointRequired')));
       return;
     }
-    // Required validation for Access Point Endpoint
     if (!editAccessPointEndpoint.trim()) {
       dispatch(setMessage(t('developerAPIs.accessPointEndpointRequired')));
       return;
     }
-    const payload = {
-      organisation: {
-        ...orgDetails,
-        // openApiUrl is deprecated in UI; do not send changes from UI
-        verificationRequestURLPrefix: editHolderBaseUrl,
-        credentialOfferEndpoint: editCredentialOfferEndpoint?.trim() ? editCredentialOfferEndpoint.trim() : null,
-        accessPointEndpoint: editAccessPointEndpoint?.trim() ? editAccessPointEndpoint.trim() : null,
-      },
-    } as unknown as { organisation: any };
-    updateOrganisation(payload as any, {
-      onSuccess: () => {
-        setVerificationRequestURLPrefix(editHolderBaseUrl);
-        setOpenWalletConfig(false);
-      },
-      onError: () => {
-        dispatch(setMessage(t("developerAPIs.owsBaseUrlUpdateFailed")));
-      },
-    });
+    setPendingAction('walletConfig');
+    setPasswordError(null);
+    setPasswordDialogOpen(true);
+  };
+
+  // Open password dialog for org OAuth2 external operations
+  const openPasswordDialog = (action: 'orgOAuth2Create' | 'orgOAuth2Update' | 'orgOAuth2Delete') => {
+    setPendingAction(action);
+    setPasswordError(null);
+    setPasswordDialogOpen(true);
+  };
+
+  const closePasswordDialog = () => {
+    setPasswordDialogOpen(false);
+    setPendingAction(null);
+    setPasswordError(null);
+  };
+
+  // Helper to detect password-related errors from API response
+  const isPasswordError = (err: any): string | null => {
+    const detail = err?.response?.data?.detail;
+    if (typeof detail === 'string' && detail) return detail;
+    const password = err?.response?.data?.password;
+    if (Array.isArray(password) && password.length > 0) return password[0];
+    if (typeof password === 'string' && password) return password;
+    return null;
+  };
+
+  // Centralized password confirm handler
+  const handlePasswordConfirm = (password: string) => {
+    if (!pendingAction) return;
+
+    if (pendingAction === 'walletConfig') {
+      updateWalletConfig(
+        {
+          password,
+          verificationRequestURLPrefix: editHolderBaseUrl.trim(),
+          credentialOfferEndpoint: editCredentialOfferEndpoint.trim(),
+          accessPointEndpoint: editAccessPointEndpoint.trim(),
+        },
+        {
+          onSuccess: () => {
+            setVerificationRequestURLPrefix(editHolderBaseUrl);
+            closePasswordDialog();
+            setOpenWalletConfig(false);
+          },
+          onError: (err: any) => {
+            const pwErr = isPasswordError(err);
+            if (pwErr) {
+              setPasswordError(pwErr);
+            } else {
+              closePasswordDialog();
+              dispatch(setMessage(t("developerAPIs.owsBaseUrlUpdateFailed")));
+            }
+          },
+        }
+      );
+    } else if (pendingAction === 'orgOAuth2Create') {
+      createOrgOAuth2Client(
+        {
+          name: orgClientName.trim(),
+          client_id: orgClientId.trim(),
+          client_secret: orgClientSecret.trim(),
+          description: orgClientDescription.trim() || undefined,
+          password,
+        },
+        {
+          onSuccess: () => {
+            closePasswordDialog();
+            setOpenOrgOAuthConfig(false);
+          },
+          onError: (err: any) => {
+            const pwErr = isPasswordError(err);
+            if (pwErr) {
+              setPasswordError(pwErr);
+            } else {
+              closePasswordDialog();
+              dispatch(setMessage(t('error.generic')));
+            }
+          },
+        }
+      );
+    } else if (pendingAction === 'orgOAuth2Update') {
+      if (!orgOAuthClient) return;
+      updateOrgOAuth2Client(
+        {
+          clientId: orgOAuthClient.id,
+          name: orgClientName.trim(),
+          client_id: orgClientId.trim(),
+          client_secret: orgClientSecret.trim(),
+          description: orgClientDescription.trim() || undefined,
+          password,
+        },
+        {
+          onSuccess: () => {
+            closePasswordDialog();
+            setOpenOrgOAuthConfig(false);
+          },
+          onError: (err: any) => {
+            const pwErr = isPasswordError(err);
+            if (pwErr) {
+              setPasswordError(pwErr);
+            } else {
+              closePasswordDialog();
+              dispatch(setMessage(t('error.generic')));
+            }
+          },
+        }
+      );
+    } else if (pendingAction === 'orgOAuth2Delete') {
+      const id = orgOAuthClient?.id;
+      if (!id) return;
+      deleteOrgOAuth2Client(
+        { clientId: id, password },
+        {
+          onSuccess: () => {
+            closePasswordDialog();
+            setOpenOrgOAuthConfig(false);
+          },
+          onError: (err: any) => {
+            const pwErr = isPasswordError(err);
+            if (pwErr) {
+              setPasswordError(pwErr);
+            } else {
+              closePasswordDialog();
+              dispatch(setMessage(t('error.generic')));
+            }
+          },
+        }
+      );
+    }
   };
 
   // Reusable row component for consistent layout/styling
@@ -653,7 +769,7 @@ export default function DeveloperAPIs() {
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => setOpenDeleteOrgOAuthModal(true)}
+                onClick={() => openPasswordDialog('orgOAuth2Delete')}
                 disabled={isDeletingOrgOAuth}
                 sx={{
                   padding: '5px 30px',
@@ -832,13 +948,7 @@ export default function DeveloperAPIs() {
                     if (!orgClientName.trim()) { dispatch(setMessage(t('developerAPIs.orgClientNameRequired'))); return; }
                     if (!orgClientId.trim()) { dispatch(setMessage(t('developerAPIs.orgClientIdRequired'))); return; }
                     if (!orgClientSecret.trim()) { dispatch(setMessage(t('developerAPIs.orgClientSecretRequired'))); return; }
-                    createOrgOAuth2Client(
-                      { name: orgClientName.trim(), client_id: orgClientId.trim(), client_secret: orgClientSecret.trim(), description: orgClientDescription.trim() || undefined },
-                      {
-                        onSuccess: () => { setOpenOrgOAuthConfig(false); },
-                        onError: () => dispatch(setMessage(t('error.generic')))
-                      }
-                    );
+                    openPasswordDialog('orgOAuth2Create');
                   }}
                   disabled={isCreatingOrgOAuth || !orgClientName.trim() || !orgClientId.trim() || !orgClientSecret.trim()}
                   sx={{ minWidth: 120 }}
@@ -862,13 +972,7 @@ export default function DeveloperAPIs() {
                     if (!orgClientName.trim()) { dispatch(setMessage(t('developerAPIs.orgClientNameRequired'))); return; }
                     if (!orgClientId.trim()) { dispatch(setMessage(t('developerAPIs.orgClientIdRequired'))); return; }
                     if (!orgClientSecret.trim()) { dispatch(setMessage(t('developerAPIs.orgClientSecretRequired'))); return; }
-                    updateOrgOAuth2Client(
-                      { clientId: orgOAuthClient.id, name: orgClientName.trim(), client_id: orgClientId.trim(), client_secret: orgClientSecret.trim(), description: orgClientDescription.trim() || undefined },
-                      {
-                        onSuccess: () => { setOpenOrgOAuthConfig(false); },
-                        onError: () => dispatch(setMessage(t('error.generic')))
-                      }
-                    );
+                    openPasswordDialog('orgOAuth2Update');
                   }}
                   disabled={isUpdatingOrgOAuth || !orgClientName.trim() || !orgClientId.trim() || !orgClientSecret.trim()}
                   sx={{
@@ -1114,21 +1218,14 @@ export default function DeveloperAPIs() {
         isPending={isDeletingSS}
       />
 
-      <DeleteOrganisationOAuthClientModal
-        open={openDeleteOrgOAuthModal}
-        setOpen={setOpenDeleteOrgOAuthModal}
-        isPending={isDeletingOrgOAuth}
-        onConfirm={() => {
-          const id = orgOAuthClient?.id;
-          if (!id) return;
-          deleteOrgOAuth2Client({ clientId: id }, {
-            onSuccess: () => {
-              setOpenDeleteOrgOAuthModal(false);
-              setOpenOrgOAuthConfig(false);
-            },
-            onError: () => dispatch(setMessage(t('error.generic')))
-          });
-        }}
+      <PasswordConfirmDialog
+        open={passwordDialogOpen}
+        onClose={closePasswordDialog}
+        onConfirm={handlePasswordConfirm}
+        isPending={isSavingWalletConfig || isCreatingOrgOAuth || isUpdatingOrgOAuth || isDeletingOrgOAuth}
+        error={passwordError}
+        title={pendingAction === 'orgOAuth2Delete' ? t('developerAPIs.orgOauth2DeleteModal.title') : undefined}
+        description={pendingAction === 'orgOAuth2Delete' ? t('developerAPIs.orgOauth2DeletePasswordDescription') : undefined}
       />
 
     </Container>

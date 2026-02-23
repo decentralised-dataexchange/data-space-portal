@@ -177,19 +177,21 @@ export const apiService = {
     return api.get<OrganisationOAuth2ExternalClientsListResponse>(ENDPOINTS.getOrganisationOAuth2ClientsExternal())
       .then(res => res.data);
   },
-  createOrganisationOAuth2ClientExternal: async (payload: { name: string; client_id: string; client_secret: string; description?: string }): Promise<OrganisationOAuth2ExternalClientResponse> => {
+  createOrganisationOAuth2ClientExternal: async (payload: { name: string; client_id: string; client_secret: string; description?: string; password: string }): Promise<OrganisationOAuth2ExternalClientResponse> => {
     return api.post<OrganisationOAuth2ExternalClientResponse>(ENDPOINTS.createOrganisationOAuth2ClientExternal(), payload)
       .then(res => res.data);
   },
   updateOrganisationOAuth2ClientExternal: async (
     clientId: string,
-    payload: { name: string; client_id: string; client_secret: string; description?: string }
+    payload: { name: string; client_id: string; client_secret: string; description?: string; password: string }
   ): Promise<OrganisationOAuth2ExternalClientResponse> => {
     return api.put<OrganisationOAuth2ExternalClientResponse>(ENDPOINTS.updateOrganisationOAuth2ClientExternal(clientId), payload)
       .then(res => res.data);
   },
-  deleteOrganisationOAuth2ClientExternal: async (clientId: string): Promise<void> => {
-    return api.delete<void>(ENDPOINTS.deleteOrganisationOAuth2ClientExternal(clientId))
+  deleteOrganisationOAuth2ClientExternal: async (clientId: string, password: string): Promise<void> => {
+    return api.delete<void>(ENDPOINTS.deleteOrganisationOAuth2ClientExternal(clientId), {
+      headers: { 'X-Confirm-Password': password },
+    })
       .then(res => res.data as unknown as void);
   },
   listDataDisclosureAgreements: async (
@@ -465,6 +467,17 @@ export const apiService = {
       .catch(error => {
         throw error;
       });
+  },
+
+  // Wallet configuration (password-protected)
+  updateWalletConfig: async (payload: {
+    password: string;
+    verificationRequestURLPrefix: string;
+    credentialOfferEndpoint: string;
+    accessPointEndpoint: string;
+  }): Promise<any> => {
+    return api.put<any>(ENDPOINTS.walletConfig(), payload)
+      .then(res => res.data);
   },
 
   // Password reset

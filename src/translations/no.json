@@ -341,7 +341,14 @@
     "signAction": "Signert",
     "unsignAction": "Usignert",
     "imageAlt": "Bilde",
-    "itemsPerPage": "Elementer per side"
+    "itemsPerPage": "Elementer per side",
+    "passwordConfirm": {
+      "title": "Bekreft passord",
+      "description": "Skriv inn passordet ditt for å bekrefte denne endringen.",
+      "placeholder": "Skriv inn passordet ditt",
+      "confirm": "Bekreft",
+      "required": "Passord er påkrevd."
+    }
   },
   "languages": {
     "en": "Engelsk",
@@ -635,6 +642,7 @@
       "confirmText": "DELETE",
       "confirmButton": "Slett"
     },
+    "orgOauth2DeletePasswordDescription": "Du er i ferd med å slette en eksisterende OAuth 2.0-klient. Dette kan ikke angres. Skriv inn passordet ditt for å bekrefte.",
     "deploymentStatusLabel": "Driftsstatus:",
     "notConfiguredLabel": "Ikke konfigurert",
     "owsBaseUrlRequired": "Bedriftslommebok-adresse er påkrevd",

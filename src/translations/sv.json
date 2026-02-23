@@ -341,7 +341,14 @@
     "signAction": "Signerad",
     "unsignAction": "Osignerad",
     "imageAlt": "Bild",
-    "itemsPerPage": "Objekt per sida"
+    "itemsPerPage": "Objekt per sida",
+    "passwordConfirm": {
+      "title": "Bekräfta lösenord",
+      "description": "Ange ditt lösenord för att bekräfta denna ändring.",
+      "placeholder": "Ange ditt lösenord",
+      "confirm": "Bekräfta",
+      "required": "Lösenord krävs."
+    }
   },
   "languages": {
     "en": "Engelska",
@@ -635,6 +642,7 @@
       "confirmText": "DELETE",
       "confirmButton": "Ta bort"
     },
+    "orgOauth2DeletePasswordDescription": "Du ska ta bort en befintlig OAuth 2.0-klient. Detta kan inte ångras. Ange ditt lösenord för att bekräfta.",
     "deploymentStatusLabel": "Driftstatus:",
     "notConfiguredLabel": "Ej konfigurerad",
     "owsBaseUrlRequired": "Adress till företagsplånbok krävs",

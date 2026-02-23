@@ -153,5 +153,8 @@ export const ENDPOINTS = {
     },
     signCodeOfConduct: () => {
         return "/config/organisation/code-of-conduct";
+    },
+    walletConfig: () => {
+        return "/config/organisation/wallet-config/";
     }
 };

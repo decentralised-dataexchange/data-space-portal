@@ -341,7 +341,14 @@
     "signAction": "Signed",
     "unsignAction": "Unsigned",
     "imageAlt": "Image",
-    "itemsPerPage": "Items per page"
+    "itemsPerPage": "Items per page",
+    "passwordConfirm": {
+      "title": "Confirm Password",
+      "description": "Please enter your password to confirm this change.",
+      "placeholder": "Enter your password",
+      "confirm": "Confirm",
+      "required": "Password is required."
+    }
   },
   "languages": {
     "en": "English",
@@ -635,6 +642,7 @@
       "confirmText": "DELETE",
       "confirmButton": "Delete"
     },
+    "orgOauth2DeletePasswordDescription": "You are about to delete an existing Organisation OAuth 2.0 client. This action is not reversible. Please enter your password to confirm.",
     "deploymentStatusLabel": "Deployment Status:",
     "notConfiguredLabel": "Not Configured",
     "owsBaseUrlRequired": "Business Wallet Address is required",

@@ -341,7 +341,14 @@
     "signAction": "Allekirjoitettu",
     "unsignAction": "Allekirjoittamaton",
     "imageAlt": "Kuva",
-    "itemsPerPage": "Kohdetta sivulla"
+    "itemsPerPage": "Kohdetta sivulla",
+    "passwordConfirm": {
+      "title": "Vahvista salasana",
+      "description": "Anna salasanasi vahvistaaksesi tämän muutoksen.",
+      "placeholder": "Syötä salasanasi",
+      "confirm": "Vahvista",
+      "required": "Salasana vaaditaan."
+    }
   },
   "languages": {
     "en": "Englanti",
@@ -635,6 +642,7 @@
       "confirmText": "DELETE",
       "confirmButton": "Poista"
     },
+    "orgOauth2DeletePasswordDescription": "Olet poistamassa olemassa olevaa organisaation OAuth 2.0 -asiakasta. Tätä toimintoa ei voi peruuttaa. Anna salasanasi vahvistaaksesi.",
     "deploymentStatusLabel": "Käyttöönoton tila:",
     "notConfiguredLabel": "Ei määritetty",
     "owsBaseUrlRequired": "Yrityslompakon osoite vaaditaan",

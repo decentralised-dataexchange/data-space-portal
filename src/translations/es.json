@@ -341,7 +341,14 @@
     "signAction": "Firmado",
     "unsignAction": "Sin firmar",
     "imageAlt": "Imagen",
-    "itemsPerPage": "Ítems por página"
+    "itemsPerPage": "Ítems por página",
+    "passwordConfirm": {
+      "title": "Confirmar contraseña",
+      "description": "Ingrese su contraseña para confirmar este cambio.",
+      "placeholder": "Ingrese su contraseña",
+      "confirm": "Confirmar",
+      "required": "Se requiere contraseña."
+    }
   },
   "languages": {
     "en": "Inglés",
@@ -635,6 +642,7 @@
       "confirmText": "DELETE",
       "confirmButton": "Borrar"
     },
+    "orgOauth2DeletePasswordDescription": "Está a punto de borrar un cliente OAuth 2.0 existente. Esta acción es irreversible. Ingrese su contraseña para confirmar.",
     "deploymentStatusLabel": "Estado despliegue:",
     "notConfiguredLabel": "No configurado",
     "owsBaseUrlRequired": "Dirección wallet empresa requerida",

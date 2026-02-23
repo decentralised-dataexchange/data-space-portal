@@ -151,7 +151,7 @@ export const useGetOrganisationOAuth2ClientsExternal = () => {
 
 export const useCreateOrganisationOAuth2ClientExternal = () => {
   const queryClient = useQueryClient();
-  return useMutation<OrganisationOAuth2ExternalClientResponse, unknown, { name: string; client_id: string; client_secret: string; description?: string }>({
+  return useMutation<OrganisationOAuth2ExternalClientResponse, unknown, { name: string; client_id: string; client_secret: string; description?: string; password: string }>({
     mutationFn: async (payload) => {
       try {
         return await apiService.createOrganisationOAuth2ClientExternal(payload);
@@ -169,10 +169,10 @@ export const useCreateOrganisationOAuth2ClientExternal = () => {
 
 export const useUpdateOrganisationOAuth2ClientExternal = () => {
   const queryClient = useQueryClient();
-  return useMutation<OrganisationOAuth2ExternalClientResponse, unknown, { clientId: string; name: string; client_id: string; client_secret: string; description?: string }>({
-    mutationFn: async ({ clientId, name, client_id, client_secret, description }) => {
+  return useMutation<OrganisationOAuth2ExternalClientResponse, unknown, { clientId: string; name: string; client_id: string; client_secret: string; description?: string; password: string }>({
+    mutationFn: async ({ clientId, name, client_id, client_secret, description, password }) => {
       try {
-        return await apiService.updateOrganisationOAuth2ClientExternal(clientId, { name, client_id, client_secret, description });
+        return await apiService.updateOrganisationOAuth2ClientExternal(clientId, { name, client_id, client_secret, description, password });
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to update Organisation OAuth2 client (external)';
         console.error('Error in updateOrganisationOAuth2ClientExternal:', errorMessage, error);
@@ -188,10 +188,10 @@ export const useUpdateOrganisationOAuth2ClientExternal = () => {
 
 export const useDeleteOrganisationOAuth2ClientExternal = () => {
   const queryClient = useQueryClient();
-  return useMutation<void, unknown, { clientId: string }>({
-    mutationFn: async ({ clientId }) => {
+  return useMutation<void, unknown, { clientId: string; password: string }>({
+    mutationFn: async ({ clientId, password }) => {
       try {
-        return await apiService.deleteOrganisationOAuth2ClientExternal(clientId);
+        return await apiService.deleteOrganisationOAuth2ClientExternal(clientId, password);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to delete Organisation OAuth2 client (external)';
         console.error('Error in deleteOrganisationOAuth2ClientExternal:', errorMessage, error);
@@ -275,6 +275,19 @@ export const useUpdateOrganisation = () => {
     },
     onSuccess: () => {
       // Refetch organisation details
+      queryClient.invalidateQueries({ queryKey: ['organizationDetails'] });
+    }
+  });
+};
+
+// Hook to update wallet configuration (password-protected)
+export const useUpdateWalletConfig = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, unknown, { password: string; verificationRequestURLPrefix: string; credentialOfferEndpoint: string; accessPointEndpoint: string }>({
+    mutationFn: async (payload) => {
+      return apiService.updateWalletConfig(payload);
+    },
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['organizationDetails'] });
     }
   });
