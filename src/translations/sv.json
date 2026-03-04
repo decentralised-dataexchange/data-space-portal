@@ -346,7 +346,8 @@
     "generic": "Något gick fel.",
     "imageUpdate": "Fel vid uppdatering av bild. Försök igen.",
     "imageRead": "Fel vid läsning av bilddata",
-    "imageProcess": "Fel vid bearbetning av beskuren bild"
+    "imageProcess": "Fel vid bearbetning av beskuren bild",
+    "maxFileSize": "är den maximala tillåtna filstorleken."
   },
   "verification": {
     "connect": {

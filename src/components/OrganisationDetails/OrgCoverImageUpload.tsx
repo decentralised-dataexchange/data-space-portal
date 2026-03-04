@@ -6,6 +6,7 @@ import { defaultCoverImage } from "@/constants/defalultImages";
 import { GenericImageUpload } from "@/components/common/ImageUpload";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { maxCoverImageFileSize } from "@/constants/dimensions";
 
 const BannerContainer = styled("div")({
   height: 200,
@@ -71,6 +72,7 @@ const OrgCoverImageUpload = (props: Props) => {
         // Keep banner fully opaque in edit mode; avoid washed-out look
         imageStyle={{ opacity: 1 }}
         alwaysShowIcon
+        maxFileSize={maxCoverImageFileSize}
       />
     </BannerContainer>
   );

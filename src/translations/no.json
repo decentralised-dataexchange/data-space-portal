@@ -346,7 +346,8 @@
     "generic": "Noe gikk galt.",
     "imageUpdate": "Feil ved oppdatering av bilde. Prøv igjen.",
     "imageRead": "Feil ved lesing av bildedata",
-    "imageProcess": "Feil ved behandling av beskåret bilde"
+    "imageProcess": "Feil ved behandling av beskåret bilde",
+    "maxFileSize": "er maksimalt tillatt bildefilstørrelse."
   },
   "verification": {
     "connect": {

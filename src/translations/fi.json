@@ -346,7 +346,8 @@
     "generic": "Jotain meni pieleen.",
     "imageUpdate": "Virhe kuvan päivityksessä. Yritä uudelleen.",
     "imageRead": "Virhe kuvan lukemisessa",
-    "imageProcess": "Virhe rajatun kuvan käsittelyssä"
+    "imageProcess": "Virhe rajatun kuvan käsittelyssä",
+    "maxFileSize": "on enintään sallitun kuvatiedostoksi"
   },
   "verification": {
     "connect": {

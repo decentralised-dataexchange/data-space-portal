@@ -7,6 +7,9 @@ export const IMAGE_DIMENSIONS = {
   IMAGE_QUALITY: 0.82,
 } as const;
 
+export const maxCoverImageFileSize = 1024 * 1024;
+export const maxLogoImageFileSize = 1024 * 1024;
+
 // Timeouts (in milliseconds)
 export const TIMEOUTS = {
   API_REQUEST: 15000,

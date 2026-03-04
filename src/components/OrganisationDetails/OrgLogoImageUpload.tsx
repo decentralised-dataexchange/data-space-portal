@@ -5,6 +5,7 @@ import { GenericImageUpload } from '@/components/common/ImageUpload';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGetLogoImage } from '@/custom-hooks/gettingStarted';
 import { useTranslations } from 'next-intl';
+import { maxLogoImageFileSize } from '@/constants/dimensions';
 
 // Temporary default logo image
 const defaultLogoImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
@@ -85,6 +86,7 @@ const OrgLogoImageUpload = (props: Props) => {
           imageStyle={{ display: 'none' }}
           iconPosition={{ top: '35px', right: '35px' }}
           alwaysShowIcon
+          maxFileSize={maxLogoImageFileSize}
         />
       </Box>
     </Box>

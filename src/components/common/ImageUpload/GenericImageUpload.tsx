@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ImageCropModal from './ImageCropModal';
 import { useAppDispatch } from '@/custom-hooks/store';
@@ -30,6 +30,7 @@ interface GenericImageUploadProps {
   acceptedFileTypes?: string;
   // When true, the edit (pencil) icon is shown even if editMode is false
   alwaysShowIcon?: boolean;
+  maxFileSize?: number;
 }
 
 const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
@@ -50,11 +51,13 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
   modalSize,
   acceptedFileTypes = 'image/jpeg,image/jpg,image/png,image/webp',
   alwaysShowIcon = false,
+  maxFileSize = 1024 * 1024,
 }) => {
   const t = useTranslations();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [maxFileSizeError, setMaxFileSizeError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
   const handleIconClick = (e: React.MouseEvent) => {
@@ -73,6 +76,11 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
 
   // Handle file selection from the modal's browse button
   const handleFileSelect = (file: File) => {
+    if (file.size > maxFileSize) {
+      setMaxFileSizeError(`${(maxFileSize / 1024).toFixed(2)}MB ${t('errors.maxFileSize')}`);
+      return;
+    }
+    setMaxFileSizeError(null);
     const reader = new FileReader();
     
     reader.onload = () => {
@@ -144,6 +152,25 @@ const GenericImageUpload: React.FC<GenericImageUploadProps> = ({
           ...imageStyle
         }}
       />
+      
+      {maxFileSizeError && (
+        <Typography
+          variant="caption"
+          color="error"
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            padding: '4px 8px',
+            textAlign: 'center',
+            fontSize: '0.75rem',
+          }}
+        >
+          {maxFileSizeError}
+        </Typography>
+      )}
       
       {(editMode || alwaysShowIcon) && (
         <>

@@ -346,7 +346,8 @@
     "generic": "Algo salió mal.",
     "imageUpdate": "Error actualizando imagen. Inténtelo de nuevo.",
     "imageRead": "Error leyendo datos de imagen",
-    "imageProcess": "Error procesando imagen recortada"
+    "imageProcess": "Error procesando imagen recortada",
+    "maxFileSize": "es el tamaño máximo permitido para el archivo de imagen."
   },
   "verification": {
     "connect": {

@@ -346,7 +346,8 @@
     "generic": "Something went wrong.",
     "imageUpdate": "Error updating image. Please try again.",
     "imageRead": "Error reading image data",
-    "imageProcess": "Error processing cropped image"
+    "imageProcess": "Error processing cropped image",
+    "maxFileSize": "is the maximum allowed image file size."
   },
   "verification": {
     "connect": {
