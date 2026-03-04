@@ -56,5 +56,13 @@
     "eslint-plugin-security": "^3.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@swagger-api/apidom-reference": {
+      "minimatch": "7.4.8"
+    },
+    "@scalar/openapi-parser": {
+      "ajv": "8.18.0"
+    }
   }
 }
