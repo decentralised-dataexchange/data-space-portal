@@ -1,137 +1,128 @@
-// Right Sidebar Styles
+// Right Sidebar Styles — Apple-like design
 .right-sidebar {
-  // Ensure proper stacking context
-  z-index: 1300; // Higher than app bar to avoid cutoff
-  
-  // Header styles
+  z-index: 1300;
+
+  // Header
   .right-sidebar-header {
-    // Match the design system's dark header
-    background-color: #03182b;
-    color: #F3F3F6;
+    background-color: #1d1d1f;
+    color: #f5f5f7;
     border-radius: 0;
-    
-    // Ensure title text handles overflow gracefully
+
     .MuiTypography-root {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
-    
-    // Close button hover state
+
     .MuiIconButton-root {
-      transition: background-color 0.2s ease-in-out;
-      
+      transition: background-color 0.2s ease;
+
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgba(255, 255, 255, 0.12);
       }
     }
   }
 
-  // When a banner (with avatar overlay) is present, add extra gap before content
+  // Banner gap
   .right-sidebar-banner + .right-sidebar-content {
     margin-top: 12px;
   }
-  
-  // Ensure consistent avatar size only within right sidebars
+
   .right-sidebar-banner {
     .MuiAvatar-root {
       width: 110px !important;
       height: 110px !important;
+      border: 4px solid white !important;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
     }
   }
-  
-  // Content area
+
+  // Content
   .right-sidebar-scroller {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background-color: #F7F6F6;
+    background-color: #fafafa;
   }
 
   .right-sidebar-content {
-    // Add some breathing room for content
-    padding: 12px;
-    background-color: #F7F6F6;
+    padding: 16px;
+    background-color: #fafafa;
     border-radius: 0;
-    
-    // Ensure proper spacing between elements
+
     > * + * {
       margin-top: 12px;
     }
-    
-    // Form elements spacing
+
     .MuiFormControl-root {
       margin-bottom: 12px;
-      
+
       &:last-child {
         margin-bottom: 0;
       }
     }
   }
-  
-  // Footer styles
+
+  // Footer
   .right-sidebar-footer {
-    // Match the design system's footer
-    border-top: 1px solid #E9ECEF;
-    background-color: #FFFFFF;
-    padding: 12px 16px;
-    border-radius: 0 0 7px 0;
-    
-    // Align cancel left and confirm right with consistent spacing
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 0;
     display: flex;
     justify-content: space-between;
-    gap: 16px;
-    
-    // Ensure buttons have consistent height
+    gap: 12px;
+
     .MuiButton-root {
       min-width: 120px;
-      text-transform: none;
-      border-radius: 7px; // restore original rounded buttons for RightSidebar
-      
-      // Primary button style
+      text-transform: none !important;
+      border-radius: 980px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      padding: 8px 24px;
+      transition: all 0.2s ease;
+
       &.MuiButton-contained {
-        background-color: #1976d2;
-        color: #FFFFFF;
-        
+        background-color: #1d1d1f;
+        color: #ffffff;
+
         &:hover {
-          background-color: #1565c0;
+          background-color: #000000;
         }
       }
-      
-      // Secondary button style
+
       &.MuiButton-outlined {
-        border-color: #DFDFDF;
-        color: #000000;
-        
+        border-color: #d2d2d7;
+        color: #1d1d1f;
+        background: white;
+
         &:hover {
-          background-color: black;
-          color: white;
-          border-color: black;
+          background: #f5f5f7;
+          border-color: #1d1d1f;
         }
       }
     }
   }
-  
-  // Responsive adjustments
+
+  // Responsive
   @media (max-width: 600px) {
-    // Full width on mobile
     .MuiDrawer-paper {
       width: 100% !important;
     }
-    
-    // Adjust padding for mobile
+
     .right-sidebar-content {
       padding: 12px;
     }
   }
-  
-  // Print styles
+
   @media print {
-    // Hide the sidebar when printing
     display: none !important;
   }
 }
 
-// Animation for the drawer
+// Slide-in animation
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
@@ -141,8 +132,7 @@
   }
 }
 
-// Apply the animation
 .MuiDrawer-paperAnchorRight {
-  animation: slideInRight 0.3s ease-out;
+  animation: slideInRight 0.25s ease-out;
 }
 

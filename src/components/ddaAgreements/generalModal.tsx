@@ -2,15 +2,14 @@
 
 import * as React from "react";
 import { useState } from "react";
-import { Drawer, Typography, Button, Box, TextField, CircularProgress } from "@mui/material";
-import { XIcon } from "@phosphor-icons/react";
+import { Typography, Button, Box, TextField, CircularProgress } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useDeleteDDA } from "@/custom-hooks/dataDisclosureAgreements";
-import styles from "./generalModal.module.scss";
-// Define the minimal required type for selectedData
+import RightSidebar from "@/components/common/RightSidebar";
+
 interface DDAItem {
   templateId: string;
-  purpose?: string; // Made optional to handle cases where it might be undefined
+  purpose?: string;
 }
 
 interface Props {
@@ -63,91 +62,109 @@ export default function GeneralModal({
     }
   };
 
+  const headerContent = (
+    <Box sx={{ width: "100%" }}>
+      <Typography noWrap sx={{ fontSize: '16px', color: '#f5f5f7', fontWeight: 600, letterSpacing: '-0.01em' }}>
+        {headerText}{selectedData?.purpose ? `: ${selectedData.purpose}` : ''}{selectedData?.templateId ? ` - ${selectedData.templateId}` : ''}
+      </Typography>
+    </Box>
+  );
+
+  const footerContent = (
+    <Box sx={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+      <Button
+        variant="outlined"
+        onClick={handleClose}
+        className="delete-btn"
+        disabled={isPending}
+        sx={{
+          '&.Mui-disabled': {
+            cursor: 'not-allowed',
+            pointerEvents: 'auto'
+          }
+        }}
+      >
+        {t("common.cancel")}
+      </Button>
+      <Box sx={{ position: 'relative', display: 'inline-block', cursor: (!isOk || isPending) ? 'not-allowed' : 'auto' }}>
+        {(!isOk || isPending) && (
+          <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              cursor: 'not-allowed',
+              zIndex: 1,
+              pointerEvents: 'auto'
+            }}
+          />
+        )}
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={handleSubmit}
+          disabled={!isOk || isPending}
+          className="delete-btn"
+          sx={{
+            '&.Mui-disabled': {
+              cursor: 'not-allowed',
+              pointerEvents: 'auto',
+              backgroundColor: '#e8e8ed !important',
+              color: '#86868b !important',
+              borderColor: '#e8e8ed !important',
+            }
+          }}
+        >
+          {confirmButtonText}
+        </Button>
+      </Box>
+    </Box>
+  );
+
   return (
-    <Drawer
-      anchor="right"
+    <RightSidebar
       open={open}
       onClose={handleClose}
-      className={styles['dd-modal']}
+      headerContent={headerContent}
+      footerContent={footerContent}
+      width={580}
+      maxWidth={580}
+      className="drawer-dda"
     >
-      <Box className={styles['dd-modal-container']}>
-        <Box className={styles['dd-modal-header']}>
-          <Typography sx={{ fontSize: '16px' }}>
-            {headerText}{selectedData?.purpose ? `: ${selectedData.purpose}` : ''}{selectedData?.templateId ? ` - ${selectedData.templateId}` : ''}
-          </Typography>
-          <Button onClick={handleClose} className={styles['close-btn']}>
-            <XIcon size={24} />
-          </Button>
+      <Box sx={{ pt: 1 }}>
+        <Box sx={{ mb: 3, color: '#1d1d1f', fontSize: '0.875rem', lineHeight: 1.6 }}>
+          {modalDescriptionText}
         </Box>
-        <Box className={styles['dd-modal-body']}>
-          <Box className={styles['dd-modal-description']}>
-            {modalDescriptionText}
-          </Box>
-          <Box className={styles['dd-modal-input']}>
-            <TextField
-              fullWidth
-              value={confirmationTextInput}
-              onChange={handleCancelConfirmationText}
-              placeholder={`Type "${confirmText}" to confirm`}
-              variant="outlined"
-              size="small"
-              InputProps={{
-                disableUnderline: false,
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'rgba(0, 0, 0, 0.87)',
-                },
-              }}
-            />
-          </Box>
-        </Box>
-        <Box className={styles['dd-modal-footer']}>
-          <Button
+        <Box sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            value={confirmationTextInput}
+            onChange={handleCancelConfirmationText}
+            placeholder={`Type "${confirmText}" to confirm`}
             variant="outlined"
-            onClick={handleClose}
-            className={styles['cancel-btn']}
-            disabled={isPending}
+            size="small"
             sx={{
-              '&.Mui-disabled': {
-                cursor: 'not-allowed',
-                pointerEvents: 'auto'
-              }
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#d2d2d7',
+                  transition: 'border-color 0.2s ease',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#86868b',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#1d1d1f',
+                  borderWidth: '1px',
+                },
+                '& .MuiOutlinedInput-input': {
+                  color: '#1d1d1f',
+                  padding: '12px 14px',
+                },
+              },
             }}
-          >
-            {t("common.cancel")}
-          </Button>
-          <Box sx={{ position: 'relative', display: 'inline-block', cursor: (!isOk || isPending) ? 'not-allowed' : 'auto' }}>
-            {(!isOk || isPending) && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  cursor: 'not-allowed',
-                  zIndex: 1,
-                  // ensure overlay captures hover to show cursor, but doesn't need to block since button is disabled
-                  pointerEvents: 'auto'
-                }}
-              />
-            )}
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleSubmit}
-              disabled={!isOk || isPending}
-              className={styles['confirm-btn']}
-              sx={{
-                '&.Mui-disabled': {
-                  cursor: 'not-allowed',
-                  pointerEvents: 'auto'
-                }
-              }}
-            >
-              {confirmButtonText}
-            </Button>
-          </Box>
+          />
         </Box>
       </Box>
-    </Drawer>
+    </RightSidebar>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useGetOrganisation, useGetOrgIdentity } from './gettingStarted';
+import { useGetOrganisation } from './gettingStarted';
 import { useAppSelector } from './store';
 
 /**
@@ -8,7 +8,7 @@ import { useAppSelector } from './store';
  * Redirects to /onboarding if:
  * - User is authenticated
  * - But hasn't signed the Code of Conduct yet
- * 
+ *
  * Use this hook in protected pages to ensure users complete onboarding before accessing the app.
  */
 export const useOnboardingGuard = () => {
@@ -16,8 +16,6 @@ export const useOnboardingGuard = () => {
   const { isAuthenticated, loading: authLoading } = useAppSelector(state => state.auth);
   const { data: organisationResponse, isLoading: orgLoading } = useGetOrganisation();
   const organisation = organisationResponse?.organisation;
-  const orgId = organisation?.id || 'current';
-  const { data: orgIdentity, isLoading: idLoading } = useGetOrgIdentity(orgId);
 
   useEffect(() => {
     // Wait for auth check to complete
@@ -26,29 +24,27 @@ export const useOnboardingGuard = () => {
     // Only check if user is authenticated
     if (!isAuthenticated) return;
 
-    // Wait for organisation and identity data to load
-    if (orgLoading || idLoading) return;
+    // Wait for organisation data to load
+    if (orgLoading) return;
 
     // If no organisation data, something is wrong - let them through for now
     // (they'll hit errors from protected APIs anyway)
     if (!organisation) return;
 
-    // Check if Code of Conduct is signed and identity is verified
+    // Check if Code of Conduct is signed
     const cocSigned = Boolean(organisation?.codeOfConduct);
-    const isVerified = Boolean((orgIdentity as any)?.verified || (orgIdentity as any)?.organisationalIdentity?.verified);
 
-    // If CoC is not signed or identity not verified, redirect to onboarding
-    if (!cocSigned || !isVerified) {
+    // If CoC is not signed, redirect to onboarding
+    if (!cocSigned) {
       router.push('/onboarding');
     }
-  }, [authLoading, isAuthenticated, orgLoading, idLoading, organisation, orgIdentity, router]);
+  }, [authLoading, isAuthenticated, orgLoading, organisation, router]);
 
   const cocSigned = Boolean(organisation?.codeOfConduct);
-  const isVerified = Boolean((orgIdentity as any)?.verified || (orgIdentity as any)?.organisationalIdentity?.verified);
 
   // Return loading state so components can show spinner if needed
   return {
-    isCheckingOnboarding: authLoading || orgLoading || idLoading,
-    onboardingComplete: cocSigned && isVerified,
+    isCheckingOnboarding: authLoading || orgLoading,
+    onboardingComplete: cocSigned,
   };
 };

@@ -33,40 +33,44 @@ const DetailsContainer = styled("div")({
   height: "auto",
   width: 'auto',
   borderRadius: 2,
-  backgroundColor: "#FFFFF",
+  backgroundColor: "transparent",
 });
 
 const Item = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   backgroundColor: "#fff",
-  padding: theme.spacing(1),
+  padding: theme.spacing(2),
   justifyContent: "center",
-  color: "#000",
+  color: "#1d1d1f",
   height: 'auto',
   minHeight: 90,
-  border: "1px solid #DFDFDF",
-  boxShadow: 'none',
-  transition: 'all 0.3s ease',
+  border: "1px solid rgba(0, 0, 0, 0.06)",
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  transition: 'all 0.25s ease',
   width: '100%',
   textAlign: 'center',
-  borderRadius: "7px",
+  borderRadius: "16px",
+  cursor: 'pointer',
   '&:hover': {
-    backgroundColor: 'rgb(245,245,245)',
-    border: "1px solid rgb(153,153,153)",
-    color: 'black',
+    backgroundColor: '#f5f5f7',
+    border: "1px solid rgba(0, 0, 0, 0.12)",
+    transform: 'translateY(-2px)',
+    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
     '& .MuiTypography-root': {
-      color: 'black',
+      color: '#1d1d1f',
     }
   },
   '& .MuiTypography-root': {
-    color: '#000',
-    fontSize: '14px',
+    color: '#1d1d1f',
+    fontSize: '0.9375rem',
+    fontWeight: 500,
     textAlign: 'center',
     width: '100%',
     padding: '6px 16px',
     margin: '8px 0 0 0',
-    textTransform: 'capitalize',
+    textTransform: 'none',
+    letterSpacing: '-0.01em',
   }
 }));
 

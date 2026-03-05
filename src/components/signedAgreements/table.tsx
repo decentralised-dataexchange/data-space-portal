@@ -158,7 +158,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                   <StyledTableCell sx={{ width: '140px' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                       {/* Signature Status Label */}
-                      <Box sx={{ fontSize: '14px', fontWeight: 'medium', color: 'rgba(0, 0, 0, 0.87)', whiteSpace: 'nowrap', marginRight: '10px' }}>
+                      <Box sx={{ fontSize: '0.8125rem', fontWeight: 500, color: '#1d1d1f', whiteSpace: 'nowrap', marginRight: '10px' }}>
                         {dsSig && dusSig ? t('signedAgreements.signatures.mutuallySigned') : 
                          dsSig ? t('signedAgreements.signatures.dataSourceSigned') : 
                          ''}
@@ -176,7 +176,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                               size="small"
                               onClick={() => dsSig && copy(dsSig, String(row?.id || rec?.id) + '-ds')}
                               disabled={!dsSig}
-                              sx={{ color: dsSig ? '#000' : '#BDBDBD', padding: '2px' }}
+                              sx={{ color: dsSig ? '#1d1d1f' : '#d2d2d7', padding: '2px' }}
                             >
                               <SignOutIcon size={16} />
                             </IconButton>
@@ -199,7 +199,7 @@ const SignedAgreementsTable: React.FC<Props> = ({
                               size="small"
                               onClick={() => dusSig && copy(dusSig, String(row?.id || rec?.id) + '-dus')}
                               disabled={!dusSig}
-                              sx={{ color: dusSig ? '#000' : '#BDBDBD', padding: '2px' }}
+                              sx={{ color: dusSig ? '#1d1d1f' : '#d2d2d7', padding: '2px' }}
                             >
                               <SignInIcon size={16} />
                             </IconButton>
@@ -211,12 +211,12 @@ const SignedAgreementsTable: React.FC<Props> = ({
                   <StyledTableCell>{formatLocalDate(row?.updatedAt || row?.createdAt)}</StyledTableCell>
                   <StyledTableCell align="center" sx={{ whiteSpace: 'nowrap', display: 'flex', justifyContent: 'center', gap: 1 }} style={{ border: 'none' }}>
                     <Tooltip title={t("signedAgreements.tooltipView")} placement="top">
-                      <IconButton aria-label="view" onClick={() => onView(row)} sx={{ color: '#000' }}>
+                      <IconButton aria-label="view" onClick={() => onView(row)} sx={{ color: '#1d1d1f' }}>
                         <EyeIcon size={17} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title={t('signedAgreements.table.tooltips.viewJson')} placement="top">
-                      <IconButton aria-label="view-json" onClick={() => openJsonViewer(row)} sx={{ color: '#000' }}>
+                      <IconButton aria-label="view-json" onClick={() => openJsonViewer(row)} sx={{ color: '#1d1d1f' }}>
                         <IntegrationInstructionsOutlinedIcon sx={{ fontSize: 19, color: 'inherit', opacity: 0.8 }} />
                       </IconButton>
                     </Tooltip>

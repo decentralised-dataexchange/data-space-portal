@@ -44,8 +44,8 @@ const titleAttrRestrictionStyle = {
   display: "grid",
   alignItems: "center",
   cursor: "pointer",
-  border: "1px solid #DFE0E1",
-  borderRadius: 5,
+  border: "1px solid #d2d2d7",
+  borderRadius: 12,
   padding: "12px",
 };
 
@@ -143,7 +143,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                   setOpen(false);
                 }}
               />
-              <Typography color="#F3F3F6" sx={{ fontSize: '16px' }}>{headerText}</Typography>
+              <Typography color="#f5f5f7" sx={{ fontSize: '16px', fontWeight: 600, letterSpacing: '-0.01em' }}>{headerText}</Typography>
             </Box>
             <XIcon
               size={22}
@@ -155,7 +155,7 @@ export default function DataAgreementPolicyCardModal(props: Props) {
             />
           </Box>
 
-          <Box className="dd-modal-details" style={{ paddingBottom: "70px", backgroundColor: '#F7F6F6' }}>
+          <Box className="dd-modal-details" style={{ paddingBottom: "70px", backgroundColor: '#fafafa' }}>
             <Box m={1.5}>
               <Typography variant="subtitle1" sx={{ fontSize: '16px', mb: 1 }}>
                 {t('dataAgreements.policy.dataControllerTitle')}
@@ -176,18 +176,18 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                   {t('signedAgreements.signatures.dataSourceSignature')}
                 </Typography>
                 <Box sx={{ mt: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, bgcolor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px'}}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, bgcolor: '#FFFFFF', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'}}>
                     {dsInfo.logoUrl ? (
                       <Avatar src={dsInfo.logoUrl} alt={dsInfo.name} sx={{ width: 50, height: 50 }} />
                     ) : (
-                      <Avatar sx={{ width: 50, height: 50 }}>{(dsInfo.name || '?').slice(0,1).toUpperCase()}</Avatar>
+                      <Avatar sx={{ width: 50, height: 50, bgcolor: '#e8e8ed', color: '#1d1d1f' }}>{(dsInfo.name || '?').slice(0,1).toUpperCase()}</Avatar>
                     )}
                     <Box>
-                      <Typography sx={{ fontWeight: 600, lineHeight: 1.2 }}>{dsInfo.name}</Typography>
-                      <Typography sx={{ color: 'text.secondary', fontSize: '0.9rem' }}>{dsInfo.country}</Typography>
+                      <Typography sx={{ fontWeight: 600, lineHeight: 1.2, color: '#1d1d1f' }}>{dsInfo.name}</Typography>
+                      <Typography sx={{ color: '#86868b', fontSize: '0.875rem' }}>{dsInfo.country}</Typography>
                     </Box>
                   </Box>
-                  <Typography sx={{ textAlign: 'center', mt: 1.5, color: 'text.secondary', fontSize: '0.9rem' }}>
+                  <Typography sx={{ textAlign: 'center', mt: 1.5, color: '#86868b', fontSize: '0.8125rem' }}>
                     {t('common.signAction')}: {formatLocalDateTime(dsSignedAt)}
                   </Typography>
                 </Box>
@@ -201,18 +201,18 @@ export default function DataAgreementPolicyCardModal(props: Props) {
                   {t('signedAgreements.signatures.dataUsingServiceSignature')}
                 </Typography>
                 <Box sx={{ mt: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, bgcolor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px', border: '1px solid #DFE0E1' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1.5, bgcolor: '#FFFFFF', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
                     {dusInfo.logoUrl ? (
                       <Avatar src={dusInfo.logoUrl} alt={dusInfo.name} sx={{ width: 50, height: 50 }} />
                     ) : (
-                      <Avatar sx={{ width: 50, height: 50 }}>{(dusInfo.name || '?').slice(0,1).toUpperCase()}</Avatar>
+                      <Avatar sx={{ width: 50, height: 50, bgcolor: '#e8e8ed', color: '#1d1d1f' }}>{(dusInfo.name || '?').slice(0,1).toUpperCase()}</Avatar>
                     )}
                     <Box>
-                      <Typography sx={{ fontWeight: 600, lineHeight: 1.2 }}>{dusInfo.name}</Typography>
-                      <Typography sx={{ color: 'text.secondary', fontSize: '0.9rem' }}>{dusInfo.country}</Typography>
+                      <Typography sx={{ fontWeight: 600, lineHeight: 1.2, color: '#1d1d1f' }}>{dusInfo.name}</Typography>
+                      <Typography sx={{ color: '#86868b', fontSize: '0.875rem' }}>{dusInfo.country}</Typography>
                     </Box>
                   </Box>
-                  <Typography sx={{ textAlign: 'center', mt: 1.5, color: 'text.secondary', fontSize: '0.9rem' }}>
+                  <Typography sx={{ textAlign: 'center', mt: 1.5, color: '#86868b', fontSize: '0.8125rem' }}>
                     {t('common.signAction')}: {formatLocalDateTime(dusSignedAt)}
                   </Typography>
                 </Box>

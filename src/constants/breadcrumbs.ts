@@ -64,6 +64,41 @@ export const BREADCRUMB_ROUTES: Record<string, BreadcrumbItem> = {
     path: '/signed-agreements',
     translationKey: 'breadcrumbs.signed-agreements',
     isClickable: true
+  },
+  'knowledge': {
+    path: '/knowledge',
+    translationKey: 'breadcrumbs.knowledge',
+    isClickable: true
+  },
+  'consent': {
+    path: '/knowledge/consent',
+    translationKey: 'breadcrumbs.knowledge-consent',
+    isClickable: true
+  },
+  'guides': {
+    path: '/knowledge/guides',
+    translationKey: 'breadcrumbs.knowledge-guides',
+    isClickable: true
+  },
+  'provider': {
+    path: '/knowledge/guides/provider',
+    translationKey: 'breadcrumbs.knowledge-guides-provider',
+    isClickable: true
+  },
+  'citizen': {
+    path: '/knowledge/guides/citizen',
+    translationKey: 'breadcrumbs.knowledge-guides-citizen',
+    isClickable: true
+  },
+  'tools': {
+    path: '/knowledge/tools',
+    translationKey: 'breadcrumbs.knowledge-tools',
+    isClickable: true
+  },
+  'faq': {
+    path: '/knowledge/faq',
+    translationKey: 'breadcrumbs.knowledge-faq',
+    isClickable: true
   }
 } as const;
 

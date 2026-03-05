@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .headerContent {
@@ -22,9 +22,10 @@
 .title {
   font-size: 20px;
   font-weight: 600;
-  color: #000;
+  color: #1d1d1f;
   margin: 0;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .subtitleContainer {
@@ -68,28 +69,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 48px 20px;
   text-align: center;
-  color: #666;
-  
+  color: #86868b;
+
   .emptyText {
     margin-bottom: 16px;
     font-size: 1rem;
   }
-  
+
   .addButton {
-    color: #000;
+    color: #1d1d1f;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-    
+    padding: 10px 20px;
+    border-radius: 980px;
+    border: 1px solid #d2d2d7;
+    transition: all 0.2s ease;
+
     &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: #f5f5f7;
+      border-color: #1d1d1f;
     }
 
     svg {

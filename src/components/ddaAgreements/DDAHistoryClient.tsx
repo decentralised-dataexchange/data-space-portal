@@ -8,15 +8,13 @@ import Table from "@mui/material/Table";
 import PaginationControls from "@/components/common/PaginationControls";
 import { useState, useMemo } from "react";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import { styled } from "@mui/system";
 import styles from "./ddaAgreements.module.scss";
-import CircularProgress from "@mui/material/CircularProgress";
+import { StyledTableCell, StyledTableRow } from "@/components/common/Table/StyledTable";
 import Tooltip from "@mui/material/Tooltip";
 import { getStatus } from "@/utils/dda";
 import { EyeIcon, SignOutIcon, SignInIcon } from "@phosphor-icons/react";
@@ -601,30 +599,6 @@ export default function DDAHistoryClient({ id }: { id: string }) {
     return id;
   }, [data, id]);
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      fontSize: "0.875rem",
-      fontWeight: "bold",
-      color: "rgba(0, 0, 0, 0.87)",
-      padding: "6px 16px",
-      border: "1px solid #D7D6D6",
-      backgroundColor: "#e5e4e4",
-      whiteSpace: 'nowrap',
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: "0.875rem",
-      fontWeight: "lighter",
-      color: "rgba(0, 0, 0, 0.87)",
-      padding: "6px 16px",
-      border: "1px solid #D7D6D6",
-      whiteSpace: 'nowrap',
-    },
-  }));
-
-  const StyledTableRow = styled(TableRow)({
-    border: "1px solid #D7D6D6",
-  });
-
   const formatLocalDate = (val?: string) => {
     if (!val) return "";
     const d = new Date(val);
@@ -647,7 +621,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
       </div>
 
       {error && (
-        <div style={{ color: "#b71c1c", border: "1px solid #f5c2c7", background: "#fdecea", padding: 12, borderRadius: 4, margin: "16px 0" }}>
+        <div style={{ color: "#b71c1c", border: "1px solid #f5c2c7", background: "#fdecea", padding: 12, borderRadius: 12, margin: "16px 0", fontSize: '0.875rem' }}>
           {t("common.errorOccurred")} {t("common.tryAgainLater")}
         </div>
       )}
@@ -688,7 +662,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                         <StyledTableCell sx={{ width: '140px' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                             {/* Signature Status Label */}
-                            <Box sx={{ fontSize: '14px', fontWeight: 'medium', color: 'rgba(0, 0, 0, 0.87)', whiteSpace: 'nowrap', marginRight: '10px' }}>
+                            <Box sx={{ fontSize: '0.8125rem', fontWeight: 500, color: '#1d1d1f', whiteSpace: 'nowrap', marginRight: '10px' }}>
                               {dsSig && dusSig ? t('dataAgreements.history.signatures.mutuallySigned') :
                                dsSig ? t('dataAgreements.history.signatures.dataSourceSigned') :
                                ''}
@@ -706,7 +680,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                                     size="small"
                                     onClick={() => dsSig && handleCopy(dsSig, String(row.revisionId || idx) + '-ds')}
                                     disabled={!dsSig}
-                                    sx={{ color: dsSig ? '#000' : '#BDBDBD', padding: '2px' }}
+                                    sx={{ color: dsSig ? '#1d1d1f' : '#d2d2d7', padding: '2px' }}
                                   >
                                     <SignOutIcon size={16} />
                                   </IconButton>
@@ -729,7 +703,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                                     size="small"
                                     onClick={() => dusSig && handleCopy(dusSig, String(row.revisionId || idx) + '-dus')}
                                     disabled={!dusSig}
-                                    sx={{ color: dusSig ? '#000' : '#BDBDBD', padding: '2px' }}
+                                    sx={{ color: dusSig ? '#1d1d1f' : '#d2d2d7', padding: '2px' }}
                                   >
                                     <SignInIcon size={16} />
                                   </IconButton>
@@ -743,7 +717,7 @@ export default function DDAHistoryClient({ id }: { id: string }) {
                           style={{ display: 'flex', justifyContent: 'center', gap: 8, border: 'none', whiteSpace: 'nowrap' }}
                         >
                           <Tooltip title={t("dataAgreements.table.tooltips.viewHistory")} placement="top">
-                            <IconButton aria-label="view" onClick={() => handleView(raw)} sx={{ color: '#000' }}>
+                            <IconButton aria-label="view" onClick={() => handleView(raw)} sx={{ color: '#1d1d1f' }}>
                               <EyeIcon size={17} />
                             </IconButton>
                           </Tooltip>

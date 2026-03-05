@@ -37,17 +37,21 @@ const DetailsContainer = styled("div")({
 
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
-  padding: "15px 30px",
+  padding: "20px 30px",
   height: "100%",
-  borderRadius: 2,
-  border: "1px solid #CECECE",
+  borderRadius: 16,
+  border: "1px solid rgba(0, 0, 0, 0.06)",
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
 }));
 
 const buttonStyle = {
-  height: 30,
+  height: 36,
   width: 100,
-  borderRadius: 0,
-  border: "1px solid #DFDFDF",
+  borderRadius: 980,
+  border: "1px solid #d2d2d7",
+  textTransform: 'none' as const,
+  fontSize: '0.8125rem',
+  fontWeight: 500,
 };
 
 const editStyleEnable: React.CSSProperties = {
@@ -216,9 +220,9 @@ const ManageAdmin = () => {
         </Typography>
         <Grid container spacing={2} sx={{ alignItems: 'stretch' }}>
           <Grid size={{lg: 7, md:6, sm:12, xs:12}} sx={{ display: 'flex' }}>
-            <Item sx={{ height: '100%', flex: 1, minHeight: { sm: 215 }, borderRadius:"7px", boxShadow:"rgba(0, 0, 0, 0.1) 0px 1px 4px" }}>
+            <Item sx={{ height: '100%', flex: 1, minHeight: { sm: 215 }, borderRadius: '16px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
               <Typography
-                color="black"
+                color="#1d1d1f"
                 variant="subtitle1"
                 fontWeight="bold"
                 mb={1}
@@ -332,10 +336,11 @@ const ManageAdmin = () => {
                       style={buttonStyle}
                       variant="outlined"
                       sx={{
-                        color: "black",
+                        color: "#1d1d1f",
                         "&:hover": {
-                          backgroundColor: "black",
-                          color: "white",
+                          backgroundColor: "#f5f5f7",
+                          color: "#1d1d1f",
+                          borderColor: "#1d1d1f",
                         },
                       }}
                     >
@@ -346,10 +351,11 @@ const ManageAdmin = () => {
                       variant="outlined"
                       onClick={onClickSave}
                       sx={{
-                        color: "black",
+                        color: "#1d1d1f",
                         "&:hover": {
-                          backgroundColor: "black",
-                          color: "white",
+                          backgroundColor: "#f5f5f7",
+                          color: "#1d1d1f",
+                          borderColor: "#1d1d1f",
                         },
                       }}
                     >
@@ -372,7 +378,7 @@ const ManageAdmin = () => {
                       variant="body2"
                       style={{
                         cursor: "pointer",
-                        color: "grey",
+                        color: "#86868b",
                       }}
                     >
                       {t("common.edit")}
@@ -383,8 +389,8 @@ const ManageAdmin = () => {
             </Item>
           </Grid>
           <Grid size={{lg: 5, md:6, sm:12, xs:12}} sx={{ display: 'flex' }}>
-            <Item sx={{ display: "grid", alignContent: "space-between", height: '100%', flex: 1, minHeight: { sm: 215 }, borderRadius:"7px", boxShadow:"rgba(0, 0, 0, 0.1) 0px 1px 4px" }}>
-              <Typography color="black" variant="subtitle1" fontWeight="bold">
+            <Item sx={{ display: "grid", alignContent: "space-between", height: '100%', flex: 1, minHeight: { sm: 215 }, borderRadius: '16px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
+              <Typography color="#1d1d1f" variant="subtitle1" fontWeight="bold">
                 {t("manageAdmin.userCredentials")}
               </Typography>
               <Box
@@ -470,7 +476,7 @@ const ManageAdmin = () => {
                   style={{
                     cursor: "pointer",
                     textAlign: "right",
-                    color: "grey",
+                    color: "#86868b",
                     width: "100%",
                   }}
                 >
@@ -482,11 +488,11 @@ const ManageAdmin = () => {
         </Grid>
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid size={{lg: 12, md: 12, sm: 12, xs: 12}} sx={{ display: 'flex' }}>
-            <Item sx={{ flex: 1, borderRadius: "7px", boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 4px" }}>
-              <Typography color="black" variant="subtitle1" fontWeight="bold" mb={1}>
+            <Item sx={{ flex: 1, borderRadius: '16px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
+              <Typography color="#1d1d1f" variant="subtitle1" fontWeight="bold" mb={1}>
                 {t("manageAdmin.mfaSection")}
               </Typography>
-              <Typography variant="body2" sx={{ color: "#666", mb: 2 }}>
+              <Typography variant="body2" sx={{ color: "#86868b", mb: 2 }}>
                 {t("manageAdmin.mfaDescription")}
               </Typography>
               <Box

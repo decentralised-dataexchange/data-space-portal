@@ -6,24 +6,31 @@ import { styled } from "@mui/system";
 
 export const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
-    fontSize: "0.875rem",
-    fontWeight: "bold",
-    color: "rgba(0, 0, 0, 0.87)",
-    padding: "6px 16px",
-    border: "1px solid #D7D6D6",
-    backgroundColor: "#e5e4e4",
+    fontSize: "0.8125rem",
+    fontWeight: 600,
+    color: "#1d1d1f",
+    padding: "10px 16px",
+    border: "none",
+    borderBottom: "1px solid #e8e8ed",
+    backgroundColor: "#f5f5f7",
     whiteSpace: 'nowrap',
+    letterSpacing: '-0.01em',
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: "0.875rem",
-    fontWeight: "lighter",
-    color: "rgba(0, 0, 0, 0.87)",
-    padding: "6px 16px",
-    border: "1px solid #D7D6D6",
+    fontSize: "0.8125rem",
+    fontWeight: 400,
+    color: "#1d1d1f",
+    padding: "10px 16px",
+    border: "none",
+    borderBottom: "1px solid #f0f0f0",
     whiteSpace: 'nowrap',
   },
 }));
 
 export const StyledTableRow = styled(TableRow)({
-  border: "1px solid #D7D6D6",
+  border: "none",
+  transition: 'background-color 0.15s ease',
+  '&:hover': {
+    backgroundColor: '#f5f5f7',
+  },
 });

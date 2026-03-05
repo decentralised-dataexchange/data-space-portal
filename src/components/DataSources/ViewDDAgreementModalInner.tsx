@@ -62,7 +62,7 @@ export default function ViewDataAgreementModalInner(props: Props) {
       </Typography>
       {mode !== "Create" && (
         <>
-          <Typography color="#F3F3F6" variant="body2" noWrap sx={{ fontSize: '12px' }}>
+          <Typography color="#f5f5f7" variant="body2" noWrap sx={{ fontSize: '12px', opacity: 0.7 }}>
             {selectedData?.templateId}
           </Typography>
         </>

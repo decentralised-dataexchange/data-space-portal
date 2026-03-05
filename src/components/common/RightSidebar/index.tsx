@@ -75,9 +75,9 @@ const Header = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: theme.spacing(1.5, 2),
-  backgroundColor: '#03182b',
-  color: '#F3F3F6',
+  padding: theme.spacing(1.5, 2.5),
+  backgroundColor: '#1d1d1f',
+  color: '#f5f5f7',
   minHeight: 64,
   flexShrink: 0,
   borderRadius: 0,
@@ -85,18 +85,18 @@ const Header = styled('div')(({ theme }) => ({
 
 const Content = styled('div')(({ theme }) => ({
   padding: theme.spacing(2),
-  backgroundColor: '#F7F6F6',
+  backgroundColor: '#fafafa',
 }));
 
 const Scroller = styled('div')(({ theme }) => ({
   flex: 1,
   overflow: 'auto',
-  backgroundColor: '#F7F6F6',
+  backgroundColor: '#fafafa',
 }));
 
 const Footer = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1.5, 2),
-  borderTop: '1px solid #E9ECEF',
+  padding: theme.spacing(1.5, 2.5),
+  borderTop: '1px solid rgba(0, 0, 0, 0.06)',
   backgroundColor: '#FFFFFF',
   position: 'sticky',
   bottom: 0,
@@ -106,13 +106,12 @@ const Footer = styled('div')(({ theme }) => ({
   gap: theme.spacing(1.5),
 }));
 
-// Banner component for organization details or other info that appears under the header
 const Banner = styled('div')(({ theme }) => ({
   backgroundColor: '#E6E6E6',
   padding: 0,
   flexShrink: 0,
   height: '194px',
-  borderRadius: '0 0 7px 7px',
+  borderRadius: 0,
 }));
 
 const RightSidebar = ({

@@ -5,6 +5,7 @@ import Footer from '@/components/common/Footer';
 import '../style.scss';
 import { usePathname } from 'next/navigation';
 import Breadcrumb from '@/components/common/Breadcrumb';
+import KnowledgeHubLink from '@/components/common/KnowledgeHubLink';
 import { APP_VERSION } from '@/constants/version';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -18,9 +19,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Box className="leftNavigationContainer">
         <Box component="main" sx={{ paddingTop: (isAuthRoute || isOnboardingRoute) ? 0 : '80px', flex: 1, backgroundColor: isAuthRoute ? '#FFFFFF' : 'transparent' }}>
           {!isAuthRoute && !isOnboardingRoute && (
-            <Suspense fallback={null}>
-              <Breadcrumb />
-            </Suspense>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Suspense fallback={null}>
+                <Breadcrumb />
+              </Suspense>
+              <KnowledgeHubLink />
+            </Box>
           )}
           {children}
         </Box>

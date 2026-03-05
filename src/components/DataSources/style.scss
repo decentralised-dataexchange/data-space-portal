@@ -3,15 +3,13 @@
 @use "../Home/style" as home;
 
 .drawer-dda {
-    // Target the backdrop
     .MuiBackdrop-root {
-        z-index: 1400 !important; // Higher than RightSidebar's 1300
+        z-index: 1400 !important;
     }
-    
-    // Target the paper component
+
     .MuiPaper-root {
-        z-index: 1500 !important; // Higher than backdrop
-        background-color: #F7F6F6 !important;
+        z-index: 1500 !important;
+        background-color: #fafafa !important;
         height: 100vh;
         width: 580px;
         max-width: 580px;
@@ -46,30 +44,29 @@
 /* Left panel: responsive header/logo sizing */
 .dataListContainer {
   .leftSection {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
-    border-radius: 7px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
     .card-header {
       position: relative;
-      height: 200px; /* Match reference banner height */
+      height: 200px;
       background-size: cover;
       background-position: center;
     }
     .logo {
-      /* Fixed avatar size across all view/read states */
-      width: 158px;
-      height: 158px;
+      width: 140px;
+      height: 140px;
       object-fit: cover;
       border-radius: 50%;
       position: absolute;
-      /* Center of the circle (including 5px border) sits on the bottom edge of the 200px banner:
-         outerHeight = 158 + 10 = 168; top = 200 - (168 / 2) = 116px */
-      top: 116px;
-      left: 10px;
-      border: 5px solid white;
+      top: 125px;
+      left: 16px;
+      border: 4px solid white;
       background-color: white;
-      /* Keep 158px on tablet/mobile as requested */
-      @include breakpoints.tabletOnly { top: 116px; }
-      @include breakpoints.mobileOnly { top: 116px; }
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      @include breakpoints.tabletOnly { top: 125px; }
+      @include breakpoints.mobileOnly { top: 125px; }
     }
   }
 }
@@ -88,24 +85,28 @@
 
 .dd-container {
     .dd-titleTxt {
-        font-weight: 700;
+        font-weight: 600;
         font-size: 1.25rem;
         margin: 0;
         line-height: 1.6;
-        letter-spacing: 0.0075em;
+        letter-spacing: -0.02em;
+        color: #1d1d1f;
     }
 
     th {
-        font-size: 0.875rem;
-        color: rgba(0, 0, 0, 0.87);
-        padding: 6px 16px;
-        font-weight: bold;
+        font-size: 0.8125rem;
+        color: #1d1d1f;
+        padding: 10px 16px;
+        font-weight: 600;
+        background-color: #f5f5f7;
+        border-bottom: 1px solid #e8e8ed;
     }
 
     td {
-        font-size: 0.875rem;
-        color: rgba(0, 0, 0, 0.87);
-        padding: 6px 16px 
+        font-size: 0.8125rem;
+        color: #1d1d1f;
+        padding: 10px 16px;
+        border-bottom: 1px solid #f0f0f0;
     }
     .actionBtnContainer {
         display: flex;
@@ -115,9 +116,8 @@
 }
 
 .dd-modal-container {
-    background-color: #F7F6F6; // Updated from white to match full sidebar background
+    background-color: #fafafa;
     height: 100vh;
-    background-color: #F7F6F6;
     margin-top: 0;
     width: 580px;
     max-width: 580px;
@@ -130,7 +130,7 @@
 
 .dd-modal-header {
     font-size: 16px;
-    background-color: #03182b;
+    background-color: #1d1d1f;
     display: flex;
     align-items: center;
     height: 80px;
@@ -152,7 +152,7 @@
 .dd-modal-details {
     width: 580px;
     border-radius: 2;
-    background-color: #FFFF;
+    background-color: #fafafa;
     @include breakpoints.tabletAndDown {
         margin-top: 0;
         width: 100%;
@@ -161,21 +161,27 @@
 
 .input-connected-data {
     width: 100%;
-    border: 1;
+    border: none;
     outline: none;
     font-size: 0.875rem;
-    color: #495057;
+    color: #1d1d1f;
     border-width: 0;
-    border-radius: 0;
-    background-color: #FFFF;
-    border-bottom: 2px solid #DFE0E1;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #d2d2d7;
+    padding: 10px 14px;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+        border-color: #1d1d1f;
+    }
 }
 
 .modal-footer {
   position: fixed;
   bottom: 0px;
   width: 580px;
-  border-top: 1px solid #E9ECEF;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   height: 65px;
   display: flex;
   align-items: center;
@@ -187,71 +193,92 @@
       width: 100%;
   }
 
-  // Standardize footer button look like other modals
   .MuiButton-root {
     min-width: 120px;
-    text-transform: unset;
-    border: 1px solid rgb(223, 223, 223);
+    text-transform: none !important;
+    border: 1px solid #d2d2d7;
     background: white;
-    border-radius: 0px;
-    color: #000;
+    border-radius: 980px;
+    color: #1d1d1f;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 8px 24px;
+    transition: all 0.2s ease;
 
     &:hover {
-      background: black;
-      color: white;
-      border-color: black;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      border-color: #1d1d1f;
     }
   }
 }
 
 .delete-btn {
-    height: 30px !important;
-    border-radius: 0 !important;
-    border: 1px solid #DFDFDF !important;
-    color: black !important;
+    height: auto !important;
+    border-radius: 980px !important;
+    border: 1px solid #d2d2d7 !important;
+    color: #1d1d1f !important;
+    text-transform: none !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    padding: 8px 24px !important;
+    transition: all 0.2s ease !important;
 
     &:hover {
-        background: black !important;
-        color: white !important;
-        border-color: black !important;
+        background: #f5f5f7 !important;
+        color: #1d1d1f !important;
+        border-color: #1d1d1f !important;
     }
-
 }
 
 .copy-connection-btn {
-    height: 30px !important;
-    // width: 150px !important;
-    border-radius: 0 !important;
+    height: auto !important;
+    border-radius: 980px !important;
 }
 
 .disable-btn {
-    height: 30px !important;
-    width: 150px !important;
-    border-radius: 0 !important;
-    border: 1px solid #EAEAEA !important;
-    opacity: 0.6;
-    color: rgba(0, 0, 0, 0.6);
+    height: auto !important;
+    width: auto !important;
+    border-radius: 980px !important;
+    border: 1px solid #e8e8ed !important;
+    background-color: #e8e8ed !important;
+    color: #86868b !important;
     cursor: not-allowed;
 }
 
 .dd-modal-header-text {
-    color: #F3F3F6;
+    color: #f5f5f7;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    font-weight: 600;
+    letter-spacing: -0.01em;
 }
 
 .dd-modal-header-icon {
     padding-right: 2;
     cursor: pointer;
-    color: #F3F3F6;
+    color: #f5f5f7;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
 }
 
-// Match older card button styling on DataSource read page
+// Match Apple-like card button styling on DataSource read page
 .dataListContainer {
   .cardContainerList {
-    border-radius: 7px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+
+    &:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
         .actionListingBtn {
             @include breakpoints.mobileOnly {
                 flex-direction: column;
@@ -273,13 +300,17 @@
             }
 
             .MuiButtonBase-root {
-                text-transform: unset;
-                border: 1px solid rgb(223, 223, 223);
+                text-transform: none;
+                border: 1px solid #d2d2d7;
                 background: white;
-                border-radius: 0px;
-                color: #000;
+                border-radius: 980px;
+                color: #1d1d1f;
                 margin-top: 8px;
-                padding: 5px 30px;
+                padding: 6px 24px;
+                font-size: 0.8125rem;
+                font-weight: 500;
+                letter-spacing: -0.01em;
+                transition: all 0.2s ease;
 
                 @include breakpoints.mobileOnly {
                     width: 100%;
@@ -287,9 +318,9 @@
             }
 
             .MuiButtonBase-root:hover {
-                background: black;
-                color: white;
-                border-color: black;
+                background: #f5f5f7;
+                color: #1d1d1f;
+                border-color: #1d1d1f;
             }
         }
     }

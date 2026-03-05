@@ -92,6 +92,7 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                         </Box>
                     )}
 
+                    <Box sx={{ marginLeft: 'auto' }} />
                     <MainAppBarMenu
                         firstName={adminData?.name || ''}
                         email={adminData?.email || ''}

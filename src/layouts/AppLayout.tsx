@@ -9,7 +9,7 @@ import Loader from '@/components/common/Loader';
 import SnackbarComponent from '@/components/notification';
 import { setSuccessMessage, setMessage } from '@/store/reducers/authReducer';
 import { publicRoutes } from '@/constants/routes';
-import { useGetOrganisation, useGetOrgIdentity } from '@/custom-hooks/gettingStarted';
+import { useGetOrganisation } from '@/custom-hooks/gettingStarted';
 import { isPublicRoute, getLocaleFromPathname, getPathnameWithoutLocale } from '@/lib/apiService/utils';
 import { LocalStorageService } from '@/utils/localStorageService';
 import { jwtDecode } from 'jwt-decode';
@@ -33,12 +33,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const pathWithoutLocale = getPathnameWithoutLocale(pathname);
   const isOnOnboarding = pathWithoutLocale.startsWith('/onboarding');
 
-  // Fetch organisation and org identity to gate onboarding after login
+  // Fetch organisation to gate onboarding after login
   const { data: orgRes, isLoading: orgLoading } = useGetOrganisation();
   const organisation = orgRes?.organisation;
-  const orgId = organisation?.id || 'current';
-  // Avoid duplicating identity fetch on onboarding pages; the Onboarding screen fetches and handles redirects/polling.
-  const { data: orgIdentity, isLoading: idLoading } = useGetOrgIdentity(orgId, !isOnOnboarding);
   // Helper to prefix a path with current locale if present
   const withLocale = (path: string) => {
     const locale = getLocaleFromPathname(pathname);
@@ -113,23 +110,20 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         setCurrentLayout(isOnOnboarding ? 'minimal' : 'main');
         // Onboarding gating:
         // - Redirect to onboarding if Code of Conduct not signed
-        // - Allow staying on onboarding if org identity is not verified
-        // - Redirect away from onboarding only when CoC is signed AND identity is verified
-        if (!orgLoading && !idLoading) {
+        // - Identity verification is optional and can be completed from the /start page
+        if (!orgLoading) {
           const cocSigned = Boolean(organisation?.codeOfConduct);
-          const isVerified = Boolean((orgIdentity as any)?.verified || (orgIdentity as any)?.organisationalIdentity?.verified);
           // Determine if current route is public (locale-aware)
           const inPublic = isPublicPath(pathname);
-          // If CoC is not signed OR identity not verified, force redirect to onboarding when NOT on a public route
-          if ((!cocSigned || !isVerified) && !isOnOnboarding && !inPublic) {
+          // If CoC is not signed, force redirect to onboarding when NOT on a public route
+          if (!cocSigned && !isOnOnboarding && !inPublic) {
             router.replace(withLocale('/onboarding'));
             return;
           }
-          if (cocSigned && isVerified && isOnOnboarding) {
+          if (cocSigned && isOnOnboarding) {
             if (!isSamePath('/start')) router.replace(withLocale('/start'));
             return;
           }
-          // If CoC is signed but identity not verified, allow user to stay on onboarding
         }
         return;
       }
@@ -143,7 +137,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     };
     
     checkClientAuth();
-  }, [isAuthenticated, isLoading, pathname, router, orgLoading, idLoading, organisation?.verificationRequestURLPrefix, organisation?.codeOfConduct, (orgIdentity as any)?.verified, (orgIdentity as any)?.organisationalIdentity?.verified]);
+  }, [isAuthenticated, isLoading, pathname, router, orgLoading, organisation?.codeOfConduct]);
   
   // Show loading state during server-side rendering
   if (!isClient) {
