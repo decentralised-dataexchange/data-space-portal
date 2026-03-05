@@ -47,8 +47,8 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Ensure public directory exists (Next.js expects this even if empty)
-RUN mkdir -p ./public
+# Copy public assets (standalone output does not include the public folder)
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
