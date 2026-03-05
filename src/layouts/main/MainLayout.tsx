@@ -55,7 +55,7 @@ const MainLayout = ({ children }: Props) => {
           }}
         >
           {!isOnboardingRoute && (
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: { xs: 0, md: 1 } }}>
               <Suspense fallback={null}>
                 <Breadcrumb />
               </Suspense>

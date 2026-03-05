@@ -20,7 +20,7 @@ function GuideImage({ src, alt }: { src: string; alt: string }) {
       <img
         src={src}
         alt={alt}
-        style={{ width: '100%', maxWidth: 760, height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px' }}
+        style={{ width: '100%', maxWidth: '100%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px' }}
       />
       <Typography
         sx={{ color: '#86868b', mt: 1.5, fontSize: '13px', fontStyle: 'italic', letterSpacing: '-0.01em' }}
