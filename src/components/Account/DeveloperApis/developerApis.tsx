@@ -45,10 +45,11 @@ const DetailsContainer = styled("div")({
 
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: "#fff",
-  padding: "15px 30px",
+  padding: "20px 30px",
   height: "auto",
-  borderRadius: 2,
-  border: "1px solid #CECECE",
+  borderRadius: 16,
+  border: "1px solid rgba(0, 0, 0, 0.06)",
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
 }));
 
 export default function DeveloperAPIs() {
@@ -444,7 +445,7 @@ export default function DeveloperAPIs() {
     return (
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-          <Typography color="black" variant="body2">{label}:</Typography>
+          <Typography color="#1d1d1f" variant="body2">{label}:</Typography>
           {!!tooltipMessage && (
             <InfoTooltipIconQuestionMark message={tooltipMessage} />
           )}
@@ -454,10 +455,10 @@ export default function DeveloperAPIs() {
             safeHref ? (
               <a href={safeHref} target="_blank" rel="noreferrer" style={{ color: '#0000FF', wordBreak: 'break-all', fontSize: "14px" }}>{displayValue}</a>
             ) : (
-              <Typography color="black" variant="body2" sx={{ wordBreak: 'break-all' }}>{displayValue}</Typography>
+              <Typography color="#1d1d1f" variant="body2" sx={{ wordBreak: 'break-all' }}>{displayValue}</Typography>
             )
           ) : (
-            <Typography color="grey" variant="body2">-</Typography>
+            <Typography color="#86868b" variant="body2">-</Typography>
           )}
           {!!copyValue && (
             <CopyButton text={copyValue} />
@@ -519,14 +520,14 @@ export default function DeveloperAPIs() {
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
             <Item>
               <Typography
-                color="black"
+                color="#1d1d1f"
                 variant="subtitle1"
                 fontWeight="bold"
                 mb={0.5}
               >
                 {t("developerAPIs.organisationID")}
               </Typography>
-              <Typography color="grey" variant="body2">
+              <Typography color="#86868b" variant="body2">
                 {orgDetails?.id}
               </Typography>
             </Item>
@@ -534,14 +535,14 @@ export default function DeveloperAPIs() {
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
             <Item>
               <Typography
-                color="black"
+                color="#1d1d1f"
                 variant="subtitle1"
                 fontWeight="bold"
                 mb={0.5}
               >
                 {t("developerAPIs.yourUserID")}
               </Typography>
-              <Typography color="grey" variant="body2">
+              <Typography color="#86868b" variant="body2">
                 {userId}
               </Typography>
             </Item>
@@ -549,14 +550,14 @@ export default function DeveloperAPIs() {
           <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
             <Item>
               <Typography
-                color="black"
+                color="#1d1d1f"
                 variant="subtitle1"
                 fontWeight="bold"
                 mb={0.5}
               >
                 {t("developerAPIs.configuredBaseURL")}
               </Typography>
-              <Typography color="grey" variant="body2">
+              <Typography color="#86868b" variant="body2">
                 {baseURL}
               </Typography>
             </Item>
@@ -573,7 +574,7 @@ export default function DeveloperAPIs() {
           gap={{ xs: 1, sm: 0 }}
           sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
         >
-          <Typography color="black" variant="subtitle1" fontWeight="bold">
+          <Typography color="#1d1d1f" variant="subtitle1" fontWeight="bold">
             {t('developerAPIs.walletConfigurationTitle')}
           </Typography>
           <Box display="flex" alignItems="center" gap={2}>
@@ -584,8 +585,8 @@ export default function DeveloperAPIs() {
                 padding: '5px 50px',
                 border: '1px solid #DFDFDF',
                 borderRadius: 0,
-                color: 'black',
-                '&:hover': { backgroundColor: 'black', color: 'white' },
+                color: '#1d1d1f',
+                '&:hover': { backgroundColor: '#f5f5f7', color: '#1d1d1f', borderColor: '#1d1d1f' },
               }}
             >
               {t('developerAPIs.configureButton')}
@@ -620,7 +621,7 @@ export default function DeveloperAPIs() {
           {/* Software Statement inside Wallet Configuration */}
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '200px 1fr' }, alignItems: 'center', columnGap: 2, rowGap: 0.5 }}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-              <Typography color="black" variant="body2">{t('developerAPIs.softwareStatementLabel')}:</Typography>
+              <Typography color="#1d1d1f" variant="body2">{t('developerAPIs.softwareStatementLabel')}:</Typography>
               <InfoTooltipIconQuestionMark message={t('developerAPIs.tooltips.softwareStatement')} />
             </Box>
             <Box display="inline-flex" alignItems="center" gap={1}>
@@ -697,7 +698,7 @@ export default function DeveloperAPIs() {
           sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography color="black" variant="subtitle1" fontWeight="bold">
+            <Typography color="#1d1d1f" variant="subtitle1" fontWeight="bold">
               {t('developerAPIs.dataSpaceOauth2Title')}
             </Typography>
             <InfoTooltipIconQuestionMark message={t('developerAPIs.tooltips.dataSpaceOauth2Title')} />
@@ -710,8 +711,8 @@ export default function DeveloperAPIs() {
                 padding: '5px 50px',
                 border: '1px solid #DFDFDF',
                 borderRadius: 0,
-                color: 'black',
-                '&:hover': { backgroundColor: 'black', color: 'white' },
+                color: '#1d1d1f',
+                '&:hover': { backgroundColor: '#f5f5f7', color: '#1d1d1f', borderColor: '#1d1d1f' },
               }}
             >
               {t('developerAPIs.configureButton')}
@@ -759,7 +760,7 @@ export default function DeveloperAPIs() {
           sx={{ mb: 1, pb: 1, borderBottom: '1px solid #E0E0E0' }}
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography color="black" variant="subtitle1" fontWeight="bold">
+            <Typography color="#1d1d1f" variant="subtitle1" fontWeight="bold">
               {t('developerAPIs.orgOauth2Title')}
             </Typography>
             <InfoTooltipIconQuestionMark message={t('developerAPIs.tooltips.orgOauth2Title')} />
@@ -775,7 +776,7 @@ export default function DeveloperAPIs() {
                   padding: '5px 30px',
                   border: '1px solid #DFDFDF',
                   borderRadius: 0,
-                  color: 'black',
+                  color: '#1d1d1f',
                   '&:hover': { backgroundColor: 'black', color: 'white' },
                 }}
               >
@@ -789,8 +790,8 @@ export default function DeveloperAPIs() {
                 padding: '5px 50px',
                 border: '1px solid #DFDFDF',
                 borderRadius: 0,
-                color: 'black',
-                '&:hover': { backgroundColor: 'black', color: 'white' },
+                color: '#1d1d1f',
+                '&:hover': { backgroundColor: '#f5f5f7', color: '#1d1d1f', borderColor: '#1d1d1f' },
               }}
             >
               {t('developerAPIs.configureButton')}
@@ -881,7 +882,7 @@ export default function DeveloperAPIs() {
             value={editHolderBaseUrl}
             onChange={(e) => setEditHolderBaseUrl(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
 
           <Typography variant="body2" mt={0.5} mb={0.5}>
@@ -895,7 +896,7 @@ export default function DeveloperAPIs() {
             value={editCredentialOfferEndpoint}
             onChange={(e) => setEditCredentialOfferEndpoint(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
 
           <Typography variant="body2" mt={0.5} mb={0.5}>
@@ -909,7 +910,7 @@ export default function DeveloperAPIs() {
             value={editAccessPointEndpoint}
             onChange={(e) => setEditAccessPointEndpoint(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
         </Box>
       </RightSidebar>
@@ -1006,7 +1007,7 @@ export default function DeveloperAPIs() {
             value={orgClientName}
             onChange={(e) => setOrgClientName(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
 
           <Typography variant="body2" mt={0.5} mb={0.5}>
@@ -1020,7 +1021,7 @@ export default function DeveloperAPIs() {
             value={orgClientDescription}
             onChange={(e) => setOrgClientDescription(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
 
           <Typography variant="body2" mt={0.5} mb={0.5}>
@@ -1034,7 +1035,7 @@ export default function DeveloperAPIs() {
             value={orgClientId}
             onChange={(e) => setOrgClientId(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
 
           <Typography variant="body2" mt={0.5} mb={0.5}>
@@ -1048,7 +1049,7 @@ export default function DeveloperAPIs() {
             value={orgClientSecret}
             onChange={(e) => setOrgClientSecret(e.target.value)}
             InputProps={{ disableUnderline: false }}
-            sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+            sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
           />
         </Box>
       </RightSidebar>
@@ -1125,7 +1126,7 @@ export default function DeveloperAPIs() {
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
                 InputProps={{ disableUnderline: false }}
-                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+                sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
               />
               <Typography variant="body2" mt={0.5} mb={0.5}>
                 {t('developerAPIs.oauth2ClientDescriptionLabel')}
@@ -1138,7 +1139,7 @@ export default function DeveloperAPIs() {
                 value={clientDescription}
                 onChange={(e) => setClientDescription(e.target.value)}
                 InputProps={{ disableUnderline: false }}
-                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+                sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
               />
             </>
           ) : (
@@ -1154,7 +1155,7 @@ export default function DeveloperAPIs() {
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
                 InputProps={{ disableUnderline: false }}
-                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+                sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
               />
               <Typography variant="body2" mt={0.5} mb={0.5}>
                 {t('developerAPIs.oauth2ClientDescriptionLabel')}
@@ -1167,7 +1168,7 @@ export default function DeveloperAPIs() {
                 value={clientDescription}
                 onChange={(e) => setClientDescription(e.target.value)}
                 InputProps={{ disableUnderline: false }}
-                sx={{ '& .MuiInputBase-input': { color: 'black' } }}
+                sx={{ '& .MuiInputBase-input': { color: '#1d1d1f' } }}
               />
               {/* <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <StaticInputLike

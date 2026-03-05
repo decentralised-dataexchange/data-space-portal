@@ -118,9 +118,9 @@ const DDATable: React.FC<DDATableProps> = ({
         <TableBody sx={{ backgroundColor: '#FFFFFF' }}>
           {tabledata?.dataDisclosureAgreements?.length > 0 ? (
             tabledata.dataDisclosureAgreements.map((row, index) => (
-              <StyledTableRow key={row.templateId} style={{ color: "red" }}>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{row.templateId || ''}</StyledTableCell>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>
+              <StyledTableRow key={row.templateId}>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}>{row.templateId || ''}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}>
                   <Box>
                     {row.purpose}
                     {row.tags && row.tags.length > 0 && (
@@ -137,9 +137,9 @@ const DDATable: React.FC<DDATableProps> = ({
                     onChange={(v) => setSelectedVersions((prev) => ({ ...prev, [row.templateId]: v }))}
                   />
                 </StyledTableCell>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>{getStatus(t, row.status)}</StyledTableCell>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black", textTransform: "capitalize" }}>{row.lawfulBasis}</StyledTableCell>
-                <StyledTableCell style={{ color: row.status === "unlisted" ? "red" : "black" }}>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}>{getStatus(t, row.status)}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f", textTransform: "capitalize" }}>{row.lawfulBasis}</StyledTableCell>
+                <StyledTableCell style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}>
                   {formatLocalDate(
                     getSelectedRevisionData(row)?.updatedAt ||
                     getSelectedRevisionData(row)?.createdAt ||
@@ -165,8 +165,8 @@ const DDATable: React.FC<DDATableProps> = ({
                       const isCurrentSelected = String(getSelectedVersion(row)) === String(getLatestVersion(row));
                       const disabled = row.status === "awaitingForApproval" || !isCurrentSelected;
                       const color = !isCurrentSelected
-                        ? "gray"
-                        : row.status === "unlisted" ? "red" : row.status === "awaitingForApproval" ? "gray" : "black";
+                        ? "#86868b"
+                        : row.status === "unlisted" ? "#e30000" : row.status === "awaitingForApproval" ? "#86868b" : "#1d1d1f";
                       const cursor = disabled ? "not-allowed" : "pointer";
                       return (
                         <IconButton className="actionButton" aria-label="publish" data-disabled={disabled}>
@@ -198,7 +198,7 @@ const DDATable: React.FC<DDATableProps> = ({
                       }}
                     >
                       <ClockCounterClockwiseIcon
-                        style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                        style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}
                         size={17}
                       />
                     </IconButton>
@@ -213,7 +213,7 @@ const DDATable: React.FC<DDATableProps> = ({
                           setSelectedDDA(getSelectedRevisionData(row));
                         }}>
                       <EyeIcon
-                        style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                        style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}
                         size={17}
 
                       />
@@ -233,7 +233,7 @@ const DDATable: React.FC<DDATableProps> = ({
                         }}
                       >
                         <TagIcon
-                          style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                          style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}
                           size={17}
                         />
                       </IconButton>
@@ -250,7 +250,7 @@ const DDATable: React.FC<DDATableProps> = ({
                         }}
                       >
                         <TrashSimpleIcon
-                          style={{ color: row.status === "unlisted" ? "red" : "black" }}
+                          style={{ color: row.status === "unlisted" ? "#e30000" : "#1d1d1f" }}
                           size={17}
                         />
                       </IconButton>

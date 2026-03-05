@@ -75,7 +75,7 @@ export const MainAppBarMenu = (props: Props) => {
           onClick={handleMenu}
         >
           <img
-            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            style={{ width: "50px", height: "50px", borderRadius: "50%", backgroundColor: "white" }}
             src={orgLogoUrl}
             alt={`Organization logo`}
           />
@@ -105,7 +105,7 @@ export const MainAppBarMenu = (props: Props) => {
           }}
         >
           <img
-            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+            style={{ width: "50px", height: "50px", borderRadius: "50%", backgroundColor: "white" }}
             src={orgLogoUrl}
             alt={`Organization logo`}
           />

@@ -45,13 +45,13 @@ export default function CustomMinimalAppBar() {
               {t('appBar.subHeader')}
             </Typography>
         </Link>
-        {
-          pathnameWithoutLocale === 'login' ? null : (
+        <Box sx={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
+          {pathnameWithoutLocale !== 'login' && (
             <Button variant="contained" component={Link} href="/login" className="loginBtn">
-            {t('login.title')}
-          </Button>
-          )
-        }
+              {t('login.title')}
+            </Button>
+          )}
+        </Box>
       </Toolbar>
     </AppBar>
   </Box>

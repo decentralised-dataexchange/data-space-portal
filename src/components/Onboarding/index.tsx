@@ -82,8 +82,8 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
           maxWidth: { xs: 500, sm: 800, md: 1100 },
           minHeight: { xs: 420, sm: 480 },
           height: isFullScreen ? '100vh' : { xs: '70vh', sm: '75vh', md: '75vh' },
-          border: '1px solid #C9C9C9',
-          borderRadius: '12px',
+          border: '1px solid #d2d2d7',
+          borderRadius: '16px',
           overflow: 'hidden',
           background: '#fff',
         }}
@@ -100,18 +100,19 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
             <Button
               size="small"
               variant="outlined"
-              className="delete-btn"
               onClick={toggleFullScreen}
               startIcon={isFullScreen ? <FullscreenExit sx={{ fontSize: 18 }} /> : <Fullscreen sx={{ fontSize: 18 }} />}
               sx={{
-                minHeight: 28,
+                minHeight: 32,
                 textTransform: 'none',
                 lineHeight: 1.2,
                 display: 'inline-flex',
                 alignItems: 'center',
-                borderColor: '#DFDFDF',
-                color: 'black',
-                '&:hover': { borderColor: 'black' }
+                borderColor: '#d2d2d7',
+                color: '#1d1d1f',
+                borderRadius: '8px',
+                fontSize: '0.8125rem',
+                '&:hover': { borderColor: '#1d1d1f', backgroundColor: '#f5f5f7' }
               }}
             >
               {isFullScreen ? t('onboarding.controls.exitFullscreen') : t('onboarding.controls.enterFullscreen')}
@@ -154,15 +155,15 @@ const CodeOfConductSetup = React.memo(({ t, pdfUrl, isError, error }: { t: Trans
           </>
       </Box>
 
-      <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mt: '12px' }}>
+      <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mt: '16px' }}>
         <Button
           type="button"
-          variant="outlined"
-          className="delete-btn"
+          variant="contained"
           disabled={isPending || isMissingCoc}
           onClick={() => sign()}
           sx={{
             width: '100%',
+            ...APPLE_PRIMARY_BUTTON_SX,
             ...DISABLED_BUTTON_SX,
           }}
         >
@@ -187,20 +188,32 @@ const PLACEHOLDER_SX = {
 
 const OUTLINED_INPUT_SX = {
   '& .MuiOutlinedInput-root': {
-    borderRadius: '7px',
-    height: '42px',
+    borderRadius: '10px',
+    height: '48px',
+    '& fieldset': {
+      borderColor: '#d2d2d7',
+      transition: 'border-color 0.2s ease',
+    },
+    '&:hover fieldset': {
+      borderColor: '#86868b',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#1d1d1f',
+      borderWidth: '1.5px',
+    },
     '& .MuiInputBase-input': {
-      padding: '6px 11px',
+      padding: '10px 14px',
+      fontSize: '0.9375rem',
     }
   },
 } as const;
 
 const SELECT_SX = {
-  ...OUTLINED_INPUT_SX, 
+  ...OUTLINED_INPUT_SX,
   '& .MuiOutlinedInput-root': {
     ...OUTLINED_INPUT_SX['& .MuiOutlinedInput-root'],
     '& .MuiInputBase-input': {
-      padding: '6px 11px',
+      padding: '10px 14px',
     }
   }
 } as const;
@@ -209,16 +222,59 @@ const DISABLED_BUTTON_SX = {
   '&.Mui-disabled': {
     cursor: 'not-allowed',
     pointerEvents: 'auto',
-    color: '#9e9e9e !important',
-    borderColor: '#E0E0E0 !important',
-    backgroundColor: '#f5f5f5 !important',
+    color: '#d2d2d7 !important',
+    borderColor: '#e8e8ed !important',
+    backgroundColor: '#fafafa !important',
   },
   '&.Mui-disabled:hover': {
-    backgroundColor: '#f5f5f5 !important',
-    borderColor: '#E0E0E0 !important',
-    color: '#9e9e9e !important',
+    backgroundColor: '#fafafa !important',
+    borderColor: '#e8e8ed !important',
+    color: '#d2d2d7 !important',
   },
 } as const;
+
+const APPLE_PRIMARY_BUTTON_SX = {
+  backgroundColor: '#1d1d1f',
+  color: '#fff',
+  border: 'none',
+  borderRadius: '980px',
+  textTransform: 'none !important' as any,
+  fontWeight: 500,
+  fontSize: '0.9375rem',
+  height: '48px',
+  letterSpacing: '-0.01em',
+  boxShadow: 'none',
+  transition: 'background-color 0.2s ease',
+  '&:hover': {
+    backgroundColor: '#000',
+    boxShadow: 'none',
+  },
+} as const;
+
+const APPLE_SECONDARY_BUTTON_SX = {
+  backgroundColor: 'transparent',
+  color: '#1d1d1f',
+  borderRadius: '980px',
+  border: '1px solid #d2d2d7',
+  textTransform: 'none !important' as any,
+  fontWeight: 500,
+  fontSize: '0.9375rem',
+  height: '48px',
+  letterSpacing: '-0.01em',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    backgroundColor: '#f5f5f7',
+    borderColor: '#1d1d1f',
+  },
+} as const;
+
+const TOTAL_STEPS = 4;
+const stepDotIndex = (displayStep: number) => {
+  if (displayStep <= 1) return 0;
+  if (displayStep <= 3) return 1;
+  if (displayStep === 4) return 2;
+  return 3;
+};
 
 // Step 4: Business Wallet verification and credentials
 const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onNext }: { t: Translate; onBack: () => void; organisation: any | undefined; orgIdentity: any | undefined; onNext: () => void; }) => {
@@ -317,10 +373,18 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
           minRows={3}
           inputProps={{
             style: {
-              fontSize: '14px',
+              fontSize: '0.9375rem',
               lineHeight: 1.5,
-              fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-              color: 'rgba(0, 0, 0, 0.87)',
+              color: '#1d1d1f',
+            },
+          }}
+          sx={{
+            ...PLACEHOLDER_SX,
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '10px',
+              '& fieldset': { borderColor: '#d2d2d7', transition: 'border-color 0.2s ease' },
+              '&:hover fieldset': { borderColor: '#86868b' },
+              '&.Mui-focused fieldset': { borderColor: '#1d1d1f', borderWidth: '1.5px' },
             },
           }}
         />
@@ -330,9 +394,8 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
         <Box sx={{ width: '100%', maxWidth: 500, textAlign: 'left' }}>
           <Button
             variant="outlined"
-            className="delete-btn"
             onClick={() => setDrawerOpen(true)}
-            sx={{ width: '100%', textAlign: 'left', borderColor: '#DFDFDF', color: 'black', borderRadius: '7px', textTransform: 'none' }}
+            sx={{ width: '100%', textAlign: 'left', ...APPLE_SECONDARY_BUTTON_SX, justifyContent: 'flex-start' }}
           >
             {t('onboarding.legalPersonIdData')}
           </Button>
@@ -342,15 +405,14 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
       <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: '12px', width: '100%', maxWidth: 500 }}>
         <Button
           type="button"
-          variant="outlined"
-          className="delete-btn"
+          variant="contained"
           onClick={() => { if (isVerified) { onNext(); } else { handleContinue(); } }}
           disabled={isVerified ? (updating || creating) : ((walletUrl ? !isValidUrl : false) || updating || creating)}
-          sx={{ width: '100%', ...DISABLED_BUTTON_SX }}
+          sx={{ width: '100%', ...APPLE_PRIMARY_BUTTON_SX, ...DISABLED_BUTTON_SX }}
         >
           {updating || creating ? (
             <>
-              <CircularProgress size={18} sx={{ mr: 1 }} /> {t('common.loading')}
+              <CircularProgress size={18} sx={{ mr: 1, color: '#fff' }} /> {t('common.loading')}
             </>
           ) : t('common.continue')}
         </Button>
@@ -536,11 +598,14 @@ const Onboarding: React.FC = () => {
   // Centralize CoC PDF loading to avoid an internal spinner in the CoC step
   const { data: pdfUrl, isLoading: pdfLoading, isError: pdfIsError, error: pdfError } = useGetCodeOfConductPdf();
 
+  // Card width depends on step
+  const cardMaxWidth = renderStep === 5 ? 1200 : 540;
+
   // Early return during loading/redirect
   if (showGlobalSpinner || (renderStep === 5 && pdfLoading)) {
     return (
       <Box className="loginWrapper">
-        <Box className="loginContainer">
+        <Box className="loginContainer" sx={{ maxWidth: cardMaxWidth }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 240 }}>
             <CircularProgress size={24} aria-label="Loading onboarding step" />
           </Box>
@@ -549,14 +614,17 @@ const Onboarding: React.FC = () => {
     );
   }
 
+  const activeStepDot = stepDotIndex(displayStep);
+
   return (
     <Box className="loginWrapper">
       <Box
         className="loginContainer"
         sx={{
           width: '100%',
+          maxWidth: cardMaxWidth,
           px: { xs: 2, sm: 0 },
-          // Force onboarding text-field containers to align with header width and be centered
+          transition: 'max-width 0.3s ease',
           '& .text-field': {
             width: '100% !important',
             maxWidth: 500,
@@ -566,17 +634,36 @@ const Onboarding: React.FC = () => {
           },
         }}
       >
-        {/* Onboarding page header (title + optional subtitle). Hidden on step 3 (post-register success screen). */}
+        {/* Step progress indicator */}
         {displayStep !== 3 && (
-          <Box sx={{ mt: '1rem', mb: '1.5rem', textAlign: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', mb: 2.5 }}>
+            {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+              <Box
+                key={i}
+                sx={{
+                  width: i === activeStepDot ? 24 : 8,
+                  height: 8,
+                  borderRadius: '4px',
+                  backgroundColor: i === activeStepDot ? '#1d1d1f' : '#d2d2d7',
+                  transition: 'all 0.3s ease',
+                }}
+              />
+            ))}
+          </Box>
+        )}
+
+        {/* Onboarding page header */}
+        {displayStep !== 3 && (
+          <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Box ref={headingRef} sx={{ width: '100%', maxWidth: 500, mx: 'auto', textAlign: 'center' }}>
               <Box sx={{ display: 'inline-block', maxWidth: 500, textAlign: 'center' }}>
                 <Typography
-                  variant="h5"
-                  fontWeight={700}
                   sx={{
-                    fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.5rem' },
-                    lineHeight: { xs: 1.3, sm: 1.35, md: 1.4 },
+                    fontSize: { xs: '1.375rem', sm: '1.625rem' },
+                    fontWeight: 600,
+                    color: '#1d1d1f',
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1.3,
                     wordBreak: 'break-word',
                   }}
                 >
@@ -591,13 +678,13 @@ const Onboarding: React.FC = () => {
 
                   return subtitleKey ? (
                     <Typography
-                      variant="h6"
                       sx={{
-                        mt: { xs: 1, sm: 1.25 },
-                        color: 'inherit',
-                        fontWeight: 600,
-                        fontSize: { xs: '1rem', sm: '1.25rem', md: '1.25rem' },
-                        lineHeight: { xs: 1.35, sm: 1.4, md: 1.45 },
+                        mt: 1,
+                        color: '#86868b',
+                        fontWeight: 400,
+                        fontSize: { xs: '0.9375rem', sm: '1.0625rem' },
+                        lineHeight: 1.4,
+                        letterSpacing: '-0.01em',
                         wordBreak: 'break-word',
                       }}
                     >
@@ -724,25 +811,18 @@ const Onboarding: React.FC = () => {
         }
 
         {displayStep === 1 && (
-          <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH, mt: '12px', display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH, mt: '16px', display: 'flex', justifyContent: 'center' }}>
             <Button
               type={canSkipStepOne ? 'button' : 'submit'}
               form={canSkipStepOne ? undefined : STEP_ONE_FORM_ID}
               onClick={canSkipStepOne ? goToStepTwoNav : undefined}
-              variant="outlined"
-              className="delete-btn"
+              variant="contained"
               disabled={!canSkipStepOne && !isStepOneValid}
-              sx={{ 
-                width: '100%', 
+              sx={{
+                width: '100%',
                 maxWidth: 500,
+                ...APPLE_PRIMARY_BUTTON_SX,
                 ...DISABLED_BUTTON_SX,
-                '&.MuiButton-root': {
-                  height: '48px',
-                  borderRadius: '8px',
-                  textTransform: 'none',
-                  fontSize: '1rem',
-                  fontWeight: 500,
-                }
               }}
             >
               {t('common.continue')}
@@ -751,9 +831,9 @@ const Onboarding: React.FC = () => {
         )}
 
         {displayStep <= 2 && (
-          <Typography variant="body2" sx={{ color: '#A1A1A1', marginTop: '1.5rem', textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ color: '#86868b', mt: 2.5, textAlign: 'center', fontSize: '0.875rem' }}>
             <Link className="appLink" href="/login">
-            {t('signup.haveAccount')}{' '}
+              {t('signup.haveAccount')}{' '}
               {t('signup.login')}
             </Link>
           </Typography>
@@ -970,8 +1050,11 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
               sx={{
                 ...PLACEHOLDER_SX,
                 '& .MuiOutlinedInput-root': {
-                  borderRadius: '7px',
+                  borderRadius: '10px',
                   alignItems: 'center',
+                  '& fieldset': { borderColor: '#d2d2d7', transition: 'border-color 0.2s ease' },
+                  '&:hover fieldset': { borderColor: '#86868b' },
+                  '&.Mui-focused fieldset': { borderColor: '#1d1d1f', borderWidth: '1.5px' },
                 },
               }}
             />
@@ -1059,7 +1142,7 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
           </Box>
         </Box>
 
-        <Box sx={{ 
+        <Box sx={{
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', md: '3fr 7fr' },
           gap: '12px',
@@ -1067,26 +1150,18 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
           maxWidth: 500,
           mx: 'auto',
           minWidth: 0,
-          '& .MuiButton-root': {
-            height: '48px',
-            borderRadius: '8px',
-            textTransform: 'none',
-            fontSize: '1rem',
-            fontWeight: 500,
-          }
+          mt: '4px',
         }}>
           <Button
             type="button"
             variant="outlined"
-            className="delete-btn"
             onClick={onBack}
             disabled={isSubmitting}
-            sx={{ 
+            sx={{
               width: '100%',
               minWidth: 'auto',
               whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
+              ...APPLE_SECONDARY_BUTTON_SX,
               ...DISABLED_BUTTON_SX,
             }}
           >
@@ -1094,12 +1169,12 @@ const OrganisationDetailsStep: React.FC<OrganisationDetailsStepProps> = React.me
           </Button>
           <Button
             type="submit"
-            variant="outlined"
-            className="delete-btn"
+            variant="contained"
             disabled={!isValid || isSubmitting}
-            sx={{ 
+            sx={{
               width: '100%',
               minWidth: 'auto',
+              ...APPLE_PRIMARY_BUTTON_SX,
               ...DISABLED_BUTTON_SX,
             }}
           >
@@ -1132,13 +1207,13 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%', minWidth: "min(450px, 60vw)" }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', maxWidth: 500, minWidth: 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%', maxWidth: 500, minWidth: 0, p: 2, borderRadius: '12px', backgroundColor: '#f0faf0', border: '1px solid #c8e6c9' }}>
         <Box
           sx={{
-            width: 32,
-            height: 32,
+            width: 36,
+            height: 36,
             borderRadius: '50%',
-            backgroundColor: '#4CAF50',
+            backgroundColor: '#34C759',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1147,7 +1222,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         >
           <CheckIcon fontSize="inherit" sx={{ color: '#FFFFFF', fontSize: 20 }} />
         </Box>
-        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: "fit-content", wordBreak: 'break-word', whiteSpace: 'normal' }}>
+        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: "fit-content", wordBreak: 'break-word', whiteSpace: 'normal', fontSize: '0.9375rem', color: '#1d1d1f' }}>
           {successContent}
         </Typography>
       </Box>
@@ -1160,27 +1235,18 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         maxWidth: 500,
         minWidth: 0,
         mx: 'auto',
-        mt: '12px',
-        '& .MuiButton-root': {
-          height: '48px',
-          borderRadius: '8px',
-          textTransform: 'none',
-          fontSize: '1rem',
-          fontWeight: 500,
-        }
+        mt: '16px',
       }}>
         <Button
           type="button"
           variant="outlined"
-          className="delete-btn"
           onClick={onBack}
           disabled={isSubmitting}
-          sx={{ 
+          sx={{
             width: '100%',
             minWidth: 'auto',
             whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
+            ...APPLE_SECONDARY_BUTTON_SX,
             ...DISABLED_BUTTON_SX,
           }}
         >
@@ -1188,20 +1254,20 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         </Button>
         <Button
           type="button"
-          variant="outlined"
-          className="delete-btn"
+          variant="contained"
           onClick={onContinue}
           disabled={isSubmitting}
-          sx={{ 
+          sx={{
             width: '100%',
             minWidth: 'auto',
             position: 'relative',
+            ...APPLE_PRIMARY_BUTTON_SX,
             ...DISABLED_BUTTON_SX,
           }}
         >
           {isSubmitting ? (
             <>
-              <CircularProgress size={18} sx={{ mr: 1 }} /> {t('common.loading')}
+              <CircularProgress size={18} sx={{ mr: 1, color: '#fff' }} /> {t('common.loading')}
             </>
           ) : t('common.continue')}
         </Button>

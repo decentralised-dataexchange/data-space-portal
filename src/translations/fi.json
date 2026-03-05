@@ -35,7 +35,7 @@
     }
   },
   "login": {
-    "header": "CRANE dHDSI - Org. hallintapaneeli - Kirjaudu",
+    "header": "CRANE d-HDSI - Org. hallintapaneeli - Kirjaudu",
     "userId": "Käyttäjätunnus",
     "password": "Salasana",
     "rememberMe": "Muista minut",
@@ -44,10 +44,11 @@
     "noAccount": "Eikö sinulla ole tiliä?",
     "signup": "Rekisteröidy",
     "createNow": "Luo omasi nyt.",
-    "logoAlt": "Logo"
+    "logoAlt": "Logo",
+    "forgotPassword": "Forgot your password?"
   },
   "signup": {
-    "header": "CRANE dHDSI - Org. hallintapaneeli - Rekisteröidy",
+    "header": "CRANE d-HDSI - Org. hallintapaneeli - Rekisteröidy",
     "name": "Nimi",
     "userName": "Nimesi",
     "organisationName": "Organisaation nimi",
@@ -133,7 +134,15 @@
     "dd-agreements-history": "Tietojen luovutussopimushistoria",
     "signed-agreements": "Allekirjoitetut sopimukset",
     "open-api": "OpenAPI-dokumentaatio",
-    "businessWallet": "Yrityslompakko"
+    "businessWallet": "Yrityslompakko",
+    "knowledge": "CRANE d-HDSI Knowledge Hub",
+    "knowledge-consent": "Consent & Data Rights",
+    "knowledge-guides": "User Guides",
+    "knowledge-guides-provider": "Organisation Guide",
+    "knowledge-guides-citizen": "Citizen Guide",
+    "knowledge-guides-carer": "Caregiver Guide",
+    "knowledge-tools": "Tools & Developer Resources",
+    "knowledge-faq": "Troubleshooting & FAQ"
   },
   "signedAgreements": {
     "title": "Allekirjoitetut sopimukset",
@@ -186,7 +195,7 @@
     "btn-signData": "Katso tietojen luovutussopimukset",
     "btn-signDataSingular": "Katso tietojen luovutussopimus",
     "btn-viewMetadata": "Katso API:t",
-    "footerTxt": " NordXData Foundation (CRANE - dHDSI ) ",
+    "footerTxt": " NordXData Foundation (CRANE - d-HDSI ) ",
     "searchPlaceholder": "Hae organisaatioita ja sopimuksia",
     "tabs": {
       "organisations": "Organisaatiot",
@@ -204,7 +213,8 @@
     "lastVisit": "Viimeinen käynti",
     "settings": "Asetukset",
     "signout": "Kirjaudu ulos",
-    "logoAlt": "Logo"
+    "logoAlt": "Logo",
+    "knowledgeHub": "Knowledge Hub"
   },
   "sideBar": {
     "gettingStarted": "Aloitus",
@@ -239,7 +249,7 @@
     "manageDDA": "Hallitse luovutussopimuksia",
     "manageAccount": "Hallitse tiliä",
     "manageAdminUser": "Hallitse käyttäjää",
-    "developerDocumentation": "Kehittäjädokumentaatio",
+    "developerDocumentation": "Kehittäjä-API:t",
     "connectWalletTitle": "Lisää valtuustieto - ",
     "connect": "Yhdistä",
     "choose": "Valitse",
@@ -277,7 +287,7 @@
     "schemas": "Skeemat"
   },
   "common": {
-    "orgDashboardTitle": "Kirjaudu sisään CRANE dHDSI Data Marketplaceen",
+    "orgDashboardTitle": "Kirjaudu sisään CRANE d-HDSI Data Marketplaceen",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
     "untrustedServiceProvider": "Ei-luotettu palveluntarjoaja",
     "continue": "Jatka",
@@ -738,5 +748,119 @@
     },
     "legalNameLabel": "Virallinen nimi",
     "identifierLabel": "Tunniste"
+  },
+  "knowledgeHub": {
+    "title": "CRANE d-HDSI Knowledge Hub",
+    "subtitle": "Learn about the CRANE d-HDSI Data Marketplace, data consent management, and the tools available to you.",
+    "exploreTopics": "Explore Topics",
+    "consent": {
+      "title": "Consent & Data Rights",
+      "subtitle": "Understand how data consent works in CRANE and your rights as a participant.",
+      "whatIsMarketplace": "What is the CRANE Data Marketplace?",
+      "whatIsMarketplaceContent": "A data marketplace serves as a secure digital ecosystem where organisations can publish, discover, and exchange data services under a shared governance framework. It acts as a directory service of governed Data Sources within a data ecosystem, for example in Healthcare. Unlike traditional data-sharing arrangements, it provides a structured environment where multiple organisations can participate and enter into bilateral agreements dynamically in a trusted and governed manner.",
+      "whatIsDA": "What is a Data Agreement?",
+      "whatIsDAContent": "A Data Agreement specifies the precise terms governing how data can be utilised and shared between an individual and an organisation. Often formulated based on a Data Protection Impact Assessment (DPIA), it creates a clear contractual relationship that protects both data providers and consumers whilst enabling legitimate data flows.",
+      "whatIsDDA": "What is a Data Disclosure Agreement?",
+      "whatIsDDAContent": "Derived from a Data Agreement, the Data Disclosure Agreement (DDA) formalises the specific conditions under which data is made available and accessed between two organisations. It provides transparency on data characteristics, quality, and permissible use cases before any exchange occurs.",
+      "trustAndVerification": "Trust and Verification",
+      "trustAndVerificationContent": "All ecosystem data transactions leverage eIDAS 2.0-based Business Wallets to provide cryptographic verification of each organisation's identity (via Legal Person Identification Data). This technical infrastructure ensures that all marketplace participants are who they claim to be, creating a foundation of trust essential for secure data exchange.",
+      "citizenRights": "Your Data Rights (Citizens)",
+      "citizenRightsContent": "Content coming soon. This section will explain your rights as a citizen regarding your personal health data, how to view your consents, and how to grant or revoke access.",
+      "caregiverRights": "Caregiver Data Rights",
+      "caregiverRightsContent": "Content coming soon. This section will explain how caregivers can act on behalf of individuals they support."
+    },
+    "guides": {
+      "title": "User Guides",
+      "subtitle": "Step-by-step guides for each type of CRANE user.",
+      "provider": {
+        "title": "Organisation / Service Provider Guide",
+        "subtitle": "Complete guide for organisations joining the CRANE Data Marketplace.",
+        "prerequisites": "Prerequisites",
+        "prerequisitesContent": "Before you can join the Data Marketplace, your organisation must meet one of these conditions:\n\n1. You are already onboarded with a Data Intermediation Service Provider (DISP). The DISP provides consent management and digital wallet services.\n2. You have implemented equivalent functions (adopting consent management and digital wallets) that meet the governance requirements.",
+        "createAccount": "Creating Your Account",
+        "createAccountContent": "Visit the Data Marketplace onboarding page to register your organisation. You will need to provide the organisation administrator's details (name, email, password) and your organisation's details (name, description, sector, location, policy URL).",
+        "connectWallet": "Connecting Your Business Wallet",
+        "connectWalletContent": "After account creation, provide the Business Wallet Address obtained from your DISP account. The Business Wallet Address can be copied from the Base Configurations page under Digital Wallet (OpenID4VC) in the DISP portal.",
+        "verifyOrg": "Verifying Organisational Legitimacy",
+        "verifyOrgContent": "Once the organisation wallet is connected, the Data Marketplace will redirect to the wallet and request access to your Legal Person Identification Data (Legal PID) to verify the organisation's legitimacy. Click Confirm to approve.",
+        "acceptCoC": "Accepting the Code of Conduct",
+        "acceptCoCContent": "The organisation administrator is presented with the Data Marketplace Code of Conduct. Review the document carefully, then click Sign and Continue to proceed. Once signed, the organisation is successfully onboarded.",
+        "configureWalletOAuth": "Configuring Wallet & OAuth 2.0 Clients",
+        "configureWalletOAuthContent": "To enable secure, bi-directional communication between the DISP and the Data Marketplace, configure the organisation wallet and OAuth 2.0 clients through the Developer APIs page. You will need to:\n\n1. Configure the Organisation Wallet with Credential Offer Endpoint and Access Point Endpoint.\n2. Request a Software Statement credential to your business wallet.\n3. Create a Data Marketplace OAuth 2.0 client and configure it in your DISP.\n4. Create a DISP OAuth 2.0 client and configure it in the Data Marketplace.",
+        "publishDDAs": "Publishing Data Disclosure Agreements",
+        "publishDDAsContent": "Create DDAs by linking existing Data Agreements within your DISP platform. Once published, each DDA appears on the Data Marketplace in an unlisted state. You can then request a review, and upon approval by the Review Committee, list the agreement for discovery by other organisations.",
+        "signDDAs": "Reviewing and Signing DDAs",
+        "signDDAsContent": "Explore available data sources on the public discovery page. Review published DDAs and their associated APIs. To sign an agreement, log in and click 'Sign with Business Wallet'. The signed copy is transmitted back to the Data Source and recorded in your Signed Agreements audit trail."
+      },
+      "citizen": {
+        "title": "Citizen Guide",
+        "subtitle": "Learn how CRANE empowers you to manage your personal health data.",
+        "comingSoon": "Content coming soon. This guide will cover how to view and manage your data agreements, understand your consent choices, and use the Data Wallet."
+      },
+      "carer": {
+        "title": "Caregiver Guide",
+        "subtitle": "A guide for caregivers supporting individuals with their data management.",
+        "comingSoon": "Content coming soon. This guide will cover delegated access, supporting individuals with consent management, and caregiver-specific tools."
+      }
+    },
+    "tools": {
+      "title": "Tools & Developer Resources",
+      "subtitle": "Technical documentation and resources for integrating with the CRANE ecosystem.",
+      "consentSDK": "Consent Management SDK",
+      "consentSDKContent": "The Consent Management SDK enables developers to integrate the Privacy Dashboard into mobile applications, providing end-users with a transparent interface to view, manage, and update their consent preferences in real-time. Key functions include displaying data agreements and consent policies, updating consent status, listening for consent status changes, supporting localisation, and managing individuals.",
+      "consentSDKLink": "https://docs.igrant.io/docs/consent-management-sdks/",
+      "walletSDK": "Data Wallet SDK",
+      "walletSDKContent": "The Data Wallet SDK enables Android and iOS applications to embed wallet capabilities for managing verifiable credentials and establishing connections with issuer or verifier organisations. Key functions include initialising and displaying the wallet UI, managing verifiable credentials and connections, handling deep links and notifications for credential issuance and verification, and enabling secure backup and restore.",
+      "walletSDKLink": "https://docs.igrant.io/docs/data-wallet-sdks/",
+      "restAPI": "REST API Documentation",
+      "restAPIContent": "Comprehensive reference for the developer APIs used to interact with the Data Marketplace and DISP services.",
+      "restAPILink": "https://docs.igrant.io/docs/developer-apis",
+      "tokenValidation": "Securing Data Access (Token Validation)",
+      "tokenValidationContent": "Once a DDA has been signed, the Data Using Service can begin retrieving data via the DISP. Every incoming API request must undergo token validation and authorisation. The validation process ensures the request originates from a verified Data Using Service, the access token is valid and unexpired, and the requested API endpoint is explicitly permitted under the associated Data Agreement.",
+      "referenceImplementations": "Open Source Reference Implementations",
+      "resourceServer": "Data4Diabetes Resource Server",
+      "resourceServerContent": "A reference implementation for Data Source organisations demonstrating how to set up a Resource Server protected using the Authorisation Server provided by the DISP.",
+      "resourceServerLink": "https://github.com/decentralised-dataexchange/data4diabetes-resource-server",
+      "mobileApp": "Data4Diabetes Mobile App (Flutter)",
+      "mobileAppContent": "A reference mobile application demonstrating practical integration of both the Data Wallet and Consent Management SDKs, serving as a template for building user-facing health data applications.",
+      "mobileAppLink": "https://github.com/decentralised-dataexchange/data4diabetes-app",
+      "roles": "Key Roles",
+      "marketplaceAdmin": "Marketplace Administrator",
+      "marketplaceAdminContent": "Oversees the entire ecosystem, managing data service listings, enforcing governance policies, and ensuring regulatory compliance across all marketplace activities.",
+      "orgAdmin": "Organisation Administrator",
+      "orgAdminContent": "Represents individual participating organisations, publishes data services to the marketplace, and negotiates agreements with other verified organisations to enable data exchange."
+    },
+    "faq": {
+      "title": "Troubleshooting & FAQ",
+      "subtitle": "Find answers to common questions and resolve issues.",
+      "accountOnboarding": "Account & Onboarding",
+      "q_cantCreateAccount": "I can't create my account",
+      "a_cantCreateAccount": "Ensure all required fields are filled (admin name, email, password, organisation name, sector, location). Your password must be 8-20 characters. If your email is already registered, try logging in or use a different email.",
+      "q_continueOnboarding": "I started onboarding but didn't finish. How do I continue?",
+      "a_continueOnboarding": "After account creation you can log in anytime to continue onboarding. The system will redirect you to the next incomplete step (wallet connection, verification, or Code of Conduct signing).",
+      "walletIssues": "Business Wallet",
+      "q_walletNotFound": "Where do I find my Business Wallet Address?",
+      "a_walletNotFound": "Your Business Wallet Address is available in your DISP portal under Digital Wallet (OpenID4VC) > Base Configuration. Copy the full URL and paste it in the Data Marketplace.",
+      "q_walletConnectionFails": "My wallet connection fails",
+      "a_walletConnectionFails": "Verify that the Business Wallet Address is correct and that your DISP account is active. Ensure your browser allows redirects. If the issue persists, contact your DISP provider.",
+      "verification": "Verification",
+      "q_verificationFails": "Legal PID verification fails",
+      "a_verificationFails": "Ensure your organisation's Legal PID credential is properly issued in your DISP wallet. Check that the credential has not expired. Try clearing your browser cache and attempting verification again.",
+      "q_softwareStatement": "My Software Statement is not appearing",
+      "a_softwareStatement": "After requesting the Software Statement, check your DISP portal under Digital Wallet (OpenID4VC) > Wallet Unit (Holder). You need to click 'Click to get the credential issued' and then Accept. The statement will then appear in both the DISP and the Data Marketplace.",
+      "oauth": "OAuth 2.0 Configuration",
+      "q_oauthConfusion": "I'm confused about which OAuth 2.0 client goes where",
+      "a_oauthConfusion": "There are two OAuth 2.0 clients to configure:\n\n1. Data Marketplace OAuth 2.0 Client: Created in the Data Marketplace, its Client ID and Secret are pasted into your DISP portal (Data Marketplace > Base Configurations).\n2. Organisation OAuth 2.0 Client: Created in your DISP portal, its Client ID and Secret are pasted into the Data Marketplace (Developer APIs > Organisation OAuth 2.0 Client).",
+      "ddas": "Data Disclosure Agreements",
+      "q_ddaUnlisted": "My DDA is stuck in 'Unlisted' status",
+      "a_ddaUnlisted": "After publishing a DDA from your DISP, it appears as Unlisted in the Data Marketplace. You need to click 'Request Review' to submit it for governance review. The Review Committee will then approve or reject it.",
+      "q_ddaNotVisible": "My approved DDA is not visible on the public page",
+      "a_ddaNotVisible": "After the DDA is approved, you still need to click 'List' to make it discoverable on the public discovery page. Only listed DDAs are visible to other organisations.",
+      "apiAccess": "API Access",
+      "q_tokenErrors": "I'm getting token validation errors",
+      "a_tokenErrors": "Ensure your access token has not expired. Verify that the requested API endpoint and HTTP method match those authorised in the Data Agreement linked to the DDA. Check that your DISP's Authorisation Endpoint is correctly configured.",
+      "contactSupport": "Still need help?",
+      "contactSupportContent": "If you cannot resolve your issue, please contact support at support@igrant.io with a description of the problem and any error messages you see."
+    }
   }
 }

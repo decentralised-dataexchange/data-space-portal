@@ -188,15 +188,21 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
           flexShrink: 0,
           display: 'flex',
           alignItems: 'center',
-          backgroundColor: '#FFFFFF',
-          borderRadius: 1,
-          border: '1px solid #D0D5DD',
+          backgroundColor: '#f5f5f7',
+          borderRadius: '12px',
+          border: '1px solid rgba(0,0,0,0.06)',
           overflow: 'hidden',
           minWidth: 0,
           flex: 1,
           ml: { xs: 1, md: 0 },
           mr: { xs: 0, md: 1 },
           order: { xs: 1, md: 0 },
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+          '&:focus-within': {
+            borderColor: 'rgba(0,0,0,0.15)',
+            boxShadow: '0 0 0 3px rgba(0,0,0,0.04)',
+            backgroundColor: '#fff',
+          },
         }}
       >
         <TextField

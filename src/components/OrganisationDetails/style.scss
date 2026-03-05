@@ -46,10 +46,11 @@
 
 // Element below banner in Getting Started page
 .gettingStarted {
-  background-color: rgb(245, 245, 245);
-  border: 1px solid rgb(225, 225, 225);
-  border-radius: 0px 0px 7px 7px;
-  margin-top: -2px; // Ensure it touches the banner above
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0px 0px 16px 16px;
+  margin-top: -2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .logoContainer {

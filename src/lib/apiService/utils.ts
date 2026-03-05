@@ -25,6 +25,11 @@ export function isPublicRoute(pathname: string): boolean {
         return true;
     }
     
+    // Handle /knowledge/* sub-routes as public
+    if (pathWithoutLocale.startsWith('/knowledge')) {
+        return true;
+    }
+
     // Handle dynamic routes like /data-source/read/123
     if (pathWithoutLocale.startsWith('/data-source/read/')) {
         // Check if there's a dynamic segment after /data-source/read/

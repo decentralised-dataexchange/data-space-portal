@@ -10,12 +10,13 @@ import { useTranslations } from "next-intl";
 const BannerContainer = styled("div")({
   height: 200,
   width: "100%",
-  borderRadius: 2,
+  borderRadius: "16px 16px 0 0",
   backgroundColor: "#E6E6E6",
   marginTop: "1em",
   position: "relative",
   top: 0,
   left: 0,
+  overflow: "hidden",
 });
 
 type Props = {

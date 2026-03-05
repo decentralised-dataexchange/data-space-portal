@@ -13,12 +13,11 @@ const buttonContainerStyle = {
   flexDirection: { xs: 'column', sm: 'column', md: 'row' },
   justifyContent: { xs: 'flex-start', sm: 'flex-start', md: 'space-between' },
   alignItems: { xs: 'stretch', sm: 'stretch', md: 'center' },
-  padding: '16px',
+  padding: '16px 20px',
   backgroundColor: '#fff',
-  borderTop: '1px solid #E9ECEF',
+  borderTop: '1px solid rgba(0, 0, 0, 0.06)',
   gap: { xs: 1, sm: 1.5, md: 2 },
   rowGap: { xs: 1, sm: 1.5, md: 1 },
-  // Allow wrapping on xs and sm to prevent overflow when Save shows up
   flexWrap: { xs: 'nowrap', sm: 'nowrap', md: 'nowrap' },
   width: '100%',
   boxSizing: 'border-box' as const,
@@ -28,14 +27,17 @@ const buttonContainerStyle = {
 };
 
 const buttonStyle = {
-  borderRadius: 0,
-  textTransform: 'unset',
-  padding: '6px 16px',
+  borderRadius: '980px',
+  textTransform: 'none !important',
+  padding: '8px 24px',
   minWidth: '120px',
-  fontSize: '14px',
+  fontSize: '0.8125rem',
+  fontWeight: 500,
+  letterSpacing: '-0.01em',
   backgroundColor: 'white',
-  color: '#000',
-  border: '1px solid rgb(223, 223, 223)'
+  color: '#1d1d1f',
+  border: '1px solid #d2d2d7',
+  transition: 'all 0.2s ease',
 };
 
 const tooltipStyle = {
@@ -46,8 +48,9 @@ const tooltipStyle = {
   backgroundColor: 'rgba(0, 0, 0, 0.7)',
   color: '#fff',
   padding: '8px 16px',
-  borderRadius: '4px',
+  borderRadius: '980px',
   zIndex: 1000,
+  fontSize: '0.8125rem',
 };
 
 interface ImageCropModalProps {
@@ -246,8 +249,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 0,
-          borderRadius: 0,
+          borderRadius: '16px',
           outline: 'none',
+          overflow: 'hidden',
         };
       case 'medium':
         return {
@@ -261,8 +265,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 0,
-          borderRadius: 0,
+          borderRadius: '16px',
           outline: 'none',
+          overflow: 'hidden',
         };
       case 'full':
         return {
@@ -275,8 +280,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 0,
-          borderRadius: 0,
+          borderRadius: '16px',
           outline: 'none',
+          overflow: 'hidden',
         };
       case 'large':
       default:
@@ -290,8 +296,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 0,
-          borderRadius: 0,
+          borderRadius: '16px',
           outline: 'none',
+          overflow: 'hidden',
         };
     }
   }, [modalSize]);
@@ -514,7 +521,7 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
         <Box
         sx={{
           ...cropContainerSx,
-          outline: isDragOver ? '2px dashed #1976d2' : 'none',
+          outline: isDragOver ? '2px dashed #1d1d1f' : 'none',
           outlineOffset: -6,
           transition: 'outline 0.15s ease',
         }}
@@ -765,9 +772,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     px: { xs: 1.25, sm: 1.75, md: 2 },
                     width: { xs: '100%', sm: '100%', md: 'auto' },
                     '&:hover': {
-                      backgroundColor: '#000',
-                      color: '#fff',
-                      borderColor: '#000',
+                      backgroundColor: '#f5f5f7',
+                      color: '#1d1d1f',
+                      borderColor: '#1d1d1f',
                     }
                   }}
                   size="small"
@@ -799,8 +806,9 @@ const ImageCropModal: React.FC<ImageCropModalProps> = ({
                         borderColor: '#000',
                       },
                       '&.Mui-disabled': {
-                        backgroundColor: 'rgba(0, 0, 0, 0.12)',
-                        color: 'rgba(0, 0, 0, 0.26)'
+                        backgroundColor: '#e8e8ed',
+                        color: '#86868b',
+                        borderColor: '#e8e8ed',
                       }
                     }}
                     size="small"

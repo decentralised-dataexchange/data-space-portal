@@ -105,12 +105,14 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                         alt={dataSource?.name || 'Data Source'}
                         sx={{
                             position: 'absolute',
-                            top: '40px',
-                            left: '10px',
-                            width: '100px',
-                            height: '100px',
+                            top: '50px',
+                            left: '16px',
+                            width: '80px',
+                            height: '80px',
                             backgroundColor: 'white',
-                            boxShadow: '0 0 0 5px white'
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                            border: '4px solid white',
+                            zIndex: 1,
                         }}
                         imgProps={{ style: { objectFit: 'cover', width: '100%', height: '100%', display: 'block' } }}
                     />

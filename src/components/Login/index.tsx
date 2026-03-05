@@ -77,7 +77,6 @@ const Login = () => {
 
   return (
     <Box className={styles.loginWrapper}>
-      {/* No local Snackbar; using global Snackbar in AppLayout */}
       <Box className={styles.loginContainer}>
         <Box className={styles.dFlexCenter}>
           <Link href="/">
@@ -89,20 +88,17 @@ const Login = () => {
             />
           </Link>
         </Box>
-        <Box
-          sx={{
-            margin: "1rem",
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-        >
-          <h1 className="titleTxt">
-            {mfaRequired
-              ? t("mfa.title")
-              : t("common.orgDashboardTitle")}
-          </h1>
+        <Box sx={{ mt: 2, mb: 3, textAlign: "center" }}>
+          <Typography
+            sx={{
+              fontSize: '18px',
+              fontWeight: 500,
+              color: '#1d1d1f',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            {mfaRequired ? t("mfa.title") : t("common.orgDashboardTitle")}
+          </Typography>
         </Box>
 
         {mfaRequired && sessionToken ? (
@@ -129,7 +125,7 @@ const Login = () => {
                           <UserIcon
                             size={16}
                             style={{
-                              color: "#777",
+                              color: "#999",
                               marginRight: "0.5rem",
                               transform: "translateY(-2px)",
                             }}
@@ -158,7 +154,7 @@ const Login = () => {
                         startAdornment: (
                           <LockOpenIcon
                             size={16}
-                            style={{ color: "#777", marginRight: "0.5rem" }}
+                            style={{ color: "#999", marginRight: "0.5rem" }}
                           />
                         ),
                         disableUnderline: true,
@@ -189,41 +185,30 @@ const Login = () => {
                 </Box>
               </Box>
             </form>
-            <Box
-              sx={{
-                width: "100%",
-                marginTop: "1.75em",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+            <Box className={styles.rememberForgotRow}>
               <FormControlLabel
                 control={
                   <Checkbox
                     defaultChecked
+                    size="small"
                     sx={{
-                      color: "#A1A1A1",
-                      "&.Mui-checked": {
-                        color: "#1890FF",
-                      },
+                      color: "#ccc",
+                      "&.Mui-checked": { color: "#1890FF" },
                     }}
                   />
                 }
                 label={
-                  <Typography variant="body2">{t("login.rememberMe")}</Typography>
+                  <Typography sx={{ fontSize: '13px', color: '#86868b' }}>
+                    {t("login.rememberMe")}
+                  </Typography>
                 }
-                style={{ color: "#A1A1A1" }}
               />
+              <Link className={styles.forgotLink} href="/forgot-password">
+                {t("login.forgotPassword")}
+              </Link>
             </Box>
-            <Divider sx={{ width: "310px", my: 0.5 }} />
-            <Box
-              sx={{
-                width: "100%",
-                marginTop: ".5em",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
+            <Divider sx={{ width: "100%", maxWidth: 340, my: 1.5 }} />
+            <Box sx={{ mt: 0.5, textAlign: "center" }}>
               <Link className={`appLink ${styles.registerLink}`} href="/onboarding">
                 {t("login.noAccount")} {t("login.createNow")}
               </Link>

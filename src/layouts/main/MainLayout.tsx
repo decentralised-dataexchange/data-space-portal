@@ -6,6 +6,7 @@ import MainAppBar from '@/components/common/AppBar/MainAppBar';
 import Footer from '@/components/common/Footer';
 import SideBar from '@/components/common/SideBar';
 import Breadcrumb from '@/components/common/Breadcrumb';
+import KnowledgeHubLink from '@/components/common/KnowledgeHubLink';
 import '../style.scss';
 import { usePathname } from 'next/navigation';
 import { isPublicRoute } from '@/lib/apiService/utils';
@@ -50,13 +51,16 @@ const MainLayout = ({ children }: Props) => {
             display: 'flex', 
             flexDirection: 'column', 
             minHeight: 'calc(100vh - 80px)',
-            backgroundColor: inPublicRoute ? 'transparent' : '#FFFFFF',
+            backgroundColor: inPublicRoute ? 'transparent' : '#fafafa',
           }}
         >
           {!isOnboardingRoute && (
-            <Suspense fallback={null}>
-              <Breadcrumb />
-            </Suspense>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Suspense fallback={null}>
+                <Breadcrumb />
+              </Suspense>
+              <KnowledgeHubLink />
+            </Box>
           )}
           {children}
         </Box>

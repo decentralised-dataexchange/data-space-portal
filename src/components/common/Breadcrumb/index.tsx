@@ -13,10 +13,10 @@ type BreadCrumbProps = {
 };
 
 const customStyles: React.CSSProperties = {
-  color: "#094c4a",
-  fontSize: "1.1rem",
+  color: "#1d1d1f",
+  fontSize: "0.8125rem",
   fontWeight: 500,
-  fontFamily: "openSansSemiBold",
+  letterSpacing: '-0.01em',
   padding: '0.75rem 1.25rem 0',
   margin: 0,
   backgroundColor: 'transparent',

@@ -42,7 +42,7 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
   // Base config that works on both server and client
   const config: AxiosRequestConfig = {
     baseURL,
-    withCredentials: true,
+    withCredentials: false,
     headers: {},
     // Fail fast if upstream API is slow/unreachable
     timeout: 15000
@@ -71,7 +71,7 @@ export const createAxiosInstance = (options: { isArrayBuffer?: boolean } = {}) =
       url.includes('/onboard/mfa/') ||
       url.includes('/token/refresh')
     );
-    const isPublicEndpoint = url.startsWith('/service/');
+    const isPublicEndpoint = url.startsWith('/service/') || url.includes('/onboard/sectors');
     const isProtectedEndpoint = !isAuthEndpoint && !isPublicEndpoint && url.startsWith('/');
 
     // Track if we attached a token header for this request

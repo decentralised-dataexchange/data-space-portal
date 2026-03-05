@@ -4,7 +4,8 @@
     align-items: center;
     padding: 32px 16px;
     width: 100%;
-    min-height: calc(100dvh - 40px); // keep footer visible
+    min-height: calc(100dvh - 40px);
+    background-color: #f5f5f7;
 }
 
 .loginContainer {
@@ -12,9 +13,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: transparent;
+    background-color: #fff;
     width: 100%;
-    max-width: 440px; // keep content readable on large screens
+    max-width: 440px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    padding: 40px 40px 32px;
+
+    @media (max-width: 480px) {
+        padding: 32px 24px 24px;
+        max-width: 100%;
+    }
 }
 
 .dFlexCenter {
@@ -23,30 +33,28 @@
 }
 
 .logoImg {
-    width: 118px;
+    width: 100px;
     border-radius: 50%;
     height: auto;
 }
 
 .loginAuthInputsContainer {
-    border-radius: 0.45rem;
-    border: 1px solid #cecece;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
     box-sizing: border-box;
-    width: 356px;
-    padding: 0.25rem;
+    width: 100%;
+    max-width: 340px;
+    padding: 2px;
+
     .textFieldWrapper {
-        @media (max-width: 768px) {
-            width: 313px;
-        }
-        
         .textField {
             :global(.MuiInputBase-root) {
-                height: 42px;
+                height: 44px;
                 align-items: center;
-                padding: 6px 11px 6px 11px;
-                margin-top: 0;  
+                padding: 6px 12px;
+                margin-top: 0;
             }
-            
+
             :global(.MuiInputBase-input) {
                 padding: 0;
                 font-size: 0.875rem;
@@ -54,8 +62,6 @@
         }
     }
 }
-    
-
 
 /* Scope MUI input font size only within this component */
 .loginWrapper :global(.MuiInputBase-input) {
@@ -70,6 +76,32 @@
     }
 }
 
+.rememberForgotRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 340px;
+    margin-top: 1rem;
+}
+
+.forgotLink {
+    font-size: 13px;
+    color: #1d1d1f;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 .registerLink {
     font-size: 14px;
+}
+
+.belowCard {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #86868b;
+    text-align: center;
 }
