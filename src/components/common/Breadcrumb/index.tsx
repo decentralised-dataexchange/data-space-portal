@@ -23,6 +23,8 @@ const customStyles: React.CSSProperties = {
   borderRadius: '4px',
   display: 'flex',
   alignItems: 'center',
+  overflow: 'hidden',
+  flexWrap: 'wrap',
 };
 
 const Breadcrumb: React.FC<BreadCrumbProps> = ({

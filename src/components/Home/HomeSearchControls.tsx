@@ -150,17 +150,18 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
         display: "flex",
         alignItems: "center",
         width: "100%",
-        maxWidth: 600,
+        maxWidth: { xs: '100%', md: 600 },
         justifyContent: { xs: 'flex-start', md: 'flex-end' },
       }}
     >
-      {/* Icon container stays on the right on all breakpoints */}
+      {/* Search icon button */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           order: 1,
           minWidth: 40,
+          flexShrink: 0,
           justifyContent: 'center',
         }}
       >
@@ -185,7 +186,6 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
       {/* Search field: always visible */}
       <Box
         sx={{
-          flexShrink: 0,
           display: 'flex',
           alignItems: 'center',
           backgroundColor: '#f5f5f7',
@@ -194,9 +194,9 @@ const HomeSearchControls: React.FC<Props> = ({ searchQuery }) => {
           overflow: 'hidden',
           minWidth: 0,
           flex: 1,
-          ml: { xs: 1, md: 0 },
+          ml: { xs: 0, md: 0 },
           mr: { xs: 0, md: 1 },
-          order: { xs: 1, md: 0 },
+          order: 0,
           transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
           '&:focus-within': {
             borderColor: 'rgba(0,0,0,0.15)',
