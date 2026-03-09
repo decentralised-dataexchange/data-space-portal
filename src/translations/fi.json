@@ -287,6 +287,7 @@
     "schemas": "Skeemat"
   },
   "common": {
+    "tryAgain": "Yritä uudelleen",
     "orgDashboardTitle": "Kirjaudu sisään CRANE d-HDSI Data Marketplaceen",
     "trustedServiceProvider": "Luotettu palveluntarjoaja",
     "untrustedServiceProvider": "Ei-luotettu palveluntarjoaja",
@@ -382,6 +383,7 @@
       "cloudWallet": "Pilvilompakko",
       "mobileWallet": "Mobiililompakko",
       "walletDescription": "Anna lyhyt perustelu lompakon yhdistämiselle:",
+      "justification": "Perustelu",
       "justificationPlaceholder": "Kirjoita perustelu tähän...",
       "connectWallet": "Yhdistä lompakko"
     },

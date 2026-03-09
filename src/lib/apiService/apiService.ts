@@ -151,8 +151,8 @@ export const apiService = {
     return api.get<import('@/types/onboarding').SectorsResponse>('/onboard/sectors/')
       .then(res => res.data);
   },
-  organisationList: async (): Promise<OrganisationListResponse> => {
-    return api.get<OrganisationListResponse>(ENDPOINTS.organisationList())
+  organisationList: async (limit?: number, offset?: number): Promise<OrganisationListResponse> => {
+    return api.get<OrganisationListResponse>(ENDPOINTS.organisationList(limit, offset))
       .then(res => res.data);
   },
   getOAuth2Clients: async (): Promise<OAuth2ClientsListResponse> => {
@@ -305,9 +305,9 @@ export const apiService = {
     ).then(res => res.data);
   },
   // Public service: all organisations (unauthenticated route)
-  getServiceOrganisations: async (): Promise<import('@/types/serviceOrganisation').ServiceOrganisationResponse> => {
+  getServiceOrganisations: async (limit?: number, offset?: number): Promise<import('@/types/serviceOrganisation').ServiceOrganisationResponse> => {
     return api.get<import('@/types/serviceOrganisation').ServiceOrganisationResponse>(
-      ENDPOINTS.organisationList()
+      ENDPOINTS.organisationList(limit, offset)
     ).then(res => res.data);
   },
   serviceSearch: async (params: ServiceSearchParams): Promise<ServiceSearchResponse> => {

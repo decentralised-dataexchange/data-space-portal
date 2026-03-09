@@ -178,7 +178,6 @@ CodeOfConductSetup.displayName = 'StepFive';
 
 const STEP_ONE_FORM_ID = 'onboarding-step-one-form';
 const STEP_TWO_FORM_ID = 'onboarding-step-two-form';
-const FORM_MIN_WIDTH = 320;
 const PLACEHOLDER_SX = {
   '& .MuiInputBase-input::placeholder': {
     opacity: 1,
@@ -395,7 +394,7 @@ const OrgIdentitySetup = React.memo(({ t, onBack, organisation, orgIdentity, onN
           <Button
             variant="outlined"
             onClick={() => setDrawerOpen(true)}
-            sx={{ width: '100%', textAlign: 'left', ...APPLE_SECONDARY_BUTTON_SX, justifyContent: 'flex-start' }}
+            sx={{ width: '100%', textAlign: 'left', ...APPLE_SECONDARY_BUTTON_SX, justifyContent: 'center' }}
           >
             {t('onboarding.legalPersonIdData')}
           </Button>
@@ -712,7 +711,7 @@ const Onboarding: React.FC = () => {
         {manualStepOverrideRef.current ? (
             // Manual override: render exact step by currentStep
             currentStep === 1 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0 }}>
+              <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                 <AdminCredentialsStep
                   t={t}
                   values={adminCredentials}
@@ -727,7 +726,7 @@ const Onboarding: React.FC = () => {
                 />
               </Box>
             ) : currentStep === 2 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0 }}>
+              <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                 <OrganisationDetailsStep
                   t={t}
                   values={organisationDetails}
@@ -743,15 +742,15 @@ const Onboarding: React.FC = () => {
                 />
               </Box>
             ) : currentStep === 3 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+              <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                 <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
               </Box>
             ) : renderStep === 4 ? (
-              <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+              <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                 <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
               </Box>
             ) : (
-              <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+              <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1200 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                 <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
               </Box>
             )
@@ -759,11 +758,11 @@ const Onboarding: React.FC = () => {
             // If authenticated (organisation present), never show steps 1-3.
             isProtectedMode ? (
               renderStep === 4 ? (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                   <OrgIdentitySetup t={t} onBack={goToStepThreeNav} organisation={organisation} orgIdentity={orgIdentity} onNext={goToStepFiveNav} />
                 </Box>
               ) : (
-                <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1100 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: { xs: 500, sm: 800, md: 1200 }, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                   <CodeOfConductSetup t={t} pdfUrl={pdfUrl} isError={pdfIsError} error={pdfError as Error | null} />
                 </Box>
               )
@@ -771,7 +770,7 @@ const Onboarding: React.FC = () => {
               // Unauthenticated: show registration steps 1-3 normally. If user has progressed to step >= 4 (after silent login),
               // the authenticated branch will render Step 4/5.
               currentStep === 1 ? (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                   <AdminCredentialsStep
                     t={t}
                     values={adminCredentials}
@@ -786,7 +785,7 @@ const Onboarding: React.FC = () => {
                   />
                 </Box>
               ) : currentStep === 2 ? (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                   <OrganisationDetailsStep
                     t={t}
                     values={organisationDetails}
@@ -802,7 +801,7 @@ const Onboarding: React.FC = () => {
                   />
                 </Box>
               ) : (
-                <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH }}>
+                <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box' }}>
                   <LoginAssist t={t} onBack={goToStepTwoNav} onContinue={autoLogin} isSubmitting={isLoggingIn} />
                 </Box>
               )
@@ -811,7 +810,7 @@ const Onboarding: React.FC = () => {
         }
 
         {displayStep === 1 && (
-          <Box sx={{ width: contentWidth, maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: FORM_MIN_WIDTH, mt: '16px', display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: '100%', maxWidth: 500, mx: 'auto', px: { xs: 1, sm: 0 }, minWidth: 0, boxSizing: 'border-box', mt: '16px', display: 'flex', justifyContent: 'center' }}>
             <Button
               type={canSkipStepOne ? 'button' : 'submit'}
               form={canSkipStepOne ? undefined : STEP_ONE_FORM_ID}
@@ -1206,8 +1205,8 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
   });
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%', minWidth: "min(450px, 60vw)" }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%', maxWidth: 500, minWidth: 0, p: 2, borderRadius: '12px', backgroundColor: '#f0faf0', border: '1px solid #c8e6c9' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: '14px', width: '100%', minWidth: 0, p: 2, borderRadius: '12px', backgroundColor: '#f0faf0', border: '1px solid #c8e6c9', overflow: 'hidden', boxSizing: 'border-box' }}>
         <Box
           sx={{
             width: 36,
@@ -1222,7 +1221,7 @@ const LoginAssist: React.FC<StepThreeProps> = React.memo(({ t, onBack, onContinu
         >
           <CheckIcon fontSize="inherit" sx={{ color: '#FFFFFF', fontSize: 20 }} />
         </Box>
-        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: "fit-content", wordBreak: 'break-word', whiteSpace: 'normal', fontSize: '0.9375rem', color: '#1d1d1f' }}>
+        <Typography variant="body1" sx={{ flex: '1 1 auto', minWidth: 0, wordBreak: 'break-word', whiteSpace: 'normal', fontSize: '0.9375rem', color: '#1d1d1f' }}>
           {successContent}
         </Typography>
       </Box>

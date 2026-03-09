@@ -23,7 +23,13 @@ export const ENDPOINTS = {
         return "/config/admin/";
     },
 
-    organisationList: () => {
+    organisationList: (limit?: number, offset?: number) => {
+        if (limit !== undefined || offset !== undefined) {
+            const params = new URLSearchParams();
+            if (limit !== undefined) params.set("limit", String(limit));
+            if (offset !== undefined) params.set("offset", String(offset));
+            return `/service/organisation/?${params.toString()}`;
+        }
         return "/service/organisation/";
     },
     serviceSearch: () => {

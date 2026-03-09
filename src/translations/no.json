@@ -287,6 +287,7 @@
     "schemas": "Skjemaer"
   },
   "common": {
+    "tryAgain": "Prøv igjen",
     "orgDashboardTitle": "Logg inn på CRANE d-HDSI Datatorg",
     "trustedServiceProvider": "Klarert tjenesteleverandør",
     "untrustedServiceProvider": "Uklarert tjenesteleverandør",
@@ -382,6 +383,7 @@
       "cloudWallet": "Skylommebok",
       "mobileWallet": "Mobillommebok",
       "walletDescription": "Gi en kort begrunnelse for å koble til lommeboken:",
+      "justification": "Begrunnelse",
       "justificationPlaceholder": "Skriv din begrunnelse her...",
       "connectWallet": "Koble til lommebok"
     },

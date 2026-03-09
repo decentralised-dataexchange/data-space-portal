@@ -73,6 +73,26 @@ export const CookieService = {
     Cookies.remove('refresh_token', { path: '/' });
     Cookies.remove('token_expires_in', { path: '/' });
     Cookies.remove('client_auth', { path: '/' });
+  },
+  
+  // Set a short-lived cookie for organisation ID (used for navigation)
+  setSelectedOrgId: (orgId: string) => {
+    Cookies.set('selected_org_id', orgId, {
+      expires: 1 / 1440, // 1 minute expiration (short-lived)
+      path: '/',
+      sameSite: 'lax',
+      secure: isSecure
+    });
+  },
+  
+  // Get the selected organisation ID
+  getSelectedOrgId: (): string | null => {
+    return Cookies.get('selected_org_id') || null;
+  },
+  
+  // Clear the selected organisation ID
+  clearSelectedOrgId: () => {
+    Cookies.remove('selected_org_id', { path: '/' });
   }
 };
 
