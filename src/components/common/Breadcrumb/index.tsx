@@ -74,6 +74,7 @@ const Breadcrumb: React.FC<BreadCrumbProps> = ({
     ) {
       const slug = routesPath[2];
       if (slug) {
+        // Derive display name from URL slug (e.g., "sweden-healthcare" -> "Sweden Healthcare")
         const display = decodeURIComponent(slug)
           .replace(/-/g, ' ')
           .replace(/\s+/g, ' ')

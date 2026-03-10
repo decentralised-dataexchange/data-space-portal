@@ -159,7 +159,7 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
 
                     <Box className="actionBtn">
                         {dataDisclosureAgreements.length > 0 ? (
-                            <Link href={`/data-source/read/${dataSource.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}>{signDataLabel}</Link>
+                            <Link href={`/data-source/read/${dataSource.name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}?id=${dataSource.id}`}>{signDataLabel}</Link>
                         ) : (
                             <span className="disabled">{signDataLabel}</span>
                         )}
