@@ -64,8 +64,11 @@ export default function DDASearchCard({ dda }: DDASearchCardProps) {
   const handleViewApiClick = () => {
     const ddaId = (record as any)?.dataAgreementId || (record as any)?.['@id'] || (record as any)?.templateId;
     const orgId = dda.organisationId;
-    if (ddaId && orgId) {
-      window.open(`/${locale}/data-source/read/${orgId}?viewApiFor=${ddaId}`, '_blank');
+    // Slugify organisation name for URL path
+    const slugify = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const orgSlug = slugify(orgName);
+    if (ddaId && orgId && orgSlug) {
+      window.open(`/${locale}/data-source/read/${orgSlug}?id=${orgId}&viewApiFor=${ddaId}`, '_blank');
     }
   };
 

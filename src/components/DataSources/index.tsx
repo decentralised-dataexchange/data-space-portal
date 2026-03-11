@@ -16,7 +16,7 @@ import TagChips from '@/components/common/TagChips';
 
 type Props = {
     params: Promise<{ id?: string; slug?: string }>;
-    searchParams?: Promise<{ page?: string; viewApiFor?: string; limit?: string }>;
+    searchParams?: Promise<{ page?: string; viewApiFor?: string; limit?: string; id?: string }>;
 };
 
 export default async function DataSourceListingPage({ params, searchParams }: Props) {
@@ -32,18 +32,33 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
 
     // Use unauthenticated service endpoints
     let serviceItem: import('@/types/serviceOrganisation').ServiceOrganisationItem | undefined;
-    // Try by ID only if the param looks like a UUID; otherwise it's a slug and by-ID call would 400
-    if (id && isUuid(id)) {
+    
+    // Get organisation ID from query params (passed from home page for direct lookup)
+    const sp = await searchParams;
+    const orgId = sp?.id;
+    
+    // Direct lookup by ID from query params (if it's a UUID)
+    if (orgId && isUuid(orgId)) {
+        try {
+            const resp = await apiService.getServiceOrganisationById(orgId);
+            serviceItem = resp.organisations?.[0];
+        } catch (e) {
+            console.error('[DataSourceListingPage] getServiceOrganisationById failed', e);
+        }
+    }
+    
+    // Fallback: try by ID from URL path param (if it's a UUID - for backward compatibility)
+    if (!serviceItem && id && isUuid(id)) {
         try {
             const resp = await apiService.getServiceOrganisationById(id);
             serviceItem = resp.organisations?.[0];
         } catch (e) {
-            // Swallow 4xx and fall back to list fetch
-            console.error('[DataSourceListingPage] getServiceOrganisationById failed; falling back to list', e);
+            console.error('[DataSourceListingPage] getServiceOrganisationById failed', e);
         }
     }
+    
+    // Final fallback: fetch all and try to match by slug
     if (!serviceItem) {
-        // Fallback: fetch all and try to match by slug first, then by raw ID
         const allResp = await apiService.getServiceOrganisations();
         const list = allResp.organisations ?? [];
         const paramSlug = slug ?? id ?? '';
@@ -70,7 +85,6 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
         );
     }
     const trusted = Boolean(dataSourceItem?.organisationIdentity?.presentationRecord?.verified);
-    const sp = await searchParams;
     const ddas = dataSourceItem?.dataDisclosureAgreements ?? [];
     const viewApiFor = sp?.viewApiFor;
     const dataSourceSlug = slugify(dataSourceItem?.organisation?.name || '');
@@ -368,6 +382,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
                                                         dataSourceSlug={dataSourceSlug}
+                                                        orgId={dataSourceItem?.organisation?.id || ''}
                                                         apiViewMode={!!viewApiFor}
                                                         hasEmbeddedSpec={hasEmbeddedSpec(dataDisclosureAgreement)}
                                                     />

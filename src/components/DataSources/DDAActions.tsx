@@ -13,11 +13,12 @@ import { useBusinessWalletSigning } from "@/custom-hooks/businessWalletSigning";
 interface DDAActionsProps {
   dataDisclosureAgreement: DataDisclosureAgreement;
   dataSourceSlug: string;
+  orgId: string; // Organisation ID for navigation
   apiViewMode?: boolean; // when true, hide View API and right-align the remaining action
   hasEmbeddedSpec?: boolean; // optional hint from parent if spec presence was detected externally
 }
 
-export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, apiViewMode = false, hasEmbeddedSpec: parentHasEmbeddedSpec }: DDAActionsProps) {
+export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, orgId, apiViewMode = false, hasEmbeddedSpec: parentHasEmbeddedSpec }: DDAActionsProps) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const t = useTranslations();
@@ -60,7 +61,7 @@ export default function DDAActions({ dataDisclosureAgreement, dataSourceSlug, ap
   const handleViewApiClick = () => {
     // Navigate to the same datasource read page, showing only this DDA and the API doc below it
     const viewId = getDdaId(dataDisclosureAgreement) || dataDisclosureAgreement.templateId;
-    router.push(`/${locale}/data-source/read/${dataSourceSlug}?viewApiFor=${viewId}`);
+    router.push(`/${locale}/data-source/read/${dataSourceSlug}?id=${orgId}&viewApiFor=${viewId}`);
   };
 
   // Detect embedded OpenAPI spec presence (top-level or nested in objectData strings)
