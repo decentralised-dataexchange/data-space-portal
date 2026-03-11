@@ -371,6 +371,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                                                     <DDAActions
                                                         dataDisclosureAgreement={dataDisclosureAgreement}
                                                         dataSourceSlug={dataSourceSlug}
+                                                        organisationId={dataSourceItem?.organisation?.id}
                                                         apiViewMode={!!viewApiFor}
                                                         hasEmbeddedSpec={hasEmbeddedSpec(dataDisclosureAgreement)}
                                                     />
