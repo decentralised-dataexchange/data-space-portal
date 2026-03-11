@@ -287,6 +287,7 @@
     "schemas": "Scheman"
   },
   "common": {
+    "tryAgain": "Försök igen",
     "orgDashboardTitle": "Logga in på CRANE d-HDSI Data Marketplace",
     "trustedServiceProvider": "Betrodd tjänsteleverantör",
     "untrustedServiceProvider": "Ej betrodd tjänsteleverantör",
@@ -382,6 +383,7 @@
       "cloudWallet": "Molnplånbok",
       "mobileWallet": "Mobilplånbok",
       "walletDescription": "Ge en kort motivering för att ansluta din plånbok:",
+      "justification": "Motivering",
       "justificationPlaceholder": "Ange din motivering här...",
       "connectWallet": "Anslut plånbok"
     },

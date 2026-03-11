@@ -74,7 +74,7 @@ export default async function DataSourceListingPage({ params, searchParams }: Pr
                 <Card className='cardContainerList' sx={{ width: '100%', backgroundColor: '#FFFFFF', borderRadius: '7px', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px' }}>
                     <CardContent sx={{ padding: '24px' }}>
                         <Typography variant="h6" sx={{ fontSize: '18px', fontWeight: 'bold', mb: 1 }}>
-                            {t('common.notFound')}
+                            {t('common.noResultsFound')}
                         </Typography>
                         <Typography sx={{ fontSize: '14px', color: '#666' }}>
                             {t('common.tryAgain')}

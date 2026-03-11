@@ -61,11 +61,24 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   const t = await getTranslations();
 
-  // Fetch organisations; be resilient to network timeouts in local/dev
+  // Server-side pagination (align with client control's limit param)
+  const DEFAULT_LIMIT = 12;
+  const itemsPerPage = limitParam && !isNaN(parseInt(limitParam, 10)) ? Math.max(1, parseInt(limitParam, 10)) : DEFAULT_LIMIT;
+
+  // Fetch organisations with pagination; be resilient to network timeouts in local/dev
   let organisationList: Awaited<ReturnType<typeof apiService.organisationList>> | null = null;
   let organisationLoadFailed = false;
+  let organisationsTotalItems = 0;
+  let ddas: Awaited<ReturnType<typeof apiService.serviceSearch>>['ddas'] = [];
+  let ddasTotalItems = 0;
+  let serviceSearchFailed = false;
+
+  // Calculate offset for non-search pagination
+  const orgOffset = (orgPage - 1) * itemsPerPage;
+
   try {
-    organisationList = await apiService.organisationList();
+    organisationList = await apiService.organisationList(itemsPerPage, orgOffset);
+    organisationsTotalItems = organisationList?.pagination?.totalItems ?? 0;
   } catch (err) {
     organisationLoadFailed = true;
     console.warn('[HomePage] Failed to fetch organisations on Home page:', err);
@@ -91,15 +104,6 @@ export default async function HomePage({ params, searchParams }: Props) {
     softwareStatement: (item as any)?.organisation?.softwareStatement ?? {},
     dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
   }));
-
-  // Server-side pagination (align with client control's limit param)
-  const DEFAULT_LIMIT = 12;
-  const itemsPerPage = limitParam && !isNaN(parseInt(limitParam, 10)) ? Math.max(1, parseInt(limitParam, 10)) : DEFAULT_LIMIT;
-  let totalItems = dataSourceItems.length;
-  let ddas: Awaited<ReturnType<typeof apiService.serviceSearch>>['ddas'] = [];
-  let organisationsTotalItems = totalItems;
-  let ddasTotalItems = 0;
-  let serviceSearchFailed = false;
 
   if (searchQuery) {
     try {
@@ -143,8 +147,6 @@ export default async function HomePage({ params, searchParams }: Props) {
       serviceSearchFailed = true;
       console.warn('[HomePage] Failed to perform service search on Home page:', err);
     }
-  } else {
-    organisationsTotalItems = dataSourceItems.length;
   }
 
   const activeTotalItems = searchQuery
@@ -156,7 +158,7 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, organisationsTotalItems);
-  const currentItems = searchQuery ? dataSourceItems : dataSourceItems.slice(startIndex, endIndex);
+  const currentItems = dataSourceItems;
 
   const orgHasResults = currentItems?.length > 0;
   const ddaHasResults = searchQuery && ddas.length > 0;

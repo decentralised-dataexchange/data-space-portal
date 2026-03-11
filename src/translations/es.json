@@ -287,6 +287,7 @@
     "schemas": "Esquemas"
   },
   "common": {
+    "tryAgain": "Intentar de nuevo",
     "orgDashboardTitle": "Acceso a Marketplace de Datos CRANE d-HDSI",
     "trustedServiceProvider": "Proveedor de Servicios Confiable",
     "untrustedServiceProvider": "Proveedor No Confiable",
@@ -382,6 +383,7 @@
       "cloudWallet": "Wallet en la nube",
       "mobileWallet": "Wallet móvil",
       "walletDescription": "Proporcione una justificación para conectar su wallet:",
+      "justification": "Justificación",
       "justificationPlaceholder": "Ingrese justificación aquí...",
       "connectWallet": "Conectar Wallet"
     },
