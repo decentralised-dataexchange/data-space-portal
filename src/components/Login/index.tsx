@@ -105,7 +105,7 @@ const Login = () => {
           <MfaVerify sessionToken={sessionToken} onBack={handleMfaBack} />
         ) : (
           <>
-            <form onSubmit={handleSubmit}>
+            <form className={styles.loginForm} onSubmit={handleSubmit}>
               <Box className={styles.loginAuthInputsContainer}>
                 <Box className={styles.textFieldWrapper}>
                   <TextField
