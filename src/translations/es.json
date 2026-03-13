@@ -496,7 +496,7 @@
     "legalID": "ID Legal del Controlador",
     "table": {
       "headers": {
-        "templateId": "ID plantilla DDA",
+        "templateId": "ID DDA",
         "id": "ID",
         "usagePurpose": "Propósito de uso",
         "version": "Versión",

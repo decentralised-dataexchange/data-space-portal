@@ -496,7 +496,7 @@
     "legalID": "Juridisk ID for behandlingsansvarlig",
     "table": {
       "headers": {
-        "templateId": "DDA Mal-ID",
+        "templateId": "DDA ID",
         "id": "ID",
         "usagePurpose": "Bruksformål",
         "version": "Versjon",
