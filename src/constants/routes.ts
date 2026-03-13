@@ -13,6 +13,8 @@ export const publicRoutes = new Set([
   '/knowledge/guides',
   '/knowledge/guides/provider',
   '/knowledge/guides/citizen',
+  '/knowledge/guides/mhe',
+  '/knowledge/guides/caregiver',
   '/knowledge/tools',
   '/knowledge/faq',
 ])

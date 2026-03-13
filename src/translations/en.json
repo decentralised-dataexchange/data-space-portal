@@ -141,6 +141,8 @@
     "knowledge-guides-provider": "Organisation Guide",
     "knowledge-guides-citizen": "Citizen Guide",
     "knowledge-guides-carer": "Caregiver Guide",
+    "knowledge-guides-mhe": "MyHealthEnabler Guide",
+    "knowledge-guides-caregiver": "Caregiver Guide",
     "knowledge-tools": "Tools & Developer Resources",
     "knowledge-faq": "Troubleshooting & FAQ"
   },
@@ -824,6 +826,14 @@
         "title": "Caregiver Guide",
         "subtitle": "A guide for caregivers supporting individuals with their data management.",
         "comingSoon": "Content coming soon. This guide will cover delegated access, supporting individuals with consent management, and caregiver-specific tools."
+      },
+      "mhe": {
+        "title": "MyHealthEnabler Guide",
+        "subtitle": "A comprehensive guide for patients on how to use the MyHealthEnabler app to manage health data, connect devices, and track measurements."
+      },
+      "caregiver": {
+        "title": "Caregiver Guide",
+        "subtitle": "A guide for caregivers on using the CRANE Caregiver web portal to view and monitor patient health data."
       }
     },
     "tools": {

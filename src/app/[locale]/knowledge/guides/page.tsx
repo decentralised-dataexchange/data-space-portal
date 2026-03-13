@@ -5,7 +5,7 @@ import { Typography, Grid, Box } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import KnowledgeHubLayout from '@/components/KnowledgeHub/KnowledgeHubLayout';
 import SectionCard from '@/components/KnowledgeHub/SectionCard';
-import { Buildings, User } from '@phosphor-icons/react';
+import { Buildings, User, Heartbeat, Stethoscope } from '@phosphor-icons/react';
 
 export default function GuidesPage() {
   const t = useTranslations();
@@ -22,6 +22,18 @@ export default function GuidesPage() {
       description: t('knowledgeHub.guides.citizen.subtitle'),
       href: '/knowledge/guides/citizen',
       icon: <User size={24} weight="duotone" />,
+    },
+    {
+      title: t('knowledgeHub.guides.mhe.title'),
+      description: t('knowledgeHub.guides.mhe.subtitle'),
+      href: '/knowledge/guides/mhe',
+      icon: <Heartbeat size={24} weight="duotone" />,
+    },
+    {
+      title: t('knowledgeHub.guides.caregiver.title'),
+      description: t('knowledgeHub.guides.caregiver.subtitle'),
+      href: '/knowledge/guides/caregiver',
+      icon: <Stethoscope size={24} weight="duotone" />,
     },
   ];
 
