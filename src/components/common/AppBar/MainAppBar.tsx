@@ -8,7 +8,6 @@ import Logo from "@/assets/img/logo.jpg";
 
 import './styles.scss';
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAppSelector } from "@/custom-hooks/store";
 import { ListIcon } from "@phosphor-icons/react";
@@ -20,7 +19,6 @@ interface Props {
 
 export default function MainAppBar({ handleOpenMenu }: Props) {
     const t = useTranslations();
-    const router = useRouter();
     const pathname = usePathname();
     const adminData = useAppSelector((state) => state.auth.adminDetails);
 
@@ -60,7 +58,7 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                         />
                     </Link>
                     {!isOnOnboarding && (
-                        <Box className='flex-column' onClick={() => router.push('/')} sx={{ cursor: 'pointer' }}>
+                        <Link className="navHeaderTextLink" href="/">
                             <Typography
                                 sx={{
                                     xs: {
@@ -89,7 +87,7 @@ export default function MainAppBar({ handleOpenMenu }: Props) {
                             >
                                 {t('appBar.subHeader')}
                             </Typography>
-                        </Box>
+                        </Link>
                     )}
 
                     <Box sx={{ marginLeft: 'auto' }} />
