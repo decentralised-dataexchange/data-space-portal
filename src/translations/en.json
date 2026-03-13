@@ -496,7 +496,7 @@
     "legalID": "Data Controller Legal ID",
     "table": {
       "headers": {
-        "templateId": "DDA Template ID",
+        "templateId": "DDA ID",
         "id": "ID",
         "usagePurpose": "Usage Purpose",
         "version": "Version",

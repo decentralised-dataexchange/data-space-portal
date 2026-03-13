@@ -496,7 +496,7 @@
     "legalID": "Rekisterinpitäjän juridinen tunnus",
     "table": {
       "headers": {
-        "templateId": "DDA-mallin tunnus",
+        "templateId": "DDA Tunnus",
         "id": "Tunnus",
         "usagePurpose": "Käyttötarkoitus",
         "version": "Versio",

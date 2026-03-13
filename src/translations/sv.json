@@ -496,7 +496,7 @@
     "legalID": "Personuppgiftsansvariges juridiska ID",
     "table": {
       "headers": {
-        "templateId": "DDA Mall-ID",
+        "templateId": "DDA ID",
         "id": "ID",
         "usagePurpose": "Användningssyfte",
         "version": "Version",
