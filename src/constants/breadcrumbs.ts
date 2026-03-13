@@ -90,6 +90,16 @@ export const BREADCRUMB_ROUTES: Record<string, BreadcrumbItem> = {
     translationKey: 'breadcrumbs.knowledge-guides-citizen',
     isClickable: true
   },
+  'mhe': {
+    path: '/knowledge/guides/mhe',
+    translationKey: 'breadcrumbs.knowledge-guides-mhe',
+    isClickable: true
+  },
+  'caregiver': {
+    path: '/knowledge/guides/caregiver',
+    translationKey: 'breadcrumbs.knowledge-guides-caregiver',
+    isClickable: true
+  },
   'tools': {
     path: '/knowledge/tools',
     translationKey: 'breadcrumbs.knowledge-tools',
