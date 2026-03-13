@@ -12,17 +12,46 @@ import specificOrgCoverImage from "@/assets/img/specific-org-cover-image.jpeg";
 import brcLogo from "@/assets/img/brc-logo.jpeg";
 import bolagsverketLogo from "@/assets/img/bologsverket-logo.jpeg";
 import craneLogo from "@/assets/img/crane-logo.jpeg";
-import type { ServiceOrganisationItemOrg } from "@/types/serviceOrganisation";
-import type { OrgIdentityResponse } from "@/types/orgIdentity";
+import type { ServiceOrganisationItemOrg, ServiceOrganisationIdentity, ServiceOrganisationPresentationItem } from "@/types/serviceOrganisation";
+import type { OrgIdentityResponse, OrganisationalIdentityOrEmpty, PresentationItem } from "@/types/orgIdentity";
 import { apiService } from "@/lib/apiService/apiService";
 import SoftwareStatementSection from "@/components/ViewCredentials/SoftwareStatementSection";
 import CredentialCard from "@/components/ViewCredentials/CredentialCard";
 import type { VpTokenRequestPayload } from "@/types/vpTokenRequest";
 
+type OrganisationIdentityProp = ServiceOrganisationIdentity | OrgIdentityResponse;
+
+interface NormalizedIdentity {
+  presentation?: ServiceOrganisationPresentationItem[] | PresentationItem[];
+  verified: boolean;
+  vpTokenRequest?: string;
+}
+
+function isServiceOrganisationIdentity(identity: OrganisationIdentityProp): identity is ServiceOrganisationIdentity {
+  return 'presentationRecord' in identity;
+}
+
+function normalizeIdentity(identity: OrganisationIdentityProp | undefined): NormalizedIdentity | undefined {
+  if (!identity) return undefined;
+  
+  if (isServiceOrganisationIdentity(identity)) {
+    return {
+      presentation: identity.presentationRecord?.presentation,
+      verified: identity.presentationRecord?.verified ?? identity.isPresentationVerified ?? false,
+      vpTokenRequest: identity.presentationRecord?.vpTokenRequest,
+    };
+  }
+  
+  return {
+    presentation: identity.organisationalIdentity?.presentation ?? undefined,
+    verified: identity.verified,
+    vpTokenRequest: identity.organisationalIdentity?.vpTokenRequest,
+  };
+}
+
 interface Props {
   organisation: ServiceOrganisationItemOrg;
-  organisationIdentity?: any;
-  // Optional override for trusted state when identity object isn't available (e.g., on home cards)
+  organisationIdentity?: OrganisationIdentityProp;
   trustedOverride?: boolean;
   extraFooterContent?: React.ReactNode;
 }
@@ -50,21 +79,29 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
     const initial = orgAny?.softwareStatement || orgAny?.software_statement;
     return initial && Object.keys(initial).length > 0 ? initial : undefined;
   });
-  const [publicIdentity, setPublicIdentity] = React.useState<any>(undefined);
+  
+  const normalizedOrgIdentity = React.useMemo(() => normalizeIdentity(organisationIdentity), [organisationIdentity]);
+  const [publicIdentity, setPublicIdentity] = React.useState<ServiceOrganisationIdentity | undefined>(() => {
+    const normalized = normalizedOrgIdentity;
+    return normalized && Array.isArray(normalized.presentation) ? organisationIdentity as ServiceOrganisationIdentity : undefined;
+  });
+  const normalizedPublicIdentity = React.useMemo(() => {
+    if (publicIdentity && isServiceOrganisationIdentity(publicIdentity)) {
+      return normalizeIdentity(publicIdentity);
+    }
+    return undefined;
+  }, [publicIdentity]);
+  
+  const effectiveIdentity = normalizedPublicIdentity ?? normalizedOrgIdentity;
 
   const trusted = React.useMemo(() => {
     if (typeof trustedOverride === 'boolean') return trustedOverride;
-    return Boolean(
-      organisationIdentity?.presentationRecord?.verified ||
-      organisationIdentity?.isPresentationVerified
-    );
-  }, [organisationIdentity, trustedOverride]);
+    return Boolean(normalizedOrgIdentity?.verified);
+  }, [normalizedOrgIdentity, trustedOverride]);
 
-  // Decode vpTokenRequest if available
   const vpTokenMetadata = React.useMemo(() => {
     try {
-      const source = publicIdentity ?? organisationIdentity;
-      const vpTokenRequest = source?.presentationRecord?.vpTokenRequest;
+      const vpTokenRequest = effectiveIdentity?.vpTokenRequest;
       if (!vpTokenRequest || typeof vpTokenRequest !== 'string') return undefined;
 
       const parts = vpTokenRequest.split('.');
@@ -82,18 +119,16 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
       console.error('Failed to decode vpTokenRequest', e);
       return undefined;
     }
-  }, [organisationIdentity, publicIdentity]);
+  }, [effectiveIdentity]);
 
-  // Minimal adapter to feed ViewCredentials using public identity data
   const orgIdentityForView = React.useMemo<OrgIdentityResponse | undefined>(() => {
     try {
-      const identitySource: any = publicIdentity ?? organisationIdentity;
-      const presentation = identitySource?.presentationRecord?.presentation;
-      const first = Array.isArray(presentation) && presentation.length > 0 ? (presentation[0] as any) : undefined;
+      const presentation = effectiveIdentity?.presentation;
+      const first = Array.isArray(presentation) && presentation.length > 0 ? presentation[0] : undefined;
       
       if (!first) {
         return {
-          organisationalIdentity: {} as any,
+          organisationalIdentity: {} as OrganisationalIdentityOrEmpty,
           organisationId: organisation?.id || "",
           presentationExchangeId: "",
           state: "",
@@ -104,7 +139,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
         organisationalIdentity: {
           presentation: [first],
           verified: trusted,
-        } as any,
+        } as OrganisationalIdentityOrEmpty,
         organisationId: organisation?.id || "",
         presentationExchangeId: "",
         state: "",
@@ -113,7 +148,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
     } catch {
       return undefined;
     }
-  }, [publicIdentity, organisationIdentity, organisation?.id, trusted]);
+  }, [effectiveIdentity, organisation?.id, trusted]);
 
   const badgeLabel = trusted ? t('gettingStarted.viewCredential') : 'Credential Unavailable';
 
@@ -135,8 +170,10 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
       try {
         const orgId = organisation?.id;
         if (!orgId) return;
-        const needSS = !ss || Object.keys(ss || {}).length === 0;
-        const needIdentity = !publicIdentity || !Array.isArray(publicIdentity?.presentationRecord?.presentation);
+          const needSS = !ss || Object.keys(ss || {}).length === 0;
+          const hasOrgIdentityPresentation = Array.isArray(normalizedOrgIdentity?.presentation);
+          const hasPublicIdentityPresentation = Array.isArray(normalizedPublicIdentity?.presentation);
+          const needIdentity = !hasOrgIdentityPresentation && !hasPublicIdentityPresentation;
         if (needSS || needIdentity) {
           const res = await apiService.getServiceOrganisationById(orgId);
           const first = res?.organisations?.[0];
@@ -148,7 +185,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
             }
           }
           if (needIdentity) {
-            const identityFromApi: any = (first as any)?.organisationIdentity;
+            const identityFromApi = (first as { organisationIdentity?: ServiceOrganisationIdentity })?.organisationIdentity;
             if (identityFromApi) setPublicIdentity(identityFromApi);
           }
         }
@@ -160,16 +197,16 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
      
   }, [open]);
 
-  // Helper to calculate VCT Title for the card (replicating logic from ViewCredentials)
-  const getVctTitle = () => {
-      const presentation = orgIdentityForView?.organisationalIdentity?.presentation;
-      const first = Array.isArray(presentation) && presentation.length > 0 ? (presentation[0] as any) : undefined;
-      const vct = first?.vct as string | undefined;
-      if (!vct) return t('common.certificateOfRegistration');
-      return vct
-        .replace(/([a-z])([A-Z])/g, '$1 $2')
-        .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2').trim();
-  }
+  // Extract vct directly from available sources to avoid flicker
+  const vctTitle = React.useMemo(() => {
+    const presentation = effectiveIdentity?.presentation;
+    const first = Array.isArray(presentation) && presentation.length > 0 ? presentation[0] : undefined;
+    const vct = first?.vct;
+    if (!vct) return t('common.certificateOfRegistration');
+    return vct
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2').trim();
+  }, [effectiveIdentity, t]);
 
   // Derived content for Detail View (Banner, Header, Logo) based on viewMode
   const detailConfig = React.useMemo(() => {
@@ -327,7 +364,7 @@ const ViewCredentialsController: React.FC<Props> = ({ organisation, organisation
                 
                {/* VP Token Card */}
               <CredentialCard  
-                title={getVctTitle()}
+                title={vctTitle}
                 orgName={organisation?.name || ''} 
                 issuedBy={lpidIssuerName}
                 logoUrl={lpidIssuerLogo}
