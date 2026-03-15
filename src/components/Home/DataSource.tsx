@@ -94,7 +94,7 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                     className='card-header'
                     image={dataSource?.coverImageUrl}
                     sx={{
-                        height: '100px',
+                        height: '65px',
                         position: 'relative',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
@@ -105,20 +105,20 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                         alt={dataSource?.name || 'Data Source'}
                         sx={{
                             position: 'absolute',
-                            top: '50px',
-                            left: '16px',
-                            width: '80px',
-                            height: '80px',
+                            top: '36px',
+                            left: '12px',
+                            width: '56px',
+                            height: '56px',
                             backgroundColor: 'white',
                             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                            border: '4px solid white',
+                            border: '3px solid white',
                             zIndex: 1,
                         }}
                         imgProps={{ style: { objectFit: 'cover', width: '100%', height: '100%', display: 'block' } }}
                     />
                 </CardMedia>
-                <CardContent sx={{ padding: "20px" }}>
-                    <Typography variant="h6" fontWeight="bold" className="org-name" sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CardContent sx={{ padding: "14px 16px 16px" }}>
+                    <Typography variant="subtitle1" fontWeight="bold" className="org-name" sx={{ mb: 0.5, display: 'flex', alignItems: 'center', gap: 0.5, fontSize: '0.95rem', color: '#1d1d1f' }}>
                         {dataSource?.name}
                         {/* Public page shield: show credential if verified, otherwise not-allowed and no click */}
                         <ViewCredentialsController
@@ -141,20 +141,15 @@ const DataSourceCard = ({ dataSource, dataDisclosureAgreements, overviewLabel, s
                     </Typography>
                     {/* Access Point Endpoint removed from below avatar section */}
                     {dataSource?.location && (
-                        <Typography variant="body2" className="datasource-location" sx={{ mb: 1 }}>
+                        <Typography variant="body2" className="datasource-location" sx={{ mb: 0.5 }}>
                             {dataSource.location}
                         </Typography>
                     )}
-                    <Typography variant="subtitle1" className='datasource-overview-label'>
+                    <Typography variant="subtitle2" className='datasource-overview-label'>
                         {overviewLabel}
                     </Typography>
-                    <Typography gutterBottom component="div" className="card-body datasource-overview" sx={{ fontSize: "14px" }}>
-                        {dataSource?.description.slice(0, 275)}
-                        {dataSource?.description?.length > 275 &&
-                            <Typography className="readmore" component="span" sx={{ fontSize: "14px" }}>
-                                {/* <Box onClick={() => readMore(moreOrLessTxt)}>({moreOrLessTxt})</Box> */}
-                            </Typography>
-                        }
+                    <Typography gutterBottom component="div" className="card-body datasource-overview" sx={{ fontSize: "13px" }}>
+                        {dataSource?.description}
                     </Typography>
 
                     <Box className="actionBtn">
