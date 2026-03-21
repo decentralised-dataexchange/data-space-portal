@@ -4,6 +4,7 @@ import React from 'react';
 import { Typography, Box } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import KnowledgeHubLayout from '@/components/KnowledgeHub/KnowledgeHubLayout';
+import CitizenGuideContent from '@/components/KnowledgeHub/CitizenGuideContent';
 
 function GuideImage({ src, alt, maxWidth = '100%' }: { src: string; alt: string; maxWidth?: string | number }) {
   return (
@@ -215,7 +216,7 @@ function YouTubeGrid({ videos }: { videos: { title: string; videoId: string }[] 
 
 const img = (name: string) => `/images/knowledge/mhe/${name}`;
 
-export default function MheGuidePage() {
+export default function CitizenMheGuidePage() {
   const t = useTranslations();
 
   const tocItems = [
@@ -229,6 +230,7 @@ export default function MheGuidePage() {
     { id: 'next-of-kin', label: '8. Share Data with Next of Kin' },
     { id: 'insight-services', label: '9. Insight Services' },
     { id: 'support', label: '10. Support' },
+    { id: 'data-governance', label: '11. Data Governance & Privacy' },
   ];
 
   return (
@@ -245,7 +247,7 @@ export default function MheGuidePage() {
             mb: 1.5,
           }}
         >
-          {t('knowledgeHub.guides.mhe.title')}
+          {t('knowledgeHub.guides.citizen.title')}
         </Typography>
         <Typography
           sx={{
@@ -255,7 +257,7 @@ export default function MheGuidePage() {
             letterSpacing: '-0.01em',
           }}
         >
-          {t('knowledgeHub.guides.mhe.subtitle')}
+          {t('knowledgeHub.guides.citizen.subtitle')}
         </Typography>
       </Box>
 
@@ -318,6 +320,7 @@ export default function MheGuidePage() {
           { src: img('mhe-p2-2.jpeg'), alt: 'Country selection' },
           { src: img('mhe-p2-3.jpeg'), alt: 'Email and password' },
           { src: img('mhe-p2-4.jpeg'), alt: 'Two-factor authentication' },
+          { src: img('mhe-p4-5.jpeg'), alt: 'Account created - Welcome to MyHealthEnabler' },
         ]} />
       </Section>
 
@@ -343,11 +346,11 @@ export default function MheGuidePage() {
           Choose to start an introduction to explore the features and benefits of MyHealthEnabler, or skip and start using the app directly. You can access the introduction at any time from the Support section.
         </Para>
         <MobileScreenshotRow images={[
-          { src: img('mhe-p4-1.png'), alt: 'Welcome screen' },
-          { src: img('mhe-p4-2.png'), alt: 'Step 1 - Personal details' },
+          { src: img('mhe-p4-5.jpeg'), alt: 'Welcome to MyHealthEnabler' },
+          { src: img('mhe-p4-4.png'), alt: 'Step 1 - Personal details' },
           { src: img('mhe-p4-3.png'), alt: 'Step 2 - Choose region' },
-          { src: img('mhe-p4-4.png'), alt: 'Step 3 - Share data' },
-          { src: img('mhe-p4-5.jpeg'), alt: 'Step 4 - All set' },
+          { src: img('mhe-p4-2.png'), alt: 'Step 3 - Share data' },
+          { src: img('mhe-p4-1.png'), alt: 'Step 4 - All set' },
         ]} />
       </Section>
 
@@ -479,8 +482,8 @@ export default function MheGuidePage() {
           'Your answers are then visible in the History section under the Surveys tab',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p13-1.png'), alt: 'Daily tasks with questionnaires' },
-          { src: img('mhe-p13-2.png'), alt: 'History - Survey responses' },
+          { src: img('mhe-p11-1.jpeg'), alt: 'Daily tasks with questionnaires' },
+          { src: img('mhe-p11-2.jpeg'), alt: 'History - Survey responses' },
         ]} />
       </Section>
 
@@ -497,9 +500,9 @@ export default function MheGuidePage() {
           'You can remove your next of kin at any time from your profile',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p13-3.jpeg'), alt: 'Profile screen - Next of kin option' },
-          { src: img('mhe-p14-1.jpeg'), alt: 'Invite next of kin form' },
-          { src: img('mhe-p14-2.jpeg'), alt: 'Next of kin list (Swedish)' },
+          { src: img('mhe-p13-2.png'), alt: 'Profile screen - Next of kin option' },
+          { src: img('mhe-p13-1.png'), alt: 'Invite next of kin form' },
+          { src: img('mhe-p13-3.jpeg'), alt: 'Next of kin list with invitation status' },
         ]} />
         <SubHeading>Next of Kin View</SubHeading>
         <Para>
@@ -512,8 +515,10 @@ export default function MheGuidePage() {
           'They can switch between their own profile and yours using the profile selector at the top of the app',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p14-3.jpeg'), alt: 'Next of kin invitation received' },
-          { src: img('mhe-p14-4.jpeg'), alt: 'Switching between profiles' },
+          { src: img('mhe-p14-4.jpeg'), alt: 'Next of kin invitation received' },
+          { src: img('mhe-p14-3.jpeg'), alt: 'Switching between profiles' },
+          { src: img('mhe-p14-1.jpeg'), alt: 'Next of kin dashboard - measurements and questionnaires' },
+          { src: img('mhe-p14-2.jpeg'), alt: 'Next of kin history view' },
         ]} />
       </Section>
 
@@ -554,6 +559,14 @@ export default function MheGuidePage() {
           { src: img('mhe-p18-2.png'), alt: 'Support page - Contact us & FAQ' },
         ]} />
       </Section>
+
+      {/* Section 11: Data Governance & Privacy */}
+      <Section id="data-governance" title="11. Data Governance & Privacy">
+        <Para>
+          MyHealthEnabler is part of the CRANE d-HDSI dataspace, which follows a strict governance framework to protect your personal health data. This section explains how the dataspace handles your data agreements, consent, digital identity, and privacy — giving you full control over what is shared and with whom.
+        </Para>
+      </Section>
+      <CitizenGuideContent appName="MyHealthEnabler" showIntro={false} />
 
     </KnowledgeHubLayout>
   );
