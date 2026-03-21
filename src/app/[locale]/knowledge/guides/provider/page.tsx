@@ -4,6 +4,7 @@ import React from 'react';
 import { Typography, Box, Divider } from '@mui/material';
 import { useTranslations } from 'next-intl';
 import KnowledgeHubLayout from '@/components/KnowledgeHub/KnowledgeHubLayout';
+import CitizenGuideContent from '@/components/KnowledgeHub/CitizenGuideContent';
 
 function GuideImage({ src, alt }: { src: string; alt: string }) {
   return (
@@ -108,7 +109,8 @@ export default function ProviderGuidePage() {
     { id: 'configure-wallet-oauth', label: 'Configure Wallet & OAuth 2.0 Clients' },
     { id: 'publish-ddas', label: 'Publishing & Governance of DDAs' },
     { id: 'sign-ddas', label: 'Reviewing & Signing DDAs' },
-    { id: 'appendix-da', label: 'Appendix: Data Exchange Agreements' },
+    { id: 'appendix-da', label: 'Appendix A: Data Exchange Agreements' },
+    { id: 'appendix-citizen', label: 'Appendix B: Citizen Data Governance & Privacy' },
   ];
 
   return (
@@ -304,8 +306,8 @@ export default function ProviderGuidePage() {
         <GuideImage src={img('fig31-signed-agreements.png')} alt="Fig 31: Signed Agreements" />
       </Section>
 
-      {/* Appendix */}
-      <Section id="appendix-da" title="Appendix: Creating Data Exchange Agreements">
+      {/* Appendix A */}
+      <Section id="appendix-da" title="Appendix A: Creating Data Exchange Agreements">
         <SubHeading>A.1 Creating a Data Agreement in the DISP</SubHeading>
         <Para>To publish a DDA, a Data Agreement (DA) must be created first, defining the data-sharing relationship between an individual and an organisation.</Para>
 
@@ -344,6 +346,14 @@ export default function ProviderGuidePage() {
         <GuideImage src={img('figA8-unpublished-dda.png')} alt="Fig A8: Unpublished DDA" />
         <GuideImage src={img('figA9-published-dda.png')} alt="Fig A9: Published DDA" />
       </Section>
+      {/* Appendix B */}
+      <Section id="appendix-citizen" title="Appendix B: Citizen Data Governance & Privacy">
+        <Para>
+          The CRANE d-HDSI dataspace follows a strict governance framework that gives citizens full control over their personal data. This appendix explains how data agreements, consent, digital identity, and privacy work from the citizen&apos;s perspective — helping organisations understand the end-user experience of the governance model.
+        </Para>
+      </Section>
+      <CitizenGuideContent appName="MyHealthEnabler" showIntro={false} />
+
     </KnowledgeHubLayout>
   );
 }

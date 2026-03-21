@@ -805,7 +805,7 @@
         "signDDAsContent": "Explore available data sources on the public discovery page. Review published DDAs and their associated APIs. To sign an agreement, log in and click 'Sign with Business Wallet'. The signed copy is transmitted back to the Data Source and recorded in your Signed Agreements audit trail."
       },
       "citizen": {
-        "title": "Citizen Guide",
+        "title": "Citizen / MyHealthEnabler Guide",
         "subtitle": "Learn how to use the MyHealthEnabler app to manage your health data, control who can access it, and keep your personal information safe.",
         "introTitle": "What is MyHealthEnabler?",
         "introContent": "MyHealthEnabler is a mobile app designed for patients and citizens who want to stay in control of their personal health data. It is part of the [CRANE](https://crane-pcp.eu/) project, which helps people in rural areas across Europe manage chronic health conditions more effectively.\n\nWith MyHealthEnabler, you can:\n\n- **See exactly who has access to your data** and what they use it for\n- **Give or withdraw your permission** for organisations to use your health information\n- **Store your digital identity securely** so you can prove who you are when needed\n\nThe app puts you in charge of your own health data, giving you a clear picture of how it is being used at all times.",
