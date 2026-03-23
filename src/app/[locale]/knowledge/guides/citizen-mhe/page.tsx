@@ -316,6 +316,7 @@ export default function CitizenMheGuidePage() {
           'Once registered, you now have a MyHealthEnabler user account',
         ]} />
         <MobileScreenshotRow images={[
+          { src: img('mhe-p2-4.webp'), alt: 'Create account' },
           { src: img('mhe-p2-1.jpeg'), alt: 'Login screen' },
           { src: img('mhe-p2-2.jpeg'), alt: 'Country selection' },
           { src: img('mhe-p2-3.jpeg'), alt: 'Email and password' },
@@ -465,8 +466,8 @@ export default function CitizenMheGuidePage() {
           'Save your measurements to complete the flow',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p11-1.jpeg'), alt: 'Overview - Today\'s tasks with measurements' },
-          { src: img('mhe-p11-2.jpeg'), alt: 'Before you start measuring - device checklist' },
+          { src: img('mhe-p11-1.webp'), alt: 'Overview - Today\'s tasks with measurements' },
+          { src: img('mhe-p11-2.webp'), alt: 'Before you start measuring - device checklist' },
         ]} />
       </Section>
 
@@ -482,8 +483,12 @@ export default function CitizenMheGuidePage() {
           'Your answers are then visible in the History section under the Surveys tab',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p11-1.jpeg'), alt: 'Daily tasks with questionnaires' },
-          { src: img('mhe-p11-2.jpeg'), alt: 'History - Survey responses' },
+          { src: img('mhe-p11-1.webp'), alt: 'Daily tasks with questionnaires' },
+          { src: img('mhe-p11-2.webp'), alt: "Today's questionnaires" },
+          { src: img('mhe-p11-3.webp'), alt: "COPD questionnaire start screen" },
+          { src: img('mhe-p11-4.webp'), alt: 'COPD questionnaire - How are you feeling overall right now?' },
+          { src: img('mhe-p11-5.webp'), alt: 'History logs for questionnaires taken' },
+          { src: img('mhe-p11-6.webp'), alt: 'History log - Survey responses for a specific day' },
         ]} />
       </Section>
 
@@ -500,9 +505,9 @@ export default function CitizenMheGuidePage() {
           'You can remove your next of kin at any time from your profile',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p13-2.png'), alt: 'Profile screen - Next of kin option' },
-          { src: img('mhe-p13-1.png'), alt: 'Invite next of kin form' },
-          { src: img('mhe-p13-3.jpeg'), alt: 'Next of kin list with invitation status' },
+          { src: img('mhe-p13-1.webp'), alt: 'Profile screen - Next of kin option' },
+          { src: img('mhe-p13-3.webp'), alt: 'Invite next of kin form' },
+          { src: img('mhe-p13-2.webp'), alt: 'Next of kin list with invitation status' },
         ]} />
         <SubHeading>Next of Kin View</SubHeading>
         <Para>
@@ -515,8 +520,7 @@ export default function CitizenMheGuidePage() {
           'They can switch between their own profile and yours using the profile selector at the top of the app',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p14-4.jpeg'), alt: 'Next of kin invitation received' },
-          { src: img('mhe-p14-3.jpeg'), alt: 'Switching between profiles' },
+          { src: img('mhe-p13-3.jpeg'), alt: 'Next of kin option' },
           { src: img('mhe-p14-1.jpeg'), alt: 'Next of kin dashboard - measurements and questionnaires' },
           { src: img('mhe-p14-2.jpeg'), alt: 'Next of kin history view' },
         ]} />
