@@ -1,15 +1,18 @@
 import {Locale} from 'next-intl';
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import {Box, Grid, Typography} from '@mui/material';
+import dynamic from 'next/dynamic';
 import PaginationControls from '@/components/common/PaginationControls';
 import {apiService} from '@/lib/apiService/apiService';
 import DataSourceCard from '@/components/Home/DataSource';
 import {gridSpacing} from '@/constants/grid';
 import HomeSearchControls from '@/components/Home/HomeSearchControls';
 import HomeTabs from '@/components/Home/HomeTabs';
-import TagChips from '@/components/common/TagChips';
 import DDASearchCard from '@/components/Home/DDASearchCard';
-import HomeDDAModalController from '@/components/Home/HomeDDAModalController';
+
+const HomeDDAModalController = dynamic(
+  () => import('@/components/Home/HomeDDAModalController')
+);
 
 type Props = {
   params: Promise<{ locale: Locale }>;
@@ -73,19 +76,7 @@ export default async function HomePage({ params, searchParams }: Props) {
   let ddasTotalItems = 0;
   let serviceSearchFailed = false;
 
-  // Calculate offset for non-search pagination
-  const orgOffset = (orgPage - 1) * itemsPerPage;
-
-  try {
-    organisationList = await apiService.organisationList(itemsPerPage, orgOffset);
-    organisationsTotalItems = organisationList?.pagination?.totalItems ?? 0;
-  } catch (err) {
-    organisationLoadFailed = true;
-    console.warn('[HomePage] Failed to fetch organisations on Home page:', err);
-  }
-
-  // Map organisations into the card's expected shape
-  const dataSourceItems = (organisationList?.organisations ?? []).map(item => ({
+  const mapOrganisationToDataSourceItem = (item: any) => ({
     dataSource: {
       description: item.organisation?.description ?? '',
       logoUrl: item.organisation?.logoUrl ?? '',
@@ -96,14 +87,14 @@ export default async function HomePage({ params, searchParams }: Props) {
       location: item.organisation?.location ?? '',
       policyUrl: item.organisation?.policyUrl ?? '',
       accessPointEndpoint: item.organisation?.accessPointEndpoint ?? null,
-      // Map org verification to trusted
       trusted: item.organisationIdentity?.isPresentationVerified ?? false,
     },
-    // Carry extra fields used by the ViewCredentialsController modal
     organisationIdentity: item.organisationIdentity,
     softwareStatement: (item as any)?.organisation?.softwareStatement ?? {},
     dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
-  }));
+  });
+
+  let dataSourceItems: ReturnType<typeof mapOrganisationToDataSourceItem>[] = [];
 
   if (searchQuery) {
     try {
@@ -120,32 +111,23 @@ export default async function HomePage({ params, searchParams }: Props) {
       });
 
       const orgs = searchResult?.organisations ?? [];
-      // Map organisations into the card's expected shape
-      (dataSourceItems as any).splice(0, dataSourceItems.length, ...orgs.map((item: any) => ({
-        dataSource: {
-          description: item.organisation?.description ?? '',
-          logoUrl: item.organisation?.logoUrl ?? '',
-          id: item.organisation?.id ?? '',
-          coverImageUrl: item.organisation?.coverImageUrl ?? '',
-          name: item.organisation?.name ?? '',
-          sector: item.organisation?.sector ?? '',
-          location: item.organisation?.location ?? '',
-          policyUrl: item.organisation?.policyUrl ?? '',
-          accessPointEndpoint: item.organisation?.accessPointEndpoint ?? null,
-          // Map org verification to trusted
-          trusted: item.organisationIdentity?.isPresentationVerified ?? false,
-        },
-        // Carry extra fields used by the ViewCredentialsController modal
-        organisationIdentity: item.organisationIdentity,
-        softwareStatement: (item as any)?.organisation?.softwareStatement ?? {},
-        dataDisclosureAgreements: item.dataDisclosureAgreements ?? [],
-      })));
+      dataSourceItems = orgs.map(mapOrganisationToDataSourceItem);
       ddas = searchResult?.ddas ?? [];
       organisationsTotalItems = searchResult?.organisationsPagination?.totalItems;
       ddasTotalItems = searchResult?.ddasPagination?.totalItems;
     } catch (err) {
       serviceSearchFailed = true;
       console.warn('[HomePage] Failed to perform service search on Home page:', err);
+    }
+  } else {
+    const orgOffset = (orgPage - 1) * itemsPerPage;
+    try {
+      organisationList = await apiService.organisationList(itemsPerPage, orgOffset);
+      organisationsTotalItems = organisationList?.pagination?.totalItems ?? 0;
+      dataSourceItems = (organisationList?.organisations ?? []).map(mapOrganisationToDataSourceItem);
+    } catch (err) {
+      organisationLoadFailed = true;
+      console.warn('[HomePage] Failed to fetch organisations on Home page:', err);
     }
   }
 
