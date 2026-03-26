@@ -368,10 +368,10 @@ export default function CitizenMheGuidePage() {
           'You can return to the service list and unsubscribe at any time',
         ]} />
         <MobileScreenshotRow images={[
+          { src: img('mhe-p6-4.png'), alt: 'Subscribed services' },
           { src: img('mhe-p6-1.jpeg'), alt: 'Home screen - Select service' },
           { src: img('mhe-p6-2.jpeg'), alt: 'Services list' },
           { src: img('mhe-p6-3.png'), alt: 'COPD package details' },
-          { src: img('mhe-p6-4.png'), alt: 'Subscribed services' },
         ]} />
       </Section>
 
@@ -418,39 +418,6 @@ export default function CitizenMheGuidePage() {
           { src: img('mhe-p9-4.png'), alt: 'Searching for devices' },
           { src: img('mhe-p9-5.png'), alt: 'Device connected confirmation' },
         ]} />
-        <Box
-          sx={{
-            my: 3,
-            textAlign: 'center',
-            p: 2,
-            borderRadius: '16px',
-            backgroundColor: '#fbfbfd',
-            border: '1px solid rgba(0,0,0,0.04)',
-            maxWidth: 300,
-            mx: 'auto',
-          }}
-        >
-          <img
-            src={img('mhe-p10-2.png')}
-            alt="Device list showing connected and disconnected devices"
-            style={{ width: '100%', height: 'auto', display: 'block', margin: '0 auto', borderRadius: '8px' }}
-          />
-          <Typography
-            sx={{ color: '#86868b', mt: 1.5, fontSize: '13px', fontStyle: 'italic', letterSpacing: '-0.01em' }}
-          >
-            Device list showing connected and disconnected devices
-          </Typography>
-        </Box>
-
-        <SubHeading>Device Instruction Videos</SubHeading>
-        <Para>
-          Watch these video guides to learn how to properly use each medical device with the MyHealthEnabler app:
-        </Para>
-        <YouTubeGrid videos={[
-          { title: 'Blood Pressure Monitor', videoId: 'y7DfCmw6Tu4' },
-          { title: 'Pulse Oximeter', videoId: '31EwM22ukiM' },
-          { title: 'Blood Sugar (Glucose) Meter', videoId: 'XTfvh8eQehM' },
-        ]} />
       </Section>
 
       {/* Section 6: Measurements */}
@@ -466,8 +433,18 @@ export default function CitizenMheGuidePage() {
           'Save your measurements to complete the flow',
         ]} />
         <MobileScreenshotRow images={[
-          { src: img('mhe-p11-1.webp'), alt: 'Overview - Today\'s tasks with measurements' },
+          { src: img('mhe-p10-2.png'), alt: 'Overview - Today\'s tasks with measurements' },
           { src: img('mhe-p11-2.webp'), alt: 'Before you start measuring - device checklist' },
+        ]} />
+
+        <SubHeading>Device Instruction Videos</SubHeading>
+        <Para>
+          Watch these video guides to learn how to properly use each medical device with the MyHealthEnabler app:
+        </Para>
+        <YouTubeGrid videos={[
+          { title: 'Blood Pressure Monitor', videoId: 'y7DfCmw6Tu4' },
+          { title: 'Pulse Oximeter', videoId: '31EwM22ukiM' },
+          { title: 'Blood Sugar (Glucose) Meter', videoId: 'XTfvh8eQehM' },
         ]} />
       </Section>
 
