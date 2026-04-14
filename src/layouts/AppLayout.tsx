@@ -32,6 +32,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   
   const pathWithoutLocale = getPathnameWithoutLocale(pathname);
   const isOnOnboarding = pathWithoutLocale.startsWith('/onboarding');
+  const inPublicRoute = !!pathname && isPublicRoute(pathname);
 
   // Fetch organisation to gate onboarding after login
   const { data: orgRes, isLoading: orgLoading } = useGetOrganisation();
@@ -73,7 +74,6 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     // Check client-side auth state relying solely on Redux auth
     const checkClientAuth = () => {
       const isAuthPath = !!pathname && (pathname.includes('/login') || pathname.includes('/signup'));
-      const inPublicRoute = !!pathname && isPublicRoute(pathname);
 
       // Always render auth routes with MinimalLayout. If already authenticated, redirect to /start.
       // Guard against logout race: only redirect when a token is still present.
@@ -139,13 +139,13 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     checkClientAuth();
   }, [isAuthenticated, isLoading, pathname, router, orgLoading, organisation?.codeOfConduct]);
   
-  // Show loading state during server-side rendering
-  if (!isClient) {
+  // Show loading state during server-side rendering (skip for public routes to avoid hiding SSR content)
+  if (!isClient && !inPublicRoute) {
     return <MinimalLayout><Loader /></MinimalLayout>;
   }
   
-  // Show loading state if still checking authentication
-  if (isLoading) {
+  // Show loading state if still checking authentication (skip for public routes)
+  if (isLoading && !inPublicRoute) {
     return <MinimalLayout><Loader /></MinimalLayout>;
   }
 

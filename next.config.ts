@@ -5,6 +5,14 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: [
+      '@mui/material/styles',
+      '@mui/icons-material',
+      '@phosphor-icons/react',
+    ],
+  },
   webpack: (config) => {
     // Handle font files
     config.module.rules.push({
